@@ -149,6 +149,9 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         setLayout(new java.awt.GridLayout(1, 11));
 
+        setMinimumSize(new java.awt.Dimension(56, 34));
+        setName("null");
+        firstButton.setFont(new java.awt.Font("Dialog", 0, 12));
         firstButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/first.gif")));
         firstButton.setToolTipText("erste Schicht");
         firstButton.addActionListener(new java.awt.event.ActionListener() {
@@ -159,6 +162,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(firstButton);
 
+        prevPrevButton.setFont(new java.awt.Font("Dialog", 0, 12));
         prevPrevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/prev10.gif")));
         prevPrevButton.setToolTipText("schnell zur\u00fcck");
         prevPrevButton.addActionListener(new java.awt.event.ActionListener() {
@@ -169,6 +173,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(prevPrevButton);
 
+        prevButton.setFont(new java.awt.Font("Dialog", 0, 12));
         prevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/prev.gif")));
         prevButton.setToolTipText("vorherige Schicht");
         prevButton.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +184,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(prevButton);
 
+        nextButton.setFont(new java.awt.Font("Dialog", 0, 12));
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/next.gif")));
         nextButton.setToolTipText("n\u00e4chste Schicht");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
@@ -189,6 +195,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(nextButton);
 
+        nextNextButton.setFont(new java.awt.Font("Dialog", 0, 12));
         nextNextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/next10.gif")));
         nextNextButton.setToolTipText("schnell vorw\u00e4rts");
         nextNextButton.addActionListener(new java.awt.event.ActionListener() {
@@ -199,6 +206,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(nextNextButton);
 
+        lastButton.setFont(new java.awt.Font("Dialog", 0, 12));
         lastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/last.gif")));
         lastButton.setToolTipText("letzte Schicht");
         lastButton.addActionListener(new java.awt.event.ActionListener() {
@@ -209,8 +217,10 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(lastButton);
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12));
         add(jLabel1);
 
+        zoomInButton.setFont(new java.awt.Font("Dialog", 0, 12));
         zoomInButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/zoom_in.gif")));
         zoomInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -220,6 +230,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(zoomInButton);
 
+        zoomOutButton.setFont(new java.awt.Font("Dialog", 0, 12));
         zoomOutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/zoom_out.gif")));
         zoomOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -229,6 +240,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(zoomOutButton);
 
+        rotateLeftButton.setFont(new java.awt.Font("Dialog", 0, 12));
         rotateLeftButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/rotate_left.gif")));
         rotateLeftButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -238,7 +250,9 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         add(rotateLeftButton);
 
+        rotateRightButton.setFont(new java.awt.Font("Dialog", 0, 12));
         rotateRightButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/rotate_right.gif")));
+        rotateRightButton.setDoubleBuffered(true);
         rotateRightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rotateRightButtonActionPerformed(evt);
