@@ -1,0 +1,1 @@
+java -Xmx256m org.wewi.medimg.viewer.Viewer
