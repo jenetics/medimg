@@ -5,6 +5,8 @@
 package org.wewi.medimg.image.filter;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ops.TresholdFunction;
+import org.wewi.medimg.image.ops.UnaryPointTransformer;
 
 /**
  * @author Franz Wilhelmstötter
@@ -40,17 +42,9 @@ public final class TresholdFilter extends ImageFilter {
 	public void filter() {
 		super.filter();
         
-        int color = 0;
-        for (int i = 0, n = image.getNVoxels(); i < n; i++) {
-            color = image.getColor(i);
-            if (color < lowerBound) {
-                image.setColor(i, 0);
-                continue;    
-            }
-            if (color > upperBound) {
-                image.setColor(i, 0);        
-            }        
-        }
+        UnaryPointTransformer t = new UnaryPointTransformer(image, 
+                                  new TresholdFunction(upperBound, lowerBound));
+        t.transform();
 	}
 
 }
