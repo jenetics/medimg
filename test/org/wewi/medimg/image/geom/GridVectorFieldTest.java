@@ -4,20 +4,22 @@
  */
 package org.wewi.medimg.image.geom;
 
+import org.wewi.medimg.math.DoubleGridVectorField;
+
 import junit.framework.TestCase;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class RegularVectorFieldTest extends TestCase {
-    private RegularVectorField field;
+public class GridVectorFieldTest extends TestCase {
+    private DoubleGridVectorField field;
 
 	/**
-	 * Constructor for RegularVectorFieldTest.
+	 * Constructor for GridVectorFieldTest.
 	 * @param arg0
 	 */
-	public RegularVectorFieldTest(String arg0) {
+	public GridVectorFieldTest(String arg0) {
 		super(arg0);
 	}
 
@@ -26,7 +28,7 @@ public class RegularVectorFieldTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-        field = new RegularVectorField(new Point3D(30, 23, -23), 
+        field = new DoubleGridVectorField(new Point3D(30, 23, -23), 
                                        new int[]{20, 12, 54},
                                        new int[]{1, 3, 23});
 	}
