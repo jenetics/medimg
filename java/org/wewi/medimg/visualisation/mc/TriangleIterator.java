@@ -13,7 +13,7 @@ import java.util.Iterator;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-class TriangleIterator implements Iterator {
+final class TriangleIterator implements Iterator {
     private Triangle[] triangles;
     private int ncount;
     private int itpointer;

@@ -11,43 +11,30 @@ package org.wewi.medimg.visualisation.mc;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class Cube {
+final class Cube {
     private final int cubeIndex;
-    private final Point origin;
+    private final Point[] points;
 
     /** Creates new Cube */
-    public Cube(int x, int y, int z, int ci) {
-        origin = new Point(x, y, z);
+    Cube(float x, float y, float z, float gridSize, int ci) {
+        float d = gridSize;
+        points = new Point[8];
+        points[0] = new Point(x, y, z);
+        points[1] = new Point(x+d, y,   z);
+        points[2] = new Point(x+d, y,   z+d);
+        points[3] = new Point(x,   y,   z+d);
+        points[4] = new Point(x,   y+d, z);
+        points[5] = new Point(x+d, y+d, z);
+        points[6] = new Point(x+d, y+d, z+d);
+        points[7] = new Point(x+d, y+d, z+d);
         cubeIndex = ci;
     }
-   
-    public Point getOrigin() {
-        return origin;
-    }
     
-    public Point getPoint(int index) {
-        switch (index) {
-            case 0: 
-                return origin;
-            case 1:
-                return new Point(origin.getX()+1, origin.getY(), origin.getZ());
-            case 2:
-                return new Point(origin.getX()+1, origin.getY(), origin.getZ()+1);
-            case 3:
-                return new Point(origin.getX(), origin.getY(), origin.getZ()+1);
-            case 4:
-                return new Point(origin.getX(), origin.getY()+1, origin.getZ());
-            case 5:
-                return new Point(origin.getX()+1, origin.getY()+1, origin.getZ());
-            case 6:
-                return new Point(origin.getX()+1, origin.getY()+1, origin.getZ()+1);
-            case 7:
-                return new Point(origin.getX(), origin.getY()+1, origin.getZ()+1);             
-            default: throw new IllegalArgumentException("No such Index: " + index);
-        }
+    Point getPoint(int index) {
+        return points[index];
     }
-    
-    public int getCubeIndex() {
+
+    int getCubeIndex() {
         return cubeIndex;
     }
 }

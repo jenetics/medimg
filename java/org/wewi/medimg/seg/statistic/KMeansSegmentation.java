@@ -36,6 +36,8 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
     private final int k;
     
     private double[] center;
+    private double[] variance;
+    private double[] pi;  //a posteriori probability for the i-th feature
     private double[][] interval;
     
     private int sizeX;
@@ -57,6 +59,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
     
     private void init() {
         center = new double[k];
+        pi = new double[k];
         RandomEngine random = new MersenneTwister((int)(System.currentTimeMillis()%Integer.MAX_VALUE));
         for (int i = 0; i < k; i++) {
             center[i] = random.nextDouble()*(COLORS-1);
@@ -85,9 +88,48 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
         return c;
     }
     
+    public double[] getPi() {
+        double[] result = new double[k];
+        System.arraycopy(pi, 0, result, 0, k);
+        return result;
+    }
+    
+    private void calculateVariance() {
+        int[] count = new int[k];
+        double[] sum = new double[k];
+        variance = new double[k];
+        int color = 0, feature = 0;
+        double temp;
+        for (VoxelIterator it = (VoxelIterator)imageVoxelIterator.clone(); it.hasNext();) {
+            color = it.next();
+            for (int i = 0; i < k; i++) {
+                if (color >= interval[i][0] && color < interval[i][1]) {
+                    feature = i;
+                    break;
+                }
+            }  
+            temp = center[feature]-color;
+            sum[feature] = temp*temp;
+            ++count[feature];
+        }
+        for (int i = 0; i < k; i++) {
+            variance[i] = sum[i];//(double)count[feature];
+        }
+    }
+    
+    /**
+     * Lazy evaluation of the variance
+     */
+    public double[] getVariance() {
+        if (variance == null) {
+            calculateVariance();
+        }
+        double[] result = new double[k];
+        System.arraycopy(variance, 0, result, 0, k);
+        return result;
+    }
     
     public void segmentate() {
-        int size = image.getNVoxels();
         int[] colorCount = new int[k];
         long[] colorSum = new long[k];
         double[] centerTemp = new double[k];
@@ -108,10 +150,10 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
                 }
 
                 colorSum[feature] += color;
-                colorCount[feature]++;
+                ++colorCount[feature];
             }
             for (int i = 0; i < k; i++) {
-                centerTemp[i] = (double)colorSum[i] / (double)colorCount[i];
+                centerTemp[i] = (double)colorSum[i] / (double)(colorCount[i]-1);
             }
             
             epsilon = 0;
@@ -136,6 +178,12 @@ System.out.println(buffer.toString());
             
             notifyIterationFinished(new SegmentationEvent(this));
         } while (epsilon > CENTER_EPSILON);
+        
+        //Calculation the a posterioi probability for the i-th feature
+        int size = imageVoxelIterator.size();
+        for (int i = 0; i < k; i++) {
+            pi[i] = (double)colorCount[i] / (double)size;
+        }
         
         notifySegmentationFinished(new SegmentationEvent(this));
     }
