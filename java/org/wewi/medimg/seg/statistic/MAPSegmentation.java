@@ -33,8 +33,10 @@ public class MAPSegmentation extends MLSegmentation {
     public MAPSegmentation(Image image, int nf, int m1It) {
         super(image, nf);
         M1_ITERATIONS = m1It;
-        n6 = new Neighborhood3D6(image.getMaxX(), image.getMaxY(), image.getMaxZ());
-        n12 = new Neighborhood3D12(image.getMaxX(), image.getMaxY(), image.getMaxZ());
+        n6 = new Neighborhood3D6(image.getMinX(), image.getMinY(), image.getMinZ(),
+                                 image.getMaxX(), image.getMaxY(), image.getMaxZ());
+        n12 = new Neighborhood3D12(image.getMinX(), image.getMinY(), image.getMinZ(),
+                                   image.getMaxX(), image.getMaxY(), image.getMaxZ());
     }
 
 

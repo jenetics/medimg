@@ -14,12 +14,14 @@ import java.util.Iterator;
  * @version 0.1
  */
 public final class Neighborhood2D4 implements Neighborhood {
-    private int maxX;
-    private int maxY;
+    private int minX, minY;
+    private int maxX, maxY;
     
-    public Neighborhood2D4(int sizeX, int sizeY) {
-        maxX = sizeX;
-        maxY = sizeY;
+    public Neighborhood2D4(int minX, int minY, int maxX, int maxY) {
+        this.minX = minX;
+        this.minY = minY;
+        this.maxX = maxX;
+        this.maxY = maxY;
     }
 
     
@@ -29,16 +31,16 @@ public final class Neighborhood2D4 implements Neighborhood {
         
         int x = p2d.getX();
         int y = p2d.getY();
-        if (!(x-1 < 0)) {
+        if (!(x-1 < minX)) {
             iterator.addPoint(new Point2D(x-1, y));
         }
-        if (!(x+1 >= maxX)) {
+        if (!(x+1 > maxX)) {
             iterator.addPoint(new Point2D(x+1, y));
         }
-        if (!(y-1 < 0)) {
+        if (!(y-1 < minY)) {
             iterator.addPoint(new Point2D(x, y-1));
         }
-        if (!(y+1 >= maxY)) {
+        if (!(y+1 > maxY)) {
             iterator.addPoint(new Point2D(x, y+1));
         }        
         

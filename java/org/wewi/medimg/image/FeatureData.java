@@ -27,6 +27,7 @@ public final class FeatureData implements Image {
     
     private int maxX, maxY, maxZ, size;
     private int minX, minY, minZ;
+    private int sizeX, sizeY, sizeZ;
     private int nfeatures;
     private double[] meanValues;
     
@@ -55,9 +56,10 @@ public final class FeatureData implements Image {
     }
 
     void init(int x, int y, int z, int nf) {
-        maxX = x; maxY = y; maxZ = z;
+        maxX = x-1; maxY = y-1; maxZ = z-1;
+        sizeX = x; sizeY = y; sizeZ = z;
         nfeatures = nf;
-        size = maxX*maxY*maxZ;
+        size = sizeX*sizeY*sizeZ;
         
         features = new byte[size];
         featuresOld = new byte[size];
@@ -73,7 +75,7 @@ public final class FeatureData implements Image {
     }
     
     public byte getFeature(int x, int y, int z) {
-        return features[(maxX*maxY*z + maxX*y + x)];
+        return features[sizeX*sizeY*z + sizeX*y + x];
     }
     
     public byte getFeature(int pos) {
@@ -81,11 +83,11 @@ public final class FeatureData implements Image {
     }
 
     public byte getOldFeature(int x, int y, int z) {
-        return featuresOld[(maxX*maxY*z + maxX*y + x)];
+        return featuresOld[(sizeX*sizeY*z + sizeX*y + x)];
     }
 
     public void setFeature(int x, int y, int z, byte f) {
-        int pos = (maxX*maxY*z + maxX*y + x);
+        int pos = (sizeX*sizeY*z + sizeX*y + x);
         featuresOld[pos] = features[pos];
         features[pos] = f;
     } 
@@ -160,9 +162,9 @@ public final class FeatureData implements Image {
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("maxX: ").append(maxX).append(", ");
-        buffer.append("maxY: ").append(maxY).append(", ");
-        buffer.append("maxZ: ").append(maxZ).append('\n');
+        buffer.append("sizeX: ").append(sizeX).append(", ");
+        buffer.append("sizeY: ").append(sizeY).append(", ");
+        buffer.append("sizeZ: ").append(sizeZ).append('\n');
         buffer.append("NFeatures: ").append(nfeatures).append('\n');
         buffer.append("Mean Values:").append('\n');
         for (int i = 0; i < nfeatures; i++) {

@@ -16,6 +16,7 @@ import java.util.Arrays;
 public final class ImageData implements Image {
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
+    private int sizeX, sizeY, sizeZ;
     private int size;
     private short[] data;
     
@@ -30,9 +31,12 @@ public final class ImageData implements Image {
     }
     
     void init(int sizeX, int sizeY, int sizeZ) {
-        maxX = sizeX;
-        maxY = sizeY;
-        maxZ = sizeZ;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.sizeZ = sizeZ;
+        maxX = sizeX-1;
+        maxY = sizeY-1;
+        maxZ = sizeZ-1;
         minX = minY = minZ = 0;
         size = sizeX*sizeY*sizeZ;
         data = new short[size]; 
@@ -45,7 +49,12 @@ public final class ImageData implements Image {
     }
    
     public int getColor(int x, int y, int z) {
-        return data[maxX*maxY*z + maxX*y + x];
+        try {
+            return data[sizeX*sizeY*z + sizeX*y + x];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("(" + maxX + "," + maxY + "," + maxZ +")(" + x + "," + y + "," + z + ")");
+            throw new ArrayIndexOutOfBoundsException("" + e);
+        }
     }
     
     public int getColor(int pos) {
@@ -53,7 +62,7 @@ public final class ImageData implements Image {
     }
     
     public void setColor(int x, int y, int z, int color) {
-        data[maxX*maxY*z + maxX*y + x] = (short)color;
+        data[sizeX*sizeY*z + sizeX*y + x] = (short)color;
     }
     
     public void setColor(int pos, int color) {
