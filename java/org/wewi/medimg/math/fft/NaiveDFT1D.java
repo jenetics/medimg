@@ -61,7 +61,7 @@ public final class NaiveDFT1D extends DFT implements DFT1D {
         Complex[] result = new Complex[N];                                                                 
                                      
         for (int n = 0; n < N; n++) {
-            Complex z = new Complex(0, 0);
+            Complex z = Complex.NULL;
             for (int k = 0; k < N; k++) {
                 z = z.add(MathUtil.mult(data[k], MathUtil.pow(Wn, new Complex(k*n))));      
             } 

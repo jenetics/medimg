@@ -94,7 +94,21 @@ public class MutableDouble extends MutableNumber {
      */
     public double doubleValue() {
         return value;
-    }    
+    }  
+    
+    /**
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o) {
+        MutableDouble mi = (MutableDouble)o;
+        if (value > mi.value) {
+            return 1;
+        } else if (value < mi.value) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }  
 
     /**
      * @see org.wewi.medimg.math.MutableNumber#clone()

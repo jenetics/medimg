@@ -93,12 +93,12 @@ public class Dimension implements Cloneable, Immutable {
      * @param dim
      * @return int
      */
-    public int getMax(int dim){
+    public int getMax(int dim) throws IllegalArgumentException {
         switch (dim) {
             case 0: return maxX;
             case 1: return maxY;
             case 2: return maxZ;
-            default: return 0;
+            default: throw new IllegalArgumentException("Argument dim > 2");
         }
     }
 
@@ -132,12 +132,12 @@ public class Dimension implements Cloneable, Immutable {
      * @param dim
      * @return int
      */
-    public int getMin(int dim) {
+    public int getMin(int dim) throws IllegalArgumentException {
         switch (dim) {
             case 0: return minX;
             case 1: return minY;
             case 2: return minZ;
-            default: return 0;
+            default: throw new IllegalArgumentException("Argument dim > 2");
         }
     }
 

@@ -110,4 +110,18 @@ public class MutableInteger extends MutableNumber {
         return value;
     }
 
+    /**
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    public int compareTo(Object o) {
+        MutableInteger mi = (MutableInteger)o;
+        if (value > mi.value) {
+            return 1;
+        } else if (value < mi.value) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
 }
