@@ -25,9 +25,9 @@ public final class DoubleVectorVector {
 		 * @see org.wewi.medimg.math.vec.VectorIterator#next(double[], double[])
 		 */
 		public void next(double[] start, double[] end) {
-            int p = pos*2*dim;
-            System.arraycopy(data, p, start, 0, dim);
-            System.arraycopy(data, p + dim, end, 0, dim);
+            int p = pos*2*DIM;
+            System.arraycopy(data, p, start, 0, DIM);
+            System.arraycopy(data, p + DIM, end, 0, DIM);
             pos++;
 		}
     }
@@ -35,7 +35,7 @@ public final class DoubleVectorVector {
 	private double[] data;
 	private int vectorCount = 0;
 
-    private final int dim = 3;
+    private final int DIM = 3;
 	private int initialCapacity = 8;
 	private int capacityIncrement = 0;
 
@@ -53,22 +53,22 @@ public final class DoubleVectorVector {
 		this.initialCapacity = initialCapacity;
 		this.capacityIncrement = capacityIncrement;
         
-        data = new double[initialCapacity*2*dim];
+        data = new double[initialCapacity*2*DIM];
 	}
 
 	public void add(double[] start, double[] end) {
         ensureCapacity(vectorCount + 1);
         
-        int pos = vectorCount*2*dim;
+        int pos = vectorCount*2*DIM;
         
-        System.arraycopy(start, 0, data, pos, dim);
-        System.arraycopy(end, 0, data, pos + dim, dim);
+        System.arraycopy(start, 0, data, pos, DIM);
+        System.arraycopy(end, 0, data, pos + DIM, DIM);
 
         vectorCount++;
 	}
 
 	private void ensureCapacity(int minCapacity) {
-		int oldCapacity = data.length/(dim*2);
+		int oldCapacity = data.length/(DIM*2);
         
 		if (minCapacity > oldCapacity) {
 			double oldData[] = data;
@@ -78,8 +78,8 @@ public final class DoubleVectorVector {
 			if (newCapacity < minCapacity) {
 				newCapacity = minCapacity;
 			}
-			data = new double[newCapacity*2*dim];
-			System.arraycopy(oldData, 0, data, 0, vectorCount*dim*2);
+			data = new double[newCapacity*2*DIM];
+			System.arraycopy(oldData, 0, data, 0, vectorCount*DIM*2);
 		}
 	}
     
@@ -92,9 +92,9 @@ public final class DoubleVectorVector {
         
         ensureCapacity(vectorCount + 1);
         
-        System.arraycopy(data, index*2*dim, data, (index + 1)*2*dim, (vectorCount - index)*2*dim);
-        System.arraycopy(start, 0, data, index*2*dim, dim);
-        System.arraycopy(end, 0, data, index*2*dim + dim, dim);
+        System.arraycopy(data, index*2*DIM, data, (index + 1)*2*DIM, (vectorCount - index)*2*DIM);
+        System.arraycopy(start, 0, data, index*2*DIM, DIM);
+        System.arraycopy(end, 0, data, index*2*DIM + DIM, DIM);
         
         vectorCount++;
     }
@@ -106,9 +106,9 @@ public final class DoubleVectorVector {
             throw new ArrayIndexOutOfBoundsException(index);
         } 
         
-        int pos = index*2*dim;
-        System.arraycopy(start, 0, data, pos, dim);
-        System.arraycopy(end, 0,data, pos + dim, dim);       
+        int pos = index*2*DIM;
+        System.arraycopy(start, 0, data, pos, DIM);
+        System.arraycopy(end, 0,data, pos + DIM, DIM);       
     }
     
     public void removeElementAt(int index) {
@@ -120,7 +120,7 @@ public final class DoubleVectorVector {
         
         int j = vectorCount - index - 1;
         if (j > 0) {
-            System.arraycopy(data, (index + 1)*2*dim, data, index*2*dim, j*2*dim);
+            System.arraycopy(data, (index + 1)*2*DIM, data, index*2*DIM, j*2*DIM);
         }
         
         vectorCount--;                
@@ -133,13 +133,13 @@ public final class DoubleVectorVector {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         
-        int pos = index*2*dim;
-        System.arraycopy(data, pos, start, 0, dim);
-        System.arraycopy(data, pos + dim, end, 0, dim);
+        int pos = index*2*DIM;
+        System.arraycopy(data, pos, start, 0, DIM);
+        System.arraycopy(data, pos + DIM, end, 0, DIM);
         
         int j = vectorCount - index - 1;
         if (j > 0) {
-            System.arraycopy(data, (index + 1)*2*dim, data, index*2*dim, j*2*dim);
+            System.arraycopy(data, (index + 1)*2*DIM, data, index*2*DIM, j*2*DIM);
         }
         
         vectorCount--;         
@@ -171,7 +171,7 @@ public final class DoubleVectorVector {
     }
     
     public void trimToSize() {
-        int length = vectorCount*2*dim;
+        int length = vectorCount*2*DIM;
         double[] oldData = data;
         data = new double[length];
         System.arraycopy(oldData, 0, data, 0, length);
