@@ -6,7 +6,7 @@ package org.wewi.medimg.seg.validation;
 
 import java.util.Arrays;
 
-import org.wewi.medimg.util.*;
+import org.wewi.medimg.util.AccumulatorArray;
 
 /**
  * @author Franz Wilhelmstötter

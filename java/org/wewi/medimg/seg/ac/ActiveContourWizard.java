@@ -335,8 +335,8 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
             return;
         }
         
-        while (ait.hasNextIteration()) {
-            ait.nextIteration();
+        while (ait.hasNext()) {
+            ait.next();
         }
         imageViewer.repaintImage();
     }//GEN-LAST:event_doAllButtonActionPerformed
@@ -409,9 +409,9 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
             }
         }
         
-        if (ait.hasNextIteration()) {
+        if (ait.hasNext()) {
             logger.info("next");
-            ait.nextIteration(); 
+            ait.next(); 
             imageViewer.repaintImage();   
         } else {
             logger.info("fertig");

@@ -14,7 +14,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.wewi.medimg.util.*;
+import org.wewi.medimg.util.AccumulatorArray;
 
 /**
  * @author Franz Wilhelmstötter
@@ -26,12 +26,13 @@ public class Protocol {
     private String algorithmName;
     private int k;
     private double beta = 0;
+    private double mutualInformation = 0;
     private Properties imageProperties;
     private long startTime;
     private long stopTime;
     private int iterations;
     private double[] meanValues;
-    private AccumulatorArray accu;
+    private AccumulatorArray accu = new AccumulatorArray(1, 1);
     private double overallError;
     private double[] featureError;
     
@@ -69,7 +70,7 @@ public class Protocol {
             String name = param.getAttribute("name").getValue();
             if ("k".equals(name)) {
                 k = Integer.parseInt(param.getText());       
-            } else if ("beta".equals(name)) { 
+            } else if ("b".equals(name)) { 
                 beta = Double.parseDouble(param.getText());
             } else if ("image".equals(name)) {
                 Element image = param.getChild("ImageHeader");
@@ -109,33 +110,43 @@ public class Protocol {
         try {
 			rows = fm.getAttribute("rows").getIntValue();
             cols = fm.getAttribute("cols").getIntValue();
-		} catch (DataConversionException e) {
+            
+            accu = new AccumulatorArray(rows, cols);
+            int posx = 0, posy = 0;
+            List rowList = fm.getChildren("Row");
+            for (Iterator i = rowList.iterator(); i.hasNext();) {
+                posy = 0;
+                List colList = ((Element)i.next()).getChildren("ColData");
+                for (Iterator j = colList.iterator(); j.hasNext();) {
+                    Element data = (Element)j.next();
+                    accu.setValue(posx, posy, Integer.parseInt(data.getText())); 
+                    ++posy;      
+                }
+                ++posx;    
+            }            
+            
+		} catch (Exception e) {
             rows = -1; cols = -1;
 		}
-        accu = new AccumulatorArray(rows, cols);
-        int posx = 0, posy = 0;
-        List rowList = fm.getChildren("Row");
-        for (Iterator i = rowList.iterator(); i.hasNext();) {
-            posy = 0;
-            List colList = ((Element)i.next()).getChildren("ColData");
-            for (Iterator j = colList.iterator(); j.hasNext();) {
-                Element data = (Element)j.next();
-                accu.setValue(posx, posy, Integer.parseInt(data.getText())); 
-                ++posy;      
-            }
-            ++posx;    
-        }
+
         
         //Füllen der Fehler
-        Element error = result.getChild("Error");
-        overallError = Double.parseDouble(error.getChild("OverallError").getText());
-        featureError = new double[k];
-        pos = 0;
-        List errorList = error.getChildren("FeatureError");
-        for (Iterator it = errorList.iterator(); it.hasNext();) {
-            Element fe = (Element)it.next();
-            featureError[pos++] = Double.parseDouble(fe.getText());   
+        try {
+            Element error = result.getChild("Error");
+            overallError = Double.parseDouble(error.getChild("OverallError").getText());
+            featureError = new double[k];
+            pos = 0;
+            List errorList = error.getChildren("FeatureError");
+            for (Iterator it = errorList.iterator(); it.hasNext();) {
+                Element fe = (Element)it.next();
+                featureError[pos++] = Double.parseDouble(fe.getText());   
+            }
+        } catch (Exception e) {
         }
+        
+        //MutualInformation
+        Element mi = result.getChild("MutualInformation");
+        mutualInformation = Double.parseDouble(mi.getText());
     }
 
 	/**
@@ -188,6 +199,10 @@ public class Protocol {
     
     public double getBeta() {
         return beta;    
+    }
+    
+    public double getMutualInformation() {
+        return mutualInformation;    
     }
 
 	/**

@@ -14,7 +14,7 @@ import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
 /**
  *
  * @author  Franz Wilhelmstötter
- * @version 0.1
+ * @version 0.1 
  */
 public final class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
     private int nfeatures = 1;

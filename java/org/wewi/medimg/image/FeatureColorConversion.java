@@ -115,7 +115,21 @@ public class FeatureColorConversion implements ColorConversion{
             stream.writeInt(c[i].getBlue());
         }
                
-    }   
+    } 
+    
+    /*
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        
+        buffer.append("FeatureColorConversion:\n");
+        for (int i = 0; i < c.length; i++) {
+            buffer.append(i).append(": ");
+            buffer.append(c[i].toString()).append("\n");    
+        }
+        
+        return buffer.toString();    
+    } 
+    */ 
     
 }
 

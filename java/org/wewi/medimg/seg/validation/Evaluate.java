@@ -17,6 +17,7 @@ import java.util.Vector;
 
 import org.wewi.medimg.image.ops.MutualInformation;
 import org.wewi.medimg.math.MathUtil;
+import org.wewi.medimg.util.AccumulatorArray; 
 
 /**
  * @author Franz Wilhelmstötter
@@ -79,6 +80,7 @@ public class Evaluate {
     private File dir;
     private File[] files;
 
+    private int test = 0;
 	/**
 	 * Constructor for Evaluate.
 	 */
@@ -130,6 +132,10 @@ public class Evaluate {
             }
             variance /= (list.size()-1);
             
+            if (Double.isNaN(variance)) {
+                variance = 0;    
+            }
+            
             KMeanVar kmv = new KMeanVar();
             kmv.k = k.intValue();
             kmv.mean = meanError;
@@ -169,8 +175,9 @@ public class Evaluate {
             
             
             //System.out.println(protocol.getAccu());
-            MutualInformation mi = new MutualInformation(protocol.getAccu());
-            double error = mi.getMutualInformation();//protocol.getOverallError();
+            //MutualInformation mi = new MutualInformation(protocol.getAccu());
+            //double error = mi.getMutualInformation();//protocol.getOverallError();
+            double error = protocol.getMutualInformation();
             //System.out.println(error);
             
             if (!betaTable.containsKey(beta)) {
@@ -194,6 +201,10 @@ public class Evaluate {
                 variance += MathUtil.sqr(((Double)it.next()).doubleValue() - meanError);    
             }
             variance /= (list.size()-1);
+            
+            if (Double.isNaN(variance)) {
+                variance = 0;    
+            }
             
             BetaMeanVar beta = new BetaMeanVar();
             beta.beta = b.doubleValue();
@@ -389,11 +400,11 @@ public class Evaluate {
     
     public static void main(String[] args) {
         Evaluate eval = new Evaluate(new File(
-         "C:/Workspace/fwilhelm/Projekte/Diplom/code/data/validation/ml/protocols/t1.n7.rf20"));
-        //eval.evalBETAMutualInformation();
+         //"C:/Workspace/fwilhelm/Projekte/Diplom/code/data/validation/map/protocols/t1.n9.rf20"));
+        "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/validation/map/protocols"));        eval.evalBETAMutualInformation();
         //eval.evalBETAOverallError(); 
         //eval.evalNoOfIterations();
-        eval.evalKOverallError();
+        //eval.evalKOverallError();
          
     }
 

@@ -17,6 +17,10 @@ public final class Timer {
     private String timerName;
     private long startTime;
     private long stopTime;
+    
+    public Timer() {
+        this("");    
+    }
 
     public Timer(String name) {
         timerName = name;

@@ -88,7 +88,7 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
             }
         }
         
-        return Vc*(double)colorRange.getMaxColor();
+        return Vc*(double)colorRange.getNColors();
     }
     
     public void setBETA(double b) {

@@ -11,7 +11,7 @@ import java.text.NumberFormat;
 import org.wewi.medimg.util.Immutable;
 
 /**
- * @author Franz Wilhelmstï¿½tter
+ * @author Franz Wilhelmstötter
  * @version 0.1
  */
 public class Complex implements Immutable, Cloneable {
@@ -63,7 +63,7 @@ public class Complex implements Immutable, Cloneable {
 
     public Complex div(Complex n) {
         double den = n.re*n.re + n.im*n.im;
-        return new Complex((re*n.re+im*n.im)/den, (im*n.re-re*n.im)/den);
+        return new Complex((re*n.re + im*n.im)/den, (im*n.re - re*n.im)/den);
     }
     
     /**
@@ -117,12 +117,6 @@ public class Complex implements Immutable, Cloneable {
     }
 
 }
-
-
-
-
-
-
 
 
 
