@@ -13,9 +13,13 @@ import org.wewi.medimg.util.Mutable;
  */
 public abstract class MutableNumber extends Number implements Mutable, Cloneable {
 
-    public abstract void setValue(byte n);
+    public void setValue(byte n) {
+        setValue((int)n);
+    }
     
-    public abstract void setValue(short n);
+    public void setValue(short n) {
+        setValue((int)n);
+    }
 
     public abstract void setValue(int n);
     
@@ -24,6 +28,8 @@ public abstract class MutableNumber extends Number implements Mutable, Cloneable
     public abstract void setValue(float n);
     
     public abstract void setValue(double n);
+    
+    public abstract void setValue(MutableNumber n);
 
     public abstract Object clone();
 }

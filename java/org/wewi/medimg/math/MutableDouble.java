@@ -8,7 +8,7 @@ package org.wewi.medimg.math;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class MutableDouble extends MutableNumber {
+public class MutableDouble extends MutableNumber {
     private double value;
     
     public MutableDouble(double v) {
@@ -60,6 +60,13 @@ public final class MutableDouble extends MutableNumber {
 	public void setValue(double n) {
         value = n;	
 	}
+    
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#setValue(org.wewi.medimg.math.MutableNumber)
+     */
+    public void setValue(MutableNumber n) {
+        value = n.doubleValue();
+    }
     
     /**
      * @see java.lang.Number#intValue()

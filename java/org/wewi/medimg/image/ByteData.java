@@ -27,6 +27,14 @@ public final class ByteData implements DiscreteData {
 	public int get(int pos) {
 		return data[pos];
 	}
+    
+    public int getInt(int pos) {
+        return data[pos];
+    }
+    
+    public double getDouble(int pos) {
+        return data[pos];
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.DiscreteData#set(int, int)
@@ -34,6 +42,10 @@ public final class ByteData implements DiscreteData {
 	public void set(int pos, int value) {
         data[pos] = (byte)value;
 	}
+    
+    public void set(int pos, double value) {
+        data[pos] = (byte)value;
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.DiscreteData#fill(int)
@@ -41,6 +53,10 @@ public final class ByteData implements DiscreteData {
 	public void fill(int value) {
         Arrays.fill(data, (byte)value);
 	}
+    
+    public void fill(double value) {
+        Arrays.fill(data, (byte)value);
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.DiscreteData#copy(DiscreteData)
