@@ -8,7 +8,6 @@ package org.wewi.medimg.image.io;
 
 import org.wewi.medimg.image.ImageFactory;
 
-import org.wewi.medimg.util.Singleton;
 
 import java.io.File;
 
@@ -17,21 +16,19 @@ import java.io.File;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class BMPReaderFactory implements ImageReaderFactory, Singleton {
-    private static BMPReaderFactory singleton = null;
+public final class BMPReaderFactory implements ImageReaderFactory {
+    private Range range;
 
-    private BMPReaderFactory() {
+    public BMPReaderFactory() {
     }
     
-    public static BMPReaderFactory getInstance() {
-        if (singleton == null) {
-            singleton = new BMPReaderFactory();
-        }
-        return singleton;
-    }
-
     public ImageReader createImageReader(ImageFactory imageFactory, File file) {
-        return new BMPReader(imageFactory, file);
+        ImageReader reader = new BMPReader(imageFactory, file);
+        reader.setRange(range);
+        return reader;
     }
     
+    public void setRange(Range range) {
+        this.range = range;
+    }
 }

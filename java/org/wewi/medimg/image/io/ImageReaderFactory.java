@@ -17,5 +17,7 @@ import java.io.File;
  */
 public interface ImageReaderFactory {
     public ImageReader createImageReader(ImageFactory imageFactory, File file);
+    
+    public void setRange(Range range);
 }
 
