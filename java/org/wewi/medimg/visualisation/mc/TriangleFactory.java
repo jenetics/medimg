@@ -313,7 +313,7 @@ final class TriangleFactory {
 
     
     public Iterator createTriangles(Cube cube) {
-        Point[] vertexList = new Point[12];
+        Vertex[] vertexList = new Vertex[12];
         int cubeindex = cube.getCubeIndex();
         
         if (EDGE_TABLE[cubeindex] == 0) {
@@ -369,11 +369,11 @@ final class TriangleFactory {
         return ti;
     }
     
-    private Point interpolation(Point p1, Point p2) {
+    private Vertex interpolation(Point p1, Point p2) {
         float x = p1.x + (p2.x-p1.x)/2f;
         float y = p1.y + (p2.y-p1.y)/2f;
         float z = p1.z + (p2.z-p1.z)/2f;
-        return new Point(x, y, z);
+        return new Vertex(x, y, z);
     }
         
 }

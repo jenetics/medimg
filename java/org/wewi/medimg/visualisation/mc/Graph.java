@@ -10,12 +10,13 @@ import org.wewi.medimg.util.NullIterator;
 
 import java.util.HashSet;
 import java.util.Hashtable;
-//import java.util.Vector;
+import java.util.Vector;
 import java.util.Iterator;
 
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class Graph {
     private class VertexTriangles {
@@ -80,6 +81,10 @@ public class Graph {
         return vertices.contains(v);
     }
     
+    public Iterator getVertices() {
+        return vertices.keySet().iterator();
+    }
+    
     public void addTriangle(Triangle t) {
         if (triangles.contains(t)) {
             return;
@@ -111,7 +116,47 @@ public class Graph {
         return triangles.contains(t);
     }
     
+    /**
+     * Liefert jene Dreiecke, zu denen dieser Punkt (v) gehört.
+     */
     public Iterator getTriangles(Vertex v) {
         return ((VertexTriangles)vertices.get(v)).getTriangles();
+    }
+    
+    /**
+     * Liefert jenes Polygon, das bei einem Entfernen
+     * des Knoten v entstehen würde.
+     */
+    public StarshapedPolygon getPolygon(Vertex v) {
+        Triangle t;
+        Vertex v1 = null, v2 = null;
+        Vector e = new Vector();
+        for (Iterator it = ((VertexTriangles)vertices.get(v)).getTriangles(); it.hasNext();) {
+            t = (Triangle)it.next();
+            if (v.equals(t.a)) {
+                v1 = t.b;
+                v2 = t.c;
+            } else if (v.equals(t.b)) {
+                v1 = t.a;
+                v2 = t.c;
+            } else if (v.equals(t.c)) {
+                v1 = t.a;
+                v2 = t.b;
+            }
+            e.add(new Edge(v1, v2));
+        }        
+        
+        Edge[] edges = new Edge[e.size()];
+        e.toArray(edges);
+        
+        return new StarshapedPolygon(edges);
+    }
+    
+    public int getNoOfVertices() {
+        return vertices.size();
+    }
+    
+    public int getNoOfTriangles() {
+        return triangles.size();
     }
 }

@@ -227,7 +227,11 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     }
     
     public QualityMeasure getQualityMeasure() {
-        return null;
+        return new QualityMeasure() {
+                        public double quality() {
+                            return 0;
+                        }
+                    };
     } 
     
     public GaussianDistribution[] getFeatureDistrubution() {

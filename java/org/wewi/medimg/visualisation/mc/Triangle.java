@@ -9,11 +9,44 @@ package org.wewi.medimg.visualisation.mc;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
-public class Triangle {
+public final class Triangle {
+    Vertex a, b, c;
+    Point normal;
     
     /** Creates a new instance of Triangle */
-    public Triangle() {
+    Triangle() {
+    }
+    
+    public Triangle(Vertex a, Vertex b, Vertex c, Point normal) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.normal = normal;
+    }
+    
+    public Triangle(Vertex a, Vertex b, Vertex c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        normal = new Point();
+    }
+    
+    public Vertex getA() {
+        return a;
+    }
+    
+    public Vertex getB() {
+        return b;
+    }
+    
+    public Vertex getC() {
+        return c;
+    }
+    
+    public Point getNormal() {
+        return normal;
     }
     
 }

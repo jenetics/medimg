@@ -8,6 +8,7 @@ package org.wewi.medimg.visualisation.mc;
 
 import java.util.Iterator;
 
+import org.wewi.medimg.util.*;
 import org.wewi.medimg.image.*;
 import org.wewi.medimg.image.io.*;
 import org.wewi.medimg.seg.*;
@@ -119,13 +120,15 @@ public class TestViewer extends Applet {
         MarchingCubes mc = new MarchingCubes(image, 1, 1, 4);
         TriangleList tl = mc.march();
         
-        try {
-            tl.write(new File("c:/Temp/dreiecke.dat"));
-        } catch (IOException ioe) {
-            System.err.println(ioe);
-        }
+        //Berechnen der Nachbarn der Dreiecke
+        Timer timer = new Timer("Dreiecke");
+        timer.start();
+        //tl.calculateTriangleMesh();
+        timer.stop();
+        timer.print();
         
-        System.out.println("Dreiecke: " + tl.size());
+        
+        //System.out.println("Dreiecke: " + tl.size());
         TriangleArray triangleArray = new TriangleArray(3*tl.size(), GeometryArray.COORDINATES);
         float[] coord = new float[9];
         Triangle tri;
