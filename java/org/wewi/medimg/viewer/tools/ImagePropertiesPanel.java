@@ -9,78 +9,200 @@ package org.wewi.medimg.viewer.tools;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 import org.wewi.medimg.image.ImageProperties;
+import org.wewi.medimg.viewer.Command;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class ImagePropertiesPanel extends javax.swing.JPanel {  
+public class ImagePropertiesPanel extends javax.swing.JPanel {
+    
+    private class ImagePropertiesTableModel extends AbstractTableModel {
+       
+        public ImagePropertiesTableModel() {
+        }
+        
+        public String getColumnName(int col) {
+            switch (col) {
+                case 0: return "Key";
+                case 1: return "Value";
+                default: return "";
+            }
+        }
+        
+        public int findColumn(String name) {
+            if ("Key".equals(name)) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        
+        /**
+         * @see javax.swing.table.TableModel#getRowCount()
+         */
+        public int getRowCount() {
+            return properties.size();
+        }
+        
+        /**
+         * @see javax.swing.table.TableModel#getColumnCount()
+         */
+        public int getColumnCount() {
+            return 2;
+        }
+        
+        /**
+         * @see javax.swing.table.TableModel#getValueAt(int, int)
+         */
+        public Object getValueAt(int row, int col) {
+            switch (col) {
+                case 0: return properties.getKey(row);
+                case 1: return properties.getValue(row);
+                default: return "Invalid column index: " + col;
+            }
+        }
+        
+        public boolean isCellEditable(int row, int col) {
+            return true;
+        }
+        
+        public void setValueAt(Object value, int row, int col) {
+            if (value == null) {
+                return;
+            }
+            switch (col) {
+                case 0: {
+                    Object oldKey = getValueAt(row, 0);
+                    Object newValue = getValueAt(row, 1);
+                    Object newKey = value;
+                    
+                    if (value.equals("")) {
+                        return;
+                    }
+                    
+                    properties.replace((String)oldKey, (String)newKey, (String)newValue);
+                    break;
+                }
+                case 1: {
+                    Object oldKey = getValueAt(row, 0);
+                    Object newKey = oldKey;
+                    Object newValue = value;
+                    properties.replace((String)oldKey, (String)newKey, (String)newValue);
+                    break;
+                }
+                default:
+                    break;
+            }
+            
+            fireTableCellUpdated(row, col);
+        }
+        
+        public Class getColumnClass(int col) {
+            return String.class;
+        }
+        
+    }
+    
+    private class DeleteCommand implements Command {
+        public void execute() {
+            int[] row = imagePropertiesTable.getSelectedRows();
+            String[] keys = new String[row.length];
+            for (int i = 0; i < row.length; i++) {
+                keys[i] = properties.getKey(row[i]);
+            }
+
+            for (int i = 0; i < row.length; i++) {
+                properties.remove(keys[i]);
+            }    
+            imagePropertiesTable.setModel(new ImagePropertiesTableModel());            
+        }
+    }
+    
+    private class InsertAfterCommand implements Command {
+        public void execute() {
+            int row = imagePropertiesTable.getSelectedRow();
+            int size = properties.size();
+            properties.setProperty(row + 1, "Key" + (size+1), "Value" + (size+1));
+            imagePropertiesTable.setModel(new ImagePropertiesTableModel());
+            imagePropertiesTable.setRowSelectionInterval(row+1, row+1);            
+        }
+    }
+    
+    public class InsertBeforeCommand implements Command {
+        public void execute() {
+            int row = imagePropertiesTable.getSelectedRow();
+            if (row == -1) {
+                row++;
+            }
+            int size = properties.size();
+            properties.setProperty(row, "Key" + (size+1), "Value" + (size+1));
+            imagePropertiesTable.setModel(new ImagePropertiesTableModel());
+            imagePropertiesTable.setRowSelectionInterval(row, row);            
+        }
+    }
+    
+    public class MoveDownCommand implements Command {
+        public void execute() {
+            int row = imagePropertiesTable.getSelectedRow();
+            if (row >= properties.size() - 1) {
+                return;
+            }
+
+            String key1 = properties.getKey(row);
+            String key2 = properties.getKey(row+1);
+            properties.swap(key1, key2);
+
+            imagePropertiesTable.setModel(new ImagePropertiesTableModel());
+            imagePropertiesTable.setRowSelectionInterval(row+1, row+1);              
+        }
+    }
+    
+    public class MoveUpCommand implements Command {
+        public void execute() {
+            int row = imagePropertiesTable.getSelectedRow();
+            if (row == -1 || row == 0) {
+                return;
+            }
+
+            String key1 = properties.getKey(row);
+            String key2 = properties.getKey(row-1);
+            properties.swap(key1, key2);
+
+            imagePropertiesTable.setModel(new ImagePropertiesTableModel());
+            imagePropertiesTable.setRowSelectionInterval(row-1, row-1);            
+        }
+    }
+    
+    private ImageProperties imageProperties;
     private ImageProperties properties;
+    
+    private TableToolPanel tableToolPanel;
     
     /** Creates new form ImagePropertiesPanel */
     public ImagePropertiesPanel(ImageProperties properties) {
-        this.properties = properties;
+        this.imageProperties = properties;
+        this.properties = (ImageProperties)properties.clone();
         initComponents();
         
         init();
     }
     
-    private void init() {
-        //Filling the imagePropertyTable with the ImageProperties
-        updateTable();
+    private void init() { 
+        tableToolPanel = new TableToolPanel();
+        tableToolPanel.setDeleteCommand(new DeleteCommand());
+        tableToolPanel.setInsertAfterCommand(new InsertAfterCommand());
+        tableToolPanel.setInsertBeforeCommand(new InsertBeforeCommand());
+        tableToolPanel.setMoveDownCommand(new MoveDownCommand());
+        tableToolPanel.setMoveUpCommand(new MoveUpCommand());
+        
+        tabelToolBar.add(tableToolPanel);
     }
-    
-    private TableModel propertyTableModel(ImageProperties prop) {
-        Object[][] data = new Object[prop.size()][2];
-        
-        int row = 0;
-        Map.Entry entry;
-        for (Iterator it = prop.iterator(); it.hasNext();) {
-            entry = (Map.Entry)it.next();
-            data[row][0] = entry.getKey();
-            data[row][1] = entry.getValue();
-            row++;            
-        } 
-        
-        TableModel model = new javax.swing.table.DefaultTableModel(
-                data,
-                new String [] {
-                    "Key", "Property"
-                }
-            ) {
-                Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class
-                };
-
-                public Class getColumnClass(int columnIndex) {
-                    return types [columnIndex];
-                }
-            };   
-        
-        return model;
-    }
-    
-
-    private ImageProperties updateImageProperties() {
-        TableModel model = imagePropertyTable.getModel();
-        properties.clear();
-        
-        for (int i = 0, n = model.getRowCount(); i < n; i++) {
-            properties.setProperty((String)model.getValueAt(i,  0), 
-                                   (String)model.getValueAt(i, 1));
-        }
-        
-        return properties;
-    }
-
-    private void updateTable() {
-        imagePropertyTable.setModel(propertyTableModel(properties));
-    }
-    
+ 
     public ImageProperties getImageProperties() {
         return properties;
     }
@@ -91,59 +213,40 @@ public class ImagePropertiesPanel extends javax.swing.JPanel {
      * always regenerated by the Form Editor.
      */
     private void initComponents() {//GEN-BEGIN:initComponents
+        jMenuBar1 = new javax.swing.JMenuBar();
         jPanel1 = new javax.swing.JPanel();
+        tabelToolBar = new javax.swing.JToolBar();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        imagePropertyTable = new javax.swing.JTable();
+        imagePropertiesTable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        insertRowButton = new javax.swing.JButton();
-        deleteRowButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-
+        
+        
         setLayout(new java.awt.BorderLayout());
-
+        
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        
+        tabelToolBar.setFont(new java.awt.Font("Dialog", 0, 12));
+        jPanel1.add(tabelToolBar);
+        
         add(jPanel1, java.awt.BorderLayout.NORTH);
-
+        
         jPanel2.setLayout(new java.awt.BorderLayout());
-
+        
         jPanel2.setBorder(new javax.swing.border.TitledBorder(null, "Image-Properties", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
-        imagePropertyTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Key", "Title 2"
-            }
-        ));
-        jScrollPane1.setViewportView(imagePropertyTable);
-
+        imagePropertiesTable.setModel(new ImagePropertiesTableModel());
+        imagePropertiesTable.setToolTipText("Imageproperties");
+        imagePropertiesTable.setDragEnabled(true);
+        imagePropertiesTable.setSurrendersFocusOnKeystroke(true);
+        jScrollPane1.setViewportView(imagePropertiesTable);
+        
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
+        
         add(jPanel2, java.awt.BorderLayout.CENTER);
-
-        insertRowButton.setFont(new java.awt.Font("Dialog", 0, 12));
-        insertRowButton.setText("insert");
-        insertRowButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertRowButtonActionPerformed(evt);
-            }
-        });
-
-        jPanel3.add(insertRowButton);
-
-        deleteRowButton.setFont(new java.awt.Font("Dialog", 0, 12));
-        deleteRowButton.setText("delete");
-        deleteRowButton.setToolTipText("null");
-        deleteRowButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteRowButtonActionPerformed(evt);
-            }
-        });
-
-        jPanel3.add(deleteRowButton);
-
+        
         okButton.setFont(new java.awt.Font("Dialog", 0, 12));
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -151,56 +254,44 @@ public class ImagePropertiesPanel extends javax.swing.JPanel {
                 okButtonActionPerformed(evt);
             }
         });
-
+        
         jPanel3.add(okButton);
-
+        
         add(jPanel3, java.awt.BorderLayout.SOUTH);
-
+        
+        jPanel4.setLayout(new java.awt.GridLayout(3, 1));
+        
         add(jPanel4, java.awt.BorderLayout.EAST);
-
+        
         add(jPanel5, java.awt.BorderLayout.WEST);
-
+        
     }//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // Add your handling code here:
-        updateImageProperties();
+        if (properties.size() < 0) {
+            imagePropertiesTable.removeRowSelectionInterval(0, properties.size() - 1);
+        }
+
+        imageProperties.clear();
+        Map.Entry entry;
+        for (Iterator it = properties.iterator(); it.hasNext();) {
+            entry = (Map.Entry)it.next();
+            imageProperties.setProperty((String)entry.getKey(), (String)entry.getValue());
+        }
     }//GEN-LAST:event_okButtonActionPerformed
-
-    private void deleteRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowButtonActionPerformed
-        // Add your handling code here:
-        int row = imagePropertyTable.getSelectedRow();
-        if (row != -1) {
-            properties.remove((String)imagePropertyTable.getValueAt(row, 0));
-        }
-        updateTable();
-    }//GEN-LAST:event_deleteRowButtonActionPerformed
-
-    private void insertRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertRowButtonActionPerformed
-        // Add your handling code here:
-        int row = imagePropertyTable.getSelectedRow();
-        int rowCount = imagePropertyTable.getRowCount();
-        if (row == -1 || row == rowCount - 1) {
-            properties.setProperty("Key" + rowCount, "Value" + rowCount);
-        } else {
-            properties.setProperty(row, "Key" +  rowCount, "Value" + rowCount);
-        }
-        
-        updateTable();
-    }//GEN-LAST:event_insertRowButtonActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable imagePropertiesTable;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JButton insertRowButton;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JButton okButton;
-    private javax.swing.JButton deleteRowButton;
-    private javax.swing.JTable imagePropertyTable;
+    private javax.swing.JToolBar tabelToolBar;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
     
 }

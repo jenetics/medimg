@@ -21,8 +21,8 @@ import java.util.Set;
 public class ListMap implements Map {
     
     private class ListMapEntry implements Map.Entry {
-        private Object key;
-        private Object value;
+        Object key;
+        Object value;
         
         public ListMapEntry(Object key, Object value) {
             this.key = key;
@@ -119,6 +119,18 @@ public class ListMap implements Map {
         
         return ret;
 	}
+        
+        public void replace(Object oldKey, Object newKey, Object newValue) {
+            ListMapEntry entry;
+            for (Iterator it = entries.iterator(); it.hasNext();) {
+                entry = (ListMapEntry)it.next();
+                if (entry.getKey().equals(oldKey)) {
+                    entry.key = newKey;
+                    entry.value = newValue;
+                    return;
+                }
+            }            
+        }
         
         public void add(int index, Object key, Object value) {
             entries.add(index, new ListMapEntry(key, value));

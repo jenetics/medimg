@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.wewi.medimg.image.ops.MutualInformation;
 import org.wewi.medimg.math.MathUtil;
 
 /**
@@ -104,9 +105,9 @@ public class Evaluate {
             Protocol protocol = new Protocol(files[i]);
             
             Integer k = new Integer(protocol.getK());
-            //MutualInformation mi = new MutualInformation(protocol.getAccu());
-            //double error = mi.getMutualInformation();            
-            double error = protocol.getOverallError();
+            MutualInformation mi = new MutualInformation(protocol.getAccu());
+            double error = mi.getMutualInformation();            
+            //double error = protocol.getOverallError();
             
             if (!ktable.containsKey(k)) {
                 ktable.put(k, new Vector());      
@@ -227,7 +228,7 @@ public class Evaluate {
             stddev[i] = array[i].var;    
         } 
         
-        new ErrorListPlot("Mutual Information", b, mean, stddev).show();         
+        new ErrorListPlot("Mutual Information Diagramm", b, mean, stddev).show();         
     }    
     
     public void evalBETAOverallError() {
@@ -398,11 +399,12 @@ public class Evaluate {
     
     public static void main(String[] args) { 
         Evaluate eval = new Evaluate(new File(
-         "C:/Workspace/Projekte/Diplom/code/data/validation/ml/protocols/t1.n9.rf20"));
+         "C:/Workspace/Projekte/Diplom/validation/map/protocols/t1.n9.rf20"));
+        //C:\Workspace\Projekte\Diplom\validation\map\protocols\t1.n3.rf20
         //"/home/fwilhelm/Workspace/Projekte/Diplom/code/data/validation/map/protocols"));        
-        //eval.evalBETAMutualInformation();
+        eval.evalBETAMutualInformation();
         //eval.evalBETAOverallError(); 
-        eval.evalNoOfIterations();
+        //eval.evalNoOfIterations();
         //eval.evalKOverallError();
          
     }

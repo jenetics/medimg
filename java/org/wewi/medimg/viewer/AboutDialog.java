@@ -6,7 +6,6 @@
 
 package org.wewi.medimg.viewer;
 
-import javax.swing.text.html.HTMLEditorKit;
 
 /**
  *
@@ -30,67 +29,36 @@ public class AboutDialog extends javax.swing.JDialog {
         northPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         centerPanel = new javax.swing.JPanel();
-        jTextPane1 = new javax.swing.JTextPane();
-        jPanel1 = new javax.swing.JPanel();
-        okButton = new javax.swing.JButton();
-
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Info");
+        setLocationRelativeTo(this);
+        setModal(true);
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
-
+        
         northPanel.setBackground(java.awt.SystemColor.control);
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12));
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 14));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/logo_seg.gif")));
-        jLabel1.setText("Segmentierungs- und Registrierungwerkzeug (SRW)    ");
+        jLabel1.setText("Segmentierungs- und Registrierungwerkzeug    ");
         northPanel.add(jLabel1);
-
+        
         getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
-
+        
         centerPanel.setLayout(new java.awt.GridLayout(2, 1));
-
+        
         centerPanel.setBackground(java.awt.SystemColor.control);
-        jTextPane1.setBackground(java.awt.SystemColor.control);
-        jTextPane1.setDocument(jTextPane1.getStyledDocument());
-        jTextPane1.setEditable(false);
-        jTextPane1.setText("<h1>asdfasd</h1>");
-        jTextPane1.setContentType("text/html");
-        jTextPane1.setStyledDocument(jTextPane1.getStyledDocument());
-        jTextPane1.setEditorKit(new HTMLEditorKit());
-        centerPanel.add(jTextPane1);
-
-        jPanel1.setLayout(new java.awt.GridBagLayout());
-
-        jPanel1.setBackground(java.awt.SystemColor.control);
-        okButton.setBackground(java.awt.SystemColor.control);
-        okButton.setFont(new java.awt.Font("Dialog", 0, 12));
-        okButton.setText("OK");
-        okButton.setPreferredSize(new java.awt.Dimension(100, 26));
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
-
-        jPanel1.add(okButton, new java.awt.GridBagConstraints());
-
-        centerPanel.add(jPanel1);
-
         getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
-
+        
         pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setSize(new java.awt.Dimension(432, 274));
         setLocation((screenSize.width-432)/2,(screenSize.height-274)/2);
     }//GEN-END:initComponents
-
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        setVisible(false);
-        dispose();
-    }//GEN-LAST:event_okButtonActionPerformed
     
     /** Closes the dialog */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
@@ -100,11 +68,8 @@ public class AboutDialog extends javax.swing.JDialog {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel centerPanel;
-    private javax.swing.JButton okButton;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel northPanel;
     // End of variables declaration//GEN-END:variables
     
