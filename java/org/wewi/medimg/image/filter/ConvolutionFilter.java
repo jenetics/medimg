@@ -13,7 +13,7 @@ import org.wewi.medimg.image.MarginImage;
  * @version 0.1
  */
 public class ConvolutionFilter extends ImageFilter {
-    private Kernel kernel;
+    protected Kernel kernel;
 
 	/**
 	 * Constructor for ConvolutionFilter.
@@ -61,8 +61,6 @@ public class ConvolutionFilter extends ImageFilter {
             }
         }   
     }
-     
-
 }
 
 

@@ -4,11 +4,13 @@
  */
 package org.wewi.medimg.image.filter;
 
+import org.wewi.medimg.util.Immutable;
+
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class Kernel {
+public class Kernel implements Immutable {
     
     private static final int[] BLUR_DATA = {1, 1, 1, 1, 1, 1, 1, 1, 1};                                  
     private static final int[] SHARPEN_DATA = {0, -1, 0, -1, 5, -1, 0, -1, 0};                                         
@@ -48,11 +50,11 @@ public class Kernel {
     
     
     
-    private int[] raw;
-    private int dim;
-    private int divisor;
-    private int bias;
-    private int margin;
+    private final int[] raw;
+    private final int dim;
+    private final int divisor;
+    private final int bias;
+    private final int margin;
 
 	/**
 	 * Constructor for Kernel.
