@@ -19,6 +19,7 @@ public class FittnessStrategy extends TransformInterpol {
     }
     
     public void calculateWeights() {
+       /*
         double sumFittness = 0;
         int transforms = transformVector.size();
         int i;
@@ -38,6 +39,7 @@ public class FittnessStrategy extends TransformInterpol {
             }
             transWeights[i] = alpha;
         }
+        */
     }
 
 }

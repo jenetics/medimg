@@ -7,8 +7,8 @@
 package org.wewi.medimg.reg.interpolation;
 
 import org.wewi.medimg.image.geom.transform.Transformation;
-import org.wewi.medimg.image.geom.transform.AffineInterpolation;
-import org.wewi.medimg.reg.TransformVector;
+//import org.wewi.medimg.image.geom.transform.AffineInterpolation;
+//import org.wewi.medimg.reg.TransformVector;
 /**
  *
  * @author  werner weiser
@@ -18,7 +18,7 @@ public class TransformInterpol implements InterpolStrategy {
     
     protected double errorLimit;
     protected double[] transWeights;
-    protected TransformVector transformVector;
+    //protected TransformVector transformVector;
     
     /** Creates new TransformInterpol */
     public TransformInterpol() {
@@ -36,8 +36,8 @@ public class TransformInterpol implements InterpolStrategy {
     
 
     
-    public Transformation interpolate(TransformVector tv) {
-        
+    public Transformation interpolate() {
+        /*
         AffineInterpolation erg = new AffineInterpolation();
         AffineInterpolation transTemp;
         transformVector = tv;
@@ -110,8 +110,9 @@ public class TransformInterpol implements InterpolStrategy {
         transScale[2][1] = 0;
         transScale[2][2] = 1.0;
         transScale[2][3] = 0;*/
-        erg.setTransformation(rot, transScale);
-        return erg;
+        //erg.setTransformation(rot, transScale);
+        //return erg;
+        return null;
     }
     
     public void calculateWeights() {

@@ -249,9 +249,6 @@ image.setColorConversion(new RGBColorConversion());
             }            
         }
         
-        //ASSERT: Ab hier muß das Array der Schichten gefüllt sein.
-        assert(slices == null);
-        ///////////////////////////////////////////////////////////
         
         //Einlesen des Headers, falls vorhanden
         File[] fileList = source.listFiles();

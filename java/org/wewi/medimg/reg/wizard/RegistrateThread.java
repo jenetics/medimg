@@ -6,8 +6,8 @@
 
 package org.wewi.medimg.reg.wizard;
 
-import org.wewi.medimg.reg.Registrate;
-import org.wewi.medimg.reg.RegistrationException;
+//import org.wewi.medimg.reg.Registrate;
+//import org.wewi.medimg.reg.RegistrationException;
 
 /**
  *
@@ -15,9 +15,9 @@ import org.wewi.medimg.reg.RegistrationException;
  * @version 0.1
  */
 public class RegistrateThread extends Thread {
-    private Registrate reg;
+  /*  private Registrate reg;
     
-    /** Creates a new instance of RegistrateThread */
+    / Creates a new instance of RegistrateThread *
     public RegistrateThread(Registrate reg) {
         this.reg = reg;
     }
@@ -34,5 +34,5 @@ public class RegistrateThread extends Thread {
         }
         
     }
-    
+    */
 }
