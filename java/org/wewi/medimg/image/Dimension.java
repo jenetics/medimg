@@ -10,7 +10,7 @@ import org.wewi.medimg.util.Immutable;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class Dimension implements Cloneable, Immutable {
+public class Dimension implements Cloneable, Immutable {  
 	private final int sizeX;
 	private final int sizeY;
 	private final int sizeZ;
