@@ -4,6 +4,7 @@
  */
 package org.wewi.medimg.seg.ac;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -25,7 +26,7 @@ public class ActivePolygon implements ActiveContour {
         synchronized (ac.basePoints) {
             this.basePoints = (Vector)ac.basePoints.clone();
         }
-        polygonCanvas = new ActivePolygonImageCanvasAdapter(this);  
+        polygonCanvas = new ActivePolygonCanvasAdapter(this);  
     }
 
 	/**
@@ -33,7 +34,7 @@ public class ActivePolygon implements ActiveContour {
 	 */
 	public ActivePolygon() {
         basePoints = new Vector();
-        polygonCanvas = new ActivePolygonImageCanvasAdapter(this);
+        polygonCanvas = new ActivePolygonCanvasAdapter(this);
 	}
     
     public ImagePanel.ImageCanvas getImageCanvas() {
@@ -82,10 +83,7 @@ public class ActivePolygon implements ActiveContour {
 	 * @see org.wewi.medimg.seg.ac.ActiveContour#getBasePoints()
 	 */
 	public List getBasePoints() {
-        synchronized (basePoints) {
-            Vector v = (Vector)basePoints.clone();
-            return v;
-        }
+        return basePoints;
 	}
     
     public int getNBasePoints() {
@@ -133,7 +131,7 @@ public class ActivePolygon implements ActiveContour {
      * Linescanning nach Bresenham
      */
     private final List segmentContourPoints(Point p, Point q) { 
-        List result = new Vector();
+        List result = new ArrayList();
          
         int x = p.getOrdinate(0);
         int y = p.getOrdinate(1);

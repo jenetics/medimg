@@ -6,7 +6,6 @@ package org.wewi.medimg.seg.ac;
 
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.alg.AlgorithmIterationListener;
-import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelSelectorEvent;
 import org.wewi.medimg.image.VoxelSelectorListener;
@@ -32,13 +31,6 @@ public class ActiveContourImageViewer extends ImageViewer
         init();
 	}
     
-    /**
-     * Constructor for ActiveContourImageViewer.
-     */
-    public ActiveContourImageViewer(String title, Image image, ColorConversion cc) {
-        super(title, image, cc);
-        init();
-    }
     
     private void init() {
         addVoxelSelectorListener(this);    

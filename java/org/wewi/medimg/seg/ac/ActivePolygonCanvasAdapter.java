@@ -18,13 +18,13 @@ import org.wewi.medimg.image.geom.Point3D;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ActivePolygonImageCanvasAdapter implements ImagePanel.ImageCanvas {
+public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas {
     private ActivePolygon polygon;
 
 	/**
 	 * Constructor for ActivePolygonCanvas.
 	 */
-	public ActivePolygonImageCanvasAdapter(ActivePolygon polygon) {
+	public ActivePolygonCanvasAdapter(ActivePolygon polygon) {
 		this.polygon = polygon;
 	}
 
