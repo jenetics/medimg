@@ -12,12 +12,12 @@ import org.wewi.medimg.math.vec.GridVectorField;
  */
 public final class GridVectorFieldTransformer {
     private GridVectorField field;
-    private VectorFunction transformer;
+    private GridVectorFunction transformer;
 
 	/**
 	 * Constructor for GridVectorFieldTransformer.
 	 */
-	public GridVectorFieldTransformer(GridVectorField field, VectorFunction transformer) {
+	public GridVectorFieldTransformer(GridVectorField field, GridVectorFunction transformer) {
 		super();
         this.field = field;
         this.transformer = transformer;
@@ -25,11 +25,12 @@ public final class GridVectorFieldTransformer {
     
     public void transform() {
         double[] v = new double[3];
+        
         for (int k = 0, l = field.getGridsZ(); k < l; k++) {
             for (int j = 0, m = field.getGridsY(); j < m; j++) {
                 for (int i = 0, n = field.getGridsX(); i < n; i++) {
                     field.getVector(i, j, k, v);
-                    transformer.transform(v);
+                    transformer.transform(i, j, k, v);
                     field.setVector(i, j, k, v);           
                 }    
             }    
@@ -40,7 +41,7 @@ public final class GridVectorFieldTransformer {
         return field;    
     }
     
-    public VectorFunction getVectorFunction() {
+    public GridVectorFunction getVectorFunction() {
         return transformer;    
     }
 
