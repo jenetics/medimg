@@ -119,6 +119,14 @@ public class ListMap implements Map {
         
         return ret;
 	}
+        
+        public void add(int index, Object key, Object value) {
+            entries.add(index, new ListMapEntry(key, value));
+        }
+        
+        public void add(Object key, Object value) {
+            put(key, value);
+        }
     
 	/**
 	 * @see java.util.Map#remove(java.lang.Object)
