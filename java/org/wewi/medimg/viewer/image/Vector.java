@@ -19,31 +19,22 @@ package org.wewi.medimg.viewer.image;
  * take the dot and cross product, normalize, and
  * return the magnitude of vectors.
  *
- * All the data members (all 3 of them) are public.
- * This is so routines like Matrix3D can directly
- * (i.e. efficiently) read and write vectors.
- * Many OOP-ers disagree with this-- as I would for
- * large or complex classes-- but for tiny classes
- * I see no reason not to allow direct acess to
- * data members.  In Java, a language without structures,
- * this is doubly true.
- *
  */
 final class Vector {
     private double x;
     private double y;
     private double z;
 
-    public Vector(double X, double Y, double Z) {
-        setX(X);
-        setY(Y);
-        setZ(Z);
+    public Vector(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public void copyFrom(Vector v) {
-        setX(v.getX());
-        setY(v.getY());
-        setZ(v.getZ());
+        x = v.x;
+        y = v.y;
+        z = v.z;
     }
 
     public double magnitude() {
@@ -55,19 +46,19 @@ final class Vector {
     }
 
     public Vector plus(Vector a) {
-        return new Vector(getX() + a.getX(), getY() + a.getY(), getZ() + a.getZ());
+        return new Vector(x + a.x, y + a.y, z + a.z);
     }
 
     public Vector minus(Vector a) {
-        return new Vector(getX() - a.getX(), getY() - a.getY(), getZ() - a.getZ());
+        return new Vector(x - a.x, y - a.y, z - a.z);
     }
 
     public Vector scaleBy(double scale) {
-        return new Vector(scale * getX(), scale * getY(), scale * getZ());
+        return new Vector(scale*x, scale*y, scale*z);
     }
 
     public double dot(Vector a) {
-        return getX() * a.getX() + getY() * a.getY() + getZ() * a.getZ();
+        return x*a.x + y*a.y + z*a.z;
     }
 
     /**
@@ -77,9 +68,7 @@ final class Vector {
      * @return Vector
      */
     public Vector cross(Vector b) {
-        return new Vector(getY() * b.getZ() - getZ() * b.getY(),
-                           getZ() * b.getX() - getX() * b.getZ(),
-                           getX() * b.getY() - getY() * b.getX());
+        return new Vector(y*b.z - z*b.y, z*b.x - x*b.z, x*b.y - y*b.x);
     }
 
 	void setX(double x) {

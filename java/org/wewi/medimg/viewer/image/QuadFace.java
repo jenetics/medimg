@@ -6,7 +6,8 @@ intersected with z=0 to yeild an intersecting line segment (Line3D).
 package org.wewi.medimg.viewer.image; 
 
 
-public class QuadFace {
+final class QuadFace {
+    
     Vector v[] = new Vector[5];
 
     public QuadFace(Vector a, Vector b, Vector c, Vector d) {
