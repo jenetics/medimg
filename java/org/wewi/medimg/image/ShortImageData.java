@@ -19,7 +19,7 @@ public final class ShortImageData extends ImageData {
     }     
      
     ShortImageData(ShortImageData id) {
-        super(id.maxX + 1, id.maxY + 1, id.maxZ + 1);
+        super(id.sizeX, id.sizeY, id.sizeZ);
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
@@ -31,8 +31,8 @@ public final class ShortImageData extends ImageData {
         super(sizeX, sizeY, sizeZ);
     }
     
-    public ShortImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-        super(minX, minY, minZ, maxX, maxY, maxZ);
+    public ShortImageData(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+        super(minX, maxX, minY, maxY, minZ, maxZ);
     }    
      
 
