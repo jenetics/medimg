@@ -19,7 +19,7 @@ public interface DataPoint extends Cloneable {
     
     public DataPoint sub(DataPoint p);
     
-    public DataPoint div(double d);
+    public DataPoint scale(double d);
     
     public double distance(DataPoint point);
     
