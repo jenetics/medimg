@@ -15,6 +15,11 @@ import org.wewi.medimg.math.Complex;
 public class ComplexImage extends LineScanImageGeometry implements Cloneable {
     private Complex[] data;
 
+    
+    public ComplexImage(int sizeX, int sizeY, int sizeZ) {
+        this(new Dimension(sizeX, sizeZ, sizeZ));    
+    }
+
     /**
      * Constructor for ComplexImage.
      * @param dimension
@@ -22,6 +27,7 @@ public class ComplexImage extends LineScanImageGeometry implements Cloneable {
     public ComplexImage(Dimension dimension) {
         super(dimension);
         data = new Complex[size];
+        resetImage(new Complex(0, 0));
     }
 
     public void setColor(int x, int y, int z, Complex zz) {
