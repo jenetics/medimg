@@ -15,6 +15,8 @@ import org.wewi.medimg.image.Image;
  * @version 0.1
  */
 public class MAPKMeansClusterer extends MLKMeansClusterer {
+    private static final String SEGMENTER_NAME = "MAP-Kmeans-Clusterer";
+    
     private static double BETA = 0.35;
     private static double BETA_SQRT2 = Math.sqrt(BETA);  
     
@@ -84,6 +86,14 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
     
     public double getBETA() {
         return BETA;
+    }
+    
+    public String getSegmenterName() {
+        return SEGMENTER_NAME;    
+    }
+    
+    public String toString() {
+        return SEGMENTER_NAME + " (k:= " + k +")";    
     }
     
 }

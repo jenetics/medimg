@@ -69,6 +69,10 @@ public final class ZIPImageReader extends CompressedImageReader {
         sourceTemp.delete();
     }
     
+    public int getSlices() throws ImageIOException {
+        return component.getSlices();    
+    }
+    
     
     
     

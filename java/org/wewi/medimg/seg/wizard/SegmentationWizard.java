@@ -8,6 +8,7 @@ package org.wewi.medimg.seg.wizard;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 
@@ -20,16 +21,19 @@ import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
-import org.wewi.medimg.seg.Segmenter;
+import org.wewi.medimg.seg.IterationEvent;
+import org.wewi.medimg.seg.IterationListener;
+import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.SegmenterEnumeration;
 import org.wewi.medimg.seg.SegmenterEvent;
 import org.wewi.medimg.seg.SegmenterListener;
 import org.wewi.medimg.seg.SegmenterThread;
 import org.wewi.medimg.viewer.ImageFileChooser;
+import org.wewi.medimg.viewer.LogHandlerPanel;
 import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
 
-
+  
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -37,6 +41,11 @@ import org.wewi.medimg.viewer.wizard.Wizard;
  */
 public class SegmentationWizard extends Wizard {
     
+    /**
+     * Hilfsklasse, die für das Einlesen des Bildes über
+     * einen ImageReaderThread zuständig ist. Arbeitet sehr eng
+     * mit den Methoden des SegmentationWizards zusammen.
+     */
     private class ImageReaderWorker implements ReaderThreadListener {
         private SegmentationWizard wizard;
         private ImageReader imageReader;
@@ -53,7 +62,9 @@ public class SegmentationWizard extends Wizard {
                 return;    
             }
 
-            wizard.startButton.setText("Das Bild wird geladen...");
+            /**************************************************************/
+            wizard.getLogger().info("Das Bild wird gerade geladen...");
+            /**************************************************************/
 
             ImageReaderThread readerThread = new ImageReaderThread(imageReader);
             readerThread.addReaderThreadListener(this);
@@ -72,17 +83,30 @@ public class SegmentationWizard extends Wizard {
             wizard.mrtImage = reader.getImage();
             
             wizard.startSegmentation();
+            
+            wizard.cancelButton.setEnabled(true);
+            //wizard.interruptToggleButton.setEnabled(true);
         }         
     }
     
-    
-    private class SegmenterWorker implements SegmenterListener {
+    /**
+     * Hilfsklasse, die für den Segmentiervorgang über
+     * den SegmenterThread zuständig ist. Auch diese Klasse 
+     * arbeitet eng mit dem SegmentationWizard zusammen.
+     */
+    private class SegmenterWorker implements SegmenterListener,
+                                                IterationListener {
         private SegmentationWizard wizard;
-        private Segmenter segmenter;
+        private ObservableSegmenter segmenter;
+        private TwinImageViewer twinImageViewer;
         
-        public SegmenterWorker(SegmentationWizard wizard, Segmenter segmenter) {
+        public SegmenterWorker(SegmentationWizard wizard,
+                                SegmenterArgumentPanel segmenterArgumentPanel) {
             this.wizard = wizard;
-            this.segmenter = segmenter;
+            segmenter = segmenterArgumentPanel.getSegmenter();
+            segmenter.addLoggerHandler(wizard.logHandlerPanel.getHandler());
+            
+            segmenter.addIterationListener(this);
         }
         
         public void start() {
@@ -94,10 +118,32 @@ public class SegmentationWizard extends Wizard {
             
             wizard.segImage = thread.getSegmentedImage();
             wizard.segImage.setColorConversion(new FeatureColorConversion());
-            TwinImageViewer twinImageViewer = new TwinImageViewer("", mrtImage, segImage);
+            twinImageViewer = new TwinImageViewer(segmenter.toString(), 
+                                                       mrtImage, segImage);
             twinImageViewer.pack();
             Viewer.getInstance().addViewerDesktopFrame(twinImageViewer);
         }
+        
+        public void interrupt() {
+            segmenter.interrupt();    
+        }
+        
+        public void resume() {
+            segmenter.resume();    
+        }
+        
+        public void cancel() {
+            segmenter.cancel();    
+        }
+        
+        public void iterationStarted(IterationEvent event) {
+        }
+        
+        public void iterationFinished(IterationEvent event) {
+            if (twinImageViewer != null) {
+                twinImageViewer.redrawImages();    
+            }
+        }        
         
         /**
          * @see org.wewi.medimg.seg.SegmenterObserver#segmenterFinished(SegmenterEvent)
@@ -107,25 +153,38 @@ public class SegmentationWizard extends Wizard {
             wizard.segImage = segmenterThread.getSegmentedImage();
             
             wizard.setClosable(true);
-            wizard.cancleButton.setEnabled(true);
             wizard.closeButton.setEnabled(true);
-            wizard.startButton.setEnabled(true);
-            wizard.startButton.setText("Fertug");            
+            wizard.startButton.setEnabled(true); 
+            wizard.cancelButton.setEnabled(false);
+            
+            /**************************************************************/
+            wizard.getLogger().info("Segmentiervorgang beendet");
+            /**************************************************************/ 
+            
+           if (twinImageViewer != null) {
+                twinImageViewer.redrawImages();    
+            }                      
         }
         
         /**
          * @see org.wewi.medimg.seg.SegmenterObserver#segmenterStarted(SegmenterEvent)
          */
         public void segmenterStarted(SegmenterEvent event) {
-            wizard.startButton.setText("Segmentierung des Bildes gestartet...");
+            /**************************************************************/
+            wizard.getLogger().info("Segmentiervorgang gestartet");
+            /**************************************************************/
         }
         
     }
     
+    /*
+     * Beginn des eigentlichen SegmentationWizards.
+     */
     private static final String MENU_NAME = "Segmentierung";
     private static SegmentationWizard singleton = null;
     
     private SegmenterArgumentPanel segmenterArgumentPanel;
+    private LogHandlerPanel logHandlerPanel;
     private SegmenterWorker segmenterWorker;
     private ImageReaderWorker imageReaderWorker;
     private Image mrtImage = new NullImage();
@@ -133,33 +192,62 @@ public class SegmentationWizard extends Wizard {
     
     private SegmentationWizardPreferences swPrefs;
     
-    /** Creates new form SegmentationWizard */
+    /**
+     * Erzeugen eines neuen SegmentationWizards.
+     */
     public SegmentationWizard() {
-        super(MENU_NAME, false, true, false, false);
+        super(MENU_NAME, true, true, false, false);
         initComponents();
         init();
     }
     
-    public String getMenuName() {
-        return MENU_NAME;
-    }
-    
+    /**
+     * Zusätzliche Initialisierungsmethode, die
+     * nach der Komponentenintialisierung aufgerufen
+     * wird.
+     */
     private void init() {
         swPrefs = SegmentationWizardPreferences.getInstance();
+        
+        setPreferredSize(swPrefs.getWizardDimension());
+        setLocation(swPrefs.getWizardLocation());
+        
+        logHandlerPanel = new LogHandlerPanel();
+        ws3CenterPanel.add(logHandlerPanel);
+        
         for (int i = 0; i < SegmenterEnumeration.ENUMERATION.length; i++) {
             segEnumComboBox.addItem(SegmenterEnumeration.ENUMERATION[i]);
         }
         
         SegmenterEnumeration enum = (SegmenterEnumeration)segEnumComboBox.getSelectedItem();
+        SegmenterArgumentPanel panel = null;
         if (enum.equals(SegmenterEnumeration.ML_CLUSTERER)) {
-            setSegmenterArgumentPanel(new MLKMeansClustererArgumentPanel());
+            panel = new MLKMeansClustererArgumentPanel();
         } else if (enum.equals(SegmenterEnumeration.MAP_CLUSTERER)) {
-            setSegmenterArgumentPanel(new MAPKMeansClustererArgumentPanel());
+            panel = new MAPKMeansClustererArgumentPanel();
         }
-        segmenterWorker = new SegmenterWorker(this,
-                                      segmenterArgumentPanel.getSegmenter());
+        setSegmenterArgumentPanel(panel);
+        
+        addLoggerHandler(logHandlerPanel.getHandler());
+    }    
+    
+	/**
+     * Liefert den Namen des Wizards.
+     * 
+	 * @see org.wewi.medimg.viewer.wizard.Wizard#getMenuName()
+	 */
+    public String getMenuName() {
+        return MENU_NAME;
     }
     
+    /**
+     * Alle Parameter einer Segmentiermethode werden über
+     * das SegmenterArgumentPanel gesammelt. Dieses Panel liefert
+     * auch den entsprechen fertig parametrisierten Segmentieralgorithmus.
+     * Wird ein anderer Algorithmus in der CompuBox ausgewählt,
+     * so wird das neue Panel zum Wizard hinzugefügt, und das
+     * Alte entfernt.
+     */
     private void setSegmenterArgumentPanel(SegmenterArgumentPanel panel) {
         segmenterArgumentPanel = panel;
         segmenterPanel.removeAll();
@@ -168,29 +256,57 @@ public class SegmentationWizard extends Wizard {
         segmenterPanel.updateUI();
     }
     
+    /**
+     * Ist für die Hilfsklassen notwendig, da der direkte 
+     * Zugriff auf die logger Variable nicht funktioniert.
+     */
+    private Logger  getLogger() {
+        return logger;    
+    }
+    
     public void dispose() {
         super.dispose();
     }
     
+    /**
+     * Diese Methode sollte beim Beenden des Wizards 
+     * aufgerufen werden.
+     */
     private void onClose() {
+        swPrefs.setWizardDimension(getSize());
+        swPrefs.setWizardLocation(getLocation());
+        
         try {
             setClosed(true);
             dispose();
             Viewer.getInstance().removeWizard(this);
         } catch (PropertyVetoException pve) {
-            //Zur Zeit nichts
+            /**************************************************************/
+            logger.throwing(this.getClass().getName(), "onClose()", pve); 
+            /**************************************************************/
         }
     }
     
+    /**
+     * Überprüft, ob die Minimalbedingung für den Start
+     * der Segmentierung erfüllt sind.
+     */
     private boolean checkSegmentationStart() {
-        return true;
+        return imageReaderWorker != null;
     }
     
+    /**
+     * Anstoßen des Bildladevorganges.
+     */
     private void loadImage(){
         imageReaderWorker.start();
     }
     
+    /**
+     * Anstoßen des Segmentiervorganges.
+     */
     private void startSegmentation() {
+        segmenterWorker = new SegmenterWorker(this, segmenterArgumentPanel);
         segmenterWorker.start();
     }
     
@@ -201,8 +317,6 @@ public class SegmentationWizard extends Wizard {
      * always regenerated by the Form Editor.
      */
     private void initComponents() {//GEN-BEGIN:initComponents
-        java.awt.GridBagConstraints gridBagConstraints;
-
         northPanel = new javax.swing.JPanel();
         centerPanel = new javax.swing.JPanel();
         wizardTappedPanel = new javax.swing.JTabbedPane();
@@ -215,17 +329,20 @@ public class SegmentationWizard extends Wizard {
         comboBoxPanel = new javax.swing.JPanel();
         segEnumComboBox = new javax.swing.JComboBox();
         segmenterPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        wizardStep3 = new javax.swing.JPanel();
+        ws3NorthPanel = new javax.swing.JPanel();
         startButton = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        interruptToggleButton = new javax.swing.JToggleButton();
+        cancelButton = new javax.swing.JButton();
+        ws3CenterPanel = new javax.swing.JPanel();
+        ws3SouthPanel = new javax.swing.JPanel();
         southPanel = new javax.swing.JPanel();
         jPanel30 = new javax.swing.JPanel();
-        cancleButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
 
+        setToolTipText("null");
+        setFont(new java.awt.Font("Dialog", 0, 14));
+        setPreferredSize(new java.awt.Dimension(500, 300));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -246,17 +363,30 @@ public class SegmentationWizard extends Wizard {
 
         getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
 
+        centerPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        wizardTappedPanel.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 1, 1, 1)));
+        wizardTappedPanel.setDoubleBuffered(true);
+        wizardTappedPanel.setFocusCycleRoot(true);
+        wizardTappedPanel.setFont(new java.awt.Font("Dialog", 0, 12));
         wizardTappedPanel.setName("Segmentation Wizard");
-        wizardTappedPanel.setPreferredSize(new java.awt.Dimension(450, 150));
+        wizardTappedPanel.setPreferredSize(new java.awt.Dimension(550, 350));
+        wizardTappedPanel.setAutoscrolls(true);
+        wizardTappedPanel.setOpaque(true);
         wizardStep1.setLayout(new java.awt.GridLayout(2, 1));
 
+        wizardStep1.setFont(new java.awt.Font("Dialog", 0, 10));
         imageDataSourceTextField.setEditable(false);
+        imageDataSourceTextField.setFont(new java.awt.Font("Dialog", 2, 12));
         imageDataSourceTextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         imageDataSourceTextField.setMinimumSize(new java.awt.Dimension(150, 21));
         imageDataSourceTextField.setPreferredSize(new java.awt.Dimension(400, 21));
         jPanel24.add(imageDataSourceTextField);
 
+        imageDataSearchButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        imageDataSearchButton.setMnemonic('w');
         imageDataSearchButton.setText("Datensatz ausw\u00e4hlen...");
+        imageDataSearchButton.setToolTipText("null");
         imageDataSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imageDataSearchButtonActionPerformed(evt);
@@ -277,6 +407,7 @@ public class SegmentationWizard extends Wizard {
 
         comboBoxPanel.setLayout(new java.awt.GridLayout(1, 0));
 
+        segEnumComboBox.setFont(new java.awt.Font("Dialog", 0, 12));
         segEnumComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 segEnumComboBoxItemStateChanged(evt);
@@ -293,45 +424,71 @@ public class SegmentationWizard extends Wizard {
 
         wizardTappedPanel.addTab("Segmentierungsart", wizardStep2);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        wizardStep3.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
-
-        jPanel3.setLayout(new java.awt.GridBagLayout());
-
-        startButton.setText("Start...");
+        startButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        startButton.setMnemonic('S');
+        startButton.setText("Start");
+        startButton.setToolTipText("null");
         startButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startButtonActionPerformed(evt);
             }
         });
 
-        jPanel3.add(startButton, new java.awt.GridBagConstraints());
+        ws3NorthPanel.add(startButton);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        interruptToggleButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        interruptToggleButton.setMnemonic('U');
+        interruptToggleButton.setText("Unterbrechen");
+        interruptToggleButton.setEnabled(false);
+        interruptToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                interruptToggleButtonActionPerformed(evt);
+            }
+        });
 
-        jPanel4.setLayout(new java.awt.BorderLayout());
+        interruptToggleButton.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                interruptToggleButtonStateChanged(evt);
+            }
+        });
 
-        jPanel1.add(jPanel4, java.awt.BorderLayout.SOUTH);
+        ws3NorthPanel.add(interruptToggleButton);
 
-        jPanel1.add(jPanel5, java.awt.BorderLayout.EAST);
+        cancelButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        cancelButton.setMnemonic('A');
+        cancelButton.setText("Abbrechen");
+        cancelButton.setToolTipText("null");
+        cancelButton.setEnabled(false);
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
-        wizardTappedPanel.addTab("Starten", null, jPanel1, "");
+        ws3NorthPanel.add(cancelButton);
+
+        wizardStep3.add(ws3NorthPanel, java.awt.BorderLayout.NORTH);
+
+        ws3CenterPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        wizardStep3.add(ws3CenterPanel, java.awt.BorderLayout.CENTER);
+
+        ws3SouthPanel.setLayout(new java.awt.BorderLayout());
+
+        wizardStep3.add(ws3SouthPanel, java.awt.BorderLayout.SOUTH);
+
+        wizardTappedPanel.addTab("Starten", null, wizardStep3, "");
 
         centerPanel.add(wizardTappedPanel);
 
         getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
 
-        cancleButton.setText("Abbrechen");
-        cancleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancleButtonActionPerformed(evt);
-            }
-        });
-
-        jPanel30.add(cancleButton);
-
+        closeButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        closeButton.setMnemonic('c');
         closeButton.setText("Schlie\u00dfen");
+        closeButton.setToolTipText("null");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeButtonActionPerformed(evt);
@@ -345,18 +502,47 @@ public class SegmentationWizard extends Wizard {
         getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(new java.awt.Dimension(564, 301));
+        setLocation((screenSize.width-564)/2,(screenSize.height-301)/2);
     }//GEN-END:initComponents
 
+    private void interruptToggleButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_interruptToggleButtonStateChanged
+        if (segmenterWorker == null) {
+            return;    
+        }
+        
+        if (interruptToggleButton.isSelected()) {
+            segmenterWorker.resume();
+            interruptToggleButton.setText("Unterbrechen");    
+        } else {
+            segmenterWorker.interrupt();
+            interruptToggleButton.setText("Fortsetzen");
+        }
+    }//GEN-LAST:event_interruptToggleButtonStateChanged
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        if (segmenterWorker == null) {
+            return;    
+        }
+        
+        segmenterWorker.cancel();
+        
+        setClosable(true);        
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void interruptToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptToggleButtonActionPerformed
+
+    }//GEN-LAST:event_interruptToggleButtonActionPerformed
+    
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         if (!checkSegmentationStart()) {
             return;
         }
         
         setClosable(false);
-        cancleButton.setEnabled(false);
         closeButton.setEnabled(false);
         startButton.setEnabled(false);
-        startButton.setText("Bild wird gerade segmentiert...");
         
         loadImage();
     }//GEN-LAST:event_startButtonActionPerformed
@@ -384,11 +570,7 @@ public class SegmentationWizard extends Wizard {
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         onClose();
     }//GEN-LAST:event_closeButtonActionPerformed
-    
-    private void cancleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancleButtonActionPerformed
-        onClose();
-    }//GEN-LAST:event_cancleButtonActionPerformed
-                    
+                        
     private void imageDataSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageDataSearchButtonActionPerformed
         ImageFileChooser chooser = new ImageFileChooser();
         chooser.setDialogTitle("Datensatz auswählen");
@@ -407,30 +589,30 @@ public class SegmentationWizard extends Wizard {
 
         imageDataSourceTextField.setText(fileName);
     }//GEN-LAST:event_imageDataSearchButtonActionPerformed
-    
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton imageDataSearchButton;
     private javax.swing.JPanel northPanel;
+    private javax.swing.JPanel wizardStep3;
     private javax.swing.JPanel jPanel24;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel wizardStep2;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel wizardStep1;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel southPanel;
+    private javax.swing.JPanel ws3NorthPanel;
     private javax.swing.JButton startButton;
     private javax.swing.JComboBox segEnumComboBox;
     private javax.swing.JPanel centerPanel;
+    private javax.swing.JPanel ws3SouthPanel;
     private javax.swing.JTabbedPane wizardTappedPanel;
+    private javax.swing.JToggleButton interruptToggleButton;
     private javax.swing.JPanel comboBoxPanel;
-    private javax.swing.JButton cancleButton;
+    private javax.swing.JPanel ws3CenterPanel;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JTextField imageDataSourceTextField;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JButton closeButton;
     private javax.swing.JPanel segmenterPanel;
     private javax.swing.JPanel jPanel28;
     // End of variables declaration//GEN-END:variables
-    
+        
 }

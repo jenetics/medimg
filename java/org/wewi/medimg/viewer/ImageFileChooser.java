@@ -74,7 +74,7 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
         
         addActionListener(this);
         
-        rangePanel = new RangePanel();
+        rangePanel = new RangePanel(this);
         setAccessory(rangePanel);
     }
     

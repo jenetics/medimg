@@ -15,7 +15,7 @@ import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
  * @version 0.1
  */
 public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
-    private int nfeatures = 4;
+    private int nfeatures = 1;
     
     /** Creates new form MAPKMeansClustererArgumentPanel */
     public MAPKMeansClustererArgumentPanel() {
@@ -33,42 +33,42 @@ public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         propertyLabel = new javax.swing.JLabel();
-        propertieTextField = new javax.swing.JTextField();
+        nfeaturesSlider = new javax.swing.JSlider();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new java.awt.GridLayout(1, 0));
 
-        setBorder(new javax.swing.border.TitledBorder("MAP-Segmenter"));
-        propertyLabel.setText("Number of Features: ");
-        propertyLabel.setToolTipText("null");
-        add(propertyLabel, new java.awt.GridBagConstraints());
+        setBorder(new javax.swing.border.TitledBorder(null, "MAP-Segmentierer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
+        propertyLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        propertyLabel.setText("Anzahl der Merkmale:    1");
+        add(propertyLabel);
 
-        propertieTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        propertieTextField.setText("4");
-        propertieTextField.setToolTipText("null");
-        propertieTextField.setMinimumSize(new java.awt.Dimension(60, 20));
-        propertieTextField.setPreferredSize(new java.awt.Dimension(100, 20));
-        propertieTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                propertieTextFieldFocusLost(evt);
+        nfeaturesSlider.setMajorTickSpacing(15);
+        nfeaturesSlider.setMaximum(15);
+        nfeaturesSlider.setMinimum(1);
+        nfeaturesSlider.setMinorTickSpacing(1);
+        nfeaturesSlider.setPaintTicks(true);
+        nfeaturesSlider.setSnapToTicks(true);
+        nfeaturesSlider.setValue(1);
+        nfeaturesSlider.setDoubleBuffered(true);
+        nfeaturesSlider.setValueIsAdjusting(true);
+        nfeaturesSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                nfeaturesSliderStateChanged(evt);
             }
         });
 
-        add(propertieTextField, new java.awt.GridBagConstraints());
+        add(nfeaturesSlider);
 
     }//GEN-END:initComponents
 
-    private void propertieTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_propertieTextFieldFocusLost
-        // Add your handling code here:
-        try {
-            nfeatures = Integer.parseInt(propertieTextField.getText());
-        } catch (NumberFormatException nfe) {
-            propertieTextField.setText("4");
-        }        
-    }//GEN-LAST:event_propertieTextFieldFocusLost
+    private void nfeaturesSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nfeaturesSliderStateChanged
+        nfeatures = nfeaturesSlider.getValue();
+        propertyLabel.setText("Anzahl der Merkmale:    " + nfeatures);
+    }//GEN-LAST:event_nfeaturesSliderStateChanged
        
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField propertieTextField;
+    private javax.swing.JSlider nfeaturesSlider;
     private javax.swing.JLabel propertyLabel;
     // End of variables declaration//GEN-END:variables
     

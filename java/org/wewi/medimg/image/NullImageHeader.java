@@ -30,6 +30,10 @@ public class NullImageHeader implements ImageHeader, Nullable {
     public void write(DataOutputStream out) throws IOException {
     }
     
+    public Dimension readDimension(DataInputStream in) throws IOException {
+        return new Dimension(0, 0, 0);
+    }
+    
     public boolean isNull() {
         return true;
     }

@@ -34,6 +34,11 @@ public class RawImageReader extends ImageReader {
         return image;
     }
     
+    public int getSlices() throws ImageIOException {
+        return 0;
+                        
+    }
+    
     public void read() throws ImageIOException {
         FileInputStream fin = null;
         ZipInputStream zin = null;

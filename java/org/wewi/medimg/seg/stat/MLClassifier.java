@@ -17,6 +17,8 @@ import org.wewi.medimg.seg.ObservableSegmenter;
  * @version 0.1
  */
 public class MLClassifier extends ObservableSegmenter implements Classifier {
+    private static final String SEGMENTER_NAME = "ML-Classifier";
+    
     private double[] mean;
     private double[] var;
     private double[] deviation;
@@ -74,6 +76,27 @@ public class MLClassifier extends ObservableSegmenter implements Classifier {
     private double p(double color, int f) {
         return Math.exp(-((color-mean[f])*(color-mean[f]))/(2*var[f])) /
                        deviation[f];
+    }
+    
+    public void interrupt() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();    
+    }
+    
+    public void resume() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();    
+    }
+    
+    public void cancel() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();    
+    }        
+    
+    
+    public String getSegmenterName() {
+        return SEGMENTER_NAME;    
+    }
+    
+    public String toString() {
+        return SEGMENTER_NAME + " (k:= " + mean.length + ")";    
     }
      
 }

@@ -16,7 +16,7 @@ import org.wewi.medimg.image.Image;
  * @version 0.1
  */
 public abstract class CompressedImageReader extends ImageReader {
-    private ImageReader component;
+    protected ImageReader component;
 
     public CompressedImageReader(ImageReader component) {
         this.component = component;

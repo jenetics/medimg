@@ -43,7 +43,9 @@ public class Dimension implements Cloneable {
 	public Dimension(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) 
                                                         throws IllegalArgumentException {
         
-        if (minX > maxX || minY > maxY || minZ > maxZ) {
+        if (minX > maxX || 
+            minY > maxY || 
+            minZ > maxZ) {
             throw new IllegalArgumentException("One of the \"min\" argument is " +
                                                 "bigger than the coresponding \"max\" argument \n" +
                                                 "(" + minX + "," + maxX + ")\n" +
