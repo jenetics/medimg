@@ -34,6 +34,7 @@ public class ImagePanel extends JPanel {
     private double qxy;
 
     public ImagePanel(org.wewi.medimg.image.Image image) {
+        System.out.println(image);
         this.image = image;
         sizeX = image.getMaxX() - image.getMinX() + 1;
         sizeY = image.getMaxY() - image.getMinY() + 1;
