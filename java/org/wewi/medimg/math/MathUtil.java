@@ -1,4 +1,4 @@
-/*
+/**
  * Math.java
  *
  * Created on 25. Juni 2002, 20:54
@@ -9,6 +9,7 @@ package org.wewi.medimg.math;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public final class MathUtil {
     
@@ -19,6 +20,14 @@ public final class MathUtil {
     public static double sqr(double x) {
         return x*x;
     }
+    
+    public static int sqr(int x) {
+        return x*x;
+    }
+    
+    public static long sqr(long x) {
+        return x*x;
+    }            
     
     public static double pow(double x, int n) {
         double value = 1.0;
