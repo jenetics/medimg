@@ -95,14 +95,6 @@ public class ImageVectorField extends AbstractImage {
         vector[2] = temp[2];
     }
     
-    public void setVector(int pos, int x, int y, int z) {
-        setColor(pos, getPosition(x, y, z));
-    }
-    
-    public void setVector(int pos, float x, float y, float z) {
-        setColor(pos, getPosition((int)x, (int)y, (int)z));    
-    }
-    
     public void setVector(int pos, int[] v) {
         setColor(pos, getPosition(v[0], v[1], v[2]));    
     }
@@ -111,8 +103,12 @@ public class ImageVectorField extends AbstractImage {
         setColor(pos, getPosition((int)v[0], (int)v[1], (int)v[2]));    
     }
     
-    public void setVector(int[] o, int[] v) {
-        setColor(o[0], o[1], o[2], getPosition(v[0], v[1], v[2]));    
+    public void setVector(int x, int y, int z, int[] v) {
+        setColor(x, y, z, getPosition(v[0], v[1], v[2]));    
+    }
+    
+    public void setVector(int x, int y, int z, float[] v) {
+        setColor(x, y, z, getPosition((int)v[0], (int)v[1], (int)v[2]));    
     }
 
 	/**
