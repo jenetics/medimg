@@ -10,14 +10,18 @@ import java.io.File;
 
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
+//import org.wewi.medimg.image.ImageData;
+
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
-import org.wewi.medimg.image.ops.MinMaxOperator;
-import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
-import org.wewi.medimg.reg.pca.PCARegistration;
+//import org.wewi.medimg.image.ops.MinMaxOperator;
+//import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
+//import org.wewi.medimg.reg.pca.PCARegistration;
+//import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
+import org.wewi.medimg.reg.pca.RigidPCARegistration;
+
 import org.wewi.medimg.util.Timer;
 
 /**
@@ -35,7 +39,7 @@ public class Test {
     * @param args the command line arguments
     */
     public static void main (String args[]) {
-        String path = "C:/Workspace/fwilhelm/Projekte/Diplom/code/data/reg.test.img/";
+        String path = "E:/Daten/Diplom/data/reg.test.img/";
         Timer timer1 = new Timer("Test: Gesamt");
         timer1.start();       
         Timer timer3 = new Timer("Test: Image lesen");
@@ -44,8 +48,8 @@ public class Test {
         File source2 = new File(path + "try17.tif");                
         //File source1 = new File("D:/temp/circle004.tif");
         //File source2 = new File("D:/temp/circle005.tif");   
-        //File source1 = new File("E:/temp/img/erg/erg01/");
-        //File source2 = new File("E:/temp/img/erg/erg02/");        
+        //File source1 = new File(path + "erg02/");
+        //File source2 = new File(path + "erg01/");        
         //File source1 = new File("E:/Daten/Dicoms/source/Dicoms/daten/bud/raw/batch5/");
         //File source2 = new File("E:/Daten/Dicoms/source/Dicoms/daten/bud/raw/batch7/");
         TIFFReader reader1 = new TIFFReader(ImageDataFactory.getInstance(), source1);
@@ -91,7 +95,8 @@ public class Test {
             myImportance.setImportance(9, 0.0);
             myImportance.setImportance(10, 0.0);
             myImportance.setImportance(11, 0.0); */           
-        PCARegistration strategy = new PCARegistration();
+        //NonRigidPCARegistration strategy = new NonRigidPCARegistration();
+        RigidPCARegistration strategy = new RigidPCARegistration();
         strategy.setAffinityMetric(myMetric);
         strategy.setTransformationImportance(myImportance);
         
@@ -104,10 +109,13 @@ public class Test {
             transformation = (AffineTransformation)strategy.registrate(data1, data2);
 	        timer2.stop();
 	        timer2.print();
-            Image show = new ImageData(0, 500, 0, 500, 0, 0);
+            //Image show = new ImageData(0, 500, 0, 500, 0, 0);
+            ImageDataFactory fac = ImageDataFactory.getInstance();
+            Image show = transformation.transform(data1, fac);
+            //Image show = transformation.transform(data1);
 
             
-	        transformation.transform(data1, show);
+	        //transformation.transform(data1, show);
             /*MinMaxOperator minMax2 = new MinMaxOperator();
             UnaryPointAnalyzer analyzer2 = new UnaryPointAnalyzer(show, minMax2);
             analyzer2.analyze();
@@ -119,7 +127,7 @@ public class Test {
             transformation.transform(new double[]{500, 500, 0}, erg);
             System.out.println("Punkt: 500 -500 - 0: " +  erg[0] + ", " + erg[1] + ", " + erg[2]);*/
             
-            System.out.println((AffineTransformation)transformation.getScaleTransformation());
+            //System.out.println((AffineTransformation)transformation.getScaleTransformation());
 	        TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg/"));   
 	        rwriter.write();         
         } catch (Exception re) {

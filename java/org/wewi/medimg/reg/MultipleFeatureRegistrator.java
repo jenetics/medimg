@@ -10,22 +10,26 @@ import java.util.Vector;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
-import org.wewi.medimg.image.geom.transform.AffineTransformation;
+//import org.wewi.medimg.image.geom.transform.AffineTransformation;
+
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
 import org.wewi.medimg.image.geom.transform.Transformation;
+import org.wewi.medimg.reg.wizard.ObservableRegistrator;
+import org.wewi.medimg.reg.wizard.RegistratorEvent;
 
 /**
  * 
  * 
- * @author Franz Wilhelmstötter
  * @author Werner Weiser
  * @version 0.1
  *
  */
-public abstract class MultipleFeatureRegistrator implements Registrator {
+public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
     
     protected AffinityMetric affinityMetric;
     protected TransformationImportance transformationImportance;
+    
+    private Transformation transformation;
 
 	private double[] weights;
 
@@ -42,6 +46,7 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
 	 * @see org.wewi.medimg.reg.Registrator#registrate(Image, Image)
 	 */
 	public Transformation registrate(Image source, Image target) {
+		notifyRegistratorStarted(new RegistratorEvent(this));
         List transformationList = new Vector();
         List similarityList = new Vector();
         List featureList = new Vector();
@@ -70,8 +75,8 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
             //Berechnen der Transformation
             Transformation trans = getTransformation((FeatureIterator)sit.clone(), 
                                                      (FeatureIterator)tit.clone());
-                                                     
-            System.out.println("MultipleF...: " + ((AffineTransformation)trans).getRotationTransformation());                                         
+                                       
+            //System.out.println("MultipleF...: " + ((AffineTransformation)trans).getRotationTransformation());                                         
             //Bestimmen der Qualität der berechneten Transformation
             similarity = 1.0;
             double temp;
@@ -117,7 +122,9 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
         //Rückgabe der berechnenten Interpolation der Transformationen.
         InterpolateableTransformation[] trans = new InterpolateableTransformation[size];
         transformationList.toArray(trans);
-		return interpolate(trans, weights);
+        transformation = interpolate(trans, weights);
+		notifyRegistratorFinished(new RegistratorEvent(this));
+		return transformation;
 	}
     
     

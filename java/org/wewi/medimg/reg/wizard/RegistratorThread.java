@@ -38,11 +38,11 @@ public class RegistratorThread extends Thread {
         observer.add(o);
     }
     
-    public void removeSegmenterListener(RegistratorListener o) {
+    public void removeRegistratorListener(RegistratorListener o) {
         observer.remove(o);
     }
     
-    private void notifySegmenterFinished(RegistratorEvent event) {
+    private void notifyRegistratorFinished(RegistratorEvent event) {
         Vector o = (Vector)observer.clone();
         RegistratorListener so;
         for (Iterator it = o.iterator(); it.hasNext();) {
@@ -51,7 +51,7 @@ public class RegistratorThread extends Thread {
         }
     }
     
-    private void notifySegmenterStarted(RegistratorEvent event) {
+    private void notifyRegistratorStarted(RegistratorEvent event) {
         Vector o = (Vector)observer.clone();
         RegistratorListener so;
         for (Iterator it = o.iterator(); it.hasNext();) {
@@ -65,7 +65,9 @@ public class RegistratorThread extends Thread {
     }
     
     public void run() {
+    	notifyRegistratorStarted(new RegistratorEvent(this));
         transformation = (Transformation)reg.registrate(sourceImage, targetImage);
+        notifyRegistratorFinished(new RegistratorEvent(this));
     }
     
 	public void setImage(Image sourceImage, Image targetImage) {

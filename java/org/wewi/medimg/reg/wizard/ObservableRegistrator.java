@@ -61,7 +61,6 @@ public abstract class ObservableRegistrator extends ObservableAlgorithm
     public synchronized void removeRegistratorListener(RegistratorListener o) {
         registratorListener.remove(o);
     }
-    
     protected void notifyRegistratorStarted(RegistratorEvent event) {
         Vector lv;
         synchronized (registratorListener) {

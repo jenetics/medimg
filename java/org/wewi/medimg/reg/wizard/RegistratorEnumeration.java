@@ -15,13 +15,15 @@ import org.wewi.medimg.util.Enumeration;
  */
 
 public class RegistratorEnumeration extends Enumeration {
-    public static final RegistratorEnumeration PCA_METHOD = 
-                      new RegistratorEnumeration("Principal Component Method");
+    public static final RegistratorEnumeration PCA_METHOD_RIGID = 
+                      new RegistratorEnumeration("Rigid Principal Component Method");
+    public static final RegistratorEnumeration PCA_METHOD_NONRIGID = 
+                      new RegistratorEnumeration("Nonrigid Principal Component Method");                      
     public static final RegistratorEnumeration MC_METHOD = 
                       new RegistratorEnumeration("Monte Carlo Method");
 
 	public static final RegistratorEnumeration[] ENUMERATION = 
-	                          {PCA_METHOD, MC_METHOD};
+	                          {PCA_METHOD_RIGID, PCA_METHOD_NONRIGID, MC_METHOD};
     
     private String name;
     private static int refCount = 0;  

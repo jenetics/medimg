@@ -10,6 +10,8 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.Dimension;
+import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.util.Immutable;
 
 import cern.colt.function.DoubleDoubleFunction;
@@ -566,6 +568,8 @@ public class AffineTransformation implements InterpolateableTransformation,
     public void transform(Image source, Image target) {
         target.resetColor(0);
         target.setColorConversion(source.getColorConversion());
+        //System.out.println("&&&" + target.getColorConversion());
+
         int tminX = target.getMinX();
         int tminY = target.getMinY();
         int tminZ = target.getMinZ();
@@ -600,7 +604,77 @@ public class AffineTransformation implements InterpolateableTransformation,
                 }
             }
         }
+    }
+    
+    public Image transform(Image source, ImageDataFactory targetFactory) {
+    	final int maxDim = 2000;
+
+        int sminX = source.getMinX();
+        int sminY = source.getMinY();
+        int sminZ = source.getMinZ();
+        int smaxX = source.getMaxX();
+        int smaxY = source.getMaxY();
+        int smaxZ = source.getMaxZ();
+        
+        int[] minPoint = {sminX, sminY, sminZ};
+        int[] maxPoint = {smaxX, smaxY, smaxZ};
+        int[] transformPoint1 = new int[3];
+        int[] transformPoint2 = new int[3];
+        transform(minPoint, transformPoint1);
+        transform(maxPoint, transformPoint2);
+        
+        int[] dims = {sminX, sminY, sminZ, smaxX, smaxY, smaxZ};
+        int[] result = new int[6];
+        transformDimensions(dims, result);
+        int sizeX = Math.abs(result[0] - result[3]);
+        int sizeY = Math.abs(result[1] - result[4]);
+        int sizeZ = Math.abs(result[2] - result[5]);
+        //System.out.println("MinPunkt: x: " + result[0] + " y: " + result[1] + " z: " + result[2]);
+        //System.out.println("MAxPunkt: x: " + result[3] + " y: " + result[4] + " z: " + result[5]);
+        //System.out.println("Size: x: " + sizeX + " y: " + sizeY + " z: " + sizeZ);        
+        Dimension dim = new Dimension(result[0], result[3] , result[1], result[4], result[2], result[5]);
+        if (!( ( sizeX > maxDim) || ( sizeY > maxDim) || ( sizeZ > maxDim))) {
+        	Image target = targetFactory.createImage(dim);
+        	transform(source, target);
+        	return target;
+        } else {
+        	return transform(source);
+        }
     }   
+    
+    private void transformDimensions(int[] param, int[] result) {
+    	int[][] tempPoints = new int[8][3];
+    	int[] transformPoint1 = new int[3];
+    	int[] pos = new int[3];
+    	int count = 0;
+    	for(int i = 0; i < 2; i++) {
+    		for(int j = 0; j < 2; j++) {
+    			for(int k = 0; k < 2; k++) {
+    				pos[0] = i; pos[1] = j; pos[2] = k;
+    				for(int l = 0; l < 3; l++) {
+	    				transformPoint1[l] = param[(3 + l) * pos[l]];
+    				}
+    				transform(transformPoint1, tempPoints[count]);
+    				count++;
+    			}
+    		}
+    	}
+        for (int i = 0; i < 3; i++) {
+                result[i] = Integer.MAX_VALUE;
+                result[i + 3] = Integer.MIN_VALUE;
+        }    	
+    	for(int i = 0; i < 8; i++) {
+    		for(int j = 0; j < 3; j++) {
+                if (tempPoints[i][j] < result[j]) {
+                    result[j] = tempPoints[i][j];
+                }
+                if (tempPoints[i][j] > result[j + 3]) {
+                    result[j + 3] = tempPoints[i][j];
+                }
+    		}
+    	}    	
+    	
+    }    
 
     public void transform(double[] source, double[] target) {
         double x = matrix[0] * source[0] +
