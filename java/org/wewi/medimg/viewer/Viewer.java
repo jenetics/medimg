@@ -388,8 +388,11 @@ public class Viewer extends JFrame implements Singleton,
 
         getContentPane().add(statePanel, java.awt.BorderLayout.SOUTH);
 
-        jPanel10.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
 
+        toolBar.setRollover(true);
+        toolBar.setDoubleBuffered(true);
+        toolBar.setFont(new java.awt.Font("Dialog", 0, 12));
         jPanel10.add(toolBar);
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.NORTH);
