@@ -6,8 +6,6 @@
 
 package org.wewi.medimg.visualisation.mc.wizard;
 
-import org.wewi.medimg.util.Singleton;
-
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.ImageData;
@@ -28,38 +26,55 @@ import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.WriterThreadEvent;
 import org.wewi.medimg.image.io.Range;
 
-import org.wewi.medimg.seg.FeatureImage;
-import org.wewi.medimg.seg.SegmentationStrategy;
-import org.wewi.medimg.seg.SegmentationEvent;
-import org.wewi.medimg.seg.SegmentationKind;
-import org.wewi.medimg.seg.ImageSegmentationStrategy;
-import org.wewi.medimg.seg.SegmentationStrategyThread;
-import org.wewi.medimg.seg.SegmentationListener;
-import org.wewi.medimg.seg.statistic.MLSegmentation;
-import org.wewi.medimg.seg.statistic.MAPSegmentation;
-
 import org.wewi.medimg.viewer.wizard.Wizard;
+
 import org.wewi.medimg.viewer.Viewer;
-import org.wewi.medimg.viewer.ImageFileChooser;
-
-import java.util.Observer;
-import java.util.Observable;
-
-import java.io.File;
 
 import java.beans.PropertyVetoException;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JFileChooser;
+import org.wewi.medimg.viewer.ImageFileChooser;
+
+import java.io.File;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class MarchingCubeWizard extends Wizard implements Observer, ReaderThreadListener, WriterThreadListener, SegmentationListener {
-                                                              
-    private static final String MENU_NAME = "Marching Cube-Wizard";
+public class MarchingCubeWizard extends Wizard {             
+    private static final String MENU_NAME = "Marching Cube";
+    
+    private ImageReader imageReader = null;
+    private int greyValueFrom = 0;
+    private int greyValueTo = 0;
+    private int gridSize = 1;
+    
+    /** Creates new form SegmentationWizard */
+    public MarchingCubeWizard() {
+        super(MENU_NAME, false, true, false, false);
+        initComponents();
+        init();
+    }    
+    
+    public String getMenuName() {
+        return MENU_NAME;
+    }
+    
+    private void init() {
+    }
+    
+    private void onClose() {
+        try {
+            //imageViewer.setClosed(true);
+            setClosed(true);
+            //dispose();
+            Viewer.getInstance().removeWizard(this);
+        } catch (PropertyVetoException pve) {
+            //Zur Zeit nichts
+        }        
+    }    
    
     
     /** This method is called from within the constructor to
@@ -69,6 +84,27 @@ public class MarchingCubeWizard extends Wizard implements Observer, ReaderThread
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         java.awt.GridBagConstraints gridBagConstraints;
+
+        northPanel = new javax.swing.JPanel();
+        centerPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        imageFileNameTextField = new javax.swing.JTextField();
+        chooseButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        greyValueFromTextField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        greyValueToTextField = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        gridSizeTextField = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jTextArea1 = new javax.swing.JTextArea();
+        southPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        startButton = new javax.swing.JButton();
+        eastPanel = new javax.swing.JPanel();
+        westPanel = new javax.swing.JPanel();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
@@ -88,8 +124,128 @@ public class MarchingCubeWizard extends Wizard implements Observer, ReaderThread
             }
         });
 
+        getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
+
+        centerPanel.setLayout(new java.awt.GridLayout(4, 1));
+
+        imageFileNameTextField.setEditable(false);
+        imageFileNameTextField.setPreferredSize(new java.awt.Dimension(300, 20));
+        imageFileNameTextField.setEnabled(false);
+        jPanel1.add(imageFileNameTextField);
+
+        chooseButton.setText("Datensatz w\u00e4hlen");
+        chooseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseButtonActionPerformed(evt);
+            }
+        });
+
+        jPanel1.add(chooseButton);
+
+        centerPanel.add(jPanel1);
+
+        jLabel1.setText("Grauwerte von");
+        jPanel2.add(jLabel1);
+
+        greyValueFromTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        greyValueFromTextField.setText("0");
+        greyValueFromTextField.setMinimumSize(new java.awt.Dimension(50, 20));
+        greyValueFromTextField.setPreferredSize(new java.awt.Dimension(50, 20));
+        jPanel2.add(greyValueFromTextField);
+
+        jLabel2.setText("  bis  ");
+        jPanel2.add(jLabel2);
+
+        greyValueToTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        greyValueToTextField.setText("0");
+        greyValueToTextField.setPreferredSize(new java.awt.Dimension(50, 20));
+        jPanel2.add(greyValueToTextField);
+
+        centerPanel.add(jPanel2);
+
+        jLabel3.setText("Kantenl\u00e4nge eines W\u00fcrfels:");
+        jPanel3.add(jLabel3);
+
+        gridSizeTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        gridSizeTextField.setText("1");
+        gridSizeTextField.setToolTipText("null");
+        gridSizeTextField.setPreferredSize(new java.awt.Dimension(65, 20));
+        jPanel3.add(gridSizeTextField);
+
+        centerPanel.add(jPanel3);
+
+        jPanel4.setLayout(new java.awt.GridLayout());
+
+        jPanel4.add(jTextArea1);
+
+        centerPanel.add(jPanel4);
+
+        getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
+
+        cancelButton.setText("Abbrechen");
+        cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelButtonMouseClicked(evt);
+            }
+        });
+
+        southPanel.add(cancelButton);
+
+        startButton.setText("Start");
+        startButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startButtonActionPerformed(evt);
+            }
+        });
+
+        startButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                startButtonMouseClicked(evt);
+            }
+        });
+
+        southPanel.add(startButton);
+
+        getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(eastPanel, java.awt.BorderLayout.EAST);
+
+        getContentPane().add(westPanel, java.awt.BorderLayout.WEST);
+
         pack();
     }//GEN-END:initComponents
+
+    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+        // Add your handling code here:
+    }//GEN-LAST:event_startButtonActionPerformed
+
+    private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseButtonActionPerformed
+        // Add your handling code here:
+        ImageFileChooser chooser = new ImageFileChooser();
+        chooser.setDialogTitle("Datensatz auswählen");
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
+        
+        int returnVal = chooser.showOpenDialog(this);
+        if(returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        
+        ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
+        String fileName = chooser.getSelectedFile().getAbsolutePath();
+        imageReader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+                                                                  new File(fileName));        
+        imageFileNameTextField.setText(fileName);        
+    }//GEN-LAST:event_chooseButtonActionPerformed
+
+    private void startButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonMouseClicked
+        // Add your handling code here:
+    }//GEN-LAST:event_startButtonMouseClicked
+
+    private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
+        // Add your handling code here:
+        onClose();
+    }//GEN-LAST:event_cancelButtonMouseClicked
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
         // Add your handling code here:
@@ -102,6 +258,26 @@ public class MarchingCubeWizard extends Wizard implements Observer, ReaderThread
     }//GEN-LAST:event_formInternalFrameClosed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel northPanel;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel southPanel;
+    private javax.swing.JButton startButton;
+    private javax.swing.JPanel centerPanel;
+    private javax.swing.JButton chooseButton;
+    private javax.swing.JTextField gridSizeTextField;
+    private javax.swing.JTextField greyValueToTextField;
+    private javax.swing.JPanel westPanel;
+    private javax.swing.JTextField greyValueFromTextField;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JTextField imageFileNameTextField;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel eastPanel;
     // End of variables declaration//GEN-END:variables
     
 }

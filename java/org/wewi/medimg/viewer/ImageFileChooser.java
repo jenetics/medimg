@@ -23,6 +23,7 @@ import org.wewi.medimg.image.io.ImageWriterFactory;
 import org.wewi.medimg.image.io.TIFFWriterFactory;
 import org.wewi.medimg.image.io.BMPWriterFactory;
 import org.wewi.medimg.image.io.RawImageWriterFactory;
+import org.wewi.medimg.image.io.Range;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -33,6 +34,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JComboBox;
 
 import java.io.File;
@@ -45,6 +47,8 @@ import java.io.File;
 public class ImageFileChooser extends JFileChooser implements ActionListener {
     private ImageReaderFactory imageReaderFactory;
     private ImageWriterFactory imageWriterFactory;
+    private RangePanel rangePanel;
+    private Range range;
     
     /** Creates a new instance of ImageFileChooser */
     public ImageFileChooser() {
@@ -75,7 +79,7 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
     public ImageFileChooser(String file, FileSystemView fsv) {
         super(file, fsv);
         init();
-    }
+    }   
     
     private void init() {
         addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.RAW_IMAGE));
@@ -83,8 +87,18 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
         addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.TIFF_IMAGES));
         
         addActionListener(this);
+        
+        rangePanel = new RangePanel();
+        setAccessory(rangePanel);
     }
     
+    public Range getRange() {
+        return range;
+    }
+    
+    public void setRange(Range range) {
+        this.range = new Range(range.getMinSlice(), range.getMaxSlice(), range.getStride());
+    }
     
     public ImageReaderFactory getImageReaderFactory() {
         return imageReaderFactory;
@@ -98,20 +112,22 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
         ImageFormatTypes type = ((ImageFileFilter)getFileFilter()).getImageFormatType();
         if (getDialogType() == OPEN_DIALOG) {
             if (ImageFormatTypes.TIFF_IMAGES.equals(type)) {
-                imageReaderFactory = TIFFReaderFactory.getInstance();
+                imageReaderFactory = new TIFFReaderFactory();
             } else if (ImageFormatTypes.BMP_IMAGES.equals(type)) {
-                imageReaderFactory = BMPReaderFactory.getInstance();
+                imageReaderFactory = new BMPReaderFactory();
             } else if (ImageFormatTypes.RAW_IMAGE.equals(type)) {
-                imageReaderFactory = RawImageReaderFactory.getInstance();
+                imageReaderFactory = new RawImageReaderFactory();
             }
+            imageReaderFactory.setRange(rangePanel.getRange());
         } else {
             if (ImageFormatTypes.TIFF_IMAGES.equals(type)) {
-                imageWriterFactory = TIFFWriterFactory.getInstance();
+                imageWriterFactory = new TIFFWriterFactory();
             } else if (ImageFormatTypes.BMP_IMAGES.equals(type)) {
-                imageWriterFactory = BMPWriterFactory.getInstance();
+                imageWriterFactory = new BMPWriterFactory();
             } else if (ImageFormatTypes.RAW_IMAGE.equals(type)) {
-                imageWriterFactory = RawImageWriterFactory.getInstance();
+                imageWriterFactory = new RawImageWriterFactory();
             }
+            imageWriterFactory.setRange(rangePanel.getRange());
         }
     }
     

@@ -19,14 +19,14 @@ final class Cube {
     Cube(float x, float y, float z, float gridSize, int ci) {
         float d = gridSize;
         points = new Point[8];
-        points[0] = new Point(x,   y,   z);
-        points[1] = new Point(x+d, y,   z);
-        points[2] = new Point(x+d, y,   z+d);
-        points[3] = new Point(x,   y,   z+d);
-        points[4] = new Point(x,   y+d, z);
-        points[5] = new Point(x+d, y+d, z);
-        points[6] = new Point(x+d, y+d, z+d);
-        points[7] = new Point(x+d, y+d, z+d);
+        points[0] = new Point(x,   y+d,  z);
+        points[1] = new Point(x+d, y+d,   z);
+        points[2] = new Point(x+d, y+d,   z+d);
+        points[3] = new Point(x,   y+d,   z+d);
+        points[4] = new Point(x,   y, z);
+        points[5] = new Point(x+d, y, z);
+        points[6] = new Point(x+d, y, z+d);
+        points[7] = new Point(x, y, z+d);
         cubeIndex = ci;
     }
     

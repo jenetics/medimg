@@ -360,9 +360,9 @@ final class TriangleFactory {
         TriangleIterator ti = new TriangleIterator(5);
         Triangle tri;
         for (int i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
-            tri = new Triangle(vertexList[TRIANGLE_TABLE[cubeindex][i+0]],
+            tri = new Triangle(vertexList[TRIANGLE_TABLE[cubeindex][i+2]],
                                vertexList[TRIANGLE_TABLE[cubeindex][i+1]],
-                               vertexList[TRIANGLE_TABLE[cubeindex][i+2]]);
+                               vertexList[TRIANGLE_TABLE[cubeindex][i+0]]);
             ti.addTriangle(tri);      
         }
         

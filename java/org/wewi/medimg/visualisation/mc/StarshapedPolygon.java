@@ -47,6 +47,7 @@ class StarshapedPolygon {
     }
     
     public void triangulate() {
+        int count = 0;
         if (!isClosed()) {
             return;
         }
@@ -60,7 +61,8 @@ class StarshapedPolygon {
         Triangle t;
         Vector vertexVector = new Vector(Arrays.asList(vertices));
         
-        while (true) {
+        while (count < 500) {
+            count ++;
             t = new Triangle((Vertex)vertexVector.elementAt(point1), 
                              (Vertex)vertexVector.elementAt(point2), 
                              (Vertex)vertexVector.elementAt(point3));
@@ -72,15 +74,15 @@ class StarshapedPolygon {
                 point3 = (point3) % vertexVector.size();
                 point1 = (point3 + vertexVector.size() - 2) % vertexVector.size();
                 point2 = (point3 + vertexVector.size() - 1) % vertexVector.size();
-                System.out.println("hhh " + vertexVector.size() + " point1 " + point1 + 
-                                   " point2 " + point2 + " point3 " + point3 );
-                System.out.println(" t " + t);
+                //System.out.println("hhh " + vertexVector.size() + " point1 " + point1 + 
+                //                   " point2 " + point2 + " point3 " + point3 );
+                //System.out.println(" t " + t);
             } else {
                 point1 = point2;
                 point2 = point3;
                 point3 = (point3 + 1) % vertexVector.size();
-                System.out.println("hhh im else " + vertexVector.size() + " point1 " + point1 + 
-                                   " point2 " + point2 + " point3 " + point3 );                
+                //System.out.println("hhh im else " + vertexVector.size() + " point1 " + point1 + 
+                  //                 " point2 " + point2 + " point3 " + point3 );                
             }
             if (vertexVector.size() == 3) {
                 triangles.add(new Triangle((Vertex)vertexVector.elementAt(0), 
@@ -89,24 +91,29 @@ class StarshapedPolygon {
                 return;            
             }
         }
+        //for (int i = 0; i < vertexVector.size(); i++) {
+        //    System.out.println(" Punkt " + i + " = " + (Vertex)vertexVector.elementAt(i));
+        //}
+        //System.out.println(" Nukleus "  + nucleus);
+
         
     }
     
     private boolean isValidTriangle(Triangle t, Vertex nucleus) {
         Vertex p = nucleus;
         Point n = t.getNormal();
-        System.out.println(" normal " + n);        
+        //System.out.println(" normal " + n);        
         // Projektion des Nukleus auf die Ebene des Dreiecks
         float d = t.a.x * n.x + t.a.y * n.y + t.a.z * n.z;
-        System.out.println(" d " + d);
+        //System.out.println(" d " + d);
         float l = (d - p.x * n.x - p.y * n.y - p.z * n.z) /
                   (n.x * n.x + n.y * n.y + n.z * n.z);
-        System.out.println(" l " + l);
+        //System.out.println(" l " + l);
         float qx = p.x + l * n.x;
         float qy = p.y + l * n.y;
         float qz = p.z + l * n.z;
         Vertex q = new Vertex(qx, qy, qz);
-        System.out.println(" q " + q);
+        //System.out.println(" q " + q);
         // reduzieren die Koordinate, bei der der Normalvektor die größte Abmessung hat
         float p1x, p1y;
         float p2x, p2y;
@@ -133,14 +140,18 @@ class StarshapedPolygon {
         //Berechnen, ob die Ecke konvex
         float det1 = -p1y * p2x + p1x * p2y + p1y * p3x - p2y * p3x - p1x * p3y + p2x * p3y;
         float det2 = -p1y * p2x + p1x * p2y + p1y * p4x - p2y * p4x - p1x * p4y + p2x * p4y;
-        System.out.println(" isValidTriangle: det1= " + det1 + " det2= " + det2);
+        //System.out.println(" isValidTriangle: det1= " + det1 + " det2= " + det2);
+        if (Math.abs(det1) <= EPSILON) {
+            return true;
+        }
         if (signum(det1) != signum(det2) ) {
             return false;
         }        
         // test ob Nucleus im Dreieck 
         float det3 = -p2y * p3x + p2x * p3y + p2y * p4x - p3y * p4x - p2x * p4y + p3x * p4y;
         float det4 = -p3y * p1x + p3x * p1y + p3y * p4x - p1y * p4x - p3x * p4y + p1x * p4y;
-        System.out.println(" isValidTriangle: det3= " + det3 + " det4= " + det4); 
+        //System.out.println(" isValidTriangle: det3= " + det3 + " det4= " + det4); 
+
         if (Math.abs(det2) <= EPSILON) {
             det2 = -det3;
         }
@@ -150,7 +161,7 @@ class StarshapedPolygon {
         if (Math.abs(det4) <= EPSILON) {
             det4 = -det2;
         }        
-        System.out.println(" isValidTriangle: det3= " + det3 + " det4= " + det4);         
+        //System.out.println(" isValidTriangle: det3= " + det3 + " det4= " + det4);         
         if (signum(det2) != signum(det3) || signum(det2) != signum(det4)) {
             return true;
         } 
@@ -195,7 +206,7 @@ class StarshapedPolygon {
         }
         DoubleMatrix2D data2;
         DoubleMatrix2D covarianceMatrix = factory2D.make(p, p);
-        data1.zMult(data1, covarianceMatrix, 1.0, 0.0, false, true);
+        data1.zMult(data1, covarianceMatrix, 1.0, 0.0, true, false);
         EigenvalueDecomposition eigen = new EigenvalueDecomposition(covarianceMatrix);
         DoubleMatrix1D eigenValues1D = factory1D.make(p);
         eigenValues1D = eigen.getRealEigenvalues();

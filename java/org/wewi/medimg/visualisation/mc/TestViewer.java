@@ -53,6 +53,7 @@ public class TestViewer extends Applet {
         TransformGroup objScale = new TransformGroup();
         Transform3D t3d = new Transform3D();
         t3d.setScale(1);
+        //t3d.frustum(-0.5, 0.5, -0.5, 0.5, 0, 1);
         objScale.setTransform(t3d);
         objRoot.addChild(objScale);
         
@@ -97,7 +98,6 @@ public class TestViewer extends Applet {
         PickTranslateBehavior behavior3 = new PickTranslateBehavior(objRoot, canvas, bounds);
         objRoot.addChild(behavior3);
         
-        
         return objRoot;
     }   
     
@@ -105,34 +105,39 @@ public class TestViewer extends Applet {
         ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
                                             new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
         try {
-            reader.setRange(new Range(0, 5));
+            reader.setRange(new Range(100, 120));
             reader.read();
         } catch (Exception ioe) {
             System.out.println("Fehler: " + ioe);
         }
         Image image = reader.getImage();
         
+        //System.out.println("Segmentierung begin");
+        //ImageSegmentationStrategy iss = new KMeansSegmentation(image, 4);
+        //iss.segmentate();
+        //ModelBasedSegmentation mbs = iss.getModelBasedSegmentation();
+        //mbs.segmentate(image);
+        //System.out.println("Segmentierung ende");
         
-        ImageSegmentationStrategy iss = new KMeansSegmentation(image, 4);
-        iss.segmentate();
-        ModelBasedSegmentation mbs = iss.getModelBasedSegmentation();
-        mbs.segmentate(image);
-        
-        MarchingCubes mc = new MarchingCubes(image, 1, 1, 4);
+        MarchingCubes mc = new MarchingCubes(image, 2, 0, 100);
         Timer timer = new Timer("Marching");
         timer.start();
         graph = mc.march();
-        System.out.println("Dreiecke (vor dem Ausduennen): " + graph.getNoOfTriangles());
+        System.out.println("Vertices (vor dem Ausduennen): " + graph.getNoOfVertices());
         timer.stop();
         timer.print();
         
-        TriangleDecimator decimator = new SingleTriangleDecimator();
-        decimator.decimate(graph);
-        System.out.println("Dreiecke (nach dem Ausduennen): " + graph.getNoOfTriangles());
+        TriangleDecimator sd = new SingleTriangleDecimator();
+        sd.decimate(graph);
+        TriangleDecimator decimator = new CoplanarTriangleDecimator();
+        for (int i = 0; i < 0; i++) {
+           decimator.decimate(graph);
+        }
+        System.out.println("Vertices (nach dem Ausduennen): " + graph.getNoOfVertices());
         
         try {
-            //GraphWriter gw = new RawGraphWriter(graph, new File("C:/Temp/graph.raw"));
-            GraphWriter gw = new FlatGraphWriter(graph, new File("C:/Temp/graph.flat"));
+            GraphWriter gw = new RawGraphWriter(graph, new File("C:/Temp/graph.rawtri"));
+            //GraphWriter gw = new FlatGraphWriter(graph, new File("C:/Temp/graph.flat"));
             gw.write();
         } catch (Exception e) {
             System.out.println("" + e);
@@ -141,7 +146,7 @@ public class TestViewer extends Applet {
     
     private void loadMarch() {
         try {
-            GraphReader gr = new RawGraphReader(new File("C:/Temp/graph.raw"));
+            GraphReader gr = new RawGraphReader(new File("C:/Temp/graph.rawtri"));
             gr.read();
             graph = gr.getGraph();
         } catch (Exception e) {
@@ -157,6 +162,7 @@ public class TestViewer extends Applet {
         
         System.out.println("Dreiecke: " + graph.getNoOfTriangles());
         TriangleArray triangleArray = new TriangleArray(3*graph.getNoOfTriangles(), GeometryArray.COORDINATES);
+        //TriangleArray triangleArray = new TriangleArray(3, GeometryArray.COORDINATES);
         float[] coord = new float[9];
         Triangle tri;
         Point A, B, C;
@@ -169,7 +175,7 @@ public class TestViewer extends Applet {
             coord[6] = C.x; coord[7] = C.y; coord[8] = C.z;
             triangleArray.setCoordinates(counter, coord);
             counter += 3;
-        }        
+        }      
         
 	setLayout(new BorderLayout());
         GraphicsConfiguration config =

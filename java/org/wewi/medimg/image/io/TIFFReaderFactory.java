@@ -20,7 +20,7 @@ public final class TIFFReaderFactory implements ImageReaderFactory {
     private Range range;
 
     public TIFFReaderFactory() {
-        range = new Range(0, Integer.MAX_VALUE, 0);
+        range = new Range(0, Integer.MAX_VALUE, 1);
     }
     
     public ImageReader createImageReader(ImageFactory imageFactory, File file) {

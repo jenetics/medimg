@@ -52,8 +52,6 @@ public class MarchingCubes {
         int count = 0;
         while (cubeIterator.hasNext()) {
             cube = cubeIterator.next();
-            if ((count++) % 1000 == 0)
-                System.out.println(count);
             for (Iterator it = tf.createTriangles(cube); it.hasNext();) {
                 graph.addTriangle((Triangle)it.next());
             }
