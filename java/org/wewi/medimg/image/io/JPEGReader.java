@@ -54,6 +54,10 @@ public class JPEGReader extends JAIImageReader {
     
     private void init() {
         fileFilter = new FileExtentionFilter(".jpg");  
-    }    
+    } 
+    
+    public String toString() {
+        return "JPEGReader: " + super.toString();    
+    }       
 
 }

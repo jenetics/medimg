@@ -221,7 +221,7 @@ abstract class JAIImageReader extends ImageReader {
         
         //Wenn die Quelle kein Verzeichnis ist, wird eine einzelne Datei eingelesen.
         if (source.isFile()) {
-            if (source.getName().endsWith(fileFilter.getExtention())) {
+            if (source.getName().toLowerCase().endsWith(fileFilter.getExtention())) {
                 slices = new File[1];
                 slices[0] = source;
                 readSingleSlice(); 

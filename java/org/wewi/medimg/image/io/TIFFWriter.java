@@ -40,6 +40,11 @@ public final class TIFFWriter extends JAIImageWriter {
     
     protected void initEncoder(OutputStream out) {
         encoder = ImageCodec.createImageEncoder("tiff", out, encodeParameter);
-    }    
+    } 
+    
+    
+    public String toString() {
+        return "TIFFWriter: " + super.toString();    
+    }       
     
 }

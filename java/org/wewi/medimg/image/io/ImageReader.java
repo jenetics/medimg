@@ -115,5 +115,9 @@ public abstract class ImageReader {
         }
     }
     
+    public String toString() {
+        return getSource().toString();    
+    }
+    
 }
 

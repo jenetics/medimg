@@ -1,4 +1,4 @@
-/*
+/**
  * ImageReaderThread.java
  *
  * Created on 24. Januar 2002, 13:44
@@ -33,16 +33,19 @@ public final class ImageReaderThread extends Thread {
         this.component = component;   
     }
     
-    public void addReaderThreadListener(ReaderThreadListener listener) {
+    public synchronized void addReaderThreadListener(ReaderThreadListener listener) {
         listeners.add(listener);
     }
     
-    public void removeReaderThreadListener(ReaderThreadListener listener) {
+    public synchronized void removeReaderThreadListener(ReaderThreadListener listener) {
         listeners.remove(listener);
     }
     
     private void notifyListeners(ReaderThreadEvent event) {
-        Vector rtl = (Vector)listeners.clone();
+        Vector rtl;
+        synchronized (listeners) {
+            rtl = (Vector)listeners.clone();
+        }
         ReaderThreadListener l;
         for (Iterator it = rtl.iterator(); it.hasNext();) {
             l = (ReaderThreadListener)it.next();

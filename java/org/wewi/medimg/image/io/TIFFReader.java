@@ -41,4 +41,8 @@ public final class TIFFReader extends JAIImageReader {
         fileFilter = new FileExtentionFilter(".tif");   
     }
     
+    public String toString() {
+        return "TIFFReader: " + super.toString();    
+    }
+    
 }

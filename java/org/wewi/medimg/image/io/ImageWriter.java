@@ -61,6 +61,10 @@ public abstract class ImageWriter {
     }    
 
     
-    public abstract void write() throws ImageIOException;   
+    public abstract void write() throws ImageIOException;  
+    
+    public String toString() {
+        return target.toString();    
+    } 
 }
 
