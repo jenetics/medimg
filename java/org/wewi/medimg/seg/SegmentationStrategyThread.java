@@ -24,7 +24,7 @@ public class SegmentationStrategyThread extends Thread {
     }
     
     public void run() {
-        strategy.doSegmentation();
+        strategy.segmentate();
     }
     
 }

@@ -153,6 +153,18 @@ public class AffineTransform implements Transform {
     public double[] transform_bw(double[] source) {
         return null;
     }
+   
+    public void transformBackward(double[] source, double[] target) {
+    }
+    
+    public void transformBackward(float[] source, float[] target) {
+    }
+    
+    public void transformForward(double[] source, double[] target) {
+    }
+    
+    public void transformForward(float[] source, float[] target) {
+    }    
     
     /* weitere Methoden
      *

@@ -8,6 +8,7 @@ package org.wewi.medimg.seg;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageHeader;
+import org.wewi.medimg.image.VoxelIterator;
 
 import java.util.Arrays;
 
@@ -17,6 +18,34 @@ import java.util.Arrays;
  * @version 0.2
  */
 public final class FeatureImage implements Image {
+    
+    private class FeatureImageVoxelIterator implements VoxelIterator {
+        private byte[] data;
+        private final int size;
+        private int pos;
+        
+        public FeatureImageVoxelIterator(byte[] data) {
+            this.data = data;
+            size = data.length;
+            pos = 0;
+        }
+        
+        public boolean hasNext() {
+            return pos < size;
+        }
+        
+        public int next() {
+            return data[pos++];
+        }
+        
+        public int size() {
+            return size;
+        }
+        public Object clone() {
+            return new FeatureImageVoxelIterator(data);
+        }
+    }
+    
     private byte[] features;
     private byte[] featuresOld;
     
@@ -236,6 +265,14 @@ public final class FeatureImage implements Image {
         return erg;
     }  
     
+    public void getCoordinates(int pos, int[] coordinate) {
+        coordinate[2] = pos / (sizeXY);
+        pos = pos - (coordinate[2] * sizeXY);
+        coordinate[1] = pos / (sizeX);
+        pos = pos - (coordinate[1] * sizeX);
+        coordinate[0] = pos;        
+    }    
+    
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("FeatureImage:\n    ");
@@ -254,4 +291,9 @@ public final class FeatureImage implements Image {
     public Object clone() {
         return new FeatureImage(this);
     }
+    
+    public VoxelIterator getVoxelIterator() {
+        return new FeatureImageVoxelIterator(features);
+    }
+    
 }

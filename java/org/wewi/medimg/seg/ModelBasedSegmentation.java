@@ -11,6 +11,8 @@ import org.wewi.medimg.image.Image;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * 
+ * @version 0.1
  */
 public interface ModelBasedSegmentation {
     public void segmentate(Image source, Image target);

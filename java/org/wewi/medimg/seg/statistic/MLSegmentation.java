@@ -6,13 +6,18 @@
 
 package org.wewi.medimg.seg.statistic;
 
+import org.wewi.medimg.QualityMeasure;
+
 import org.wewi.medimg.seg.ImageSegmentationStrategy;
 import org.wewi.medimg.seg.SegmentationEvent;
+import org.wewi.medimg.seg.ModelBasedSegmentation;
+import org.wewi.medimg.seg.FeatureImage;
+
+import org.wewi.medimg.math.GaussianDistribution;
 
 import org.wewi.medimg.image.io.*;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.image.FeatureImage;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
@@ -23,6 +28,9 @@ import java.util.Arrays;
 
 import java.io.File;
 
+import cern.jet.random.engine.RandomEngine;
+import cern.jet.random.engine.MersenneTwister;
+
 
 /**
  *
@@ -30,6 +38,8 @@ import java.io.File;
  * @version 0.2
  */
 public class MLSegmentation extends ImageSegmentationStrategy {
+    private GaussianDistribution[] featureDistribution;
+    
     protected final static int MAX_ITER = 25;
     protected final static double ERROR_LIMIT = 0.01;
     
@@ -38,6 +48,9 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     protected int nfeatures;
     protected double[] meanValues;
     protected double[] meanValuesOld;
+    protected FeatureImage featureImage;
+    
+    protected SegmentationProtocol protocol;
 
     public MLSegmentation(Image image, int nf) {
         super(image);
@@ -48,10 +61,18 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         meanValuesOld = new double[nfeatures];
         //Initialize the meanValues
         Arrays.fill(meanValues, 0d);
-        Arrays.fill(meanValuesOld, 0d);     
-    }   
+        Arrays.fill(meanValuesOld, 0d);  
+        
+        protocol = new SegmentationProtocol();
+        protocol.setSegmentationMethod("ML-Segmentation");
+    } 
 
+    /**
+     * @todo The initialisation assumes a color range
+     * from 0 to 255. That might be wrong.
+     */    
     protected void initMeanValues() {
+        /*
         int[] minMax = new int[2];//imageData.getColorRange();
         minMax[0] = 0; minMax[1] = 255;
         int colorDelta = (minMax[1]-minMax[0])/(nfeatures+1);
@@ -59,6 +80,15 @@ public class MLSegmentation extends ImageSegmentationStrategy {
             meanValues[i] = minMax[0] + colorDelta*(i+1);
             meanValuesOld[i] = meanValues[i];
         }
+        */
+        RandomEngine random = new MersenneTwister((int)(System.currentTimeMillis()%1000000));
+        //RandomEngine random = new MersenneTwister();
+        for (int i = 0; i < nfeatures; i++) {
+            meanValues[i] = random.nextDouble()*(256-1);
+            meanValuesOld[i] = meanValues[i];
+        }
+        Arrays.sort(meanValues);  
+        Arrays.sort(meanValuesOld); 
     }
 
     protected double neighbourhoodWeight(int pos, int f) {
@@ -77,8 +107,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         }
         if (epsilonTemp <= ERROR_LIMIT || m1m2Iteration > MAX_ITER) {
             ready = true;
-            System.out.println("count: " + m1m2Iteration);
-            
+            logger.info("count: " + m1m2Iteration);
             //Für die Fortschrittsanzeige///////////////////////////////////////
 
             ////////////////////////////////////////////////////////////////////
@@ -145,7 +174,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
             if (meanNoTemp[i] == 0) {
                 meanValues[i] = 1;
             } else {
-                meanValues[i] = (double)meanTemp[i] / (double)meanNoTemp[i];
+                meanValues[i] = (double)meanTemp[i] / (double)(meanNoTemp[i]-1);
             }
         }
         Arrays.sort(meanValues);
@@ -154,47 +183,57 @@ public class MLSegmentation extends ImageSegmentationStrategy {
 
         //Debuging/////////////////////////////////////////////////////////////
         SegmentationEvent state = new SegmentationEvent(this, m1m2Count, meanValues);
-        System.out.println(state);
+        logger.info(state.toString());
         ///////////////////////////////////////////////////////////////////////
       
     }
     
-    public void doSegmentation() {
+    public void segmentate() {
         int sizeX = image.getMaxX() - image.getMinX() + 1;
         int sizeY = image.getMaxY() - image.getMinY() + 1;
         int sizeZ = image.getMaxZ() - image.getMinZ() + 1;
         featureImage = new FeatureImage(sizeX, sizeY, sizeZ, nfeatures);
 
         initMeanValues();
+        
         notifySegmentationStarted(new SegmentationEvent(this, m1m2Count, meanValues));
-        Timer timer = new Timer("Segmentierung");
-        timer.start();
+        protocol.setStartTime(System.currentTimeMillis());
+        ///////////////////////////////////////////////////////////////////////
         do {
-            //Informieren der Observer; start einer neuen Iteration
             m1Step();
             m2Step();
             ++m1m2Count;
-            
             notifyIterationFinished(new SegmentationEvent(this, m1m2Count, meanValues));
         } while(!isM1M2Ready(m1m2Count));
-        timer.stop();
-        timer.print();
-
-        ///Debugging////////////////////////////////////////////////////////////
-        SegmentationEvent state = new SegmentationEvent(this, m1m2Count, meanValues);
-        System.out.println(state);
-        System.out.println("Varianz:");
-        double[] variance = getVariance();
-        for (int i = 0; i < variance.length; i++) {
-            System.out.print("" + variance[i] + " : "); 
-        }
-        //////////////////////////////////////////////////////////////////////// 
-        
-        //Informieren der Observer, wenn die Segmentierung beendet ist
+        ///////////////////////////////////////////////////////////////////////
+        protocol.setStopTime(System.currentTimeMillis());
+        //protocol.setMeanValues(meanValues);
+        //protocol.setVariance(getVariance());
+        logger.info(protocol.toString());
         notifySegmentationFinished(new SegmentationEvent(this, m1m2Count, meanValues));
     }
     
-
+    public Image getSegmentedImage() {
+        return featureImage;
+    }
+    
+    public ModelBasedSegmentation getModelBasedSegmentation() {
+        if (featureDistribution == null) {
+            return null;
+        }
+        //return new ModelBasedMLSegmentation();
+        return null;
+    }
+    
+    public QualityMeasure getQualityMeasure() {
+        return null;
+    } 
+    
+    public GaussianDistribution[] getFeatureDistrubution() {
+        return featureDistribution;
+    }
+    
+/*
     public double[] getMeanValues() {
         double[] mv = new double[meanValues.length];
         System.arraycopy(meanValues, 0, mv, 0, mv.length);
@@ -222,6 +261,34 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         
         return variance;
     }
+*/    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * Main- Methode für Testzwecke
@@ -269,8 +336,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         TIFFWriter writer = new TIFFWriter(featureData, new File("C:/temp/head.out"));
         writer.write();
         */
-    }
-    
+    }    
     
 }
 

@@ -57,4 +57,18 @@ final class GaussianModel implements ModelBasedSegmentation {
         }
     }
     
+    public void segmentate(Image sourceTarget) {
+        int size = sourceTarget.getNVoxels();
+        int color;
+        for (int i = 0; i < size; i++) {
+            color = sourceTarget.getColor(i);
+            for (int j = 0; j < interval.length; j++) {
+                if (color >= interval[j][0] && color < interval[j][1]) {
+                    sourceTarget.setColor(i, j);
+                    break;
+                }
+            }
+        }        
+    }
+    
 }

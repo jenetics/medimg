@@ -118,7 +118,7 @@ public final class DirectClustering implements SegmentationStrategy {
         return e;
     }
     
-    public void doSegmentation() {
+    public void segmentate() {
         double e = 0, eo = 0;
         iterationCount = 0;
         init();
