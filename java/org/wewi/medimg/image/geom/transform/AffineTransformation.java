@@ -9,6 +9,8 @@ package org.wewi.medimg.image.geom.transform;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
+import javax.vecmath.Matrix4d;
+
 import org.wewi.medimg.util.Immutable;
 
 import cern.colt.function.DoubleDoubleFunction;
@@ -33,6 +35,9 @@ public class AffineTransformation extends ImageTransformation
                                    implements InterpolateableTransformation, Immutable {
     private double[] matrix;
     private double[] inverseMatrix;
+    
+    protected Matrix4d mat;
+    protected Matrix4d invMat;
     
     private AffineTransformation(double[] matrix, double[] inverseMatrix) {
         this.matrix = new double[12];
@@ -298,8 +303,26 @@ public class AffineTransformation extends ImageTransformation
                     }    
                 }    
             }    
-        } 
-         
+        }
+ 
+/*        
+        System.out.print( "U_SCALEX : (" + tran[U_SCALEX ] + ")\n");
+        System.out.print( "U_SCALEY : (" + tran[U_SCALEY ] + ")\n");
+        System.out.print( "U_SCALEZ : (" + tran[U_SCALEZ ] + ")\n");
+        System.out.print( "U_SHEARXY: (" + tran[U_SHEARXY] + ")\n");
+        System.out.print( "U_SHEARXZ: (" + tran[U_SHEARXZ] + ")\n");
+        System.out.print( "U_SHEARYZ: (" + tran[U_SHEARYZ] + ")\n");
+        System.out.print( "U_ROTATEX: (" + tran[U_ROTATEX] + ")\n");
+        System.out.print( "U_ROTATEY: (" + tran[U_ROTATEY] + ")\n");
+        System.out.print( "U_ROTATEZ: (" + tran[U_ROTATEZ] + ")\n");
+        System.out.print( "U_TRANSX : (" + tran[U_TRANSX ] + ")\n");
+        System.out.print( "U_TRANSY : (" + tran[U_TRANSY ] + ")\n");
+        System.out.print( "U_TRANSZ : (" + tran[U_TRANSZ ] + ")\n");
+        System.out.print( "U_PERSPX : (" + tran[U_PERSPX ] + ")\n");
+        System.out.print( "U_PERSPY : (" + tran[U_PERSPY ] + ")\n");
+        System.out.print( "U_PERSPZ : (" + tran[U_PERSPZ ] + ")\n");
+        System.out.print( "U_PERSPW : (" + tran[U_PERSPW ] + ")\n");
+*/         
     }
     
     private DoubleMatrix1D cross(DoubleMatrix1D a, DoubleMatrix1D b) {
@@ -646,9 +669,7 @@ public class AffineTransformation extends ImageTransformation
         }
         
         AffineTransformation t2 = (AffineTransformation)trans2;
-        //System.out.println("tran: " + tran[U_SCALEX] + " " + tran[U_SCALEY] + " " +tran[U_SCALEZ]);
-        //System.out.println("t2.tran: " + t2.tran[U_SCALEX] + " " + t2.tran[U_SCALEY] + " " +t2.tran[U_SCALEZ] + "w: " + w);
-        
+                
         double[] transInterpol = new double[16];
         for (int i = 0; i < 16; i++) {
             transInterpol[i] = tran[i]*(1-w) + t2.tran[i]*w;    

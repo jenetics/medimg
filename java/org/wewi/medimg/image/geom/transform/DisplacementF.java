@@ -6,8 +6,6 @@
  */
 package org.wewi.medimg.image.geom.transform;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ops.ImageLoop;
 import org.wewi.medimg.math.vec.VectorField;
 
 
@@ -194,59 +192,6 @@ public abstract class DisplacementF extends ImageTransformation implements Vecto
     
     public void transformBackward(double[] target, double[] source) {
         interpolator.interpolateStartPoint(target, source);
-    }
-
-    /**
-     * @see org.wewi.medimg.image.geom.transform.Transformation#transform(org.wewi.medimg.image.Image)
-     */
-    public Image transform(Image source) {
-        Image target = (Image)source.clone();
-        target.resetColor(0);
-        transform(source, target);
- 
-        return target;
-    }
-
-    /**
-     * @see org.wewi.medimg.image.geom.transform.Transformation#transform(org.wewi.medimg.image.Image, org.wewi.medimg.image.Image)
-     */
-    public void transform(Image source, Image target) {
-        ImageLoop loop = new ImageLoop(target, new TransformTask(source));
-        loop.loop();
-    } 
-    private final class TransformTask extends ImageLoop.Task {
-		private Image source;
-        
-        public TransformTask(Image source) {
-            this.source = source;
-            
-        }
-        
-        private double[] sourcePixel = new double[3];
-        private double[] targetPixel = new double[3];
-        private int sx, sy, sz;
-		public final void execute(int x, int y, int z) {
-            targetPixel[0] = x; 
-            targetPixel[1] = y;
-            targetPixel[2] = z;
-            
-            interpolator.interpolateStartPoint(targetPixel, sourcePixel);
-            sx = (int)sourcePixel[0];
-            sy = (int)sourcePixel[1];
-            sz = (int)sourcePixel[2];
-            
-            
-            if (sx < source.getMinX() || sx > source.getMaxX() ||
-                sy < source.getMinY() || sy > source.getMaxY() ||
-                sz < source.getMinZ() || sz > source.getMaxZ()) {
-                    
-                getImage().setColor(x, y, z, 0);
-            } else {
-                getImage().setColor(x, y, z, source.getColor(sx, sy, sz));
-            }
-            
-            
-		}   
     }
 
 }

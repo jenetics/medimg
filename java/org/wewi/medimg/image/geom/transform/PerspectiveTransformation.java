@@ -10,44 +10,56 @@ package org.wewi.medimg.image.geom.transform;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class PerspectiveTransformation extends AffineTransformation {
-
+public class PerspectiveTransformation extends ImageTransformation {
 	/**
-	 * Constructor for PerspectiveTransformation.
-	 * @param transform
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transform(int[], int[])
 	 */
-	public PerspectiveTransformation(AffineTransformation transform) {
-		super(transform);
+	public void transform(int[] source, int[] target) {
 	}
-
 	/**
-	 * Constructor for PerspectiveTransformation.
-	 * @param matrix
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transform(float[], float[])
 	 */
-	public PerspectiveTransformation(double[] matrix) {
-		super(matrix);
+	public void transform(float[] source, float[] target) {
 	}
-
 	/**
-	 * Constructor for PerspectiveTransformation.
-	 * @param matrix
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transform(double[], double[])
 	 */
-	public PerspectiveTransformation(double[][] matrix) {
-		super(matrix);
+	public void transform(double[] source, double[] target) {
 	}
-
 	/**
-	 * @see org.wewi.medimg.image.geom.transform.InterpolateableTransformation#interpolate(org.wewi.medimg.image.geom.transform.InterpolateableTransformation, double)
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(int[], int[])
 	 */
-	public InterpolateableTransformation interpolate(InterpolateableTransformation trans, double w) {
-		return super.interpolate(trans, w);
+	public void transformBackward(int[] target, int[] source) {
 	}
-
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(float[], float[])
+	 */
+	public void transformBackward(float[] target, float[] source) {
+	}
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(double[], double[])
+	 */
+	public void transformBackward(double[] target, double[] source) {
+	}
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#scale(double)
+	 */
+	public Transformation scale(double alpha) {
+		return null;
+	}
 	/**
 	 * @see org.wewi.medimg.image.geom.transform.Transformation#concatenate(org.wewi.medimg.image.geom.transform.Transformation)
 	 */
 	public Transformation concatenate(Transformation trans) {
-		return super.concatenate(trans);
+		return null;
 	}
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#createInverse()
+	 */
+	public Transformation createInverse() {
+		return null;
+	}
+
+
 
 }
