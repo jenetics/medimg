@@ -83,7 +83,7 @@ public class IterativeFFT1DTest extends NaiveDFT1DTest {
                                        new Complex(3),
                                        new Complex(43)};
                              
-        dft.transformBackward(data);
+        dft.transformInverse(data);
                              
         System.out.println();
         for (int i = 0; i < data.length; i++) {
@@ -98,7 +98,7 @@ public class IterativeFFT1DTest extends NaiveDFT1DTest {
 
     
     public void testBothTransformations() {
-        
+        dft = new IterativeFFT1D(-1, 1);
         
         for (int d = 0; d < 10; d++) {
             int size = (int)Math.rint(MathUtil.pow(2, d));
@@ -111,7 +111,7 @@ public class IterativeFFT1DTest extends NaiveDFT1DTest {
             }
             
             dft.transform(result);
-            dft.transformBackward(result);
+            dft.transformInverse(result);
             
             for (int i = 0; i < data.length; i++) {
                 assertEquals(result[i], data[i], EPSILON);    
