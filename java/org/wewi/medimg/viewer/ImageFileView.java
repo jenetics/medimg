@@ -46,6 +46,9 @@ final class ImageFileView extends FileView {
             }
         } else if (ImageFormatTypes.TIFF_IMAGES.equals(type)) {
             if (!file.isDirectory()) {
+                if (file.getName().endsWith(".tif")) {
+                    return icon;    
+                }
                 return super.getIcon(file);    
             }
             String[] files = file.list();
@@ -55,6 +58,9 @@ final class ImageFileView extends FileView {
             return super.getIcon(file);
         } else if (ImageFormatTypes.BMP_IMAGES.equals(type)) {
             if (!file.isDirectory()) {
+                if (file.getName().endsWith(".bmp")) {
+                    return icon;    
+                }                
                 return super.getIcon(file);    
             } 
             String[] files = file.list();
@@ -63,6 +69,9 @@ final class ImageFileView extends FileView {
             }                       
         } else if (ImageFormatTypes.JPEG_IMAGES.equals(type)) {
             if (!file.isDirectory()) {
+                if (file.getName().endsWith(".jpg")) {
+                    return icon;    
+                }                
                 return super.getIcon(file);    
             } 
             String[] files = file.list();

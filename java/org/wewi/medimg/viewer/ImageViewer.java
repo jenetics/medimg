@@ -7,11 +7,18 @@
 package org.wewi.medimg.viewer;
 
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.event.InternalFrameEvent;
 
 import org.wewi.medimg.image.ColorConversion;
@@ -26,15 +33,15 @@ import org.wewi.medimg.image.VoxelSelectorListener;
  * @version 0.1
  */
 public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
+        
     private Vector listener;
 
     protected Image image;
     protected int slice;
     protected ImagePanel imagePanel;
-    
     protected String frameTitle;
     
-    private ColorConversion cc = null;
+    private JPopupMenu popup;
     
     //Navigation-Panel-Kommandos
     private Command prevCommand;
@@ -59,15 +66,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         slice = image.getMinZ();
         initFrame();
     }
-    
-    public ImageViewer(String title, Image image, ColorConversion cc) {
-        super(title, true, true, true, true);
-        this.cc = cc;
-        this.image = image;
-        listener = new Vector();   
-        slice = image.getMinZ();
-        initFrame();       
-    }    
+       
     
     private void initFrame() {
         imagePanel = new ImagePanel(image);
@@ -90,7 +89,43 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         saveCommand = new SaveCommand(Viewer.getInstance(), image);
          
         setSlice(0);
+        
+        //Aufbau des Popupnemüs///////////////////////////////////////
+        popup = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem("Bearbeiten der ColorConversion");
+        menuItem.addActionListener(new ActionListener() {
+                                       public void actionPerformed(ActionEvent evt) {
+                                           colorConversionMenuItemActionPerformed(evt);
+                                       }
+                               });
+        popup.add(menuItem);
+        
+        //Add listener to components that can bring up popup menus.
+        MouseListener popupListener = new PopupListener();
+        imagePanel.addMouseListener(popupListener);  
+        ///////////////////////////////////////////////////////////////      
     }
+    
+    private class PopupListener extends MouseAdapter {
+        public void mousePressed(MouseEvent e) {
+            maybeShowPopup(e);
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            maybeShowPopup(e);
+        }
+
+        private void maybeShowPopup(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                popup.show(e.getComponent(),
+                           e.getX(), e.getY());
+            }
+        }
+    }
+    
+    private void colorConversionMenuItemActionPerformed(ActionEvent evt) {
+        
+    }    
     
     private void setCommands() {
         NavigationPanel np = Viewer.getInstance().getNavigationPanel();
@@ -149,6 +184,14 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         }
     }
     
+    public void setColorConversion(ColorConversion cc) {
+        imagePanel.setColorConversion(cc);
+    }
+    
+    public ColorConversion getColorConversion() {
+        return imagePanel.getColorConversion();
+    }
+    
     public synchronized void setSlice(int s) {
         slice = s;
         imagePanel.setSlice(slice);
@@ -163,7 +206,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     }
     
     public void repaintImage() {
-        setSlice(getSlice());    
+        imagePanel.repaintImage();    
     }
     
     public Image getImage() {

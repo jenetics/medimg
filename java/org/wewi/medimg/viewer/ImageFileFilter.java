@@ -26,11 +26,29 @@ public class ImageFileFilter extends FileFilter {
         
         public boolean accept(File file) {
             if (type.equals(ImageFormatTypes.TIFF_IMAGES)) {
-                return file.isDirectory();
+                if (!file.isDirectory()) {
+                     if (file.getName().endsWith(".tif")) {
+                        return true;   
+                     }
+                     else return false;  
+                }
+                return true;
             } else if (type.equals(ImageFormatTypes.BMP_IMAGES)) {
-                return file.isDirectory();
+                if (!file.isDirectory()) {
+                     if (file.getName().endsWith(".bmp")) {
+                        return true;   
+                     }
+                     else return false;  
+                }
+                return true;
             } else if (type.equals(ImageFormatTypes.JPEG_IMAGES)) {
-                return file.isDirectory();
+                if (!file.isDirectory()) {
+                     if (file.getName().endsWith(".jpg")) {
+                        return true;   
+                     }
+                     else return false;  
+                }
+                return true;
             } else if (type.equals(ImageFormatTypes.RAW_IMAGE)) {
                 if (file.isDirectory()) {
                     return true;
