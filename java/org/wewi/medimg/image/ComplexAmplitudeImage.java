@@ -20,7 +20,7 @@ public class ComplexAmplitudeImage extends ImageAdapter {
     public ComplexAmplitudeImage(ComplexImage cimage) {
         super();
         
-        image = new ImageData(cimage.getDimension());
+        image = new IntImage(cimage.getDimension());
         init(cimage);
     }
     

@@ -6,7 +6,7 @@ package org.wewi.medimg.image.filter;
 
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
+import org.wewi.medimg.image.IntImage;
 import org.wewi.medimg.image.MarginImage;
 
 /**
@@ -23,7 +23,7 @@ public abstract class MorphologicalOperation extends ImageFilter {
     public MorphologicalOperation(Image image) {
         super(image); 
         
-        b = new ImageData(3, 3, 1);
+        b = new IntImage(3, 3, 1);
         b.resetColor(0);             
     }
 
@@ -44,7 +44,7 @@ public abstract class MorphologicalOperation extends ImageFilter {
     public MorphologicalOperation(ImageFilter component) {
         super(component);  
         
-        b = new ImageData(3, 3, 1);
+        b = new IntImage(3, 3, 1);
         b.resetColor(0);          
     }
 

@@ -17,9 +17,9 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
-import org.wewi.medimg.image.ByteImageDataFactory;
+import org.wewi.medimg.image.ByteImageFactory;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ShortImageDataFactory;
+import org.wewi.medimg.image.ShortImageFactory;
 import org.wewi.medimg.image.io.ImageIOException;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.TIFFReader;
@@ -123,7 +123,7 @@ public class Batch {
         //geschehen ist.
         if (!currentSourceImageFileName.equals(sourceName)) {
             currentSourceImageFileName = sourceName;
-            ImageReader reader = new TIFFReader(ShortImageDataFactory.getInstance(), 
+            ImageReader reader = new TIFFReader(ShortImageFactory.getInstance(), 
                                                    new File(currentSourceImageFileName)); 
             try {
                 reader.read();
@@ -136,7 +136,7 @@ public class Batch {
         } 
         if (!currentModelImageFileName.equals(modelName)) {
             currentModelImageFileName = modelName;
-            ImageReader reader = new TIFFReader(ByteImageDataFactory.getInstance(), 
+            ImageReader reader = new TIFFReader(ByteImageFactory.getInstance(), 
                                                    new File(currentModelImageFileName)); 
             try {
                 reader.read();

@@ -9,7 +9,7 @@ package org.wewi.medimg.viewer;
 
 import java.io.File;
 
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.Range;
 
@@ -184,7 +184,7 @@ class RangePanel extends javax.swing.JPanel {
             fileChooser.actionPerformed(null);
             String fileName = fileChooser.getSelectedFile().getAbsolutePath();
             ImageReader reader = fileChooser.getImageReaderFactory().
-                                        createImageReader(ImageDataFactory.getInstance(),
+                                        createImageReader(IntImageFactory.getInstance(),
                                                                new File(fileName));
             int slices = 0;
             //slices = reader.getSlices();

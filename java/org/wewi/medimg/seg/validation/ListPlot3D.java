@@ -9,7 +9,7 @@ package org.wewi.medimg.seg.validation;
 import java.io.File;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.TIFFReader;
 
@@ -56,7 +56,7 @@ public class ListPlot3D {
     public static void main(String[] args) {
     
         try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(), 
                                                 new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
             reader.read();
             Image image = reader.getImage();

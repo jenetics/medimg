@@ -16,7 +16,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.ImageHeader;
 import org.wewi.medimg.image.ImageProperties;
 import org.wewi.medimg.image.io.ImageReader;
@@ -186,7 +186,7 @@ public class MAPValidator {
             File[] files = (new File(imagePath)).listFiles();
             File modelFile = new File("Z:/Workspace/Projekte/Diplom/code/data/nhead/seg.model");
         
-            ImageReader tiffReader = new TIFFReader(ImageDataFactory.getInstance(), modelFile);
+            ImageReader tiffReader = new TIFFReader(IntImageFactory.getInstance(), modelFile);
             tiffReader.read();
             Image modelImage = tiffReader.getImage();
             SecondOrder so = new SecondOrder(modelImage); 
@@ -194,7 +194,7 @@ public class MAPValidator {
             
             for (int i = 0; i < files.length; i++) {
                 System.out.println("" + (i+1) + "-" + files.length + ": " + files[i].toString());
-                ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(), files[i]);
+                ImageReader reader = new RawImageReader(IntImageFactory.getInstance(), files[i]);
                 reader.read();
                 
                 Image image = reader.getImage();

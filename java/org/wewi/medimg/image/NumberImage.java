@@ -206,7 +206,7 @@ public class NumberImage extends RowMajorImageGeometry {
                 s.wait(2000);
                 
                 
-                Image img = new IntImageData(200, 200, 200); 
+                Image img = new IntImage(200, 200, 200); 
                 Timer timer = new Timer("IntImage");
                 timer.start();
                 for (int i = 0, n = img.getNVoxels(); i < n; i++) {

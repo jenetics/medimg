@@ -14,7 +14,7 @@ import javax.swing.JFileChooser;
 
 import org.wewi.medimg.alg.AlgorithmIterator;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
@@ -369,7 +369,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         
         ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
         String fileName = chooser.getSelectedFile().getAbsolutePath();
-        ImageReader imageReader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+        ImageReader imageReader = readerFactory.createImageReader(IntImageFactory.getInstance(),
                                                             new File(fileName));
         
         imageReader.addProgressListener(this);

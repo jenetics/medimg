@@ -1,5 +1,5 @@
 /**
- * ByteImageData.java
+ * ByteImage.java
  *
  * Created on 10. Mai 2002, 15:59
  */
@@ -12,26 +12,26 @@ package org.wewi.medimg.image;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ByteImageData extends AbstractImage {
+public final class ByteImage extends AbstractImage {
     private byte[] data;   
      
-    ByteImageData() {
+    ByteImage() {
         super();
     }     
      
-    ByteImageData(ByteImageData id) {
+    ByteImage(ByteImage id) {
         super(id);
     }
     
-    public ByteImageData(Dimension dim) {
+    public ByteImage(Dimension dim) {
         super(dim);    
     }
     
-    public ByteImageData(int sizeX, int sizeY, int sizeZ) {
+    public ByteImage(int sizeX, int sizeY, int sizeZ) {
         super(sizeX, sizeY, sizeZ);
     }
     
-    public ByteImageData(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+    public ByteImage(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         super(minX, maxX, minY, maxY, minZ, maxZ);
     } 
     
@@ -43,7 +43,7 @@ public final class ByteImageData extends AbstractImage {
     }          
     
     public Object clone() {
-        return new ByteImageData(this);
+        return new ByteImage(this);
     }    
 
 }

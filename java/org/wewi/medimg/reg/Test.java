@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.io.TIFFReader;
@@ -58,8 +58,8 @@ public class Test {
         //File source2 = new File(path + "erg01/");        
         //File source1 = new File("E:/Daten/Dicoms/source/Dicoms/daten/bud/raw/batch5/");
         //File source2 = new File("E:/Daten/Dicoms/source/Dicoms/daten/bud/raw/batch7/");
-        TIFFReader reader1 = new TIFFReader(ImageDataFactory.getInstance(), source1);
-        TIFFReader reader2 = new TIFFReader(ImageDataFactory.getInstance(), source2);    
+        TIFFReader reader1 = new TIFFReader(IntImageFactory.getInstance(), source1);
+        TIFFReader reader2 = new TIFFReader(IntImageFactory.getInstance(), source2);    
         FeatureColorConversion tcc = new FeatureColorConversion();
         reader1.setColorConversion(tcc);
         reader2.setColorConversion(tcc);
@@ -160,7 +160,7 @@ public class Test {
             timer2.stop();
             timer2.print();
             //Image show = new ImageData(0, 500, 0, 500, 0, 0);
-            ImageDataFactory fac = ImageDataFactory.getInstance();
+            IntImageFactory fac = IntImageFactory.getInstance();
             show = transformation.transform(data1, fac);
             TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg"));   
             rwriter.write();

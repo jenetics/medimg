@@ -32,8 +32,8 @@ import org.wewi.medimg.image.ComplexIndexImage;
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImage;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.RGBColorConversion;
 import org.wewi.medimg.image.filter.DilationFilter;
 import org.wewi.medimg.image.filter.EdgeFilter;
@@ -93,7 +93,7 @@ public class Test {
     
     public static void test4() {
         try {
-            TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
+            TIFFReader reader = new TIFFReader(IntImageFactory.getInstance(), 
            new File("C:/temp/g.tif")); 
             
             reader.read();
@@ -117,7 +117,7 @@ public class Test {
     }
     
     public static void test5() {
-        Image img = new ImageData(181, 218, 181);
+        Image img = new IntImage(181, 218, 181);
         Timer timer = new Timer("SetTest");
         
         timer.start();
@@ -173,7 +173,7 @@ public class Test {
     }
     
     public static void test6() {
-        ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+        ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
                                              new File("X:/t1.n3.rf20"));
         
         try {
@@ -211,7 +211,7 @@ public class Test {
     }
     
     public static void test8() {
-        Image img = new ImageData(381, 318, 381);
+        Image img = new IntImage(381, 318, 381);
         ColorConversion cc = new RGBColorConversion();//img.getColorConversion();
         Timer timer = new Timer("SetTest");
         
@@ -226,7 +226,7 @@ public class Test {
     
     public static void test9() {
         
-        ImageReader reader = new JPEGReader(ImageDataFactory.getInstance(),
+        ImageReader reader = new JPEGReader(IntImageFactory.getInstance(),
                                            new File("C:/Workspace/kappa/pic_242_0.jpg")); 
                                            
         try {
@@ -258,7 +258,7 @@ public class Test {
     public static void test10() {
         try {
             
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
                                                  new File("C:/Workspace/kappa/test.05.50x50.tif"));
             reader.read();
             Image image = reader.getImage();
@@ -349,12 +349,12 @@ public class Test {
     
     public static void test11() {         
         try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
                                            new File("C:/Workspace/kappa/kappa.3.tif"));
             reader.read();
             Image image = reader.getImage();
             
-            Image b = new ImageData(3, 3, 1);
+            Image b = new IntImage(3, 3, 1);
             for (int i = 0; i < b.getNVoxels(); i++) {
                 b.setColor(i, 0);    
             }
@@ -410,7 +410,7 @@ public class Test {
         
         Image image;
         try {
-            image = new ImageData(1000, 1000, 1000);
+            image = new IntImage(1000, 1000, 1000);
         } catch (OutOfMemoryError e) {
             System.out.println("Zu wenig freier Speicher");    
         } 
@@ -420,7 +420,7 @@ public class Test {
     
     
     public static void test13() {
-        Image image = new ImageData(20, 32, 21); 
+        Image image = new IntImage(20, 32, 21); 
         image.resetColor(32);
         
         UnaryPointTransformer transformer = new UnaryPointTransformer(image, new RandomFunction());
@@ -438,7 +438,7 @@ public class Test {
     
     public static void test14() {
         try {
-            ImageReader reader = new PNGReader(ImageDataFactory.getInstance(),
+            ImageReader reader = new PNGReader(IntImageFactory.getInstance(),
                                                  new File("C:/Image2.png"));
             reader.read();
             Image image = reader.getImage();
@@ -529,7 +529,7 @@ public class Test {
     
     public static void test16() {
         try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(), 
                                     "C:/Workspace/fwilhelm/Projekte/Diplom/code/data/nhead/seg.model");
             reader.read();
             Image img = reader.getImage();
@@ -557,7 +557,7 @@ public class Test {
     
     public static void test18() {
         try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
                                                  "X:/medimages/nhead/seg.model");
             reader.read();
             
@@ -587,7 +587,7 @@ public class Test {
     
     public static void test19() {
         Timer timer = new Timer();
-        Image image = new ImageData(250, 250, 250);
+        Image image = new IntImage(250, 250, 250);
         
         timer.start();
         for (int i = 0, n = image.getNVoxels(); i < n; i++) {
@@ -610,7 +610,7 @@ public class Test {
     public static void test21() {
         try {
             String modelPath = "Z:/Workspace/Projekte/Diplom/code/data/nhead/seg.ml.t1.n9.rf20";
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), modelPath);
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(), modelPath);
             reader.read();
             
             Image model = reader.getImage();
@@ -642,7 +642,7 @@ public class Test {
     public static void test22() {
         try {
             String path = "C:/Workspace/Projekte/Diplom/code/data/image003.tif";
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), path);
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(), path);
             reader.read();
             
             Image image = reader.getImage();
@@ -692,15 +692,18 @@ public class Test {
     
     public static void test23() {
         Timer timer = new Timer("");
-        AbstractImage image = new ImageData(150, 150, 150);
+        AbstractImage image = new IntImage(150, 150, 150);
         
         timer.start();
-        for (int i = 0, n = image.getNVoxels(); i < n; ++i) {
-            image.getIntColor(i);    
-        }    
+        int c = 0;
+        for (int j = 0; j < 50; ++j) {
+            for (int i = 0, n = image.getNVoxels(); i < n; ++i) {
+                c = (int)image.getDoubleColor(i);    
+            }
+        }
         timer.stop();
         timer.print();
-        Math.sqrt(2);
+
     } 
 
     

@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.jdom.Element;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.io.BMPReader;
 import org.wewi.medimg.image.io.ImageIOException;
@@ -104,10 +104,10 @@ public class ImageParameter extends Parameter {
         String readerName = xml.getAttribute("image.reader").getValue();
         file = xml.getText();
         
-        if (factoryName.equals(ImageDataFactory.class.getName())) {
-            factory = ImageDataFactory.getInstance();    
+        if (factoryName.equals(IntImageFactory.class.getName())) {
+            factory = IntImageFactory.getInstance();    
         } else {
-            factory = ImageDataFactory.getInstance();    
+            factory = IntImageFactory.getInstance();    
         }
         
         ImageReader reader = null;
@@ -131,7 +131,7 @@ public class ImageParameter extends Parameter {
     
     
     public static void main(String[] args) {
-        Parameter p = new ImageParameter("", ImageDataFactory.getInstance(), null, "");    
+        Parameter p = new ImageParameter("", IntImageFactory.getInstance(), null, "");    
     }
 
 }
