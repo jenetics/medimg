@@ -4,30 +4,24 @@
  * Created on 10. Mai 2002, 15:59
  */
 
-package org.wewi.medimg.seg;
+package org.wewi.medimg.image;
 
 import java.util.Arrays;
 
-import org.wewi.medimg.image.ColorConversion;
-import org.wewi.medimg.image.ColorRange;
-import org.wewi.medimg.image.Dimension;
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageHeader;
-import org.wewi.medimg.image.VoxelIterator;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class SimpleSegmentationImage implements Image {
+public final class ByteImageData implements Image {
     
-    private class SimpleSegmentationImageVoxelIterator implements VoxelIterator {
+    private class ByteImageDataVoxelIterator implements VoxelIterator {
         private byte[] data;
         private final int size;
         private int pos;
         
-        public SimpleSegmentationImageVoxelIterator(byte[] data) {
+        public ByteImageDataVoxelIterator(byte[] data) {
             this.data = data;
             size = data.length;
             pos = 0;
@@ -45,7 +39,7 @@ public final class SimpleSegmentationImage implements Image {
             return size;
         }
         public Object clone() {
-            return new SimpleSegmentationImageVoxelIterator(data);
+            return new ByteImageDataVoxelIterator(data);
         }
     }
     
@@ -59,11 +53,11 @@ public final class SimpleSegmentationImage implements Image {
     private Dimension dimension;
     private int size, sizeX, sizeY, sizeZ, sizeXY; 
 
-    public SimpleSegmentationImage(int sizeX, int sizeY, int sizeZ) {
+    public ByteImageData(int sizeX, int sizeY, int sizeZ) {
         this(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1);
     }
     
-    public SimpleSegmentationImage(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+    public ByteImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         this.minX = minX;
         this.minY = minY;
         this.minZ = minZ;
@@ -185,7 +179,7 @@ public final class SimpleSegmentationImage implements Image {
     }
     
     public VoxelIterator getVoxelIterator() {
-        return new SimpleSegmentationImageVoxelIterator(data);
+        return new ByteImageDataVoxelIterator(data);
     }
     
     public boolean isNull() {
@@ -205,7 +199,7 @@ public final class SimpleSegmentationImage implements Image {
     }
  
     public Object clone() {
-        return new SimpleSegmentationImage(minX, minY, minZ, maxX, maxY, maxZ);
+        return new ByteImageData(minX, minY, minZ, maxX, maxY, maxZ);
     }
     
     public void getNeighbor3D12Positions(int pos, int[] n12) {
