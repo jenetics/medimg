@@ -279,7 +279,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
 	 * überschrieben, da bei diesem Algorithmus notwendig ist,
 	 * sich das Merkmalsbild der vorigen Iteration zu merken.
 	 * 
-	 * @param pos
+	 * @param position
 	 * @param color
 	 */
     protected void saveOldFeatureColor(int pos, int color) {
@@ -290,7 +290,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
 	 * Diese Methode liefert in dieser Klasse null zurück.
 	 * Wird von der Klasse MAPKMeansClusterer überschrieben.
 	 * 
-	 * @param pos Position des Bildpunktes
+	 * @param position Position des Bildpunktes
 	 * @param f Numer des Merkmals
 	 * @return double das berechnete Cliquenpotential Vc.
 	 */

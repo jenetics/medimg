@@ -27,7 +27,7 @@ import org.wewi.medimg.viewer.image.ImageViewer;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-final class OpenCommand implements Command, ImageIOProgressListener {
+public final class OpenCommand implements Command, ImageIOProgressListener {
     private Viewer viewer;
     private String selectedFile;
     private ProgressFrame progressFrame;
@@ -65,8 +65,8 @@ final class OpenCommand implements Command, ImageIOProgressListener {
         reader.addProgressListener(this);
         selectedFile = chooser.getSelectedFile().toString();
         progressFrame = new ProgressFrame(); 
-        progressFrame.setTitle("Öffnen");
-        progressFrame.setSubTitle("Beim Laden von: " + fileName);
+        progressFrame.setTitle("Open");
+        progressFrame.setSubTitle("Loading: " + fileName);
         viewer.addViewerDesktopFrame(progressFrame);
         
         ImageReaderThread readerThread = new ImageReaderThread(reader, viewer);

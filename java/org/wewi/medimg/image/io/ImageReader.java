@@ -127,7 +127,9 @@ public abstract class ImageReader {
         ImageIOProgressListener l;
         for (Iterator it = list.iterator(); it.hasNext();) {
             l = (ImageIOProgressListener)it.next();
-            l.progressChanged(event);
+            if (l != null) {
+                l.progressChanged(event);
+            }
         }
     }
     

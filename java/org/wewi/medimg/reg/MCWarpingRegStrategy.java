@@ -175,9 +175,9 @@ public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
         int[] minimal = new int[3];
         minimal = grid.getLocation();
                    // System.out.println(" minimal " + minimal[0] + " , " + minimal[1] + " , " + minimal[2] );
-        Point3D point3D = new Point3D(pos[0], pos[1], pos[2]);
-            //System.out.println(" pos " + point3D.getX() + " , " + point3D.getY() + " , " + point3D.getZ());       
-        int color = image.getColor(pos[0], pos[1], pos[2]);
+        Point3D point3D = new Point3D(position[0], position[1], position[2]);
+            //System.out.println(" position " + point3D.getX() + " , " + point3D.getY() + " , " + point3D.getZ());       
+        int color = image.getColor(position[0], position[1], position[2]);
             //System.out.println(" grid " + grid.getSize(0) + " , " + grid.getSize(1) + " , " + grid.getSize(2) + " color " + color);        
         Neighborhood3D18 neighbor = new Neighborhood3D18(minimal[0], (minimal[0] + grid.getSize(0) - 1),
                                                          minimal[1], (minimal[1] + grid.getSize(1) - 1),
@@ -197,8 +197,8 @@ public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
         /*Image image = (Image)param.getTargetImage();
         int[] minimal = new int[3];
         minimal = grid.getLocation();
-        Point3D point3D = new Point3D(pos[0], pos[1], pos[2]);
-        int color = image.getColor(pos[0], pos[1], pos[2]);
+        Point3D point3D = new Point3D(position[0], position[1], position[2]);
+        int color = image.getColor(position[0], position[1], position[2]);
         Neighborhood3D18 neighbor = new Neighborhood3D18(minimal[0], (minimal[0] + grid.getSize(0) - 1),
                                                          minimal[1], (minimal[1] + grid.getSize(1) - 1),
                                                          minimal[2], (minimal[2] + grid.getSize(2) - 1));

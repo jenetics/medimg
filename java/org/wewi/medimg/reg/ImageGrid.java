@@ -73,7 +73,7 @@ public class ImageGrid {
         } 
         //System.out.println(" Imagegrid:init cuboids= " + cuboids[0] + " , " + cuboids[1] + " , " + cuboids[2]);  
         int[] actualSize;
-        //int pos = 0;
+        //int position = 0;
         //int loc1[] = new int[3];
         //GridElement tset;
         GridElement temp;
@@ -104,11 +104,11 @@ public class ImageGrid {
                      /*   System.out.println("actual grid size " + actualSize[0] + " , " + actualSize[1] + " , " + actualSize[2]);
                         System.out.println("loc " + loc[0] + " , " + loc[1] + " , " + loc[2]);
                         System.out.println("temp actual grid size " + temp.getSize(0) + " , " + temp.getSize(1) + " , " + temp.getSize(2));
-                    tset = (GridElement)grids.elementAt(pos);
+                    tset = (GridElement)grids.elementAt(position);
                     loc1 = tset.getLocation();
                         System.out.println("Verify loc " + loc1[0] + " , " + loc1[1] + " , " + loc1[2]);
                         System.out.println("tset verify " + tset.getSize(0) + " , " + tset.getSize(1) + " , " + tset.getSize(2));
-                    pos++;*/
+                    position++;*/
                 }
             }
         }

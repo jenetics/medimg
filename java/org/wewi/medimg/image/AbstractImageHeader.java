@@ -141,7 +141,7 @@ class AbstractImageHeader implements ImageHeader {
             return new GreyColorConversion();
         }
         
-        ColorConversion cc = null;
+        ColorConversion cc = new GreyColorConversion();
 		try {
             StringInputStream sin = new StringInputStream(removeNewLine(element.getTextTrim()));          
             ObjectInputStream oin = new ObjectInputStream(sin);
@@ -153,8 +153,7 @@ class AbstractImageHeader implements ImageHeader {
             String clazz = element.getAttributeValue("class");
             try {
     			cc = (ColorConversion)Class.forName(clazz).newInstance();
-    		} catch (Exception ce) {
-    		    cc = new GreyColorConversion();
+    		} catch (Exception ce){
             }
 		}
         

@@ -8,13 +8,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import org.wewi.medimg.viewer.image.ImageCanvas;
 import org.wewi.medimg.viewer.image.ImagePanel;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class VectorFieldImageCanvasAdapter implements ImagePanel.ImageCanvas {
+public class VectorFieldImageCanvasAdapter implements ImageCanvas {
     private VectorField field;
 
 	/**

@@ -17,12 +17,12 @@ public interface ImageAccess {
     public void setColor(int x, int y, int z, int color);
       
     /**
-     * Sets the specific color at the specific position pos.
+     * Sets the specific color at the specific position position.
      * This method doubles the color getter, but if you not
      * interested on the color coordinates, this getter gives
      * you a faster access.
      * 
-     * @param pos colorposition.
+     * @param position colorposition.
      * @param color color to be set.
      */
     public void setColor(int pos, int color);
@@ -37,8 +37,8 @@ public interface ImageAccess {
     /**
      * Gets the color at the specified position.
      * 
-     * @param pos Colorposition; <code>0 <= pos < getNVoxels()</code>.
-     * @return the greyvalue at the position pos
+     * @param position Colorposition; <code>0 <= position < getNVoxels()</code>.
+     * @return the greyvalue at the position position
      */
     public int getColor(int pos);
     
