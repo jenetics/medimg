@@ -74,7 +74,7 @@ public class RegularDisplacementField extends DisplacementF
         strideZ = df.strideZ;
         
         vectorField = (GridVectorField)df.vectorField.clone();
-        setInterpolator(df.getInterpolator());
+        setFieldInterpolator(df.getFieldInterpolator());
     }
     
     
