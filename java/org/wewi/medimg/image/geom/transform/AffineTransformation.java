@@ -79,7 +79,7 @@ public class AffineTransformation implements InterpolateableTransformation,
     
     public double[] getMatrix() {
         double[] m = new double[12];
-        System.arraycopy(matrix, 0, m, 0, 9);
+        System.arraycopy(matrix, 0, m, 0, 12);
         return m;
     }
     
@@ -244,24 +244,42 @@ public class AffineTransformation implements InterpolateableTransformation,
                 tran[U_SCALEX+i] *= -1;
                 rot.viewColumn(i).assign(Functions.mult(-1));
             }
-        }             
-     
-        // Ermitteln des Rotationsanteils
-        tran[U_ROTATEY] = Math.acos(rot.viewColumn(2).getQuick(2));
-        
-        tran[U_ROTATEX] = Math.asin(rot.viewColumn(0).getQuick(2)/Math.sin(tran[U_ROTATEY]));
-        
-        tran[U_ROTATEZ] = Math.acos(rot.viewColumn(2).getQuick(1)/Math.sin(tran[U_ROTATEY]));
-        
-        /*
-        if (Math.cos(tran[U_ROTATEY]) != 0) {
-            tran[U_ROTATEX] = Math.atan2(rot.viewColumn(1).getQuick(2), rot.viewColumn(2).getQuick(2));
-            tran[U_ROTATEZ] = Math.atan2(rot.viewColumn(0).getQuick(1), rot.viewColumn(0).getQuick(0));
-        } else {
-            tran[U_ROTATEX] = Math.atan2(-rot.viewColumn(2).getQuick(0), rot.viewColumn(1).getQuick(1));
-            tran[U_ROTATEZ] = 0;
         } 
-        */
+        
+        
+        tran[U_ROTATEY] = Math.asin(rot.viewColumn(2).getQuick(0));
+        if (Math.cos(tran[U_ROTATEY]) != 0) {
+            tran[U_ROTATEX] = Math.atan(-rot.viewColumn(2).getQuick(1)/rot.viewColumn(2).getQuick(2));
+            tran[U_ROTATEZ] = Math.atan(-rot.viewColumn(1).getQuick(0)/rot.viewColumn(0).getQuick(0));
+        } else {
+            tran[U_ROTATEX] = 0;
+            tran[U_ROTATEZ] = Math.asin(rot.viewColumn(0).getQuick(1));                
+        }
+        
+                          
+        double[] a = new double[2];
+        double[] b = new double[2];
+        double[] c = new double[2];
+        
+        a[0] = tran[U_ROTATEX];
+        a[1] = Math.PI + a[0];
+        b[0] = tran[U_ROTATEY];
+        b[1] = Math.PI - b[0];
+        c[0] = tran[U_ROTATEZ];
+        c[1] = Math.PI + c[0];
+        
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                for (int k = 0; k < 2; k++) {
+                    if (testAngles(a[i], b[j], c[k], rot, 0.1)) {
+                        tran[U_ROTATEX] = a[i]; 
+                        tran[U_ROTATEY] = b[j];
+                        tran[U_ROTATEZ] = c[k]; 
+                        return;  
+                    }    
+                }    
+            }    
+        } 
          
     }
     
@@ -288,6 +306,33 @@ public class AffineTransformation implements InterpolateableTransformation,
 
     }
     
+    private boolean testAngles(double a, double b, double c, DoubleMatrix2D rot, double EPSILON) {
+        double[][] m = new double[3][3];
+        m[0][0] = Math.cos(b)*Math.cos(c);
+        m[0][1] = -Math.cos(b)*Math.sin(c);
+        m[0][2] = Math.sin(b);
+        m[1][0] = Math.cos(c)*Math.sin(a)*Math.sin(b) +
+               Math.cos(a)*Math.sin(c);
+        m[1][1] = -Math.sin(a)*Math.sin(b)*Math.sin(c) +
+               Math.cos(a)*Math.cos(c);
+        m[1][2] = -Math.cos(b)*Math.sin(a);
+        m[2][0] = -Math.cos(a)*Math.cos(c)*Math.sin(b) +
+               Math.sin(a)*Math.sin(c);
+        m[2][1] = Math.cos(a)*Math.sin(b)*Math.sin(c) +
+               Math.cos(c)*Math.sin(a);
+        m[2][2] = Math.cos(a)*Math.cos(b); 
+        
+        for (int i = 0; i <3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (Math.abs(m[i][j] - rot.getQuick(i, j)) > EPSILON) {
+                    return false;    
+                }    
+            }    
+        }       
+        
+        return true;    
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     
     public AffineTransformation getPerspectiveTransformation() {
@@ -307,62 +352,28 @@ public class AffineTransformation implements InterpolateableTransformation,
     }
     
     public AffineTransformation getTranslateTransformation() {
-        double[] m = new double[12];
-        Arrays.fill(m, 0);
-        m[3] = tran[U_TRANSX];
-        m[7] = tran[U_TRANSY];
-        m[11] = tran[U_TRANSZ];
-        
-        //Rotationsteil ist Einheitsmatrix
-        m[0] = 1;
-        m[5] = 1;
-        m[10] = 1;        
-        
-        return new AffineTransformation(m);    
+        return AffineTransformation.getTranslateInstance(new double[]{tran[U_TRANSX],
+                                                                        tran[U_TRANSY],
+                                                                        tran[U_TRANSZ]});    
     }
     
     public AffineTransformation getRotationTransformation() {
-        double[] m = new double[12];
-        Arrays.fill(m, 0);
-        
-        double a = tran[U_ROTATEX];
-        double b = tran[U_ROTATEY];
-        double c = tran[U_ROTATEZ];
-        m[0] = Math.cos(a)*Math.cos(c) - Math.cos(b)*Math.sin(a)*Math.sin(c);
-        m[1] = Math.cos(c)*Math.sin(a) + Math.cos(a)*Math.cos(b)*Math.sin(c);
-        m[2] = Math.sin(b)*Math.sin(c);
-        m[4] = -(Math.cos(b)*Math.cos(c)*Math.sin(a)) - Math.cos(a)*Math.sin(c);
-        m[5] = Math.cos(a)*Math.cos(b)*Math.cos(c) - Math.sin(a)*Math.sin(c);
-        m[6] = Math.cos(c)*Math.sin(b);
-        m[8] = Math.sin(a)*Math.sin(b);
-        m[9] = -(Math.cos(a)*Math.sin(b));
-        m[10] = Math.cos(b);
-        
-        return new AffineTransformation(m);    
+        return AffineTransformation.getRotateInstance(new double[]{tran[U_ROTATEX],
+                                                                     tran[U_ROTATEY],
+                                                                     tran[U_ROTATEZ]});    
     }
        
     
-    public AffineTransformation getShearTransformation() {
-        double[] m = new double[12];
-        Arrays.fill(m, 0);
-        
-        //Rotationsteil ist Einheitsmatrix
-        m[0] = 1;
-        m[5] = 1;
-        m[10] = 1;        
-        
-        return null;    
+    public AffineTransformation getShearTransformation() {            
+        return AffineTransformation.getShearInstance(new double[]{tran[U_SHEARXY],
+                                                                    tran[U_SHEARXZ],
+                                                                    tran[U_SHEARYZ]});    
     }
     
     public AffineTransformation getScaleTransformation() {
-        double[] m = new double[12];
-        Arrays.fill(m, 0);
-        
-        m[0] = tran[U_SCALEX];
-        m[5] = tran[U_SCALEY];
-        m[10] = tran[U_SCALEZ];
-        
-        return new AffineTransformation(m);    
+        return AffineTransformation.getScaleInstance(new double[]{tran[U_SCALEX],
+                                                                    tran[U_SCALEY],
+                                                                    tran[U_SCALEY]});    
     }
 
     public Transformation scale(double alpha) {
@@ -432,6 +443,116 @@ public class AffineTransformation implements InterpolateableTransformation,
 
     public Transformation createInverse() {
         return new AffineTransformation(inverseMatrix, matrix);
+    }
+    
+    public static AffineTransformation getTranslateInstance(double[] transXYZ) {
+        double[] m = new double[12];  
+        Arrays.fill(m, 0);
+        
+        m[0] = 1;
+        m[5] = 1;
+        m[10] = 1;
+        
+        m[3] = transXYZ[0];
+        m[7] = transXYZ[1];
+        m[11] = transXYZ[2];
+        
+        return new AffineTransformation(m);  
+    }
+    
+    /**
+     * Die gesamte Rotation <code>R</code> setzt sich aus der Rotation
+     * setzt sich aus der Rotation um die X-, Y- und Z-Achse
+     * zusammen.
+     * 
+     * <pre>
+     *       / 1               0               0               \
+     * Rx =  | 0               Cos(rotXYZ[0])  -Sin(rotXYZ[0]) |
+     *       \ 0               Sin(rotXYZ[0]) Cos[rotXYZ[0])   /
+     * 
+     *       / Cos(rotXYZ[1])  0               Sin(rotXYZ[1])  \
+     * Ry =  | 0               1               0               |
+     *       \ -Sin(rotXYZ[1]) 0               Cos(rotXYZ[1])  /
+     * 
+     *       / Cos(rotXYZ[2])  -Sin(rotXYZ[2])  0              \
+     * Rz =  | Sin(rotXYZ[2]) Cos(rotXYZ[2])    0              |
+     *       \ 0               0                1              /
+     * 
+     * R  = Rx.Ry.Rz
+     * </pre>
+     * 
+     * 
+     * 
+     * @param rotXYZ die Winkel um die Rotiert werden soll. <code>rotXYZ[0]</code>
+     *                Rotation um die x-Achse, <code>rotXYZ[1]</code> Rotation um die
+     *                y-Achse und <code>rotXYZ[2]</code> Rotation um die z-Achse.
+     *                Dabei wird die Rotation um die z-Achse zuerst ausgeführt. Die
+     *                Rotation um die x-Achse kommt zum Schluß. (Kardanwinkel.)
+     * 
+     */
+    public static AffineTransformation getRotateInstance(double[] rotXYZ) {
+        double[] m = new double[12];
+        Arrays.fill(m, 0);
+        m[0] = Math.cos(rotXYZ[1])*Math.cos(rotXYZ[2]);
+        m[1] = -Math.cos(rotXYZ[1])*Math.sin(rotXYZ[2]);
+        m[2] = Math.sin(rotXYZ[1]);
+        m[4] = Math.cos(rotXYZ[2])*Math.sin(rotXYZ[0])*Math.sin(rotXYZ[1]) +
+               Math.cos(rotXYZ[0])*Math.sin(rotXYZ[2]);
+        m[5] = -Math.sin(rotXYZ[0])*Math.sin(rotXYZ[1])*Math.sin(rotXYZ[2]) +
+               Math.cos(rotXYZ[0])*Math.cos(rotXYZ[2]);
+        m[6] = -Math.cos(rotXYZ[1])*Math.sin(rotXYZ[0]);
+        m[8] = -Math.cos(rotXYZ[0])*Math.cos(rotXYZ[2])*Math.sin(rotXYZ[1]) +
+               Math.sin(rotXYZ[0])*Math.sin(rotXYZ[2]);
+        m[9] = Math.cos(rotXYZ[0])*Math.sin(rotXYZ[1])*Math.sin(rotXYZ[2]) +
+               Math.cos(rotXYZ[2])*Math.sin(rotXYZ[0]);
+        m[10] = Math.cos(rotXYZ[0])*Math.cos(rotXYZ[1]);
+        
+        
+        return new AffineTransformation(m); 
+    }
+    
+    public static AffineTransformation getScaleInstance(double[] scaleXYZ) {
+        double[] m = new double[12];  
+        Arrays.fill(m, 0);
+        
+        m[0] = scaleXYZ[0];
+        m[5] = scaleXYZ[1];
+        m[10] = scaleXYZ[2];
+        
+        return new AffineTransformation(m);      
+    }
+    
+    /**
+     * Die Scherungsmatrix <code>S</code> sieht folgendermaßen aus.
+     * 
+     * <pre>
+     *         / 1   shear[0]   shear[1]  \
+     *   S =   | 0   1          shear[2]  |
+     *         \ 0   0          1         /
+     * 
+     * 
+     * </pre>
+     * 
+     * @param shear[] mit Sxy = <code>shear[0]</code>, 
+     *                     Sxz = <code>shear[1]</code> und 
+     *                     Syz = <code>shear[2]</code>
+     * 
+     * @return AffineTransformation mit der entsprechenden Scherung.
+     * 
+     */
+    public static AffineTransformation getShearInstance(double[] shear) {
+        double[] m = new double[12];  
+        Arrays.fill(m, 0);
+        
+        m[0] = 1;
+        m[5] = 1;
+        m[10] = 1;
+        
+        m[1] = shear[0];
+        m[2] = shear[1];
+        m[6] = shear[2];
+        
+        return new AffineTransformation(m);    
     }
     
     public Image transform(Image source) {
@@ -687,59 +808,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         return buffer.toString();
     }
     
-    
-    
-    
-    
-    
-    public static void main(String[] args) {
-        double[][] m0 = {{7.54204, 17.6748, 0., 23.}, {1.39266, -26.0827, 5.11764, 
-    34.}, {2.27556, -42.618, -3.13205, 65.}, {0., 0., 0., 1.}};
-    
-    
-        double[] matrix = new double[12];
-        int pos = 0;
-        for (int i  = 0; i < 3; i++) {
-            for (int j = 0; j < 4; j++) {
-                matrix[pos] = m0[i][j];
-                ++pos;
-            }
-        }
-        
-        
-
-    
-        AffineTransformation transform = new AffineTransformation(matrix);
-        System.out.println(transform);  
-        
-        System.out.println("Rotation:");
-        System.out.println(transform.getRotationTransformation());
-        
-        System.out.println("Translation:");
-        System.out.println(transform.getTranslateTransformation());
-        
-        System.out.println("Skalierung:");
-        System.out.println(transform.getScaleTransformation()); 
-        
-        System.out.println("Scherung:");
-        System.out.println(transform.getShearTransformation());                       
-        
-    }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
