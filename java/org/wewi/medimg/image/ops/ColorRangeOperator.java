@@ -4,20 +4,22 @@
  */
 package org.wewi.medimg.image.ops;
 
+import org.wewi.medimg.image.ColorRange;
+
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class MinMaxOperator implements UnaryOperator {
+public class ColorRangeOperator implements UnaryOperator {
     private boolean firstCall = true;
     
     private int min, max;
     private int calls = 0;
 
 	/**
-	 * Constructor for MinMaxOperator.
+	 * Constructor for ColorRangeOperator.
 	 */
-	public MinMaxOperator() {
+	public ColorRangeOperator() {
 		super();
 	}
 
@@ -44,6 +46,10 @@ public class MinMaxOperator implements UnaryOperator {
     
     public int getMaximum() {
         return max;    
+    }
+    
+    public ColorRange getColorRange() {
+        return new ColorRange(min, max);    
     }
     
     public int getCalls() {
