@@ -63,5 +63,45 @@ public interface Image extends ImageGeometry, ImageAccess, Nullable, Cloneable, 
      */
     public Object clone();
     
+    //Additional Methods for refactoring////////////////////////////////////////
+    
+    public void setColor(int pos, byte color);
+    
+    public void setColor(int pos, short color);
+    
+    public void setColor(int pos, int color);
+    
+    public void setColor(int pos, long color);
+    
+    public void setColor(int pos, float color);
+    
+    public void setColor(int pos, double color);
+    
+    public byte getByteColor(int pos);
+    
+    public short getShortColor(int pos);
+    
+    public int getIntColor(int pos);
+    
+    public long getLongColor(int pos);
+    
+    public float getFloatColor(int pos);
+    
+    public double getDoubleColor(int pos);
+    
+    public void fill(byte color);
+    
+    public void fill(short color);
+    
+    public void fill(int color);
+    
+    public void fill(long color);
+    
+    public void fill(float color);
+    
+    public void fill(double color);
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
 }
 

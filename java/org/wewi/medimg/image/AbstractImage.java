@@ -26,18 +26,18 @@ public abstract class AbstractImage extends RowMajorImageGeometry
         }
         
         public int next() {
-            return data.get(pos++);
+            return data.getIntValue(pos++);
         }
         
         public int next(int[] p) {
-            int c = data.get(pos);
+            int c = data.getIntValue(pos);
             getCoordinates(pos, p);
             ++pos;
             return c;
         }
         
         public int next(double[] p) {
-            int c = data.get(pos);
+            int c = data.getIntValue(pos);
             getCoordinates(pos, p);
             ++pos;
             return c;
@@ -53,7 +53,7 @@ public abstract class AbstractImage extends RowMajorImageGeometry
     } 
     /**************************************************************************/
     
-    private DiscreteData data;
+    private ImageData data;
     private AbstractImageHeader header;
     
     private ColorConversion colorConversion; 
@@ -71,7 +71,7 @@ public abstract class AbstractImage extends RowMajorImageGeometry
     public AbstractImage(Dimension dim) {
         super(dim);
         header = new AbstractImageHeader(this);
-        data = createDiscreteData(size);
+        data = createImageData(size);
         colorConversion = new GreyColorConversion();
     }
     
@@ -87,49 +87,49 @@ public abstract class AbstractImage extends RowMajorImageGeometry
         super.init(dim);
         this.header = header;
         
-        data = createDiscreteData(size);  
+        data = createImageData(size);  
     }  
     
-    protected abstract DiscreteData createDiscreteData(int size);    
+    protected abstract ImageData createImageData(int size);    
    
     public int getColor(int x, int y, int z) {
-        return data.get(getPosition(x, y, z));
+        return data.getIntValue(getPosition(x, y, z));
     }
     
     public int getIntColor(int x, int y, int z) {
-        return data.getInt(getPosition(x, y, z));
+        return data.getIntValue(getPosition(x, y, z));
     }
     
     public double getDoubleColor(int x, int y, int z) {
-        return data.getDouble(getPosition(x, y, z));
+        return data.getDoubleValue(getPosition(x, y, z));
     }
     
     public int getColor(int pos) {
-        return data.get(pos);
+        return data.getIntValue(pos);
     }
     
     public int getIntColor(int pos) {
-        return data.getInt(pos);
+        return data.getIntValue(pos);
     }
     
     public double getDoubleColor(int pos) {
-        return data.getDouble(pos);
+        return data.getDoubleValue(pos);
     }
     
     public void setColor(int x, int y, int z, int color) {
-        data.set(getPosition(x, y, z), color);
+        data.setValue(getPosition(x, y, z), color);
     }
     
     public void setColor(int x, int y, int z, double color) {
-        data.set(getPosition(x, y, z), color);
+        data.setValue(getPosition(x, y, z), color);
     }
     
     public void setColor(int pos, int color) {
-        data.set(pos, color);
+        data.setValue(pos, color);
     } 
     
     public void setColor(int pos, double color) {
-        data.set(pos, color);
+        data.setValue(pos, color);
     }
 
     public void resetColor(int color) {
@@ -139,6 +139,84 @@ public abstract class AbstractImage extends RowMajorImageGeometry
     public void resetColor(double color) {
         data.fill(color);     
     }
+    
+    //New Methods for refactoring //////////////////////////////////////////////
+    
+    public void setColor(int pos, byte color) {
+        data.setValue(pos, color);
+    }
+    
+    public void setColor(int pos, short color) {
+        data.setValue(pos, color);
+    }
+    
+    //public void setColor(int pos, int color) {
+    //    data.setValue(pos, color);
+    //}
+    
+    public void setColor(int pos, long color) {
+        data.setValue(pos, color);
+    }
+    
+    public void setColor(int pos, float color) {
+        data.setValue(pos, color);
+    }
+    
+    //public void setColor(int pos, double color) {
+    //    data.setValue(pos, color);
+    //}
+    
+    public byte getByteColor(int pos) {
+        return data.getByteValue(pos);
+    }
+    
+    public short getShortColor(int pos) {
+        return data.getShortValue(pos);
+    }
+    
+    //public int getIntColor(int pos) {
+    //    return data.getIntValue(pos);
+    //}
+    
+    public long getLongColor(int pos) {
+        return data.getLongValue(pos);
+    }
+    
+    public float getFloatColor(int pos) {
+        return data.getFloatValue(pos);
+    }
+    
+    //public double getDoubleColor(int pos) {
+    //    return data.getDoubleValue(pos);
+    //}
+    
+    public void fill(byte color) {
+        data.fill(color);
+    }
+    
+    public void fill(short color) {
+        data.fill(color);
+    }
+    
+    public void fill(int color) {
+        data.fill(color);
+    }
+    
+    public void fill(long color) {
+        data.fill(color);
+    }
+    
+    public void fill(float color) {
+        data.fill(color);
+    }
+    
+    public void fill(double color) {
+        data.fill(color);  
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     
     public boolean isNull() {
         return false;

@@ -221,5 +221,93 @@ public final class NullImage implements Image, Nullable {
     public double getDoubleColor(int x, int y, int z) {
         return 0;
     }
+
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, byte)
+     */
+    public void setColor(int pos, byte color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, short)
+     */
+    public void setColor(int pos, short color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, long)
+     */
+    public void setColor(int pos, long color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, float)
+     */
+    public void setColor(int pos, float color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getByteColor(int)
+     */
+    public byte getByteColor(int pos) {
+        return 0;
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getShortColor(int)
+     */
+    public short getShortColor(int pos) {
+        return 0;
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getLongColor(int)
+     */
+    public long getLongColor(int pos) {
+        return 0;
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getFloatColor(int)
+     */
+    public float getFloatColor(int pos) {
+        return 0;
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(byte)
+     */
+    public void fill(byte color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(short)
+     */
+    public void fill(short color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(int)
+     */
+    public void fill(int color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(long)
+     */
+    public void fill(long color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(float)
+     */
+    public void fill(float color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(double)
+     */
+    public void fill(double color) {
+    }
     
 }

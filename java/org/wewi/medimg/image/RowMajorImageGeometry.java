@@ -164,4 +164,11 @@ public abstract class RowMajorImageGeometry implements ImageGeometry {
         return buffer.toString();
     }    
 
+    //Additional methods for refactoring////////////////////////////////////////
+    
+    
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
 }

@@ -32,11 +32,7 @@ public final class ShortImage extends AbstractImage {
         super(minX, maxX, minY, maxY, minZ, maxZ);
     }    
      
-   
-    /**
-     * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
-     */
-    protected DiscreteData createDiscreteData(int size) {
+    protected ImageData createImageData(int size) {
         return new ShortData(size);
     }    
     

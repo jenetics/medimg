@@ -10,66 +10,95 @@ import java.util.Arrays;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class IntData implements DiscreteData {
+final class IntData implements ImageData {
     private int[] data;
 
     /**
-     * Constructor for IntData.
+     * Constructor for ByteData.
      */
     public IntData(int size) {
-        super();
         data = new int[size];
     }
+    
+    public byte getByteValue(int pos) {
+        return (byte)data[pos];
+    }
+    
+    public short getShortValue(int pos) {
+        return (short)data[pos];
+    }
 
-    /**
-     * @see org.wewi.medimg.image.DiscreteData#get(int)
-     */
-    public int get(int pos) {
+    public int getIntValue(int pos) {
         return data[pos];
     }
     
-    public int getInt(int pos) {
+    public long getLongValue(int pos) {
         return data[pos];
     }
     
-    public double getDouble(int pos) {
+    public float getFloatValue(int pos) {
         return data[pos];
     }
-
-    /**
-     * @see org.wewi.medimg.image.DiscreteData#set(int, int)
-     */
-    public void set(int pos, int value) {
+    
+    public double getDoubleValue(int pos) {
+        return data[pos];
+    }
+    
+    public void setValue(int pos, byte value) {
         data[pos] = value;
     }
-    
-    public void set(int pos, double value) {
+
+    public void setValue(int pos, double value) {
         data[pos] = (int)value;
     }
-    
-    /**
-     * @see org.wewi.medimg.image.DiscreteData#fill(int)
-     */
+
+    public void setValue(int pos, float value) {
+        data[pos] = (int)value;
+    }
+
+    public void setValue(int pos, int value) {
+        data[pos] = value;
+    }
+
+    public void setValue(int pos, long value) {
+        data[pos] = (int)value;
+    }
+
+    public void setValue(int pos, short value) {
+        data[pos] = value;
+    }
+
+    public void fill(byte value) {
+        Arrays.fill(data, value);
+    }
+
+    public void fill(double value) {
+        Arrays.fill(data, (int)value);
+    }
+
+    public void fill(float value) {
+        Arrays.fill(data, (int)value);
+    }
+
     public void fill(int value) {
         Arrays.fill(data, value);
-    } 
-    
-    public void fill(double value) {
-        Arrays.fill(data, (int)value);   
+    }
+
+    public void fill(long value) {
+        Arrays.fill(data, (int)value);
+    }
+
+    public void fill(short value) {
+        Arrays.fill(data, value);
     }
 
 
-    /**
-     * @see org.wewi.medimg.image.DiscreteData#copy(DiscreteData)
-     */
-    public void copy(DiscreteData target) {
+    public void copy(ImageData target) {
         if (!(target instanceof IntData)) {
             return;    
         }
         
         IntData t = (IntData)target;
-        
-        System.arraycopy(data, 0, t.data, 0, t.data.length);
+        System.arraycopy(data, 0, t.data, 0, t.data.length);        
     }
-
 }

@@ -1,5 +1,6 @@
 /**
- * Created on 22.10.2002 00:03:26
+ * DoubleData.java
+ * Created on 13.06.2003
  *
  */
 package org.wewi.medimg.image;
@@ -10,34 +11,34 @@ import java.util.Arrays;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-final class ByteData implements ImageData {
-    private byte[] data;
+final class DoubleData implements ImageData {
+    private double[] data;
 
     /**
      * Constructor for ByteData.
      */
-    public ByteData(int size) {
-        data = new byte[size];
+    public DoubleData(int size) {
+        data = new double[size];
     }
     
     public byte getByteValue(int pos) {
-        return data[pos];
+        return (byte)data[pos];
     }
     
     public short getShortValue(int pos) {
-        return data[pos];
+        return (short)data[pos];
     }
 
     public int getIntValue(int pos) {
-        return data[pos];
+        return (int)data[pos];
     }
     
     public long getLongValue(int pos) {
-        return data[pos];
+        return (long)data[pos];
     }
     
     public float getFloatValue(int pos) {
-        return data[pos];
+        return (float)data[pos];
     }
     
     public double getDoubleValue(int pos) {
@@ -98,8 +99,7 @@ final class ByteData implements ImageData {
             return;    
         }
         
-        ByteData t = (ByteData)target;
+        DoubleData t = (DoubleData)target;
         System.arraycopy(data, 0, t.data, 0, t.data.length);        
     }
-
 }
