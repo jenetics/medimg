@@ -51,5 +51,9 @@ public class IntegerParameterIterator implements ParameterIterator {
 	public void remove() {
         throw new UnsupportedOperationException();
 	}
+    
+    public Object clone() {
+        return new IntegerParameterIterator(name, start, stop, stride);    
+    }
 
 }

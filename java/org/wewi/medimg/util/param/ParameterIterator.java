@@ -10,6 +10,6 @@ import java.util.Iterator;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public interface ParameterIterator extends Iterator {
-
+public interface ParameterIterator extends Iterator, Cloneable {
+    public Object clone();
 }
