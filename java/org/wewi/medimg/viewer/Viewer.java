@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -279,11 +281,11 @@ public class Viewer extends JFrame implements Singleton,
         return logger;    
     }
     
-    public void addLoggerHandler(Handler handler) {
+    public synchronized void addLoggerHandler(Handler handler) {
         logger.addHandler(handler);
     }
     
-    public void removeLoggerHandler(Handler handler) {
+    public synchronized void removeLoggerHandler(Handler handler) {
         logger.removeHandler(handler);
     }
         
@@ -294,7 +296,7 @@ public class Viewer extends JFrame implements Singleton,
      * 
      * @param command Das Öffnen-Kommando
      */
-    public void setOpenCommand(Command command) {
+    public synchronized void setOpenCommand(Command command) {
         openCommand = command;
     }
     
@@ -305,7 +307,9 @@ public class Viewer extends JFrame implements Singleton,
 	 * @return Öffnene-Kommando
 	 */
     public Command getOpenCommand() {
-        return openCommand;
+        synchronized (openCommand) {
+            return openCommand;
+        }
     }
     
     /**
@@ -314,7 +318,7 @@ public class Viewer extends JFrame implements Singleton,
      * 
      * @param command Das Speichern-Kommando
      */
-    public void setSaveCommand(Command command) {
+    public synchronized void setSaveCommand(Command command) {
         saveCommand = command;
     }
     
@@ -325,7 +329,9 @@ public class Viewer extends JFrame implements Singleton,
      * @return Speichern-Kommando
      */    
     public Command getSaveCommand() {
-        return saveCommand;
+        synchronized (saveCommand) {
+            return saveCommand;
+        }
     }
     
     /**
@@ -334,7 +340,7 @@ public class Viewer extends JFrame implements Singleton,
      * 
      * @param command Das Speichern als-Kommando
      */    
-    public void setSaveAsCommand(Command command) {
+    public synchronized void setSaveAsCommand(Command command) {
         saveAsCommand = command;
     }
     
@@ -345,14 +351,16 @@ public class Viewer extends JFrame implements Singleton,
      * @return Speichern als-Kommando
      */    
     public Command getSaveAsCommand() {
-        return saveAsCommand;
+        synchronized (saveAsCommand) {
+            return saveAsCommand;
+        }
     }
     
-    public void addViewerState(StatePanelEntry state) {
+    public synchronized void addViewerState(StatePanelEntry state) {
         statePanel.add(state);
     }
     
-    public void removeViewerState(StatePanelEntry state) {
+    public synchronized void removeViewerState(StatePanelEntry state) {
         statePanel.remove(state);
     }
     
@@ -363,11 +371,49 @@ public class Viewer extends JFrame implements Singleton,
      * 
      * @param frame ViewerDesktopFrame der hinzugefügt wird.
      */
-    public void addViewerDesktopFrame(ViewerDesktopFrame frame) {
+    public synchronized void addViewerDesktopFrame(ViewerDesktopFrame frame) {
         desktopPane.add(frame);
         frame.addComponentListener(scrollPanelHelper);
         frame.addInternalFrameListener(this);
         frame.show();
+    }
+    
+    public void addViewerDesktopFrame(ViewerDesktopFrame frame, Point pos, Dimension size) {
+        desktopPane.add(frame);
+        frame.addComponentListener(scrollPanelHelper);
+        frame.addInternalFrameListener(this);
+        frame.show();
+           
+        frame.setLocation(pos);
+        frame.setSize(size);
+    }
+    
+    public synchronized void addViewerDesktopFrame(ViewerDesktopFrame frame, Point pos) {
+        desktopPane.add(frame);
+        frame.addComponentListener(scrollPanelHelper);
+        frame.addInternalFrameListener(this);
+        frame.show();
+        
+        frame.setLocation(pos);    
+    }
+    
+    public synchronized void addViewerDesktopFrame(ViewerDesktopFrame frame, Dimension size) {
+        addViewerDesktopFrame(frame);
+        frame.setSize(size);    
+    }
+    
+    public void addImageViewerSynchronizer(ImageViewerSynchronizer ivs) {
+        int size = ivs.size();
+        ImageViewer[] viewer = new ImageViewer[size];
+        ivs.getImageViewer(viewer);
+        Point[] location = new Point[size];
+        ivs.getImageViewerLocation(location);
+        Dimension[] dim = new Dimension[size];
+        ivs.getImageViewerSize(dim);
+        
+        for (int i = 0; i < size; i++) {
+            addViewerDesktopFrame(viewer[i], location[i], dim[i]);    
+        }
     }
     
     /**

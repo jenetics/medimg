@@ -1,4 +1,4 @@
-/*
+/**
  * ButtonPanel.java
  *
  * Created on March 26, 2002, 1:37 PM

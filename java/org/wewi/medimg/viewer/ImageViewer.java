@@ -1,4 +1,4 @@
-/*
+/**
  * ImageViewer.java
  *
  * Created on March 28, 2002, 11:31 AM
@@ -26,7 +26,7 @@ import org.wewi.medimg.image.VoxelSelectorListener;
  * @version 0.1
  */
 public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
-    private Vector observers;
+    private Vector listener;
 
     protected Image image;
     protected int slice;
@@ -36,6 +36,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     
     private ColorConversion cc = null;
     
+    //Navigation-Panel-Kommandos
     private Command prevCommand;
     private Command nextCommand;
     private Command firstCommand;
@@ -46,13 +47,15 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     //Menü-Kommandos
     private Command saveCommand;
     
+    private long id = System.currentTimeMillis();
+    
     public ImageViewer(String title, Image image) {
         super(title, true, true, true, true);
         this.image = image;
         
         frameTitle = title;
         
-        observers = new Vector();   
+        listener = new Vector();   
         slice = image.getMinZ();
         initFrame();
     }
@@ -61,9 +64,9 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         super(title, true, true, true, true);
         this.cc = cc;
         this.image = image;//new TransformableImage(image);
-        observers = new Vector();   
+        listener = new Vector();   
         slice = image.getMinZ();
-        initFrame();        
+        initFrame();       
     }    
     
     private void initFrame() {
@@ -87,58 +90,6 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         saveCommand = new SaveCommand(Viewer.getInstance(), image);
          
         setSlice(0);
-    }
-    
-    public synchronized void addImageViewerListener(ImageViewerListener o) {
-        observers.add(o);
-    }
-    
-    public synchronized void removeImageViewerListener(ImageViewerListener o) {
-        observers.remove(o);
-    }
-    
-    protected void viewerEventOccurred(ImageViewerEvent event) {
-        Vector o = (Vector)observers.clone();
-        ImageViewerListener observer;
-        for (Iterator it = o.iterator(); it.hasNext();) {
-            observer = (ImageViewerListener)it.next();
-            observer.update(event);
-        }
-    }
-    
-    public void setSlice(int s) {
-        if (s != slice) {
-            viewerEventOccurred(new ImageViewerEvent(this));    
-        }
-        
-        slice = s;
-        imagePanel.setSlice(slice);
-        
-        setTitle("(" + slice + "-" + image.getMaxZ() + ") " + frameTitle);
-    }
-    
-    public int getSlice() {
-        return slice;
-    }
-    
-    public void repaintImage() {
-        setSlice(getSlice());    
-    }
-    
-    public Image getImage() {
-        return image;
-    }
-    
-    public void setImageCanvas(ImagePanel.ImageCanvas canvas) {
-        imagePanel.setImageCanvas(canvas);    
-    }
-    
-    public synchronized void addVoxelSelectorListener(VoxelSelectorListener listener) {
-        imagePanel.addVoxelSelectorListener(listener);
-    }
-    
-    public synchronized void removeVoxelSelectorListener(VoxelSelectorListener listener) {
-        imagePanel.removeVoxelSelectorListener(listener);    
     }
     
     private void setCommands() {
@@ -165,7 +116,64 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         
         Viewer v = Viewer.getInstance();
         v.setSaveCommand(saveCommand);        
+    }    
+    
+    public synchronized void addImageViewerListener(ImageViewerListener l) {
+        listener.add(l);
     }
+    
+    public synchronized void removeImageViewerListener(ImageViewerListener l) {
+        listener.remove(l);
+    }
+    
+    /**
+     * Diese Listener werden durchgereicht zum ImagePanel.
+     */
+    public synchronized void addVoxelSelectorListener(VoxelSelectorListener listener) {
+        imagePanel.addVoxelSelectorListener(listener);
+    }
+    
+    public synchronized void removeVoxelSelectorListener(VoxelSelectorListener listener) {
+        imagePanel.removeVoxelSelectorListener(listener);    
+    }    
+    
+    protected void notifyImageViewerListener(ImageViewerEvent event) {
+        Vector l;
+        synchronized (listener) {
+            l = (Vector)listener.clone();
+        }
+        ImageViewerListener observer;
+        for (Iterator it = l.iterator(); it.hasNext();) {
+            observer = (ImageViewerListener)it.next();
+            observer.update(event);
+        }
+    }
+    
+    public synchronized void setSlice(int s) {
+        slice = s;
+        imagePanel.setSlice(slice);
+        
+        setTitle("(" + slice + "-" + image.getMaxZ() + ") " + frameTitle);
+        
+        notifyImageViewerListener(new ImageViewerEvent(this, s, false));
+    }
+    
+    public int getSlice() {
+        return slice;
+    }
+    
+    public void repaintImage() {
+        setSlice(getSlice());    
+    }
+    
+    public Image getImage() {
+        return image;
+    }
+    
+    public synchronized void setImageCanvas(ImagePanel.ImageCanvas canvas) {
+        imagePanel.setImageCanvas(canvas);    
+    }
+    
    
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
@@ -181,6 +189,8 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         imagePanel = null;
         image = null;
         setNullCommands();
+        
+        notifyImageViewerListener(new ImageViewerEvent(this, getSlice(), true));
     }   
     
     public void keyPressed(KeyEvent event) {
@@ -213,5 +223,34 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         }
 
     }
+    
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;    
+        }    
+        if (!(o instanceof ImageViewer)) {
+            return false;    
+        }
+        
+        ImageViewer iv = (ImageViewer)o;
+        
+        return id == iv.id;
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
