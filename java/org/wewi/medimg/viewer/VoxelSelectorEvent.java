@@ -2,11 +2,12 @@
  * Created on 11.09.2002
  *
  */
-package org.wewi.medimg.image;
+package org.wewi.medimg.viewer;
 
 import java.awt.Point;
 import java.util.EventObject;
 
+import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.geom.Point3D;
 
 /**
