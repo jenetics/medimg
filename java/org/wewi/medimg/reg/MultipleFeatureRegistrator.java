@@ -121,8 +121,10 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
     private Transformation interpolate(InterpolateableTransformation[] transformation, double[] weight) {
         InterpolateableTransformation trans = transformation[0];
         double relationshipWeight;
+        double weightSum = weight[0];
         for (int i = 1; i < weight.length; i++) {
-            relationshipWeight = ((weight[i]) / (weight[i - 1] + weight[i]));
+            weightSum += weight[i];
+            relationshipWeight = ((weight[i]) / weightSum);
             trans = trans.interpolate(transformation[i], relationshipWeight);
         }
         System.out.println("********************************");

@@ -43,21 +43,12 @@ public class ConvolutionFilter extends ImageFilter {
         final int maxY = image.getMaxY();
         final int minZ = image.getMinZ();
         Image tempImage = new MarginImage(image, kernel.getMargin());
+        KernelMaskSum maskSum = new KernelMaskSum(tempImage, minZ, kernel);
         
-        int bias = kernel.getBias();
-        int divisor = kernel.getDivisor();
-        int kernelSum = 0;
+
         for (int i = minX; i <= maxX; i++) {
-            for (int j = minY; j <= maxY; j++) {
-                
-                kernelSum = 0;
-                for (int k = -kernel.getMargin(), n = kernel.getMargin(); k <= n; k++) {
-                    for (int l = -kernel.getMargin(), m = kernel.getMargin(); l <= m; l++) {
-                        kernelSum += kernel.getValue(k, l) * tempImage.getColor(i+k, j+l, minZ);       
-                    } 
-                }
-                 
-                image.setColor(i, j, minZ, (kernelSum/divisor) + bias);   
+            for (int j = minY; j <= maxY; j++) {                
+                image.setColor(i, j, minZ, (int)maskSum.getKernelMaskSum(i, j));  
             }
         }   
     }

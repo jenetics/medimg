@@ -4,52 +4,38 @@
  */
 package org.wewi.medimg.image;
 
-import java.io.File;
 
-import org.wewi.medimg.image.io.*;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
 public class MarginImage extends AbstractImage {
+    private int slice;
+    
+    public MarginImage(Image image, int slice, int margin) {
+        super(image.getMinX()-margin, image.getMaxX()+margin,
+               image.getMinY()-margin, image.getMaxY()+margin, 
+               image.getMinZ(), slice);
+         
+        this.slice = slice;
+         
+        //Kopieren des Bildinhaltes     
+        for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
+            for (int j = image.getMinY(), m = image.getMaxY(); j <=m; j++) {
+                setColor(i, j, slice, image.getColor(i, j, slice));    
+            }        
+        }
+        
+        initMargin(image, margin);        
+    }
+    
 
 	/**
 	 * Constructor for MarginImage.
 	 */
 	public MarginImage(Image image, int margin) {
-		super(image.getMinX()-margin, image.getMaxX()+margin,
-               image.getMinY()-margin, image.getMaxY()+margin, 
-               image.getMinZ(), image.getMinZ());
-         
-        //Kopieren des Bildinhaltes     
-        int minZ = image.getMinZ(); 
-        for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
-            for (int j = image.getMinY(), m = image.getMaxY(); j <=m; j++) {
-                setColor(i, j, minZ, image.getColor(i, j, minZ));    
-            }        
-        }
-        
-        initMargin(image, margin);
-
-        /*
-        int minX = getMinX();
-        int maxX = getMaxX();
-        int minY = getMinY();
-        int maxY = getMaxY();
-        int imgMinX = image.getMinX();
-        int imgMinY = image.getMinY();
-        int imgMinZ = image.getMinZ();
-        int imgSizeX = image.getMaxX() - image.getMinX() + 1;
-        int imgSizeY = image.getMaxY() - image.getMinY() + 1;
-        for (int i = 0, n = maxX-minX; i <= n; i++) {
-            for (int j = 0, m = maxY-minY; j <=m; j++) {
-                setColor(i+minX, j+minY, 0, image.getColor(((i-minX)%imgSizeX)+imgMinX,
-                                                           ((j-minY)%imgSizeY)+imgMinY, imgMinZ));    
-            }        
-        } 
-        */       
-                   
+        this(image, image.getMinZ(), margin);              
 	}
 
 	/**
@@ -61,12 +47,11 @@ public class MarginImage extends AbstractImage {
 	}
     
     protected void initMargin(Image image, int margin) {
-        int minZ = image.getMinZ();
         //"Einfärben" des oberen Randes durch Spiegeln an der Kante
         int maxY = image.getMaxY();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) { 
-                setColor(i, maxY+1+j, minZ, image.getColor(i, maxY-j, minZ));           
+                setColor(i, maxY+1+j, slice, image.getColor(i, maxY-j, slice));           
             }
         }
         
@@ -74,7 +59,7 @@ public class MarginImage extends AbstractImage {
         int minY = image.getMinY();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) { 
-                setColor(i, minY-1-j, minZ, image.getColor(i, minY+j, minZ));           
+                setColor(i, minY-1-j, slice, image.getColor(i, minY+j, slice));           
             }
         }
         
@@ -82,7 +67,7 @@ public class MarginImage extends AbstractImage {
         int minX = image.getMinX();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinY(), n = image.getMaxY(); i <= n; i++) {
-                setColor(minX-1-j, i, minZ, image.getColor(minX+j, i, minZ));    
+                setColor(minX-1-j, i, slice, image.getColor(minX+j, i, slice));    
             }   
         }
         
@@ -90,17 +75,17 @@ public class MarginImage extends AbstractImage {
         int maxX = image.getMaxX();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinY(), n = image.getMaxY(); i <= n; i++) {
-                setColor(maxX+1+j, i, minZ, image.getColor(maxX-j, i, minZ));    
+                setColor(maxX+1+j, i, slice, image.getColor(maxX-j, i, slice));    
             }   
         } 
         
         //Einfärben der Ecken
         for (int i = 0; i < margin; i++) {
             for (int j = 0; j < margin; j++) {
-                setColor(minX-1-i, minY-1-j, minZ, image.getColor(minX+i, minY+j, minZ));
-                setColor(maxX+1+i, maxY+1+j, minZ, image.getColor(maxX-i, maxY-j, minZ));
-                setColor(maxX+1+i, minY-1-j, minZ, image.getColor(maxX-i, minY+j, minZ));
-                setColor(minX-1-i, maxY+1+j, minZ, image.getColor(minY+i, maxY-j, minZ));   
+                setColor(minX-1-i, minY-1-j, slice, image.getColor(minX+i, minY+j, slice));
+                setColor(maxX+1+i, maxY+1+j, slice, image.getColor(maxX-i, maxY-j, slice));
+                setColor(maxX+1+i, minY-1-j, slice, image.getColor(maxX-i, minY+j, slice));
+                setColor(minX-1-i, maxY+1+j, slice, image.getColor(minY+i, maxY-j, slice));   
             }    
         }         
     }
@@ -121,7 +106,7 @@ public class MarginImage extends AbstractImage {
     
     
     
-    
+    /*
     public static void main(String[] args) {
         ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
                                            new File("../../data/nhead/t1.n3.rf20/image.0045.tif")); 
@@ -147,5 +132,6 @@ public class MarginImage extends AbstractImage {
         
         
     }
-
+    */
+    
 }

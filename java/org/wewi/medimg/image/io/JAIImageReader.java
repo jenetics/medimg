@@ -203,7 +203,7 @@ abstract class JAIImageReader extends ImageReader {
         }
         
         image = imageFactory.createImage(raster.getWidth(), raster.getHeight(), 1);
-image.setColorConversion(new FeatureColorConversion());
+//image.setColorConversion(new FeatureColorConversion());
         colorConversion = image.getColorConversion();         
         
         int[] pixel = new int[3];

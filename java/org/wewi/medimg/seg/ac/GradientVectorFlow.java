@@ -37,7 +37,7 @@ public class GradientVectorFlow extends ObservableAlgorithm
     private final double dx = 1;
     private final double dy = 1;    
     private final double MU = 0.1;
-    private final double dt = dx*dy/(15*MU);
+    private final double dt = dx*dy/(25*MU);
 
 
 	/**

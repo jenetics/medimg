@@ -85,7 +85,8 @@ public class Test {
             myStrategy.setImportance(Tissue.WHITE_MATTER, 0.0);
             myStrategy.setImportance(Tissue.SOFT_TISSUE, 0.0);
             myStrategy.setImportance(Tissue.ANGULAR_GYRUS, 0.0);*/
-        Registrator strategy = new PCARegistration();
+        PCARegistration strategy = new PCARegistration();
+        strategy.setAffinityMetric(myMetric);
         
         //Registrate reg = new Registrate(strategy, param);
         //System.out.println("Mist222222");
