@@ -123,7 +123,7 @@ public class ImageViewer extends ViewerDesktopFrame {
         return imagePanel.getColorConversion();
     }
     
-    private void initCommands() {
+    private void setCommands() {
         NavigationPanel np = Viewer.getInstance().getNavigationPanel();
         np.setNextCommand(nextCommand);
         np.setPrevCommand(prevCommand);
@@ -133,7 +133,7 @@ public class ImageViewer extends ViewerDesktopFrame {
         np.setNextNextCommand(nextNextCommand);        
     }
     
-    private void disposeCommands() {
+    private void setNullCommands() {
         NavigationPanel np = Viewer.getInstance().getNavigationPanel();
         np.setNextCommand(new NullCommand());
         np.setPrevCommand(new NullCommand());
@@ -146,23 +146,20 @@ public class ImageViewer extends ViewerDesktopFrame {
     ///////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////  
     public void focusGained(FocusEvent focusEvent) {
-        initCommands();
+        setCommands();
     }
     
     public void internalFrameActivated(InternalFrameEvent internalFrameEvent) {
-        initCommands();
+        setCommands();
     }
     
     public void internalFrameClosing(InternalFrameEvent internalFrameEvent) {
-        Viewer.getInstance().removeViewerDesktopFrame(this);
-        imagePanel = null;
-        image = null;
-        disposeCommands();
-        dispose();
     }
     
     public void internalFrameClosed(InternalFrameEvent internalFrameEvent) {
-        //removeListeners();
+        imagePanel = null;
+        image = null;
+        setNullCommands();
     }    
     
     

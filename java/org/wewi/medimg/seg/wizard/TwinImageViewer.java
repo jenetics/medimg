@@ -66,8 +66,6 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         rootPanel = new JPanel();
         getContentPane().setLayout(new GridLayout(1, 2));        
         
-        //addContainerListener(new ContainerListener() {});
-        
         imagePanel1 = new ImagePanel(image1);
         imagePanel2 = new ImagePanel(image2);
         conversion1 = imagePanel1.getColorConversion();
@@ -160,5 +158,13 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         imagePanel1.repaint();
         imagePanel2.repaint();
     }
+    
+    public void internalFrameClosed(InternalFrameEvent internalFrameEvent) {
+        imagePanel1 = null;
+        imagePanel2 = null;
+        image1 = null;
+        image2 = null;
+        setNullCommands();
+    }    
     
 }

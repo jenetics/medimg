@@ -20,9 +20,12 @@ import java.util.Properties;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.JDialog;
+import javax.swing.JInternalFrame;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameListener;
 import javax.swing.JMenuItem;
-import javax.swing.*;
 
 /**
  *
@@ -71,7 +74,6 @@ public class Viewer extends JFrame implements Singleton,
     public void addViewerDesktopFrame(ViewerDesktopFrame frame) {
         desktopPane.add(frame);
         frame.addInternalFrameListener(this);
-        //frame.pack();
         frame.show();
     }
     
@@ -237,19 +239,35 @@ public class Viewer extends JFrame implements Singleton,
                                                   
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // Add your handling code here:
-        TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-        new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
+        ImageFileChooser chooser = new ImageFileChooser();
+        chooser.setDialogTitle("Datensatz auswählen");
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
+        
+        int returnVal = chooser.showOpenDialog(this);
+        if(returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        
+        ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
+        String fileName = chooser.getSelectedFile().getAbsolutePath();
+        ImageReader reader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+                                                             new File(fileName));
         try {
             reader.read();
         } catch (Exception e) {
-            System.out.println("Viewer: " + e);
-        }
-        
+            System.err.println("Viewer.openMenuItemActionPerformed: " + e);
+            JOptionPane.showMessageDialog(this, "Kann Datei: \n" + fileName + "\n nicht öffnen", 
+                                                 "Fehler", JOptionPane.ERROR_MESSAGE);
+            return;
+        }     
+
         Image image = reader.getImage();
-        //ImageViewer iv = new ImageViewer("ImageViewer", image);
-        TwinImageViewer iv = new TwinImageViewer("Viewer", image, image);
+        ImageViewer iv = new ImageViewer(chooser.getSelectedFile().toString(), image);
+        int sizeX = image.getMaxX();
+        int sizeY = image.getMaxY();
+        iv.setPreferredSize(new Dimension(sizeX, sizeY));            
         iv.pack();
-        //addImageViewer(iv);
         addViewerDesktopFrame(iv);
         
     }//GEN-LAST:event_openMenuItemActionPerformed
@@ -297,6 +315,8 @@ public class Viewer extends JFrame implements Singleton,
     }
     
     public void internalFrameClosed(javax.swing.event.InternalFrameEvent internalFrameEvent) {
+        removeViewerDesktopFrame((ViewerDesktopFrame)internalFrameEvent.getSource());
+        System.out.println("" + desktopPane.getAllFrames().length);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
