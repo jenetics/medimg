@@ -18,14 +18,14 @@ public class FeatureColorConversion implements ColorConversion {
                                         Color.RED,
                                         Color.GREEN,
                                         Color.BLUE,
-                                        Color.ORANGE,
+                                        Color.BLACK,
                                         Color.PINK,
                                         Color.YELLOW,
                                         Color.CYAN,
                                         Color.LIGHT_GRAY,
                                         Color.GRAY,
                                         Color.DARK_GRAY,
-                                        Color.BLACK};
+                                        Color.ORANGE};
     private static final int colors = c.length;
     private static int[][] cc;
 

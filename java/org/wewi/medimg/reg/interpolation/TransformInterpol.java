@@ -6,9 +6,9 @@
 
 package org.wewi.medimg.reg.interpolation;
 
-import org.wewi.medimg.image.geom.transform.AffineTransform3D;
-import org.wewi.medimg.image.geom.transform.Transform;
 import org.wewi.medimg.image.geom.transform.TransformVector;
+import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.AffineTransform3D;
 /**
  *
  * @author  werner weiser

@@ -9,7 +9,6 @@ package org.wewi.medimg.reg.interpolation;
 
 
 
-
 /**
  *
  * @author  werner weiser

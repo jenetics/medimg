@@ -6,17 +6,10 @@
 
 package org.wewi.medimg.seg.validation;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Arrays;
 
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.RawImageWriter;
-import org.wewi.medimg.image.io.TIFFWriter;
 
 /**
  *

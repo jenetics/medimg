@@ -178,7 +178,9 @@ public class RegistrationWizard extends Wizard implements Observer, ReaderThread
     
     public void registrationStarted(RegistrationEvent event) {
         TissueColorConversion tcc = new TissueColorConversion();
-        imageViewer = new TwinImageViewer("Koregistriervorgang", imageData1, imageData2/*, tcc, tcc*/);
+        imageData1.setColorConversion(tcc);
+        imageData2.setColorConversion(tcc);
+        imageViewer = new TwinImageViewer("Koregistriervorgang", imageData1, imageData2);
         //imageViewer.setColorConversion1(tcc);
         //imageViewer.setColorConversion2(tcc);
         imageViewer.pack();
