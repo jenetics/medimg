@@ -11,20 +11,22 @@ import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.alg.AlgorithmIterator;
 import org.wewi.medimg.alg.ObservableAlgorithm;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.filter.BlurFilter;
 import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.SobelFilter;
 import org.wewi.medimg.image.geom.Neighborhood;
-import org.wewi.medimg.image.geom.Neighborhood2D4;
 import org.wewi.medimg.image.geom.Neighborhood2D8;
 import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.math.MathUtil;
+import org.wewi.medimg.viewer.ImageViewer;
+import org.wewi.medimg.viewer.Viewer;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
 public class SnakeGreedyMinimizer extends ObservableAlgorithm
-                                   implements Minimizer {
+                                   implements ContourMinimizer {
     
     private final class GreedyMinimizerIterator implements AlgorithmIterator {
         
@@ -56,7 +58,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
     public static final double ERROR_LIMIT = 0.01;
     public double ALPHA = 1;
     public double BETA = 1;
-    public double W_EDGE = 1;
+    public double GAMMA = 1;
     
     protected Image image;
     protected Image gradImage;
@@ -78,8 +80,19 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
                                         image.getMaxX(), image.getMaxY());
         
         gradImage = (Image)image.clone();
-        ImageFilter filter = new SobelFilter(gradImage);
+        ImageFilter filter = new SobelFilter(new BlurFilter(gradImage));
         filter.filter(); 
+        
+        ///////////////////////////////////////////////////////////////777
+        ImageViewer imageViewer = new ImageViewer("Gradientenbild", gradImage);
+        imageViewer.pack();
+        imageViewer.show();
+        
+        java.awt.Point pos = new java.awt.Point(0, 300);
+        java.awt.Dimension size = new java.awt.Dimension(300, 300);
+        
+        Viewer.getInstance().addViewerDesktopFrame(imageViewer, pos, size);        
+        //////////////////////////////////////////////////////////////////
 	}
     
     protected double innerEnergy(Point[] cp) {
@@ -174,7 +187,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         for (int i = 0, n = cp.length; i < n; i++) {
             g += gradImage.getColor(cp[i].getOrdinate(0), cp[i].getOrdinate(1), 0);        
         }
-        return -W_EDGE*(double)MathUtil.sqr(g);    
+        return -GAMMA*(double)MathUtil.sqr(g);    
     }
     
     private double energy(ActiveContour ac) {
@@ -225,10 +238,12 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
 	/**
 	 * @see org.wewi.medimg.seg.ac.Minimizer#minimize()
 	 */
-	public void minimize() {
+	public ActiveContour minimize() {
         for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNextIteration();) {
             it.nextIteration();    
-        }              
+        }
+        
+        return contour;              
 	}
 
 	/**
@@ -258,12 +273,12 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         this.BETA = BETA;
     }
     
-    public double getWE() {
-        return W_EDGE;
+    public double getGAMMA() {
+        return GAMMA;
     }
     
-    public void setWE(double we) {
-        W_EDGE = we;
+    public void setGAMMA(double we) {
+        GAMMA = we;
     }
 
 }

@@ -5,6 +5,7 @@
 package org.wewi.medimg.seg.ac;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Iterator;
@@ -36,6 +37,7 @@ public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas 
         
         Graphics2D graph = (Graphics2D)g;
         graph.setStroke(new BasicStroke(2f));
+        graph.setColor(Color.BLUE);
         
         ImagePanel.PointConverter pc = panel.getPointConverter();
         List basePoints = polygon.getBasePoints();

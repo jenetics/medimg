@@ -285,7 +285,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
             minimizer = new SnakeGreedyMinimizer(image, contour);
             minimizer.setALPHA(minimizerAlpha);
             minimizer.setBETA(minimizerBeta);
-            minimizer.setWE(minimizerOuterEnergyWeight);
+            minimizer.setGAMMA(minimizerOuterEnergyWeight);
             
             if (imageViewer != null) {
                 imageViewer.setImageCanvas(new ActivePolygonCanvasAdapter((ActivePolygon)contour));
@@ -309,7 +309,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         minimizerOuterEnergyWeight = (double)outerEnergySlider.getValue()/100d;
         outerEnergyWeigthLabel.setText("    \u00c4u\u00dfere Energie (We):    " + format.format(minimizerOuterEnergyWeight));
         if (minimizer != null) {
-            minimizer.setWE(minimizerOuterEnergyWeight);
+            minimizer.setGAMMA(minimizerOuterEnergyWeight);
         }
     }//GEN-LAST:event_outerEnergySliderStateChanged
 
@@ -346,7 +346,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         minimizer = new SnakeGreedyMinimizer(image, contour);
         minimizer.setALPHA(minimizerAlpha);
         minimizer.setBETA(minimizerBeta);
-        minimizer.setWE(minimizerOuterEnergyWeight);
+        minimizer.setGAMMA(minimizerOuterEnergyWeight);
         ait = minimizer.getAlgorithmIterator();
 
         if (imageViewer != null) {
