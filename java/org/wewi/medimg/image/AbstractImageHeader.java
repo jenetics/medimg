@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -97,6 +98,7 @@ class AbstractImageHeader implements ImageHeader {
      */
     private Element toXML(ColorConversion cc) {
         Element element = new Element("ColorConversion");
+        element.addContent(new Comment(cc.toString()));
         element.setAttribute("class", image.getColorConversion().getClass().getName());
         
         StringOutputStream sout = new StringOutputStream();
@@ -186,11 +188,15 @@ class AbstractImageHeader implements ImageHeader {
         
         Map.Entry entry;
         String key, value;
+        Element e;
         for (Iterator it = properties.iterator(); it.hasNext();) {
             entry = (Map.Entry)it.next();
             key = (String)entry.getKey();
             value = (String)entry.getValue();
-            element.addContent(new Element(key, value));
+            
+            e = new Element(key);
+            e.addContent(value);
+            element.addContent(e);
         }
         
         return element;
@@ -260,7 +266,7 @@ class AbstractImageHeader implements ImageHeader {
         //Einlesen der ImageProperties
         properties = toImageProperties(root.getChild("ImageProperties"));
         
-        //"Blowing up" the image to the right size.
+        //Inflate the image to the right size.
         image.init(dim, this); 
         image.setColorConversion(cc);
     }
@@ -302,12 +308,17 @@ class AbstractImageHeader implements ImageHeader {
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        /*
-        for (Enumeration e = properties.propertyNames(); e.hasMoreElements();) {
-            String name = (String)e.nextElement();
-            buffer.append(name).append(":").append(properties.getProperty(name)).append("\n");
-        }  
-        */          
+        
+        Map.Entry entry;
+        String key, value;
+        for (Iterator it = properties.iterator(); it.hasNext();) {
+            entry = (Map.Entry)it.next();
+            key = (String)entry.getKey();
+            value = (String)entry.getValue();
+            
+            buffer.append(key).append(":").append(value).append("\n");
+        }
+                  
         return buffer.toString();
     }
 
