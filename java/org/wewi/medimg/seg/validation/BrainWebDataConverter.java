@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 import org.wewi.medimg.image.GreyColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
+import org.wewi.medimg.image.IntImage;
 import org.wewi.medimg.image.ImageProperties;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.RawImageWriter;
@@ -114,7 +114,7 @@ public final class BrainWebDataConverter {
         try {
             //Reading the image
             System.out.println("Reading the image... (" + reader.toString() + ")");
-            Image image = new ImageData(MIN_X, MAX_X, MIN_Y, MAX_Y, MIN_Z, MAX_Z);
+            Image image = new IntImage(MIN_X, MAX_X, MIN_Y, MAX_Y, MIN_Z, MAX_Z);
             for (int k = MIN_Z; k <= MAX_Z; k++) {
                 for (int j = MIN_Y; j <= MAX_Y; j++) {
                     for (int i = MIN_X; i <= MAX_X; i++) {

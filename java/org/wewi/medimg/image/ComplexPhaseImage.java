@@ -20,7 +20,7 @@ public class ComplexPhaseImage extends ImageAdapter {
     public ComplexPhaseImage(ComplexImage cimage) {
         super();
         
-        image = new ImageData(cimage.getDimension());
+        image = new IntImage(cimage.getDimension());
         init(cimage);
     }
     

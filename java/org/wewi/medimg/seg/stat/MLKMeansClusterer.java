@@ -173,8 +173,11 @@ public class MLKMeansClusterer extends ObservableSegmenter
         colorRange =AnalyzerUtils.getColorRange(mrt);
         
         iterate(mrt, segimg);
-        
-        setImageProperties(segimg);
+        try {
+            setImageProperties(segimg);
+        } catch (Exception e) {
+            //Verursacht einen Fehler???
+        }
     }
     
     protected void setImageProperties(Image segimg) {

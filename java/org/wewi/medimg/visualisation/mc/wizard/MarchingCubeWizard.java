@@ -11,7 +11,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.viewer.ImageFileChooser;
@@ -284,7 +284,7 @@ public class MarchingCubeWizard extends Wizard {
         
         ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
         String fileName = chooser.getSelectedFile().getAbsolutePath();
-        imageReader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+        imageReader = readerFactory.createImageReader(IntImageFactory.getInstance(),
                                                                   new File(fileName));        
         imageFileNameTextField.setText(fileName);        
     }//GEN-LAST:event_chooseButtonActionPerformed

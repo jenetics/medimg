@@ -10,7 +10,7 @@ import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.util.param.DoubleParameterIterator;
 import org.wewi.medimg.util.param.ImageParameterIterator;
@@ -97,14 +97,14 @@ public class ScriptGenerator {
         ParameterIterator it1 = new IntegerParameterIterator("k", 6, 6, 1);
         ParameterIterator it2 = new DoubleParameterIterator("BETA", 0.0, 2, 0.2); 
         ParameterIterator it3 = new ImageParameterIterator("source.image", 
-                                                            ImageDataFactory.getInstance(),
+                                                            IntImageFactory.getInstance(),
                                                             TIFFReader.class,
                                                             new String[]{"X:/medimages/nhead/t1.n3.rf20", 
                                                                          "X:/medimages/nhead/t1.n5.rf20", 
                                                                          "X:/medimages/nhead/t1.n7.rf20",
                                                                          "X:/medimages/nhead/t1.n3.rf20"});
         ParameterIterator it4 = new ImageParameterIterator("model.image",
-                                                            ImageDataFactory.getInstance(),
+                                                            IntImageFactory.getInstance(),
                                                             TIFFReader.class,
                                                             new String[]{"X:/medimages/nhead/seg.model"});
                                                             

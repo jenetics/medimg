@@ -10,19 +10,19 @@ import org.wewi.medimg.util.Singleton;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class IntImageDataFactory implements ImageFactory, Singleton {
+public class ShortImageFactory implements ImageFactory, Singleton {
+    
+    private static ShortImageFactory singleton = null;
 
-    private static IntImageDataFactory singleton = null;
-
-    private IntImageDataFactory() {
+    private ShortImageFactory() {
     }
 
     /**
      * Liefert die einzige Instanz dieser Fabrik zurück
      */
-    public static synchronized IntImageDataFactory getInstance() {
+    public static synchronized ShortImageFactory getInstance() {
         if (singleton == null) {
-            singleton = new IntImageDataFactory();
+            singleton = new ShortImageFactory();
         }
         return singleton;
     }
@@ -31,13 +31,11 @@ public class IntImageDataFactory implements ImageFactory, Singleton {
      * Erzeugen eines neuen ImageData
      */
     public synchronized Image createImage(int maxX, int maxY, int maxZ) {
-        return new IntImageData(maxX, maxY, maxZ);
+        return new ShortImage(maxX, maxY, maxZ);
     }
     
-    /**
-     * Erzeugen eines neuen ImageData
-     */    
     public synchronized Image createImage(Dimension dim) {
-        return new IntImageData(dim);    
+        return new ShortImage(dim);    
     }
+
 }

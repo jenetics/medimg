@@ -9,7 +9,7 @@ package org.wewi.medimg.image.filter;
 import java.io.File;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 //import org.wewi.medimg.math.MathUtil;
@@ -94,7 +94,7 @@ public final class SobelFilter extends ImageFilter {
     
     
     public static void main(String[] args) {
-        TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(), new File("c:/temp/in.090.tif"));
+        TIFFReader reader = new TIFFReader(IntImageFactory.getInstance(), new File("c:/temp/in.090.tif"));
         try {
             reader.read();
         } catch (Exception e) {

@@ -10,25 +10,25 @@ package org.wewi.medimg.image;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ShortImageData extends AbstractImage {   
+public final class ShortImage extends AbstractImage {   
      
-    ShortImageData() {
+    ShortImage() {
         super();
     }     
      
-    ShortImageData(ShortImageData id) {
+    ShortImage(ShortImage id) {
         super(id);
     }
     
-    public ShortImageData(Dimension dim) {
+    public ShortImage(Dimension dim) {
         super(dim);    
     }
     
-    public ShortImageData(int sizeX, int sizeY, int sizeZ) {
+    public ShortImage(int sizeX, int sizeY, int sizeZ) {
         super(sizeX, sizeY, sizeZ);
     }
     
-    public ShortImageData(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+    public ShortImage(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         super(minX, maxX, minY, maxY, minZ, maxZ);
     }    
      
@@ -41,7 +41,7 @@ public final class ShortImageData extends AbstractImage {
     }    
     
     public Object clone() {
-        return new ShortImageData(this);
+        return new ShortImage(this);
     }    
 
 

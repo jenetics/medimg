@@ -150,7 +150,7 @@ public class ImageView extends RowMajorImageGeometry implements Image {
      * @see java.lang.Object#clone()
      */
     public Object clone()  {
-        ImageData id = new ImageData(roi);
+        Image id = new IntImage(roi);
         for (int k = roi.getMinZ(), l = roi.getMaxZ(); k <= l; k++) {
             for (int j = roi.getMinY(), m = roi.getMaxY(); j <= m; j++) {
                 for (int i = roi.getMinX(), n = roi.getMaxX(); i <= n; i++) {

@@ -13,7 +13,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.TIFFReader;
@@ -72,12 +72,12 @@ public final class Main {
         //Einlesen der Bilder
         try {
             System.out.println("Lesen des Modells");
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
                                             new File("X:/medimages/nhead/seg.model"));
             reader.read();
             mimg = reader.getImage();
             System.out.println("Lesen des Bildes");
-            reader = new TIFFReader(ImageDataFactory.getInstance(),
+            reader = new TIFFReader(IntImageFactory.getInstance(),
                                             new File("X:/medimages/nhead/t1.n3.rf20"));
             reader.read();
             oimg = reader.getImage();

@@ -30,7 +30,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.InternalFrameListener;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
@@ -759,7 +759,7 @@ public class Viewer extends JFrame implements Singleton,
         }
         
         ImageReaderFactory readerFactory = new RawImageReaderFactory();
-        ImageReader imageReader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+        ImageReader imageReader = readerFactory.createImageReader(IntImageFactory.getInstance(),
                                                                         new File(name));
                                                                         
         progressFrame = new ProgressFrame();                                                                

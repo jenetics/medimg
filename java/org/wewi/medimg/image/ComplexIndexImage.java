@@ -23,13 +23,13 @@ public class ComplexIndexImage extends ImageAdapter {
      * Constructor for ComplexIndexImage.
      */
     public ComplexIndexImage(ComplexImage cimage) {
-        image = new ImageData(cimage.getDimension());
+        image = new IntImage(cimage.getDimension());
         init(cimage);
     }
     
     public ComplexIndexImage(ComplexImage cimage, Dimension2D complexDimension) {
         dim = complexDimension;
-        image = new ImageData(cimage.getDimension());
+        image = new IntImage(cimage.getDimension());
         init(cimage);          
     }
     

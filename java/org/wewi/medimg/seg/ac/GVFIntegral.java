@@ -5,7 +5,7 @@
 package org.wewi.medimg.seg.ac;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
+import org.wewi.medimg.image.IntImage;
 import org.wewi.medimg.math.vec.GridVectorField;
 
 /**
@@ -22,7 +22,7 @@ public class GVFIntegral {
     }
     
     public void calculate() {
-        image = new ImageData(field.getGridsX(), field.getGridsY(), 1);
+        image = new IntImage(field.getGridsX(), field.getGridsY(), 1);
         
         double value1 = 0;
         double value2 = 0;

@@ -14,7 +14,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
@@ -58,7 +58,7 @@ public final class OpenCommand implements Command, ImageIOProgressListener {
         
         ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
         String fileName = chooser.getSelectedFile().getAbsolutePath();
-        ImageReader reader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+        ImageReader reader = readerFactory.createImageReader(IntImageFactory.getInstance(),
                                                              new File(fileName));
         
         

@@ -13,7 +13,7 @@ import java.util.Random;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.TIFFReader;
@@ -160,7 +160,7 @@ public class MLKMeansEstimator implements Estimator {
     
     public static void main(String[] args) {
         try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+            ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
                                                 new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
             reader.read();
             Image mrt = reader.getImage();

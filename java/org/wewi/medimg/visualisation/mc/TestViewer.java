@@ -27,7 +27,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.RawImageReader;
 import org.wewi.medimg.util.Timer;
@@ -117,7 +117,7 @@ public class TestViewer extends Applet {
         //ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), new File(file));
         
         String file = "X:/images/nbrain.model.greymatter.rid";
-        ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(), new File(file));
+        ImageReader reader = new RawImageReader(IntImageFactory.getInstance(), new File(file));
         
         try {
             reader.read();

@@ -8,7 +8,7 @@ package org.wewi.medimg.image.statistic;
 
 import org.wewi.medimg.image.GreyColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.ROI;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
@@ -138,7 +138,7 @@ public class SecondOrder {
         try {
             //String path = "/home/fwilhelm/Workspace/Projekte/Diplom/medimages/nhead/seg.model";
             String path = "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/validation/segimg/1043416821202.rid";
-            ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(), path);
+            ImageReader reader = new RawImageReader(IntImageFactory.getInstance(), path);
             reader.read();
             
             Image image = reader.getImage();

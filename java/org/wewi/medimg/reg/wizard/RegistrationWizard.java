@@ -16,7 +16,7 @@ import javax.swing.JFileChooser;
 
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.io.ImageReader;
@@ -449,7 +449,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         String fileName = chooser.getSelectedFile().getAbsolutePath();
         imageReader2 =
             readerFactory.createImageReader(
-                ImageDataFactory.getInstance(),
+                IntImageFactory.getInstance(),
                 new File(fileName));
         //imageReader2.setRange(new Range(100, 119)); 
         FeatureColorConversion fcc = new FeatureColorConversion();
@@ -534,7 +534,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         String fileName = chooser.getSelectedFile().getAbsolutePath();
         imageReader1 =
             readerFactory.createImageReader(
-                ImageDataFactory.getInstance(),
+                IntImageFactory.getInstance(),
                 new File(fileName));
         //reader.setRange(new Range(100, 119));     
         FeatureColorConversion fcc = new FeatureColorConversion();

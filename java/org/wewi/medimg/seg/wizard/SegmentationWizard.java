@@ -19,7 +19,7 @@ import org.wewi.medimg.alg.AlgorithmIterationListener;
 import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
@@ -180,7 +180,8 @@ public class SegmentationWizard extends Wizard {
             algorithm = (InterruptableAlgorithm)segmenter;
             try {
                 algorithm.cancelAlgorithm();  
-                wizard.cancelButton.setEnabled(false);           
+                wizard.cancelButton.setEnabled(false); 
+                wizard.startButton.setEnabled(true);
             } catch (UnsupportedOperationException e) {
                 getLogger().warning("cancleAlgorithm not implemented");
             }    
@@ -528,10 +529,8 @@ public class SegmentationWizard extends Wizard {
 
         getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
 
-        pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(new java.awt.Dimension(564, 301));
-        setLocation((screenSize.width-564)/2,(screenSize.height-301)/2);
+        setBounds((screenSize.width-564)/2, (screenSize.height-301)/2, 564, 301);
     }//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -589,7 +588,7 @@ public class SegmentationWizard extends Wizard {
         
         ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
         String fileName = chooser.getSelectedFile().getAbsolutePath();
-        ImageReader imageReader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+        ImageReader imageReader = readerFactory.createImageReader(IntImageFactory.getInstance(),
                                                             new File(fileName));
         imageReaderWorker = new ImageReaderWorker(this, imageReader);
 
@@ -597,27 +596,27 @@ public class SegmentationWizard extends Wizard {
     }//GEN-LAST:event_imageDataSearchButtonActionPerformed
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JPanel centerPanel;
+    private javax.swing.JButton closeButton;
+    private javax.swing.JPanel comboBoxPanel;
+    private javax.swing.JButton imageDataSearchButton;
+    private javax.swing.JTextField imageDataSourceTextField;
+    private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel jPanel28;
+    private javax.swing.JPanel jPanel30;
+    private javax.swing.JPanel northPanel;
     private javax.swing.JComboBox segEnumComboBox;
-    private javax.swing.JTabbedPane wizardTappedPanel;
     private javax.swing.JPanel segmenterPanel;
+    private javax.swing.JPanel southPanel;
+    private javax.swing.JButton startButton;
+    private javax.swing.JPanel wizardStep1;
     private javax.swing.JPanel wizardStep2;
     private javax.swing.JPanel wizardStep3;
-    private javax.swing.JPanel southPanel;
-    private javax.swing.JPanel jPanel24;
-    private javax.swing.JPanel centerPanel;
-    private javax.swing.JPanel jPanel30;
-    private javax.swing.JPanel ws3SouthPanel;
-    private javax.swing.JButton startButton;
-    private javax.swing.JPanel ws3NorthPanel;
-    private javax.swing.JPanel wizardStep1;
-    private javax.swing.JTextField imageDataSourceTextField;
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JButton imageDataSearchButton;
-    private javax.swing.JPanel jPanel28;
-    private javax.swing.JPanel comboBoxPanel;
-    private javax.swing.JPanel northPanel;
-    private javax.swing.JButton closeButton;
+    private javax.swing.JTabbedPane wizardTappedPanel;
     private javax.swing.JPanel ws3CenterPanel;
+    private javax.swing.JPanel ws3NorthPanel;
+    private javax.swing.JPanel ws3SouthPanel;
     // End of variables declaration//GEN-END:variables
         
 }
