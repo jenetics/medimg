@@ -51,6 +51,84 @@ public final class MathUtil {
 
         return value;
     }
+    
+    public static double log2(double x) {
+        //return Math.log(x)*(1/Math.log(2));
+        return Math.log(x)*1.442695040888963407359924681;
+    }
+    
+    public static double log10(double x) {
+        //return Math.log(x)*(1/Math.log(10));
+        return Math.log(x)*0.434294481903251827651128918917;    
+    }
+    
+    // Series on the interval [0,1]
+    private static final double ASINH_COEF[] = {
+         -.12820039911738186343372127359268e+0,
+        -.58811761189951767565211757138362e-1,
+        .47274654322124815640725249756029e-2,
+        -.49383631626536172101360174790273e-3,
+        .58506207058557412287494835259321e-4,
+        -.74669983289313681354755069217188e-5,
+        .10011693583558199265966192015812e-5,
+        -.13903543858708333608616472258886e-6,
+        .19823169483172793547317360237148e-7,
+        -.28847468417848843612747272800317e-8,
+        .42672965467159937953457514995907e-9,
+        -.63976084654366357868752632309681e-10,
+        .96991686089064704147878293131179e-11,
+        -.14844276972043770830246658365696e-11,
+        .22903737939027447988040184378983e-12,
+        -.35588395132732645159978942651310e-13,
+        .55639694080056789953374539088554e-14,
+        -.87462509599624678045666593520162e-15,
+        .13815248844526692155868802298129e-15,
+        -.21916688282900363984955142264149e-16,
+        .34904658524827565638313923706880e-17
+    };
+    /**
+     *  Evaluate a Chebyschev series
+     */    
+    static double csevl(double x, double coef[]) {
+        double  b0, b1, b2, twox;
+        int     i;
+        b1 = 0.0;
+        b0 = 0.0;
+        b2 = 0.0;
+        twox = 2.0*x;
+        for (i = coef.length-1;  i >= 0;  i--) {
+            b2 = b1;
+            b1 = b0;
+            b0 = twox*b1 - b2 + coef[i];
+        }
+        return 0.5*(b0-b2);
+    }    
+    /**
+     *  Returns the inverse (arc) hyperbolic sine of a double.
+     *  @param  x   A double value.
+     *  @return  The arc hyperbolic sine of x.
+     *  If x is NaN, the result is NaN.
+     */
+    public static double asinh(double x) {
+        double  ans;
+        double  y = Math.abs(x);
+    
+        if (Double.isNaN(x)) {
+            ans = Double.NaN;
+        } else if (y <= 1.05367e-08) {
+            // 1.05367e-08 = Math.sqrt(EPSILON_SMALL)
+            ans = x;
+        } else if (y <= 1.0) {          
+            ans = x*(1.0+csevl(2.0*x*x-1.0,ASINH_COEF));
+        } else if (y < 94906265.62) {
+            // 94906265.62 = 1/Math.sqrt(EPSILON_SMALL)
+            ans = Math.log(y+Math.sqrt(y*y+1.0));
+        } else {    
+            ans = 0.69314718055994530941723212145818 + Math.log(y);
+        }
+        if (x < 0.0) ans = -ans;
+        return ans;
+    }        
 
     public static void normalize(double[] array) {
         double value = 0;
@@ -481,5 +559,13 @@ public final class MathUtil {
             z = new Complex(x*t/den, -x/den);
         }
         return z;
-    }                  
+    } 
+    
+    /*
+     * -------------------------------------------------------------------------
+     * -------------------------------------------------------------------------
+     * -------------------------------------------------------------------------
+     */
+
+                     
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * CoplanarTriangleDecimator.java
  *
  * Created on 12. Juni 2002, 15:43
@@ -11,8 +11,8 @@ import java.util.Vector;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class CoplanarTriangleDecimator extends TriangleDecimator {
     

@@ -60,9 +60,6 @@ public final class SaveCommand implements Command, ImageIOProgressListener {
                 
     }
     
-	/**
-	 * @see org.wewi.medimg.image.io.ImageIOProgressListener#progressChanged(ProgressEvent)
-	 */
 	public void progressChanged(ImageIOProgressEvent event) {
         Viewer viewer = Viewer.getInstance();
         if (event.isFinished()) {

@@ -28,9 +28,6 @@ public class StringParameter extends Parameter {
         this.value = value;        
     }
 
-	/**
-	 * @see org.wewi.medimg.util.param.Parameter#createParameterElement()
-	 */
 	public Element createParameterElement() {
         Element e = new Element("Parameter");
         e.setAttribute("name", name);
@@ -40,16 +37,11 @@ public class StringParameter extends Parameter {
         return e;
 	}
 
-	/**
-	 * @see org.wewi.medimg.util.param.Parameter#getParameterObject()
-	 */
+
 	public Object getParameterObject() {
 		return new String(value);
 	}
 
-	/**
-	 * @see org.wewi.medimg.util.param.Parameter#initParameter(Element)
-	 */
 	public Parameter initParameter(Element xml) {
         name = xml.getAttribute("name").getValue();
         value = xml.getText();

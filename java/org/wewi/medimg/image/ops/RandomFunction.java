@@ -34,7 +34,8 @@ public class RandomFunction implements UnaryFunction {
      * @see org.wewi.medimg.image.ops.UnaryFunction#process(int)
      */
     public int process(int color) {
-        return (int)(range.getNColors()*rand.nextDouble() + range.getMinColor());
+        int c = (int)((double)range.getNColors()*rand.nextDouble() + (double)range.getMinColor());
+        return c;
     }
 
 }

@@ -67,7 +67,23 @@ public class Complex implements Immutable {
         long re_bits = Double.doubleToLongBits(re);
         long im_bits = Double.doubleToLongBits(im);
         return (int)((re_bits^im_bits)^((re_bits^im_bits)>>32));
-    }    
+    }
+    
+    public boolean equals(Complex z) {
+        return (re == z.re  &&  im == z.im);
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;    
+        }
+        
+        if (obj instanceof Complex) {
+            return equals((Complex)obj);
+        } else {
+            return false;
+        }
+    }        
     
     public String toString() {
         return "(" + re + "," + im + ")";    

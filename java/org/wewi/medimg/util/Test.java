@@ -35,11 +35,14 @@ import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.JPEGReader;
 import org.wewi.medimg.image.io.JPEGWriter;
+import org.wewi.medimg.image.io.PNGWriter;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.image.ops.BinaryPointTransformer;
 import org.wewi.medimg.image.ops.MinMaxFunction;
+import org.wewi.medimg.image.ops.RandomFunction;
 import org.wewi.medimg.image.ops.SubFunction;
+import org.wewi.medimg.image.ops.UnaryPointTransformer;
 import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
 import org.wewi.medimg.math.GridVectorField;
 import org.wewi.medimg.math.GridVectorFieldTransformer;
@@ -390,13 +393,31 @@ public class Test {
         System.out.println("Freier Speicher: " + run.freeMemory());  
     }
     
+    
+    public static void test13() {
+        Image image = new ImageData(20, 32, 21); 
+        image.resetColor(32);
+        
+        UnaryPointTransformer transformer = new UnaryPointTransformer(image, new RandomFunction());
+        transformer.transform();
+        
+        
+        try {
+            ImageWriter writer = new PNGWriter(image, new File("X:/temp/random.png"));
+            writer.write();
+        } catch (Exception e) {
+            System.out.println("Fehler: " + e);    
+        }
+                
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test12();
+        test13();
     }
     
 }

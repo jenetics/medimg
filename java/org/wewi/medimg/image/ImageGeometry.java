@@ -53,6 +53,16 @@ public interface ImageGeometry {
     public int getMinZ(); 
     
     /**
+     * A convinient method for getting the number
+     * of voxels of the image.
+     * 
+     * @return the number of voxels the image contains.
+     * 
+     * @todo Rename to <code>getPixels()</code>
+     */
+    public int getNVoxels();     
+    
+    /**
      * Returns the image dimension
      * 
      * @return image dimension

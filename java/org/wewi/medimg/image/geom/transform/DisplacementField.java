@@ -1,4 +1,4 @@
-/*
+/**
  * DisplacementField.java
  *
  * Created on 13. April 2002, 10:23
@@ -14,8 +14,8 @@ import java.util.Vector;
 import java.util.Arrays;
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class DisplacementField implements Transformation {
     

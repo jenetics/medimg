@@ -1,4 +1,4 @@
-/*
+/**
  * Tissue.java
  *
  * Created on 26. März 2002, 16:42
@@ -8,8 +8,8 @@ package org.wewi.medimg.image;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class Tissue {
     public static final Tissue VENTRICLE = new Tissue(0, "VENTRICLE");

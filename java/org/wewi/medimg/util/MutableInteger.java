@@ -31,5 +31,13 @@ public class MutableInteger implements Mutable {
     public int getValue() {
         return value;    
     }
+    
+    public void inc() {
+        ++value;    
+    }
+    
+    public void dec() {
+        --value;    
+    }
 
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Test.java
  *
  * Created on 28. März 2002, 16:06
@@ -26,8 +26,8 @@ import org.wewi.medimg.util.Timer;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class Test {
 

@@ -44,7 +44,7 @@ public final class IntData implements DiscreteData {
 
 
 	/**
-	 * @see org.wewi.medimg.image.DiscreteData#createCopy(DiscreteData)
+	 * @see org.wewi.medimg.image.DiscreteData#copy(DiscreteData)
 	 */
 	public void copy(DiscreteData target) {
         if (!(target instanceof IntData)) {
