@@ -30,7 +30,7 @@ import org.wewi.medimg.image.io.TIFFReader;
  */
 public class Batch {
     private String batchFile;
-    private Document doc = null;
+    private Document doc = null; 
     
     private String currentModelImageFileName = "";
     private String currentSourceImageFileName = "";
