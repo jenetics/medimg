@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.geom.transform.Transformation;
@@ -60,17 +60,17 @@ private static String storePath;
     * @param args the command line arguments
     */
     public static void main (String args[]) {
-        /*File[] suite1 = new File[2];
-        suite1[0] = new File(path + "serie02_04_a.tif");
-        suite1[1] = new File(path + "serie02_04_b.tif");
-        */
+        File[] suite1 = new File[2];
+        suite1[0] = new File(path + "serie01_04_a.tif");
+        suite1[1] = new File(path + "serie01_04_b.tif");
+        
 
         
-        File[] suite1 = new File[2];
+        //File[] suite1 = new File[2];
         //suite1[0] = new File(path + "try002.tif");
         //suite1[1] = new File(path + "try001.tif");
-        suite1[0] = new File(path + "/set3/");
-        suite1[1] = new File(path + "/set2/");
+        //suite1[0] = new File(path + "/set3/");
+        //suite1[1] = new File(path + "/set2/");
         /*
         File[] suite1 = new File[18];
         suite1[0] = new File(path + "serie01_01_a.tif");
@@ -225,8 +225,8 @@ private static String storePath;
         
             source1 = images[2*(i-1)];
             source2 = images[2*(i-1)+1];
-            TIFFReader reader1 = new TIFFReader(ImageDataFactory.getInstance(), source1);
-            TIFFReader reader2 = new TIFFReader(ImageDataFactory.getInstance(), source2);    
+            TIFFReader reader1 = new TIFFReader(IntImageFactory.getInstance(), source1);
+            TIFFReader reader2 = new TIFFReader(IntImageFactory.getInstance(), source2);    
             FeatureColorConversion tcc = new FeatureColorConversion();
             reader1.setColorConversion(tcc);
             reader2.setColorConversion(tcc);
@@ -248,9 +248,9 @@ private static String storePath;
             validateImages(data1, data2, i, "im Original:", null);
             validateImages(data2, data1, i, "im Original verkehrt:", null);
             //testPCA(data1, data2, i);
-            //testAffinPCA(data1, data2, i); 
+            testAffinPCA(data1, data2, i); 
             //testMCWarping(data1, data2, i);    
-            testCompleteMethod(data1, data2, i);       
+            //testCompleteMethod(data1, data2, i);       
         }    
         timer1.stop();
         timer1.print();
@@ -310,7 +310,7 @@ private static String storePath;
                     timer2.print();
                     Timer timer3 = new Timer("Test: rPCA: transform");
                     timer3.start();
-                    ImageDataFactory fac = ImageDataFactory.getInstance();
+			        IntImageFactory fac = IntImageFactory.getInstance();
                     show = transformation.transform(source, fac);
                     timer3.stop();
                     timer3.print();
@@ -355,7 +355,7 @@ private static String storePath;
                     timer2.print();
                     Timer timer3 = new Timer("Test: aPCA: transform");
                     timer3.start();
-                    ImageDataFactory fac = ImageDataFactory.getInstance();
+			        IntImageFactory fac = IntImageFactory.getInstance();
                     show = transformation.transform(source, fac);
                     timer3.stop();
                     timer3.print();
@@ -395,7 +395,7 @@ private static String storePath;
                     timer2.print();
                     Timer timer3 = new Timer("Test: MC: transform");
                     timer3.start();
-                    ImageDataFactory fac = ImageDataFactory.getInstance();
+			        IntImageFactory fac = IntImageFactory.getInstance();
                     show = transformation.transform(source, fac);
                     timer3.stop();
                     timer3.print();
@@ -487,7 +487,7 @@ private static String storePath;
         Image show2 = null;           
         try {
                     transformation = (ImageTransformation)strategy.registrate(source, target);
-                    ImageDataFactory fac = ImageDataFactory.getInstance();
+			        IntImageFactory fac = IntImageFactory.getInstance();
                     timer2.stop();
                     Timer timer3 = new Timer("Test: PCM: transform");
                     timer3.start();
