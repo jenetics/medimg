@@ -27,10 +27,9 @@ public final class Neighborhood3D18 implements Neighborhood {
     }
 
     public Iterator getNeighbors(Point p) {
-        Point3D p3d = (Point3D)p;
-        int x = p3d.getX();
-        int y = p3d.getY();
-        int z = p3d.getZ();
+        int x = p.getOrdinate(0);
+        int y = p.getOrdinate(1);
+        int z = p.getOrdinate(2);
         
         PointIterator it = new PointIterator(18);
         if (x-1 >= minX) {
