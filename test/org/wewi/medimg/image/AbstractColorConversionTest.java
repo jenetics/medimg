@@ -18,7 +18,7 @@ public abstract class AbstractColorConversionTest extends TestCase {
 	 * @param arg0
 	 */
 	public AbstractColorConversionTest(String arg0) {
-		super(arg0); 
+		super(arg0);   
 	}
 
 	/**
