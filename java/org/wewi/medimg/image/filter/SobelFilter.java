@@ -102,8 +102,8 @@ public final class SobelFilter extends ImageFilter {
         Image image = reader.getImage();
         System.out.println(image);
         
-        //ImageFilter filter = new SobelFilter(new BlurFilter(image));
-        ImageFilter filter = new BlurFilter(image);
+        //ImageFilter filter = new SobelFilter(new MeanFilter(image));
+        ImageFilter filter = new MeanFilter(image);
         filter.filter();
         
         TIFFWriter writer = new TIFFWriter(image, new File("C:/temp/out.img.tif"));

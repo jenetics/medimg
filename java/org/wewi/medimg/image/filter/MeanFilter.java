@@ -1,5 +1,5 @@
 /*
- * BlurFilter.java
+ * MeanFilter.java
  *
  * Created on 26. Jänner 2002, 01:04
  */
@@ -18,15 +18,15 @@ import org.wewi.medimg.image.geom.Point3D;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class BlurFilter extends ImageFilter {
+public final class MeanFilter extends ImageFilter {
     private Neighborhood neighborhood;   
 
-    public BlurFilter(Image image) {
+    public MeanFilter(Image image) {
         super(image);
         init();
     }
     
-    public BlurFilter(ImageFilter component) {
+    public MeanFilter(ImageFilter component) {
         super(component);
         init();
     }
