@@ -19,6 +19,17 @@ public interface DFT1D {
      * 
      * @param a Komplexer Eingabevektor.
      */
-    public void transform(Complex[] a);
+    public void transform(Complex[] data);
+    
+    /**
+     * In Place Transformation.
+     * 
+     * @param a Komplexer Eingabevektor.
+     */
+    public void transformInverse(Complex[] data);  
+    
+    //public Complex[] transform(double[] data);
+    
+    //public Complex[] transformInverse(double[] data);  
     
 }
