@@ -30,7 +30,11 @@ public abstract class ImageFilter {
         if (component != null) {
             component.filter();
         }
+        
+        imageFiltering();
     }
+    
+    protected abstract void imageFiltering();
     
     public Image getImage() {
         if (image != null) {

@@ -33,10 +33,7 @@ public final class UnaryPointTransformerFilter extends ImageFilter {
         this.factory = factory;
 	}
     
-    public void filter() {
-        super.filter();
-        
-           
+    protected void imageFiltering() {   
         UnaryPointTransformer t = factory.createTransformer(image);
         t.transform();
     }

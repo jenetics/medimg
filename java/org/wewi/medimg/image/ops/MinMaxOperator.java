@@ -33,7 +33,7 @@ public class MinMaxOperator implements UnaryOperator {
         
         if (min > color) {
             min = color;    
-        } else if (max > color) {
+        } else if (max < color) {
             max = color;    
         }
 	}

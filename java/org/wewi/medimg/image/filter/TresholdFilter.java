@@ -39,11 +39,10 @@ public final class TresholdFilter extends ImageFilter {
 	/**
 	 * @see org.wewi.medimg.image.filter.ImageFilter#filter()
 	 */
-	public void filter() {
-		super.filter();
+	protected void imageFiltering() {
         
         UnaryPointTransformer t = new UnaryPointTransformer(image, 
-                                  new TresholdFunction(upperBound, lowerBound));
+                                  new TresholdFunction(lowerBound, upperBound));
         t.transform();
 	}
 
