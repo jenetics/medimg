@@ -118,6 +118,9 @@ public class Viewer extends JFrame implements Singleton,
         
     }
     
+    
+    private static final String VERSION = "Image-Viewer version 0.1";
+    
     private static Viewer singleton = null;
     private ViewerPreferences viewerPrefs; 
     private ScrollPanelHelper scrollPanelHelper;
@@ -741,8 +744,14 @@ public class Viewer extends JFrame implements Singleton,
             return;    
         }
         for (int i = 0; i < args.length; i++) {
-            System.out.println(args[i]);    
+            //System.out.println(args[i]);
+            if (args[i].matches("*-version*")) {
+                System.out.println(VERSION);
+                return;    
+            }
         }
+        
+        
         
         String name = args[0];
         if (!name.endsWith(".rid")) {

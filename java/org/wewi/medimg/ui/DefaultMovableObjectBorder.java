@@ -1,29 +1,61 @@
 package org.wewi.medimg.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 
-class DefaultMovableObjectBorder implements MovableObjectBorder {
+public class DefaultMovableObjectBorder implements MovableComponentBorder {
 
-	public DefaultMovableObjectBorder(Color lineColor, int lineWidth, int lineHeight, int insetsFromRealBorder,
-		                              Color handleColor, int cornerHandleSideLength, int sideHandleSideLength) {
+    private Color lineColor;
+    private Stroke lineStroke;
+    private Color handleColor;
+    private final int thickness = 6;
+    private final int thick2 = thickness / 2;
+    private MLPHandle[] handles = new MLPHandle[8];
+
+	public DefaultMovableObjectBorder(Color lineColor, Stroke lineStroke, Color handleColor) {
             
 		this.lineColor = lineColor;
-		this.lineWidth = lineWidth;
-		this.lineHeight = lineHeight;
-		this.insetsFromRealBorder = insetsFromRealBorder;
+        this.lineStroke = lineStroke;
 		this.handleColor = handleColor;
-		this.cornerHandleSideLength = cornerHandleSideLength;
-		this.sideHandleSideLength = sideHandleSideLength;
         
 		for (int i = 0; i < handles.length; i++) {
 			handles[i] = new MLPHandle(thickness);
 		}
 	}
+    
+    public DefaultMovableObjectBorder() {
+        this(Color.BLUE, new BasicStroke(), Color.BLUE);
+    }
+
+    public Color getHandleColor() {
+        return handleColor;
+    }
+
+    public Color getLineColor() {
+        return lineColor;
+    }
+    
+    public Stroke getLineStroke(){
+        return lineStroke;
+    }
+    
+    public void setLineStroke(Stroke lineStroke) {
+        this.lineStroke = lineStroke;
+    }
+
+    public void setHandleColor(Color color) {
+        handleColor = color;
+    }
+
+    public void setLineColor(Color color) {
+        lineColor = color;
+    }
 
 	/**
 	 * Returns the type of cursor to display based on whether the
@@ -32,9 +64,9 @@ class DefaultMovableObjectBorder implements MovableObjectBorder {
 	 * 
 	 * @param p the point that the cursor is over
 	 */
-	public int getCursor(Component c, final Point p) {
+	public Cursor getCursor(Component c, final Point p) {
 		Rectangle r = getRepaintRegion(c);
-		MLPHandle[] h = getHandles(r.x, r.y, r.width, r.height);
+		MLPHandle[] h = getHandles(r.x, r.y, r.width, r.height); 
 		for (int i = 0; i < h.length; i++) {
 			if (h[i].contains(p)) {
 				//return a resize cursor
@@ -43,10 +75,10 @@ class DefaultMovableObjectBorder implements MovableObjectBorder {
 		}
 		if (isPointOverTheBorder(c, p)) {
 			//if it was over a handle we wouldn't get here
-			return Cursor.MOVE_CURSOR;
+			return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
 		}
 		//none of the above
-		return Cursor.DEFAULT_CURSOR;
+		return Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	}
 
 	/**
@@ -55,29 +87,35 @@ class DefaultMovableObjectBorder implements MovableObjectBorder {
 	 * @param c the component for which this border is being painted
 	 * @param g the paint graphics
 	 */
-	public void paintBorder(Component c, Graphics g) {
+	public void paintBorder(Component c, Graphics2D g) {
 		if (c == null) {
 			return;
 		}
 		Color oldColor = g.getColor();
+        Stroke oldStroke = g.getStroke();
+        
 		Rectangle r = getRepaintRegion(c);
-		Rectangle[] theHandles = getHandles(r.x, r.y, r.width, r.height);
+		Rectangle[] h = getHandles(r.x, r.y, r.width, r.height);
+        
 		g.setColor(lineColor);
 		g.drawRect(r.x, r.y, r.width, r.height);
-		for (int i = 0; i < theHandles.length; i++) {
-			g.fillRect(
-				theHandles[i].x,
-				theHandles[i].y,
-				theHandles[i].width,
-				theHandles[i].height);
+        
+        g.setColor(handleColor);
+		for (int i = 0, n = h.length; i < n; i++) {
+			g.fillRect(h[i].x, h[i].y, h[i].width, h[i].height);
 		}
+        
 		g.setColor(oldColor);
+        g.setStroke(oldStroke);
 	}
-
+    
 	/**
 	 * @return true if the cursor is over the border
 	 */
 	public boolean isPointOverTheBorder(Component c, final Point p) {
+        final int lineWidth = 6;
+        final int lineHeight = 6;
+        
 		int x = p.x;
 		int y = p.y;
 		if (c == null) {
@@ -111,17 +149,10 @@ class DefaultMovableObjectBorder implements MovableObjectBorder {
 
 	public Rectangle getRepaintRegion(Component c) {
 		return getEquivalentBorderRectangle(
-			new Rectangle(
-				c.getLocation().x,
-				c.getLocation().y,
-				c.getSize().width,
-				c.getSize().height));
+			new Rectangle(c.getLocation().x, c.getLocation().y, c.getSize().width, c.getSize().height));
 	}
 
-	//
-	//private methods
-	//
-
+ 
 	/**
 	 * A utility method for minimum size border rectangle.
 	 */
@@ -134,36 +165,20 @@ class DefaultMovableObjectBorder implements MovableObjectBorder {
 				c.getMinimumSize().height));
 	}
 	private MLPHandle[] getHandles(int xx, int yy, int ww, int hh) {
-		handles[0].set(Cursor.NW_RESIZE_CURSOR, xx, yy);
-		handles[1].set(Cursor.NE_RESIZE_CURSOR, xx + ww, yy);
-		handles[2].set(Cursor.SE_RESIZE_CURSOR, xx + ww, yy + hh);
-		handles[3].set(Cursor.SW_RESIZE_CURSOR, xx, yy + hh);
-		handles[4].set(Cursor.N_RESIZE_CURSOR, xx + ww / 2, yy);
-		handles[5].set(Cursor.S_RESIZE_CURSOR, xx + ww / 2, yy + hh);
-		handles[6].set(Cursor.W_RESIZE_CURSOR, xx, yy + hh / 2);
-		handles[7].set(Cursor.E_RESIZE_CURSOR, xx + ww, yy + hh / 2);
+		handles[0].set(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR), xx, yy);
+		handles[1].set(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR), xx + ww, yy);
+		handles[2].set(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR), xx + ww, yy + hh);
+		handles[3].set(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR), xx, yy + hh);
+		handles[4].set(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR), xx + ww / 2, yy);
+		handles[5].set(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR), xx + ww / 2, yy + hh);
+		handles[6].set(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR), xx, yy + hh / 2);
+		handles[7].set(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR), xx + ww, yy + hh / 2);
 		return handles;
 	}
 	private Rectangle getEquivalentBorderRectangle(Rectangle r) {
-		return new Rectangle(
-			r.x - (thick2 + 1),
-			r.y - (thick2 + 1),
-			r.width + thickness,
-			r.height + thickness);
+		return new Rectangle(r.x - (thick2 + 1), r.y - (thick2 + 1),
+			                 r.width + thickness, r.height + thickness);
 	}
 
-	//
-	//member variables
-	//
-	private Color lineColor;
-	private int lineWidth;
-	private int lineHeight;
-	private int insetsFromRealBorder = 5;
-	private Color handleColor;
-	private int cornerHandleSideLength;
-	private int sideHandleSideLength;
-	private final int thickness = 6;
-	private final int thick2 = thickness / 2;
-	private MLPHandle[] handles = new MLPHandle[8];
 
-} //MovableObjectBorder
+}
