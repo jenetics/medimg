@@ -10,8 +10,6 @@ import java.util.Vector;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
-//import org.wewi.medimg.image.geom.transform.AffineTransformation;
-
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
 import org.wewi.medimg.image.geom.transform.Transformation;
 import org.wewi.medimg.image.ops.ColorRangeOperator;

@@ -20,17 +20,79 @@ public final class MathUtil {
     private MathUtil() {
     }
     
+    /**
+     * Modern Euclidian algorithm
+     * 
+     * @param u
+     * @param v
+     * @return greatest common divisor
+     */
     public static int gcd(int u, int v) {
         int t = 0;
-        do {
-            if (u < v) {
-                t = u; u = v; v = t;
-            }
-            u = u % v;
-        } while (u != 0);
+        if (u < v) {
+            t = u; u = v; v = t;
+        }
+        while (v != 0) {
+            t = u % v;
+            u = v;
+            v = t;
+        }
         
-        return v;
+        return u;
     }
+    
+    /**
+     * Binary gcd algorithm
+     * 
+     * @param u
+     * @param v
+     * @return greates common divisor
+     */
+    /*
+    public static int bgcd(int u, int v) {
+        int t = 0;
+        if (u < v) {
+            t = u; u = v; v = t;
+        }
+        
+        //Find power of 2
+        int k = 0;
+        while (((u & 1) == 1) || ((v & 1) == 1)) {
+            ++k;
+            u >>= 2;
+            v >>= 2;
+        }
+
+        //Initialize
+        if ((u & 1) == 1) {
+            t = -v;
+        } else {
+            t = u;
+        }
+        
+        
+        //Half t
+        while ((t & 1) == 1){
+            t >>= 2;
+        }
+        
+        
+        //B4. Is t even?
+        if ((t & 1) == 1) {
+            //Yes -> halve t
+            t >>= t;
+        } else {
+            //No -> B5. reset max(u, v)
+            if (t > 0) {
+                u = t;
+            } else {
+                v = -t;
+            }
+        }
+        
+        return u;        
+    }
+    */
 
     public static double sqr(double x) {
         return x * x;

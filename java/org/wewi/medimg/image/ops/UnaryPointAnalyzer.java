@@ -5,8 +5,8 @@
 package org.wewi.medimg.image.ops;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.ROI;
+import org.wewi.medimg.image.VoxelIterator;
 
 /**
  * @author Franz Wilhelmstötter

@@ -9,8 +9,8 @@ package org.wewi.medimg.image.geom.transform;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
-import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.Dimension;
+import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.util.Immutable;

@@ -7,7 +7,6 @@
 package org.wewi.medimg.image.geom.fractal;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ops.ImageLoop;
 
 /**
  *

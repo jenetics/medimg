@@ -6,13 +6,13 @@
  */
 package org.wewi.medimg.image.filter;
 
+import java.util.Arrays;
+
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ROI;
 import org.wewi.medimg.image.ROIIterator;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.ops.ImageLoop;
-
-import java.util.Arrays;
 
 /**
  * @author Franz Wilhelmstötter

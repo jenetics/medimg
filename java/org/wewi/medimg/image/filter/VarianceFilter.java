@@ -9,7 +9,8 @@ package org.wewi.medimg.image.filter;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ROI;
 import org.wewi.medimg.image.ops.ImageLoop;
-import org.wewi.medimg.image.ops.*;
+import org.wewi.medimg.image.ops.MeanVarianceOperator;
+import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 
 /**
  *

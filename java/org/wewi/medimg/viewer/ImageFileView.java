@@ -1,6 +1,7 @@
 package org.wewi.medimg.viewer;
 
 import java.io.File;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileFilter;

@@ -6,12 +6,11 @@
 
 package org.wewi.medimg.image.geom.transform;
 
+import java.util.Arrays;
+import java.util.Vector;
+
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.math.geom.DoubleDataPoint;
-
-
-import java.util.Vector;
-import java.util.Arrays;
 /**
  *
  * @author  Werner Weiser

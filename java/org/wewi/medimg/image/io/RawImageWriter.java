@@ -1,4 +1,4 @@
-/*
+/**
  * RawImageDataWriter.java
  *
  * Created on 18. Jänner 2002, 13:55
@@ -10,13 +10,10 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.ImageHeader;
 
 /**
  *
@@ -109,58 +106,7 @@ public class RawImageWriter extends ImageWriter {
         notifyProgressListener(new ImageIOProgressEvent(this, 1, true));   
     } 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static void main(String[] args) {
-        try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-                                                 new File("C:/Temp/nbrain.t1.n7.rf20.256c"));
-                                                 
-            reader.read();
-            Image image = reader.getImage();
-            ImageHeader header = image.getHeader();
-            Properties properties = new Properties();
-            properties.put("Schlüssel1", "Wert");
-            properties.put("Schlüssel2", "Wert");
-            properties.put("Schlüssel3", "Wert");
-            properties.put("Schlüssel4", "Wert");
-            properties.put("Schlüssel5", "Wert");
-            properties.put("Schlüssel6", "Wert");
-            properties.put("Schlüssel7", "Wert");
-            properties.put("Schlüssel8", "Wert");
-            properties.put("Schlüssel9", "Wert");
-            header.setImageProperties(properties);
-            
-            RawImageWriter writer = new RawImageWriter(image, new File("X:/image.rid"));
-            writer.write();
-                                                 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;    
-        }    
-    }
+   
     
 }
 

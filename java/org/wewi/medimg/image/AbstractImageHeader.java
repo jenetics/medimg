@@ -11,14 +11,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
+import java.util.Map;
 import java.util.logging.Logger;
 
-import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -33,18 +30,18 @@ import org.wewi.medimg.util.StringOutputStream;
 /**
  *
  * @author  Franz Wilhelmsötter
- * @version 0.2
+ * @version 0.1
  */
 class AbstractImageHeader implements ImageHeader {
     private static Logger logger = Logger.getLogger("org.wewi.medimg.image");
     
     private AbstractImage image;   
-    private Dimension dim;
-    private Properties properties;
+    private Dimension dim;    
+    private ImageProperties properties;
 
     public AbstractImageHeader(AbstractImage image) {
         this.image = image;
-        properties = new Properties();
+        properties = new ImageProperties();
     }
     
     /**
@@ -183,6 +180,38 @@ class AbstractImageHeader implements ImageHeader {
         return new ColorRange(min, max);
     }
     
+    
+    private Element toXML(ImageProperties properties) {
+        Element element = new Element("ImageProperties");
+        
+        Map.Entry entry;
+        String key, value;
+        for (Iterator it = properties.iterator(); it.hasNext();) {
+            entry = (Map.Entry)it.next();
+            key = (String)entry.getKey();
+            value = (String)entry.getValue();
+            element.addContent(new Element(key, value));
+        }
+        
+        return element;
+    }
+    
+    private ImageProperties toImageProperties(Element element) {
+        ImageProperties prop = new ImageProperties();
+        if (element == null) {
+            return prop;
+        }
+        
+        List children = element.getChildren();
+        Element child;
+        for (Iterator it = children.iterator(); it.hasNext();) {
+            child = (Element)it.next();
+            prop.setProperty(child.getName(), child.getText());
+        }
+        
+        return prop;
+    }
+    
     /**
      * Writing the Header in XML format.	
      */
@@ -200,13 +229,7 @@ class AbstractImageHeader implements ImageHeader {
         root.addContent(toXML(AnalyzerUtils.getColorRange(image)));  
         
         //Writing the ImageProperties
-        root.addContent(new Comment("Putting arbitrary values to the ImageProperties"));
-        Element prop = new Element("ImageProperties");
-        for (Enumeration e = properties.propertyNames(); e.hasMoreElements();) {
-            String name = (String)e.nextElement();
-            prop.addContent((new Element(name)).addContent(properties.getProperty(name)));
-        } 
-        root.addContent(prop);            
+        root.addContent(toXML(properties));            
         
         
         //Writing the header to the OutputStream
@@ -235,16 +258,7 @@ class AbstractImageHeader implements ImageHeader {
         ColorConversion cc = toColorConversion(root.getChild("ColorConversion"));
         
         //Einlesen der ImageProperties
-        Element prop = root.getChild("ImageProperties");
-        if (prop == null) {
-            return;    
-        }
-        List list = prop.getChildren();
-        Element element;
-        for (Iterator it = list.iterator(); it.hasNext();) {
-            element = (Element)it.next();
-            properties.setProperty(element.getName(), element.getText());
-        }
+        properties = toImageProperties(root.getChild("ImageProperties"));
         
         //"Blowing up" the image to the right size.
         image.init(dim, this); 
@@ -277,34 +291,23 @@ class AbstractImageHeader implements ImageHeader {
 	/**
 	 * @see org.wewi.medimg.image.ImageHeader#getImageProperties()
 	 */
-	public Properties getImageProperties() {
+	public ImageProperties getImageProperties() {
 		return properties;
 	}
-
-	/**
-	 * @see org.wewi.medimg.image.ImageHeader#setImageProperties(Properties)
-	 */
-	public void setImageProperties(Properties prop) {
-        for (Enumeration enum = prop.keys(); enum.hasMoreElements();) {
-            String key = (String)enum.nextElement();
-            properties.setProperty(key, prop.getProperty(key)); 
-        }
-	}
     
-    public void addImageProperties(Properties prop) {
-        for (Enumeration enum = prop.keys(); enum.hasMoreElements();) {
-            String key = (String)enum.nextElement();
-            properties.setProperty(key, prop.getProperty(key));    
-        }    
+    public void setImageProperties(ImageProperties properties){
+        this.properties = properties;
     }
-    
-    
+
+
     public String toString() {
         StringBuffer buffer = new StringBuffer();
+        /*
         for (Enumeration e = properties.propertyNames(); e.hasMoreElements();) {
             String name = (String)e.nextElement();
             buffer.append(name).append(":").append(properties.getProperty(name)).append("\n");
-        }            
+        }  
+        */          
         return buffer.toString();
     }
 

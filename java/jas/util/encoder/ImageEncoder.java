@@ -32,10 +32,13 @@
 
 package jas.util.encoder;
 
-import java.util.*;
-import java.io.*;
 import java.awt.Image;
-import java.awt.image.*;
+import java.awt.image.ColorModel;
+import java.awt.image.ImageConsumer;
+import java.awt.image.ImageProducer;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Hashtable;
 
  /**
   * Abstract class for writing out an image.

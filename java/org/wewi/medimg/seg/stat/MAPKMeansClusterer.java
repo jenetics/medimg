@@ -6,9 +6,8 @@
 
 package org.wewi.medimg.seg.stat;
 
-import java.util.Properties;
-
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageProperties;
 
 
 /**
@@ -43,11 +42,11 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
     }
     
     protected void setImageProperties(Image segimg) {
-        Properties segProp = new Properties();
-        segProp.setProperty("Segmentiermethode", getClass().getName());
+        ImageProperties segProp = new ImageProperties();
+        segProp.setProperty("Segmentation class", getClass().getName());
         segProp.setProperty("k", Integer.toString(k));
-        segProp.setProperty("BEAT", Double.toString(BETA));
-        segProp.put("Iterationen", Integer.toString(iterationCount));
+        segProp.setProperty("beta", Double.toString(BETA));
+        segProp.setProperty("Iterations", Integer.toString(iterationCount));
         for (int i = 0; i < k; i++) {
             segProp.setProperty("mean." + i, Double.toString(mean[i]));    
         }

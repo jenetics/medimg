@@ -6,8 +6,8 @@
  */
 package org.wewi.medimg.image.ops;
 
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.ops.*;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ROI;
 
 /**
  * @author Franz Wilhelmstötter

@@ -4,12 +4,13 @@
  */
 package org.wewi.medimg.seg.validation;
 
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageProperties;
 import org.wewi.medimg.util.AccumulatorArray;
 
 /**
@@ -78,11 +79,15 @@ final class Util {
     
     static Element transform(Image image) {
         Element imageMetaData = new Element("ImageHeader"); 
-        Properties prop = image.getHeader().getImageProperties();
+        ImageProperties prop = image.getHeader().getImageProperties();
         
-        for (Enumeration e = prop.propertyNames(); e.hasMoreElements();) {
-            String name = (String)e.nextElement();
-            imageMetaData.addContent((new Element(name)).addContent(prop.getProperty(name)));
+        Map.Entry entry;
+        String key, value;
+        for (Iterator it = prop.iterator(); it.hasNext();) {
+            entry = (Map.Entry)it.next();
+            key = (String)entry.getKey();
+            value = (String)entry.getValue();
+            imageMetaData.addContent((new Element(key)).addContent(value));
         }
         
         return imageMetaData;   

@@ -52,8 +52,8 @@ public class TestViewer extends Applet {
         Appearance app = new Appearance();
         // Set up the polygon attributes
         PolygonAttributes pa = new PolygonAttributes();
-        pa.setPolygonMode(pa.POLYGON_LINE);
-        pa.setCullFace(pa.CULL_NONE);
+        pa.setPolygonMode(PolygonAttributes.POLYGON_LINE);
+        pa.setCullFace(PolygonAttributes.CULL_NONE);
         app.setPolygonAttributes(pa);        
         
         // Create the root of the branch graph

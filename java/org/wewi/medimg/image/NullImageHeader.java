@@ -49,8 +49,8 @@ public class NullImageHeader implements ImageHeader, Nullable {
 	/**
 	 * @see org.wewi.medimg.image.ImageHeader#getImageProperties()
 	 */
-	public Properties getImageProperties() {
-		return new Properties();
+	public ImageProperties getImageProperties() {
+		return new ImageProperties();
 	}
     
     public void addImageProperties(Properties prop) {
@@ -59,7 +59,7 @@ public class NullImageHeader implements ImageHeader, Nullable {
 	/**
 	 * @see org.wewi.medimg.image.ImageHeader#setImageProperties(Properties)
 	 */
-	public void setImageProperties(Properties prop) {
+	public void setImageProperties(ImageProperties prop) {
 	}
 
 }

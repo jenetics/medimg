@@ -5,8 +5,8 @@
 package org.wewi.medimg.image.filter;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ops.LinearNormalizeFunction;
 import org.wewi.medimg.image.ops.ColorRangeOperator;
+import org.wewi.medimg.image.ops.LinearNormalizeFunction;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.image.ops.UnaryPointTransformer;
 
