@@ -35,7 +35,7 @@
 
     <!--Compilieren-->
     <target depends="init" name="compile">
-        <javac debug="true" deprecation="true" destdir="${dir.build}" optimize="on" srcdir="${dir.src}">
+        <javac debug="true" deprecation="true" destdir="${dir.build}" optimize="off" srcdir="${dir.src}">
             <classpath>
                 <pathelement location="lib/colt.jar"/>
             </classpath>
