@@ -11,7 +11,7 @@ import java.util.Vector;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class ObservableAlgorithm {
+public abstract class ObservableAlgorithm {
     private Vector iterationListener;
 
 	/**
