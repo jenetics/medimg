@@ -66,7 +66,7 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
             
             //Bestimmen der Qualität der berechneten Transformation
             double similarity = affinityMetric.similarity((VoxelIterator)sit.clone(),
-                                                           (VoxelIterator)tit.clone(),
+                                                           (VoxelIterator)tit.clone(), 
                                                             trans);
                                                         
         }      
