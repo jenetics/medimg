@@ -12,8 +12,8 @@ package org.wewi.medimg.reg;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class FittnessTransformationImportance extends AbstractTransformationImportance {
     public static final FittnessTransformationImportance INSTANCE = new FittnessTransformationImportance();

@@ -13,8 +13,8 @@ import org.wewi.medimg.image.VoxelIterator;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class FeatureIterator implements VoxelIterator {
 

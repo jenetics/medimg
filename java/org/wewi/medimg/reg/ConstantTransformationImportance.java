@@ -27,7 +27,26 @@ public class ConstantTransformationImportance extends AbstractTransformationImpo
 	 */
 	public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints) {
 		double[] result = new double[features.length];
-        Arrays.fill(result, 1d/(double)features.length);
+		double alpha = 0.0;
+		double sumValid = 0;
+        for (int i = 0; i < features.length; i++) {
+            if (similarity[i] >= getErrorLimit()) {
+                sumValid++;
+            }
+        }
+		if (sumValid == 0) {
+	        Arrays.fill(result, 0);	
+		} else {	
+	        for (int i = 0; i < features.length; i++) {
+	            if (similarity[i] >= getErrorLimit()) {
+	                alpha = 1 / sumValid;
+	            } else {
+	                alpha = 0.0;
+	            }
+	            result[i] = alpha;
+	        }
+		}
+
         return result;
 	}
 

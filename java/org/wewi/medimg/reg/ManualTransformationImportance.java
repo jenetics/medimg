@@ -12,8 +12,8 @@ import java.util.Vector;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class ManualTransformationImportance extends AbstractTransformationImportance {
     

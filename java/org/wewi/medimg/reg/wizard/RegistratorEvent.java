@@ -13,12 +13,12 @@ import java.util.EventObject;
  * @author  Werner Weiser
  * @version 0.1
  */
-public class RegistrationEvent extends EventObject {
+public class RegistratorEvent extends EventObject {
     //private int iteration = 0;
     //private double[] meanValues = {};
     
     /** Creates a new instance of SegmentationEvent */
-    public RegistrationEvent(Object source) {
+    public RegistratorEvent(Object source) {
         super(source);
     }
     

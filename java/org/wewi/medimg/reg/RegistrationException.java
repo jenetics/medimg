@@ -8,8 +8,8 @@ package org.wewi.medimg.reg;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class RegistrationException extends java.lang.Exception {
 

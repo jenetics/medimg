@@ -13,10 +13,11 @@ import java.util.EventListener;
  * @author  Werner Weiser
  * @version 0.1
  */
-public interface RegistrationListener extends EventListener {
-    public void registrationStarted(RegistrationEvent event);
+public interface RegistratorListener extends EventListener {
+	
+    public void registratorStarted(RegistratorEvent event);
     
-    public void registrationFinished(RegistrationEvent event);
+    public void registratorFinished(RegistratorEvent event);
     
     //public void iterationFinished(RegistrationEvent event);
 }
