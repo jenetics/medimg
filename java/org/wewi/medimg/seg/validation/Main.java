@@ -1,10 +1,6 @@
 /**
  * Created on 19.08.2002
  *
- * To change this generated comment edit the template variable "filecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of file comments go to
- * Window>Preferences>Java>Code Generation.
  */
 package org.wewi.medimg.seg.validation;
 
@@ -25,12 +21,8 @@ import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 /**
  * @author Franz Wilhelmstötter
  *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
  */
-public class Main {
+public final class Main {
     
     
 
@@ -74,10 +66,10 @@ public class Main {
         
         
         System.out.println("Validieren");
-        Validator val = new Validator(simg, mimg);
+        //Validator val = new Validator(simg, mimg);
         //val.validate();
         
-        System.out.println(val);
+        //System.out.println(val);
         
 	}
 }

@@ -11,12 +11,14 @@ package org.wewi.medimg.seg.validation;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Properties;
 
 
+import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.RawImageWriter;
+import org.wewi.medimg.image.io.TIFFWriter;
 
 /**
  * @author Franz Wilhelmstötter
@@ -36,39 +38,46 @@ public class BrainWebDataConverter {
 	}
     
     public static void readBrain() {
-        final String input = "../../data/nbrain.t1.n3.rf20.1byte.dat";
-        final String output = "X:/images/nbrain.t1.n3.rf20.1byte.rid";
-        
         final int maxX = 181;
         final int maxY = 217;
-        final int maxZ = 181;
+        final int maxZ = 181;     
         
+        
+        String modality = "pd";   
+        String noise = "9";
+        
+        //String input = "D:/msbrain." + modality + ".n" + noise + ".rf20.8bit.dat";
+        //String output = "X:/msheads/" + modality + ".n" + noise + ".rf20";
+        String input = "D:/msbrain.modell.seg.8bit.dat";
+        String output = "X:/mshead/seg.model";
+        Properties imageProp = new Properties();
+        imageProp.setProperty("BrainType", "NORMAL.MODEL");
+        //imageProp.setProperty("Modality", modality.toUpperCase());
+        //imageProp.setProperty("Noise", noise + "%");
+        //imageProp.setProperty("RF", "20%");
+        imageProp.setProperty("URL", "CDATA[http://www.bic.mni.mcgill.ca/brainweb/]");
         
         try {
+            //Einlesen des Bildes
+            System.out.println("Einlesen des Bildes " + input);
             DataInputStream in = new DataInputStream(new FileInputStream(input));
             Image img = new ImageData(maxX, maxY, maxZ);
-            
-            int low = 0, high = 0, result = 0;
+            int result = 0;
             for (int k = 0; k < maxZ; k++) {
                 for (int j = 0; j < maxY; j++) {
                     for (int i = 0; i < maxX; i++) {
-                        high = in.readUnsignedByte();
-                        //low = in.readUnsignedByte();
-                        //result = high*256;
-                        //result *= 256;
-                        //result += low;
-                        img.setColor(i, j, k, high);
+                        result = in.readUnsignedByte();
+                        img.setColor(i, j, k, result);
                     }   
                 }   
             }
             in.close();
             
-            System.out.println(img.getColorRange());
-            //img.setColorConversion(new PseudoColorConversion());
-            
-            ImageWriter writer = new RawImageWriter(img, new File(output));
-            //ImageWriter writer = new TIFFWriter(img, new File("c:/temp/msbrain.pd.n9.rf20.256c"));
-            //img.setColorConversion(new FeatureColorConversion());
+            //Schreiben des Bildes
+            System.out.println("Schreiben des Bildes " + output);
+            img.getHeader().setImageProperties(imageProp);
+            img.setColorConversion(new FeatureColorConversion());
+            ImageWriter writer = new TIFFWriter(img, new File(output));
             writer.write();
             
         } catch (Exception e) {
