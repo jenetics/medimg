@@ -8,10 +8,10 @@ import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.MarginImage;
 import org.wewi.medimg.image.geom.Point3D;
-import org.wewi.medimg.math.DoubleGridVectorFieldFactory;
-import org.wewi.medimg.math.GridVectorField;
-import org.wewi.medimg.math.GridVectorFieldFactory;
 import org.wewi.medimg.math.MathUtil;
+import org.wewi.medimg.math.vec.DoubleGridVectorFieldFactory;
+import org.wewi.medimg.math.vec.GridVectorField;
+import org.wewi.medimg.math.vec.GridVectorFieldFactory;
 
 /**
  * @author Franz Wilhelmstötter

@@ -57,18 +57,18 @@ import org.wewi.medimg.image.ops.SubFunction;
 import org.wewi.medimg.image.ops.UnaryPointTransformer;
 import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
 import org.wewi.medimg.image.statistic.SecondOrder;
-import org.wewi.medimg.math.GridVectorField;
-import org.wewi.medimg.math.GridVectorFieldTransformer;
 import org.wewi.medimg.math.MathUtil;
-import org.wewi.medimg.math.MaxVectorLengthOperator;
-import org.wewi.medimg.math.ScaleVectorFunction;
-import org.wewi.medimg.math.VectorFieldAnalyzer;
-import org.wewi.medimg.math.VectorFieldImageCanvasAdapter;
 import org.wewi.medimg.math.fft.ImageDFT;
 import org.wewi.medimg.math.fft.NaiveDFT1D;
 import org.wewi.medimg.math.geom.Dimension2D;
+import org.wewi.medimg.math.vec.GridVectorField;
+import org.wewi.medimg.math.vec.ops.GridVectorFieldTransformer;
+import org.wewi.medimg.math.vec.ops.MaxVectorLengthOperator;
+import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
+import org.wewi.medimg.math.vec.ops.VectorFieldAnalyzer;
 import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
+import org.wewi.medimg.viewer.VectorFieldImageCanvasAdapter;
 import org.wewi.medimg.viewer.image.ImagePanel;
 
 

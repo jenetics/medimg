@@ -6,7 +6,7 @@ package org.wewi.medimg.seg.ac;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.math.GridVectorField;
+import org.wewi.medimg.math.vec.GridVectorField;
 
 /**
  * @author Franz Wilhelmstötter

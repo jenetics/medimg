@@ -12,7 +12,7 @@ package org.wewi.medimg.math.vec.ops;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class ConstVectorFunction implements VectorFunction {
+public class ConstVectorFunction implements VectorFunction, GridVectorFunction {
     private double[] v;
 
 	/**
@@ -34,6 +34,12 @@ public class ConstVectorFunction implements VectorFunction {
         vector[0] = v[0];
         vector[1] = v[1];
         vector[2] = v[2];
+	}
+	/**
+	 * @see org.wewi.medimg.math.vec.ops.GridVectorFunction#transform(int, int, int, double[])
+	 */
+	public void transform(int gridX, int gridY, int gridZ, double[] newVector) {
+        transform(newVector);
 	}
 
 }

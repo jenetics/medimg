@@ -11,14 +11,14 @@ import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.filter.GradientFilter;
 import org.wewi.medimg.image.geom.Point3D;
-import org.wewi.medimg.math.ConstVectorFunction;
-import org.wewi.medimg.math.DoubleGridVectorField;
-import org.wewi.medimg.math.GridVectorField;
-import org.wewi.medimg.math.GridVectorFieldTransformer;
 import org.wewi.medimg.math.MathUtil;
-import org.wewi.medimg.math.MaxVectorLengthOperator;
-import org.wewi.medimg.math.ScaleVectorFunction;
-import org.wewi.medimg.math.VectorFieldAnalyzer;
+import org.wewi.medimg.math.vec.DoubleGridVectorField;
+import org.wewi.medimg.math.vec.GridVectorField;
+import org.wewi.medimg.math.vec.ops.ConstVectorFunction;
+import org.wewi.medimg.math.vec.ops.GridVectorFieldTransformer;
+import org.wewi.medimg.math.vec.ops.MaxVectorLengthOperator;
+import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
+import org.wewi.medimg.math.vec.ops.VectorFieldAnalyzer;
 
 /**
  * @author Franz Wilhelmstötter
