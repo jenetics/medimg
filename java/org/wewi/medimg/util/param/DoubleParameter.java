@@ -4,91 +4,78 @@
  */
 package org.wewi.medimg.util.param;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class DoubleParameter implements Parameter {
+public class DoubleParameter extends Parameter {
     private double value;
-    private String name;
 
-	/**
-	 * Constructor for DoubleParameter.
-	 */
-	public DoubleParameter(String name, double value) {
-		this.value = value;
-        this.name = name;
-	}
 
-	/**
-	 * @see org.wewi.medimg.seg.validation.Parameter#setParameter(Parameter)
-	 */
-	public void setParameter(Parameter parameter) {
-	}
-
-	/**
-	 * @see org.wewi.medimg.seg.validation.Parameter#setParameter(List)
-	 */
-	public void setParameter(List parameterList) {
-	}
-
-	/**
-	 * @see org.wewi.medimg.seg.validation.Parameter#getParameterList()
-	 */
-	public List getParameterList() {
-		return new ArrayList();
-	}
-
-	/**
-	 * @see org.wewi.medimg.seg.validation.Parameter#getName()
-	 */
-	public String getName() {
-		return name;
-	}
+    public DoubleParameter() {
+        this("", 0); 
+    }
     
-    /**
-     * @see org.wewi.medimg.util.param.Parameter#setName(String)
-     */
-    public void setName(String name) {
-        this.name = name;
-    }    
+    public DoubleParameter(double value) {
+        this("", value);    
+    }
     
-    /**
-     * @see org.wewi.medimg.util.param.Parameter#getClassName()
-     */
-    public String getClassName() {
-        return Double.class.getName();
-    } 
-    
-    /**
-     * @see org.wewi.medimg.util.param.Parameter#setClassName(String)
-     */
-    public String setClassName(String clazz) {
-        return null;
-    }       
+    public DoubleParameter(String name, double value) {
+        super(name);
+        this.value = value;    
+    }
 
 	/**
-	 * @see org.wewi.medimg.seg.validation.Parameter#getValue()
+	 * @see org.wewi.medimg.util.param.Parameter#createParameter(Element)
 	 */
-	public String getValue() {
-		return Double.toString(value);
+	public Parameter initParameter(Element xml) {
+        name = xml.getAttribute("name").getValue();
+        value = Double.parseDouble(xml.getText());
+        
+		return this;
 	}
 
 	/**
-	 * @see org.wewi.medimg.seg.validation.Parameter#setValue(String)
+	 * @see org.wewi.medimg.util.param.Parameter#createParameterElement()
 	 */
-	public void setValue(String val) {
-        value = Double.parseDouble(val);
+	public Element createParameterElement() {
+        Element e = new Element("Parameter");
+        e.setAttribute("name", name);
+        e.setAttribute("class", clazz);
+        e.setText(Double.toString(value));
+        
+		return e;
 	}
 
 	/**
-	 * @see org.wewi.medimg.seg.validation.Parameter#getInstance()
+	 * @see org.wewi.medimg.util.param.Parameter#getParameterObject()
 	 */
-	public Object getInstance() {
+	public Object getParameterObject() {
 		return new Double(value);
 	}
+    
+    
+    public static void main(String[] args) {
+        XMLOutputter out = new XMLOutputter();   
+        DoubleParameter p = new DoubleParameter("BETA", 0.323);
+        System.out.println(out.outputString(p.createParameterElement())); 
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
