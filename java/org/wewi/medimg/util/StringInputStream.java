@@ -17,7 +17,7 @@ import java.io.InputStream;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class StringInputStream extends InputStream {
+public final class StringInputStream extends InputStream {
 	private ByteArrayInputStream stream;
     
     public StringInputStream(String data) {
