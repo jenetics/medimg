@@ -11,7 +11,7 @@ package org.wewi.medimg.image;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class FeatureColorConversion extends ColorConversion {
+public class FeatureColorConversion implements ColorConversion {
     private static final int[][] cc = {{255, 255, 255},
                                        {255, 0, 0},
                                        {0, 255, 0},
