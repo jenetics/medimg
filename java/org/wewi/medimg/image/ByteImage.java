@@ -28,8 +28,7 @@ package org.wewi.medimg.image;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ByteImage extends AbstractImage {
-    private byte[] data;   
+public final class ByteImage extends AbstractImage {   
      
     ByteImage() {
         super();
