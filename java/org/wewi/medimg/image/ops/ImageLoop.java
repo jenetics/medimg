@@ -46,7 +46,9 @@ public class ImageLoop {
     protected Image image;
     private Task task;
     
-    /** Creates a new instance of ImageLoop */
+    /** 
+     * Creates a new instance of ImageLoop 
+     */
     public ImageLoop(Image image, Task task) {
         this.image = image;
         this.task = task;
@@ -105,7 +107,7 @@ public class ImageLoop {
     }
     
     /**
-     * The <code>loop</code> is executed as follows:
+     * The <code>loop</code> is executed as follows:<p/>
      *  
      * <pre>
      *     for (int k = roi.getMinZ(), u = roi.getMaxZ(); k <= u; k += strideZ) {

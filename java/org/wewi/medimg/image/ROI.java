@@ -34,6 +34,7 @@ public final class ROI extends Dimension {
      * @throws IllegalArgumentException
      */
     public ROI(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+        
         super(minX, maxX, minY, maxY, minZ, maxZ);
     }
 

@@ -6,6 +6,7 @@ package org.wewi.medimg.image.filter;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.MarginImage;
+import org.wewi.medimg.image.ops.ImageLoop;
 
 
 /**
@@ -49,6 +50,27 @@ public class ConvolutionFilter extends ImageFilter {
                 image.setColor(i, j, minZ, (int)maskSum.getKernelMaskSum(i, j));  
             }
         }   
+    }
+    
+    /**
+     * Implements the diskrete 3D convolution.
+     */
+    private void convolution() {
+        ImageLoop loop;
+    }
+    
+    private final class ConvolutionTask extends ImageLoop.Task {
+        private Image sourceImage;
+        
+        public ConvolutionTask(Image sourceImage) {
+            this.sourceImage = sourceImage;
+        }
+        
+		/**
+		 * @see org.wewi.medimg.image.ops.ImageLoop.Task#execute(int, int, int)
+		 */
+		public void execute(int x, int y, int z) {
+		}
     }
 }
 
