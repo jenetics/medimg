@@ -1,4 +1,4 @@
-/*
+/**
  * ImageData.java
  *
  * Created on 5. Dezember 2001, 14:45
@@ -9,31 +9,35 @@ package org.wewi.medimg.image;
 import java.util.Arrays;
 import java.util.RandomAccess;
 
+import org.wewi.medimg.util.Timer;
+
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.2
  */
-public final class ImageData implements Image, RandomAccess { 
+public class ImageData implements Image, RandomAccess { 
     
     private final class ImageDataVoxelIterator implements VoxelIterator {
-        private int[] data;
-        private int size;
         private int pos;
         
-        public ImageDataVoxelIterator(int[] data) {
-            this.data = data;
-            size = data.length-1;
-            pos = -1;
+        public ImageDataVoxelIterator() {
+            pos = 0;
         }
         
         public boolean hasNext() {
-            ++pos;
             return pos < size;
         }
         
         public int next() {
-            return data[pos];
+            return getData(pos++);
+        }
+        
+        public int next(int[] p) {
+            int c = getData(pos);
+            getCoordinates(pos, p);
+            ++pos;
+            return c;
         }
         
         public int size() {
@@ -41,10 +45,11 @@ public final class ImageData implements Image, RandomAccess {
         }
         
         public Object clone() {
-            return new ImageDataVoxelIterator(data);
+            return new ImageDataVoxelIterator();
         }
-    }
-    
+    } 
+     
+    /* 
     final static class CoordinatesToPosition {
         private Dimension dim;
         private int minX, minY, minZ;
@@ -75,17 +80,20 @@ public final class ImageData implements Image, RandomAccess {
             coordinate[2] += minZ;                
         }           
     }
+    */
+    /**************************************************************************/
+    private int[] data;
     
     
     private int minColor = Integer.MIN_VALUE;
     private int maxColor = Integer.MAX_VALUE;
     private ColorRange colorRange = null;
-    private int maxX, maxY, maxZ;
-    private int minX, minY, minZ;
-    private int sizeX, sizeY, sizeZ;
-    private Dimension dimension;
-    private int sizeXY, size;
-    private int[] data;
+    protected int maxX, maxY, maxZ;
+    protected int minX, minY, minZ;
+    protected int sizeX, sizeY, sizeZ;
+    protected Dimension dimension;
+    private int sizeXY;
+    protected int size;
     
     private ImageDataHeader header;
     private ColorConversion colorConversion;
@@ -100,6 +108,14 @@ public final class ImageData implements Image, RandomAccess {
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
+    public ImageData(int sizeX, int sizeY, int sizeZ) {
+        init(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1);
+    }
+    
+    public ImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        init(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+    
     void init(Dimension dim) {
         init(dim.getMinX(), dim.getMinY(), dim.getMinZ(),
              dim.getMaxX(), dim.getMaxY(), dim.getMaxZ());    
@@ -112,48 +128,52 @@ public final class ImageData implements Image, RandomAccess {
         this.maxX = maxX;
         this.maxY = maxY;
         this.maxZ = maxZ;
-        dimension = new Dimension(minX, maxX, minY, maxY, minZ, maxZ);
         sizeX = maxX - minX + 1;
         sizeY = maxY - minY + 1;
         sizeZ = maxZ - minZ + 1;
         size = sizeX*sizeY*sizeZ;
-        sizeXY = sizeX*sizeY;
-        data = new int[size]; 
-        Arrays.fill(data, 0);
-        
+        sizeXY = sizeX*sizeY;        
+        dimension = new Dimension(minX, maxX, minY, maxY, minZ, maxZ);
         header = new ImageDataHeader(this);
-        colorConversion = new GreyColorConversion();
+        colorConversion = new GreyColorConversion();        
+        
+        initData();
+    }    
+    
+    protected void initData() {
+        data = new int[size]; 
+        Arrays.fill(data, (int)0);        
     }
     
-    public ImageData(int sizeX, int sizeY, int sizeZ) {
-        init(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1);
+    protected int getData(int pos) {
+        return data[pos];    
     }
     
-    public ImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-        init(minX, minY, minZ, maxX, maxY, maxZ);
-    }
+    protected void setData(int pos, int color) {
+        data[pos] = color;    
+    }    
    
     public int getColor(int x, int y, int z) {
-        return data[sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX)];
+        return getData(sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX));
     }
     
     public int getColor(int pos) {
-        return data[pos];
+        return getData(pos);
     }
     
     public void setColor(int x, int y, int z, int color) {
-        data[sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX)] = (short)color;
+        setData(sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX), color);
     }
     
     public void setColor(int pos, int color) {
-        data[pos] = (short)color;
+        setData(pos, color);
     } 
 
     public void resetColor(int color) {
-        Arrays.fill(data, (short)color);
+        Arrays.fill(data, color);
     }  
     
-    public void updateColorRange() {
+    protected void updateColorRange() {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < size; i++) {
@@ -223,18 +243,18 @@ public final class ImageData implements Image, RandomAccess {
         return new ImageData(this);
     }
     
-    public int getPosition(int x, int y, int z) {
+    public synchronized int getPosition(int x, int y, int z) {
         return (sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX));
     }
     
-    public int[] getCoordinates(int pos) {
+    public synchronized int[] getCoordinates(int pos) {
         int[] erg = new int[3];
         getCoordinates(pos, erg);
         return erg;
     } 
     
     
-    public void getCoordinates(int pos, int[] coordinate) {
+    public synchronized void getCoordinates(int pos, int[] coordinate) {
         coordinate[2] = pos / (sizeXY);
         pos = pos - (coordinate[2] * sizeXY);
         coordinate[1] = pos / (sizeX);
@@ -246,7 +266,7 @@ public final class ImageData implements Image, RandomAccess {
         coordinate[2] += minZ;
     } 
     
-    public void getNeighbor3D12Positions(int pos, int[] n12) {
+    public synchronized void getNeighbor3D12Positions(int pos, int[] n12) {
         n12[0] = pos - 1 - sizeXY;
         n12[1] = pos - 1 + sizeXY;
         n12[2] = pos - 1 - sizeX;
@@ -261,7 +281,7 @@ public final class ImageData implements Image, RandomAccess {
         n12[11] = pos + sizeX + sizeXY;         
     }
     
-    public void getNeighbor3D18Positions(int pos, int[] n18) {
+    public synchronized void getNeighbor3D18Positions(int pos, int[] n18) {
         n18[0] = pos - 1;
         n18[1] = pos + 1;
         n18[2] = pos - sizeX;
@@ -282,7 +302,7 @@ public final class ImageData implements Image, RandomAccess {
         n18[17] = pos + sizeX + sizeXY;         
     }
     
-    public void getNeighbor3D6Positions(int pos, int[] n6) {
+    public synchronized void getNeighbor3D6Positions(int pos, int[] n6) {
         n6[0] = pos - 1;
         n6[1] = pos + 1;
         n6[2] = pos - sizeX;
@@ -316,10 +336,77 @@ public final class ImageData implements Image, RandomAccess {
     }
 
     public VoxelIterator getVoxelIterator() {
-        return new ImageDataVoxelIterator(data);
-    }    
+        return new ImageDataVoxelIterator();
+    }  
+    
+    
+    
+    
+    public static void main(String[] args) {
+        Timer timer = new Timer("ImageData");
+        
+        Image image = new ImageData(350, 350, 350); 
+         
+        
+        timer.start();
+        for (int i = 0; i < image.getNVoxels(); i++) {
+            image.getColor(i);    
+        }
+        timer.stop();
+        timer.print();
+        
+        
+        timer.start();
+        for (int i = 0, n = image.getNVoxels(); i < n; i++) {
+            image.getColor(i);    
+        }
+        timer.stop();
+        timer.print();        
+        
+        timer.start();
+        for (VoxelIterator it = image.getVoxelIterator(); it.hasNext();) {
+            it.next();    
+        }
+        timer.stop();
+        timer.print();     
+        
+        timer.start();
+        int[] p = new int[3];
+        for (VoxelIterator it = image.getVoxelIterator(); it.hasNext();) {
+            it.next(p);    
+        }
+        timer.stop();
+        timer.print();            
+    }  
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

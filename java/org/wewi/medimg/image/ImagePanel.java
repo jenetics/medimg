@@ -97,7 +97,7 @@ public class ImagePanel extends JPanel {
         listener.remove(l);    
     }
     
-    private void notifyListener(VoxelSelectorEvent event) {
+    protected void notifyListener(VoxelSelectorEvent event) {
         Vector list = (Vector)listener.clone();
         VoxelSelectorListener l;
         for (Iterator it = list.iterator(); it.hasNext();) {

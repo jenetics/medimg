@@ -17,7 +17,7 @@ import cern.colt.matrix.linalg.Algebra;
  * @author  werner weiser
  * @version 
  */
-public class AffineTransformation implements Transformation {
+public class AffineTransformation implements Transformation, Interpolateable {
 
     protected int DIM;
     protected double[][] trans = new double[4][4];
@@ -82,7 +82,7 @@ public class AffineTransformation implements Transformation {
      *
      * @param transform concatenating transformation
      *
-     * \todo Funktioniert zur Zeit nur, wenn transform vom Typ C3DAffineTransform ist!
+     * @todo Funktioniert zur Zeit nur, wenn transform vom Typ C3DAffineTransform ist!
      *       Produziert auch eine Compilerwarnung.
      */
     public Transformation concatenate(Transformation transform) {
@@ -375,5 +375,12 @@ public class AffineTransformation implements Transformation {
         }
        return out + '\n';
     }        
+
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Interpolateable#interpolate(Transformation)
+	 */
+	public Transformation interpolate(Transformation trans, double w) {
+		return null;
+	}
 
 }

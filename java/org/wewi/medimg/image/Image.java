@@ -69,6 +69,8 @@ public interface Image extends Nullable, Cloneable {
     
     public Object clone();
     
+    //public void dispose();
+    
     public ImageHeader getHeader();
     
     public ColorConversion getColorConversion();
