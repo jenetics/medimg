@@ -1,4 +1,4 @@
-/*
+/**
  * Point3D.java
  *
  * Created on 18. Februar 2002, 22:34
