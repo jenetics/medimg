@@ -30,6 +30,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.Range;
+import org.wewi.medimg.image.io.RawImageReader;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.util.Timer;
 
@@ -114,8 +115,12 @@ public class TestViewer extends Applet {
     }   
     
     private void newMarch() {
-        ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
-                                            new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/cylinder"));
+        //String file = "C:/Workspace/fwilhelm/Projekte/Diplom/data/cylinder";
+        //ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), new File(file));
+        
+        String file = "X:/images/nbrain.model.greymatter.rid";
+        ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(), new File(file));
+        
         try {
             reader.setRange(new Range(0, 120));
             reader.read();
@@ -143,7 +148,7 @@ public class TestViewer extends Applet {
         sd.decimate(graph);
         TriangleDecimator decimator = new CoplanarTriangleDecimator();
         for (int i = 0; i < 2; i++) {
-           //decimator.decimate(graph);
+           decimator.decimate(graph);
         }
         System.out.println("Vertices (nach dem Ausduennen): " + graph.getNoOfVertices());
         

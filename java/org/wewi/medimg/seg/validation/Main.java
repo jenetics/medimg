@@ -9,17 +9,18 @@
 package org.wewi.medimg.seg.validation;
 
 import java.io.File;
+import java.util.logging.ConsoleHandler;
 
 
+import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.RawImageReader;
-import org.wewi.medimg.image.io.RawImageWriter;
-import org.wewi.medimg.image.io.TIFFReader;
-import org.wewi.medimg.seg.Segmenter;
+import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
 /**
@@ -39,8 +40,9 @@ public class Main {
         Image mimg = new NullImage();
         Image simg = new NullImage();
         
-        Segmenter seg = null;
+        ObservableSegmenter seg = null;
         seg = new MLKMeansClusterer(10);
+        //seg.addLoggerHandler(new ConsoleHandler());
         
         try {
             System.out.println("Lesen des Modells");
@@ -61,6 +63,16 @@ public class Main {
         
         System.out.println("Segmentieren");
         simg = seg.segment(oimg);
+        System.out.println(simg.getColorRange());
+        
+        try {
+            simg.setColorConversion(new FeatureColorConversion());
+            ImageWriter writer = new TIFFWriter(simg, new File("X:/images/segimg"));
+            writer.write();
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+        
         
         System.out.println("Validieren");
         Validator val = new Validator(simg, mimg);

@@ -162,7 +162,7 @@ public class Dimension implements Cloneable {
 		Dimension dim = (Dimension)o;
 		
 		return minX == dim.minX && maxX == dim.maxX &&
-		        minY == dim.minY && maxY == dim.maxX &&
+		        minY == dim.minY && maxY == dim.maxY &&
 		        minZ == dim.minZ && maxZ == dim.maxZ;
 	}
 	
