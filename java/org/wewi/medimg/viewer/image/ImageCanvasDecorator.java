@@ -4,7 +4,7 @@
  * Created on 04.03.2003, 20:01:25
  *
  */
-package org.wewi.medimg.viewer;
+package org.wewi.medimg.viewer.image;
 
 import java.awt.Graphics;
 

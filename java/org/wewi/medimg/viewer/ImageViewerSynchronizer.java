@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.wewi.medimg.viewer.image.*;
+
 
 /**
  * @author Franz Wilhelmstötter
