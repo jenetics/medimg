@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.Dimension;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.util.Immutable;
 
 import cern.colt.function.DoubleDoubleFunction;
@@ -375,12 +375,13 @@ public class AffineTransformation implements InterpolateableTransformation,
     }
 
     public Transformation scale(double alpha) {
-        matrix[0] *= alpha;
-        matrix[5] *= alpha;
-        matrix[10] *= alpha;
-        inverseMatrix = invert(matrix);
+        double[] m = getMatrix();
+        
+        m[0] *= alpha;
+        m[5] *= alpha;
+        m[10] *= alpha;
 
-        return this;
+        return new AffineTransformation(m);
     }
 
     public Transformation concatenate(Transformation transform) throws IllegalArgumentException {
@@ -606,7 +607,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         }
     }
     
-    public Image transform(Image source, ImageDataFactory targetFactory) {
+    public Image transform(Image source, ImageFactory targetFactory) {
     	final int maxDim = 2000;
 
         int sminX = source.getMinX();
