@@ -17,6 +17,11 @@ public class Dimension implements Cloneable, Immutable {
 	private final int minX, maxX;
 	private final int minY, maxY;
 	private final int minZ, maxZ;
+    
+    /**
+     * @todo Introduce variable stepsize (so far set the default value to one).
+     */
+    private final int step = 1;
 	
 	public Dimension(Dimension dim) {
 		sizeX = dim.sizeX;
@@ -129,6 +134,10 @@ public class Dimension implements Cloneable, Immutable {
 	public int getSizeZ() {
 		return sizeZ;
 	}
+    
+    public int getStep() {
+        return step;
+    }
 	
 	public int hashCode() {
 		int result = 17;
