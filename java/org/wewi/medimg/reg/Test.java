@@ -45,14 +45,15 @@ public class Test {
         TIFFReader reader1 = new TIFFReader(ImageDataFactory.getInstance(), source1);
         TIFFReader reader2 = new TIFFReader(ImageDataFactory.getInstance(), source2);    
         TissueColorConversion tcc = new TissueColorConversion();
-        reader1.setColorConversion(tcc);
-        reader2.setColorConversion(tcc);
+        //reader1.setColorConversion(tcc);
+        //reader2.setColorConversion(tcc);
         try {
             reader1.read();
         } catch (Exception e) {
             e.printStackTrace();
         }
         ImageData data1 = (ImageData)reader1.getImage();
+        data1.setColorConversion(tcc);
         System.out.println(data1);        
         try {
             reader2.read();
@@ -129,7 +130,7 @@ public class Test {
         ImageData show2 = (ImageData)param.getTargetImage();
         TIFFWriter rwriter2 = new TIFFWriter(show2, new File("C:/temp/erg2" + i + ".tif"));
         //TIFFWriter rwriter2 = new TIFFWriter(show2, new File("E:/temp/img/erg2.tif"));
-        rwriter2.setColorConversion(tcc);
+        //rwriter2.setColorConversion(tcc);
         try {
             rwriter2.write();
         } catch (Exception e) {

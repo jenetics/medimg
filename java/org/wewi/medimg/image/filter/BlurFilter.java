@@ -6,12 +6,12 @@
 
 package org.wewi.medimg.image.filter;
 
+import java.util.Iterator;
+
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.geom.Point3D;
 import org.wewi.medimg.image.geom.Neighborhood;
 import org.wewi.medimg.image.geom.Neighborhood3D18;
-
-import java.util.Iterator;
+import org.wewi.medimg.image.geom.Point3D;
 
 /**
  *
@@ -37,8 +37,6 @@ public final class BlurFilter extends ImageFilter {
     }
 
     public void filter() {
-        super.filter();
-        
         //Blur
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
@@ -52,7 +50,9 @@ public final class BlurFilter extends ImageFilter {
                     image.setColor(i, j, k, blurColor(new Point3D(i, j, k), tempImage));
                 }
             }
-        }        
+        } 
+        
+        super.filter();       
     }
     
     public Image getImage() {

@@ -8,6 +8,8 @@
  */
 package org.wewi.medimg.image.io;
 
+import java.util.EventListener;
+
 
 /**
  * @author Franz Wilhelmstötter
@@ -17,7 +19,7 @@ package org.wewi.medimg.image.io;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public interface ImageIOProgressListener {
+public interface ImageIOProgressListener extends EventListener {
 
     public void progressChanged(ImageIOProgressEvent event);
 }

@@ -9,6 +9,7 @@ package org.wewi.medimg.seg.kmeans;
 import java.util.Iterator;
 
 import org.wewi.medimg.alg.AlgorithmIterator;
+import org.wewi.medimg.math.geom.*;
 
 /**
  *

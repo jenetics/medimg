@@ -188,7 +188,7 @@ class RangePanel extends javax.swing.JPanel {
                                         createImageReader(ImageDataFactory.getInstance(),
                                                                new File(fileName));
             int slices = 0;
-            slices = reader.getSlices();
+            //slices = reader.getSlices();
             min = 0;
             max = Math.max(slices-1, 0);
             stride = 1;

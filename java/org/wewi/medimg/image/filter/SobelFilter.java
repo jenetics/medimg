@@ -6,11 +6,12 @@
 
 package org.wewi.medimg.image.filter;
 
-import org.wewi.medimg.image.Image;
+import java.io.File;
 
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
-import java.io.*;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.TIFFReader;
+import org.wewi.medimg.image.io.TIFFWriter;
 
 
 /**
@@ -34,8 +35,6 @@ public final class SobelFilter extends ImageFilter {
     }
     
     public void filter() {
-        super.filter();
-        
         Image tempImage = (Image)image.clone();
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
@@ -44,6 +43,8 @@ public final class SobelFilter extends ImageFilter {
                 image.setColor(i, j, 0, enhance(i, j, tempImage));
             }
         }
+        
+        super.filter();
     }
     
     

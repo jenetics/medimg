@@ -4,9 +4,11 @@
  * Created on 5. Februar 2002, 13:51
  */
 
-package org.wewi.medimg.seg.kmeans;
+package org.wewi.medimg.math.geom;
 
 import java.util.Arrays;
+
+import org.wewi.medimg.math.geom.*;
 
 /**
  * Diese Klasse ist eine konkrete Erweiterung eines Datenpunktes.

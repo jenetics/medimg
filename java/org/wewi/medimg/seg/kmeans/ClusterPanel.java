@@ -17,6 +17,8 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
+import org.wewi.medimg.math.geom.*;
+
 /**
  *
  * @author  Franz Wilhelmstötter

@@ -114,6 +114,28 @@ public class RawImageWriter extends ImageWriter {
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public static void main(String[] args) {
         try {
             ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),

@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
@@ -21,26 +21,25 @@ import java.nio.ByteBuffer;
  * Window>Preferences>Java>Code Generation.
  */
 public class StringOutputStream extends OutputStream {
-    private ByteBuffer buffer;
-    private String string;
+	private ByteBuffer buffer;
+	private String string;
 
 	/**
 	 * Constructor for StringOutputStream.
 	 */
 	public StringOutputStream() {
 		super();
-        buffer = ByteBuffer.allocate(100);
-	}
-
+		buffer = ByteBuffer.allocate(100);
+	} 
 
 	/**
 	 * @see java.io.OutputStream#close()
 	 */
 	public void close() throws IOException {
-	   byte[] raw = buffer.array();
-       string = Base64.encode(raw);
-    
-       buffer = null;	
+		byte[] raw = buffer.array();
+		string = Base64.encode(raw);
+
+		buffer = null;
 	}
 
 	/**
@@ -68,11 +67,15 @@ public class StringOutputStream extends OutputStream {
 	 * @see java.io.OutputStream#write(int)
 	 */
 	public void write(int b) throws IOException {
-        buffer.put((byte)b);
+		buffer.put((byte) b);
 	}
-    
-    public String toString() {
-        return string;    
-    }
+
+	public String getOutputString() {
+		return string;
+	}
+
+	public String toString() {
+		return getOutputString();
+	}
 
 }

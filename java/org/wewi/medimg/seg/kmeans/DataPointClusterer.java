@@ -10,6 +10,7 @@ package org.wewi.medimg.seg.kmeans;
 
 /**
  * @author Franz Wilhelmstötter
+ * @version 0.1
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.

@@ -76,18 +76,6 @@ public class MLClassifier extends ObservableSegmenter implements Classifier {
     private double p(double color, int f) {
         return Math.exp(-((color-mean[f])*(color-mean[f]))/(2*var[f])) /
                        deviation[f];
-    }
-    
-    public void interruptSegmenter() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();    
-    }
-    
-    public void resumeSegmenter() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();    
-    }
-    
-    public void cancelSegmenter() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();    
     }        
     
     
