@@ -8,18 +8,19 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /**
+ * This abstract class implements..
+ * 
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
 public abstract class ObservableAlgorithm {
-    private Vector iterationListener;
+    private Vector iterationListener = new Vector();
 
 	/**
 	 * Constructor for ObservableAlgorithm.
 	 */
 	public ObservableAlgorithm() { 
 		super();
-        iterationListener = new Vector();
 	}
     
     public synchronized void addIterationListener(AlgorithmIterationListener il) {
