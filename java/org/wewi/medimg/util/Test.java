@@ -16,6 +16,8 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.wewi.medimg.image.ColorConversion;
+import org.wewi.medimg.image.ComplexAmplitudeImage;
+import org.wewi.medimg.image.ComplexImage;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
@@ -35,13 +37,16 @@ import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.JPEGReader;
 import org.wewi.medimg.image.io.JPEGWriter;
+import org.wewi.medimg.image.io.PNGReader;
 import org.wewi.medimg.image.io.PNGWriter;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.image.ops.BinaryPointTransformer;
+import org.wewi.medimg.image.ops.LinearNormalizeFunction;
 import org.wewi.medimg.image.ops.MinMaxFunction;
 import org.wewi.medimg.image.ops.RandomFunction;
 import org.wewi.medimg.image.ops.SubFunction;
+import org.wewi.medimg.image.ops.UnaryFunction;
 import org.wewi.medimg.image.ops.UnaryPointTransformer;
 import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
 import org.wewi.medimg.math.GridVectorField;
@@ -51,6 +56,7 @@ import org.wewi.medimg.math.MaxVectorLengthOperator;
 import org.wewi.medimg.math.ScaleVectorFunction;
 import org.wewi.medimg.math.VectorFieldAnalyzer;
 import org.wewi.medimg.math.VectorFieldImageCanvasAdapter;
+import org.wewi.medimg.math.fft.ImageDFT;
 import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
 
@@ -411,13 +417,37 @@ public class Test {
                 
     }
     
+    public static void test14() {
+        try {
+            ImageReader reader = new PNGReader(ImageDataFactory.getInstance(),
+                                                 new File("C:/Image1.png"));
+            reader.read();
+            Image image = reader.getImage();
+            
+            ImageDFT dft = new ImageDFT();
+            ComplexImage cimage = dft.transform(image);
+            
+            Image absimage = new ComplexAmplitudeImage(cimage);
+            ImageFilter filter = new LinearNormalizeFilter(absimage, 0, 255);
+            filter.filter();
+            
+            ImageWriter writer = new PNGWriter(filter.getImage(), "X:/complex");
+            writer.write();
+            
+            
+        } catch (Exception e) {
+            System.err.println("Fehler test14; " + e); 
+            e.printStackTrace();   
+        }    
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test13();
+        test14();
     }
     
 }

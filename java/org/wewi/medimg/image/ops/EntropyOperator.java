@@ -9,8 +9,8 @@ package org.wewi.medimg.image.ops;
 import java.util.Enumeration;
 
 import org.wewi.medimg.math.MathUtil;
+import org.wewi.medimg.math.MutableInteger;
 import org.wewi.medimg.util.IntHashtable;
-import org.wewi.medimg.util.MutableInteger;
 
 /**
  * @author Franz Wilhelmstötter

@@ -10,7 +10,7 @@ import org.wewi.medimg.util.Mutable;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class MutableDouble extends Number implements Mutable {
+public class MutableDouble extends java.lang.Number implements Mutable {
     private double value;
 
 	/**
@@ -34,7 +34,7 @@ public class MutableDouble extends Number implements Mutable {
     }
     
     /**
-     * @see java.lang.Number#doubleValue()
+     * @see java.lang.Number#doubleValue().
      */
     public double doubleValue() {
         return value;

@@ -30,10 +30,18 @@ public class MedianFilter extends ImageFilter {
         super(component);
     }
 
-    /**
-     * @see org.wewi.medimg.image.filter.ImageFilter#imageFiltering()
-     */
     protected void componentFilter() {
+        Image img = (Image)image.clone();
+        
+        int[] n = new int[18];
+        
+        for (int i = 0, v = img.getNVoxels(); i < v; i++) {
+            img.getNeighbor3D18Positions(i, n);
+            
+            
+            
+            
+        }
     }
 
 }

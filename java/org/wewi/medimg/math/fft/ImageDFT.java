@@ -40,6 +40,9 @@ public class ImageDFT {
         int y = MathUtil.pow2(ldy);
         int z = MathUtil.pow2(ldz);
         
+        System.out.println("ImageDFT");
+        System.out.println("x: " + x + ", y: " + y + ", z: " + z);
+        
         Complex[][][] c = new Complex[x][y][z];
         
         //Initialisieren des Arrays;
@@ -52,6 +55,18 @@ public class ImageDFT {
             }
         }
         
+        //Füllen des Arrays
+        for (int i = 0; i < dim.getSizeX(); i++) {
+            for (int j = 0; j < dim.getSizeY(); j++) {
+                for (int k = 0; k < dim.getSizeZ(); k++) {
+                    c[i][j][k] =  new Complex(image.getColor(i+dim.getMinX(), 
+                                                             j+image.getMinY(), 
+                                                             k+image.getMinZ()), 0);   
+                }    
+            }
+        }        
+        
+        
         DFT3D dft = new DFT3D(ft);
         dft.transform(c);
         
@@ -59,7 +74,8 @@ public class ImageDFT {
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
                 for (int k = 0; k < z; k++) {
-                    cimage.setColor(i, j, k, c[i][j][k]);   
+                    cimage.setColor(i, j, k, c[i][j][k]); 
+                    //System.out.println(c[i][j][k]);  
                 }    
             }
         }        

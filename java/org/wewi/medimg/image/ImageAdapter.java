@@ -19,8 +19,6 @@ public abstract class ImageAdapter implements Image {
     protected ImageAdapter() {
         super();
     }
-    
-    protected abstract void initAdapterImage();
 
     /**
      * @see org.wewi.medimg.image.Image#getHeader()
