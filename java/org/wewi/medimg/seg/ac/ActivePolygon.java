@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.wewi.medimg.image.ImagePanel;
+//import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.image.geom.Point2D;
 
@@ -20,13 +20,13 @@ import org.wewi.medimg.image.geom.Point2D;
  */
 public class ActivePolygon implements ActiveContour { 
     private Vector basePoints;
-    private ImagePanel.ImageCanvas polygonCanvas;
+    //private ImagePanel.ImageCanvas polygonCanvas;
     
     public ActivePolygon(ActivePolygon ac) {
         synchronized (ac.basePoints) {
             this.basePoints = (Vector)ac.basePoints.clone();
         }
-        polygonCanvas = new ActivePolygonCanvasAdapter(this);  
+        //polygonCanvas = new ActivePolygonCanvasAdapter(this);  
     }
 
 	/**
@@ -34,12 +34,12 @@ public class ActivePolygon implements ActiveContour {
 	 */
 	public ActivePolygon() {
         basePoints = new Vector();
-        polygonCanvas = new ActivePolygonCanvasAdapter(this);
+        //polygonCanvas = new ActivePolygonCanvasAdapter(this);
 	}
     
-    public ImagePanel.ImageCanvas getImageCanvas() {
-        return polygonCanvas;    
-    }
+    //public ImagePanel.ImageCanvas getImageCanvas() {
+    //    return polygonCanvas;    
+    //}
     
     /**
      * @see org.wewi.medimg.seg.ac.ActiveContour#addBasePoint(Point)
@@ -56,7 +56,7 @@ public class ActivePolygon implements ActiveContour {
     /**
      * @see org.wewi.medimg.seg.ac.ActiveContour#removePoint(Point)
      */
-    public synchronized void removePoint(Point point) {
+    public synchronized void removeBasePoint(Point point) {
         synchronized (basePoints) {
             basePoints.remove(point);
         }

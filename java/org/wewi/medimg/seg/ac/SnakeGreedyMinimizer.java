@@ -50,7 +50,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
             iteration();
 		}
 
-    }
+    } 
     /**************************************************************************/
     
     public static final double ERROR_LIMIT = 0.01;
@@ -61,6 +61,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
     protected Image image;
     protected Image gradImage;
     protected ActiveContour contour;
+    protected Neighborhood neighbor;
     
     protected double contourEnergy = -Double.MAX_VALUE;
     protected double newContourEnergy = Double.MAX_VALUE;
@@ -73,64 +74,122 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         this.image = image;
         this.contour = contour;
         
-        ImageFilter filter = new SobelFilter(image);
-        filter.filter();
-        gradImage = filter.getImage();
+        neighbor = new Neighborhood2D8(image.getMinX(), image.getMinY(),
+                                        image.getMaxX(), image.getMaxY());
+        
+        gradImage = (Image)image.clone();
+        ImageFilter filter = new SobelFilter(gradImage);
+        filter.filter(); 
 	}
     
     protected double innerEnergy(Point[] cp) {
-        double d1 = 0;
-        for (int i = 1, n = cp.length; i < n; i++) {
-            double vix = cp[i].getOrdinate(0);
-            double viy = cp[i].getOrdinate(1);
-            double vimx = cp[i-1].getOrdinate(0);
-            double vimy = cp[i-1].getOrdinate(1);
-            
-            d1 += MathUtil.sqr(vix-vimx) + MathUtil.sqr(viy-vimy);      
-        }
+        int size = cp.length;
+        double h = 1 / (double)size;
         
-        double d2 = 0;
-        for (int i = 1, n = cp.length-1; i < n; i++) {
-            double vix = cp[i].getOrdinate(0);
-            double viy = cp[i].getOrdinate(1);
-            double vimx = cp[i-1].getOrdinate(0);
-            double vimy = cp[i-1].getOrdinate(1);
-            double vipx = cp[i+1].getOrdinate(0);
-            double vipy = cp[i+1].getOrdinate(1);
+        //Berechnen des Stetikeitsterms der inneren Energie
+        int vix, viy, vimx, vimy;
+        double d1 = 0;
+        for (int i = 1, n = size+1; i < n; i++) {
+            vix = cp[i%size].getOrdinate(0);
+            viy = cp[i%size].getOrdinate(1);
+            vimx = cp[i-1].getOrdinate(0);
+            vimy = cp[i-1].getOrdinate(1);
             
-            double x = vimx-2*vix+vipx;
-            double y = vimy-2*viy+vipy;
-            
-            d2 += (x*x + y*y);   
+            d1 += MathUtil.sqr(vix - vimx) + MathUtil.sqr(viy - vimy);
         }
-        return (ALPHA*d1 + BETA*d2)/(double)cp.length;
+        d1 /= h;
+        
+        //Berechnung des Glattheitstern der inneren Energie
+        int vipx, vipy;
+        double d2 = 0;
+        for (int i = 1, n = size+1; i < n; i++) {
+            vix = cp[i%size].getOrdinate(0);
+            viy = cp[i%size].getOrdinate(1);
+            vimx = cp[i-1].getOrdinate(0);
+            vimy = cp[i-1].getOrdinate(1); 
+            vipx = cp[(i+1)%size].getOrdinate(0);
+            vipy = cp[(i+1)%size].getOrdinate(1); 
+            
+            d2 += MathUtil.sqr(vimx - 2*vix + vipx) + MathUtil.sqr(vimy - 2*viy + vipy);                   
+        }
+        d2 /= MathUtil.sqr(h);
+        
+        return ALPHA*d1 + BETA*d2;
+        
+        
+        
+        /* Funktioniert nicht ordentlich. Sollte eigentlich
+         * Verhindern, daß die Abstände zweier benachbarte Punkte
+         * zu weit auseinanderlaufen.
+        int size = cp.length;
+        double d = 0;
+        //Berechnung des mittleren Abstandes d zweier benachbarte Punkte
+        for (int i = 0; i < size; i++) {
+            d += Math.sqrt(MathUtil.sqr(cp[i].getOrdinate(0) - cp[(i+1)%size].getOrdinate(0)) +
+                           MathUtil.sqr(cp[i].getOrdinate(1) - cp[(i+1)%size].getOrdinate(1)));    
+        }
+        d /= (double)size;
+        
+        //Berechnen des Stetikeitsterms der inneren Energie
+        double vix, viy, vimx, vimy, length;
+        double d1 = 0;
+        for (int i = 1, n = size+1; i < n; i++) {
+            vix = cp[i%size].getOrdinate(0);
+            viy = cp[i%size].getOrdinate(1);
+            vimx = cp[i-1].getOrdinate(0);
+            vimy = cp[i-1].getOrdinate(1);
+            
+            length = Math.sqrt(MathUtil.sqr(vix-vimx) + MathUtil.sqr(viy-vimy));
+            d1 += (d - length) / length;      
+        }
+        d1 = MathUtil.sqr(d1);
+
+        //Berechnung des Glattheitstern der inneren Energie
+        double d2 = 0, vipx, vipy, norm, x1, y1, x2, y2;
+        for (int i = 1, n = size+2; i < n; i++) {
+            vix = cp[i%size].getOrdinate(0);
+            viy = cp[i%size].getOrdinate(1);
+            vimx = cp[(i-1)%size].getOrdinate(0);
+            vimy = cp[(i-1)%size].getOrdinate(1);
+            vipx = cp[(i+1)%size].getOrdinate(0);
+            vipy = cp[(i+1)%size].getOrdinate(1);
+            
+            norm = Math.sqrt(MathUtil.sqr(vipx - vix) + MathUtil.sqr(vipy - viy));
+            x1 = (vipx - vix) / norm;
+            y1 = (vipy - viy) / norm;
+            
+            norm = Math.sqrt(MathUtil.sqr(vix - vimx) + MathUtil.sqr(viy - vimy));
+            x2 = (vix - vimx) / norm;
+            y2 = (viy - vimy) / norm;
+            
+            d2 += MathUtil.sqr(x1 - x2) + MathUtil.sqr(y1 - y2);   
+        }
+
+        return (ALPHA*d1 + BETA*d2);
+        */
     }
     
     protected double outerEnergy(Point[] cp) {
-        double d1 = 0;
-        
         double g = 0;
         for (int i = 0, n = cp.length; i < n; i++) {
-            int vx = cp[i].getOrdinate(0);
-            int vy = cp[i].getOrdinate(1);
-            g += MathUtil.sqr(gradImage.getColor(vx, vy, 0));        
+            g += gradImage.getColor(cp[i].getOrdinate(0), cp[i].getOrdinate(1), 0);        
         }
-        return (-W_EDGE*g)/(double)cp.length;    
+        return -W_EDGE*(double)MathUtil.sqr(g);    
     }
     
     private double energy(ActiveContour ac) {
-        List list = ac.getContourPoints();
-        Point[] cp = new Point[list.size()];
-        list.toArray(cp);
+        List cpList = ac.getContourPoints();
+        List bpList = ac.getBasePoints();
+        Point[] bp = new Point[bpList.size()];
+        Point[] cp = new Point[cpList.size()];
+        cpList.toArray(cp);
+        bpList.toArray(bp);
         
-        return innerEnergy(cp) + outerEnergy(cp);    
+        return innerEnergy(bp) + outerEnergy(bp);    
     }
     
     private void iteration() {
         notifyIterationStarted(new AlgorithmIterationEvent(this));
-        
-        Neighborhood neighbor = new Neighborhood2D4(image.getMinX(), image.getMinY(),
-                                                    image.getMaxX(), image.getMaxY());
         
         contourEnergy = newContourEnergy;
         
@@ -143,7 +202,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         
         for (int i = 0; i < points.length; i++) {
             
-            Point basePoint = (Point)points[i];
+            Point basePoint = points[i];
             for (Iterator it2 = neighbor.getNeighbors(basePoint); it2.hasNext();) {
                 
                 Point newBasePoint = (Point)it2.next();
