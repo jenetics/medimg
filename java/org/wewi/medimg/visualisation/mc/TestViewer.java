@@ -103,9 +103,9 @@ public class TestViewer extends Applet {
     
     private void newMarch() {
         ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
-                                            new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
+                                            new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/cylinder"));
         try {
-            reader.setRange(new Range(100, 120));
+            reader.setRange(new Range(0, 120));
             reader.read();
         } catch (Exception ioe) {
             System.out.println("Fehler: " + ioe);
@@ -130,7 +130,7 @@ public class TestViewer extends Applet {
         TriangleDecimator sd = new SingleTriangleDecimator();
         sd.decimate(graph);
         TriangleDecimator decimator = new CoplanarTriangleDecimator();
-        for (int i = 0; i < 0; i++) {
+        for (int i = 0; i < 2; i++) {
            decimator.decimate(graph);
         }
         System.out.println("Vertices (nach dem Ausduennen): " + graph.getNoOfVertices());

@@ -8,11 +8,7 @@ package org.wewi.medimg.visualisation.mc;
 
 import java.util.Iterator;
 
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.seg.*;
-import org.wewi.medimg.seg.statistic.*;
-import java.io.*;
+import org.wewi.medimg.image.Image;
 
 
 /**
@@ -23,7 +19,6 @@ import java.io.*;
 public class MarchingCubes {                        
     private Image image;
     private Graph graph;
-    private CubeIterator cubeIterator;
     private int gridSize;
     private float lower, upper;
 
@@ -33,10 +28,11 @@ public class MarchingCubes {
         this.gridSize = gridSize;
         this.lower = lower;
         this.upper = upper;
-        cubeIterator = new ImageCubeIterator(image, gridSize, lower, upper);
+        
+        graph = new Graph();
     }
     
-    protected Graph compactation(Graph g) {
+    protected Graph decimation(Graph g) {
         return g;
     }
     
@@ -45,20 +41,17 @@ public class MarchingCubes {
     }
     
     public Graph march() {
-        graph = new Graph();
-        TriangleFactory tf = new TriangleFactory();
+        TriangleCreator tc = new TriangleCreator();
         
         Cube cube;
-        int count = 0;
-        while (cubeIterator.hasNext()) {
-            cube = cubeIterator.next();
-            for (Iterator it = tf.createTriangles(cube); it.hasNext();) {
+        for (Iterator cbit = new CubeIterator(image, gridSize, lower, upper); cbit.hasNext();) {
+            cube = (Cube)cbit.next();
+            for (Iterator it = tc.createTriangles(cube); it.hasNext();) {
                 graph.addTriangle((Triangle)it.next());
             }
         }
-        graph = compactation(graph);        
         
-        return graph;
+        return decimation(graph);        
     }
     
 }

@@ -17,7 +17,7 @@ final class Cube {
 
     /** Creates new Cube */
     Cube(float x, float y, float z, float gridSize, int ci) {
-        float d = gridSize;
+        final float d = gridSize;
         points = new Point[8];
         points[0] = new Point(x,   y+d,  z);
         points[1] = new Point(x+d, y+d,   z);

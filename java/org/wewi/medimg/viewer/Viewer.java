@@ -18,6 +18,8 @@ import org.wewi.medimg.seg.wizard.TwinImageViewer;
 
 import org.wewi.medimg.reg.wizard.RegistrationWizard;
 
+import org.wewi.medimg.visualisation.mc.wizard.MarchingCubeWizard;
+
 import java.io.File;
 
 import java.util.Properties;
@@ -50,6 +52,11 @@ public class Viewer extends JFrame implements Singleton,
     private Properties viewerStates; 
     private Dimension desktopDim;
     
+    //Command Objekte für Menübar
+    private Command openCommand;
+    private Command saveCommand;
+    private Command saveAsCommand;
+    
     /** Creates new form Viewer */
     private Viewer() {
         viewerStates = new Properties();
@@ -59,6 +66,8 @@ public class Viewer extends JFrame implements Singleton,
     
     private void init() {
         toolBar.add(NavigationPanel.getInstance());
+        
+        openCommand = new OpenCommand(this);
     }
     
     public static Viewer getInstance() {
@@ -66,6 +75,30 @@ public class Viewer extends JFrame implements Singleton,
             singleton = new Viewer();
         }
         return singleton;
+    }
+    
+    public void setOpenCommand(Command command) {
+        openCommand = command;
+    }
+    
+    public Command getOpenCommand() {
+        return openCommand;
+    }
+    
+    public void setSaveCommand(Command command) {
+        saveCommand = command;
+    }
+    
+    public Command getSaveCommand() {
+        return saveCommand;
+    }
+    
+    public void setSaveAsCommand(Command command) {
+        saveAsCommand = command;
+    }
+    
+    public Command getSaveAsCommand() {
+        return saveAsCommand;
     }
     
     public void addViewerState(StatePanelEntry state) {
@@ -125,13 +158,14 @@ public class Viewer extends JFrame implements Singleton,
         copyMenuItem = new javax.swing.JMenuItem();
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
+        wizardMenu = new javax.swing.JMenu();
+        segmentaionWizardMenuItem = new javax.swing.JMenuItem();
+        registrationWizardMenuItem = new javax.swing.JMenuItem();
+        marchingCubeWizardMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
         show3D = new javax.swing.JMenuItem();
-        wizardMenu = new javax.swing.JMenu();
-        segmentaionWizardMenuItem = new javax.swing.JMenuItem();
-        registrationWizardMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Segmentierungs- und Registrierungsviewer");
@@ -164,8 +198,8 @@ public class Viewer extends JFrame implements Singleton,
 
         getContentPane().add(rightSplitPanel, java.awt.BorderLayout.CENTER);
 
-        fileMenu.setText("File");
-        openMenuItem.setText("Open");
+        fileMenu.setText("Datei");
+        openMenuItem.setText("\u00d6ffnen");
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openMenuItemActionPerformed(evt);
@@ -173,7 +207,7 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         fileMenu.add(openMenuItem);
-        saveMenuItem.setText("Save");
+        saveMenuItem.setText("Speichern");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuItemActionPerformed(evt);
@@ -181,7 +215,7 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         fileMenu.add(saveMenuItem);
-        saveAsMenuItem.setText("Save As ...");
+        saveAsMenuItem.setText("Speichern als...");
         saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAsMenuItemActionPerformed(evt);
@@ -189,7 +223,7 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         fileMenu.add(saveAsMenuItem);
-        exitMenuItem.setText("Exit");
+        exitMenuItem.setText("Beenden");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
@@ -198,17 +232,43 @@ public class Viewer extends JFrame implements Singleton,
 
         fileMenu.add(exitMenuItem);
         menuBar.add(fileMenu);
-        editMenu.setText("Edit");
-        cutMenuItem.setText("Cut");
+        editMenu.setText("Bearbeiten");
+        cutMenuItem.setText("Ausschneiden");
         editMenu.add(cutMenuItem);
-        copyMenuItem.setText("Copy");
+        copyMenuItem.setText("Kopieren");
         editMenu.add(copyMenuItem);
-        pasteMenuItem.setText("Paste");
+        pasteMenuItem.setText("Einf\u00fcgen");
         editMenu.add(pasteMenuItem);
-        deleteMenuItem.setText("Delete");
+        deleteMenuItem.setText("Enfernen");
         editMenu.add(deleteMenuItem);
         menuBar.add(editMenu);
-        helpMenu.setText("Help");
+        wizardMenu.setText("Assistenten");
+        segmentaionWizardMenuItem.setText("Segmentierungsassistent");
+        segmentaionWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                segmentaionWizardMenuItemActionPerformed(evt);
+            }
+        });
+
+        wizardMenu.add(segmentaionWizardMenuItem);
+        registrationWizardMenuItem.setText("Registrieringsassistent");
+        registrationWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrationWizardMenuItemActionPerformed(evt);
+            }
+        });
+
+        wizardMenu.add(registrationWizardMenuItem);
+        marchingCubeWizardMenuItem.setText("Marching Cube Assistent");
+        marchingCubeWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                marchingCubeWizardMenuItemActionPerformed(evt);
+            }
+        });
+
+        wizardMenu.add(marchingCubeWizardMenuItem);
+        menuBar.add(wizardMenu);
+        helpMenu.setText("Hilfe");
         helpMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 helpMenuActionPerformed(evt);
@@ -240,31 +300,18 @@ public class Viewer extends JFrame implements Singleton,
 
         helpMenu.add(show3D);
         menuBar.add(helpMenu);
-        wizardMenu.setText("Wizard");
-        segmentaionWizardMenuItem.setText("SegmentationWizard");
-        segmentaionWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                segmentaionWizardMenuItemActionPerformed(evt);
-            }
-        });
-
-        wizardMenu.add(segmentaionWizardMenuItem);
-        registrationWizardMenuItem.setText("RegistrationWizard");
-        registrationWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registrationWizardMenuItemActionPerformed(evt);
-            }
-        });
-
-        wizardMenu.add(registrationWizardMenuItem);
-        menuBar.add(wizardMenu);
         setJMenuBar(menuBar);
 
         pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(new java.awt.Dimension(400, 300));
-        setLocation((screenSize.width-400)/2,(screenSize.height-300)/2);
+        setSize(new java.awt.Dimension(614, 422));
+        setLocation((screenSize.width-614)/2,(screenSize.height-422)/2);
     }//GEN-END:initComponents
+
+    private void marchingCubeWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marchingCubeWizardMenuItemActionPerformed
+        // Add your handling code here:
+        addWizard(new MarchingCubeWizard());
+    }//GEN-LAST:event_marchingCubeWizardMenuItemActionPerformed
 
     private void helpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuActionPerformed
         // Add your handling code here:
@@ -343,37 +390,7 @@ public class Viewer extends JFrame implements Singleton,
                                                   
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // Add your handling code here:
-        ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datensatz auswählen");
-        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
-        
-        int returnVal = chooser.showOpenDialog(this);
-        if(returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-        
-        ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
-        String fileName = chooser.getSelectedFile().getAbsolutePath();
-        ImageReader reader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
-                                                             new File(fileName));
-        //reader.setRange(new Range(101, 110));
-        try {
-            reader.read();
-        } catch (Exception e) {
-            System.err.println("Viewer.openMenuItemActionPerformed: " + e);
-            JOptionPane.showMessageDialog(this, "Kann Datei: \n" + fileName + "\n nicht öffnen", 
-                                                 "Fehler", JOptionPane.ERROR_MESSAGE);
-            return;
-        }     
-        Image image = reader.getImage();
-        ImageViewer iv = new ImageViewer(chooser.getSelectedFile().toString(), image);
-        int sizeX = image.getMaxX() - image.getMinX() + 1;
-        int sizeY = image.getMaxY() - image.getMinY() + 1;
-        iv.setPreferredSize(new Dimension(sizeX, sizeY));            
-        iv.pack();
-        addViewerDesktopFrame(iv);
-        
+        openCommand.execute();
     }//GEN-LAST:event_openMenuItemActionPerformed
     
     private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
@@ -442,6 +459,7 @@ public class Viewer extends JFrame implements Singleton,
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JMenuItem marchingCubeWizardMenuItem;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JPanel rightSplitPanel;
