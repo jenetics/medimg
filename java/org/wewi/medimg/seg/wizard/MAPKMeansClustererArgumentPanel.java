@@ -28,6 +28,7 @@ public final class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPane
     /** Creates new form MAPKMeansClustererArgumentPanel */
     public MAPKMeansClustererArgumentPanel() {
         initComponents();
+        init();
         
         format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(2);
