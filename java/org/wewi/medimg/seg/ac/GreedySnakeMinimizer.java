@@ -1,4 +1,4 @@
-/**
+  /**
  * Created on 18.09.2002
  *
  */
@@ -77,7 +77,8 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
 	 * Constructor for GreedySnakeMinimizer.
 	 */
 	public GreedySnakeMinimizer(Image image, ActiveContour contour) {
-        this(image, contour, new EdgeOuterEnergy(image));
+        //this(image, contour, new EdgeOuterEnergy(image));
+        this(image, contour, new GVFOuterEnergy(image));
 	}
     
     public GreedySnakeMinimizer(Image image, ActiveContour contour, OuterEnergyFunction function) {
@@ -133,14 +134,14 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
     }
     
     private double energy(ActiveContour ac) {
-        //List cpList = ac.getContourPoints();
+        List cpList = ac.getContourPoints();
         List bpList = ac.getBasePoints();
         Point[] bp = new Point[bpList.size()];
-        //Point[] cp = new Point[cpList.size()];
-        //cpList.toArray(cp);
+        Point[] cp = new Point[cpList.size()];
+        cpList.toArray(cp);
         bpList.toArray(bp);
         
-        return innerEnergy(bp) + outerEnergy(bp);    
+        return innerEnergy(bp) + outerEnergy(cp);    
     }
     
     private void iteration() {

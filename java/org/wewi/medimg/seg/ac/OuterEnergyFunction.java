@@ -12,7 +12,7 @@ import org.wewi.medimg.image.geom.Point;
  * @version 0.1
  */
 public abstract class OuterEnergyFunction {
-    private Image image;
+    protected Image image;
 
 	/**
 	 * Constructor for OuterEnergyFunction.
