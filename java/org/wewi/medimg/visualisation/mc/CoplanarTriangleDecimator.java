@@ -7,6 +7,7 @@
 package org.wewi.medimg.visualisation.mc;
 
 import java.util.Iterator;
+import java.util.Vector;
 
 /**
  *
@@ -15,7 +16,7 @@ import java.util.Iterator;
  */
 public class CoplanarTriangleDecimator extends TriangleDecimator {
     
-    private static final double EPSILON = 0.1;
+    private static final double EPSILON = 0.0001;
     /** Creates new CoplanarTriangleDecimator */
     public CoplanarTriangleDecimator() {
     }
@@ -26,36 +27,66 @@ public class CoplanarTriangleDecimator extends TriangleDecimator {
 
     public void decimate(Graph graph) {
         super.decimate(graph);
-        
+   
         Vertex v;
         Triangle t;
         StarshapedPolygon p;
         double similarity = 0.0;
         double[] eigenValues = new double[3];
+        int one = 0;
+        int two = 0;
+        int three = 0;
+        Vector verticesToRemove = new Vector();
+        Vector trianglesToAdd = new Vector();        
         for (Iterator it = graph.getVertices(); it.hasNext();) {
             v = (Vertex)it.next();
             // Ein Punkt mit 2 Dreiecksnachbarn ist jedenfalls ein Punkt der Auﬂenkontur
             // und darf daher nicht entfernt werden
             if (graph.getNoOfIncidentTriangles(v) <= 2) {
+                one++;
                 continue;
             }
             p = graph.getPolygon(v);
             if (!p.isClosed()) {
+                two++;
                 continue;
             }
             // Eigenwerte nach Grˆﬂe geordnet
             p.getEigenValues(eigenValues);
-            similarity = ((eigenValues[2] * eigenValues[2]) /
-                          (eigenValues[0] * eigenValues[0] + eigenValues[1] * eigenValues[1]));
+            similarity = ((eigenValues[0] * eigenValues[0]) /
+                          (eigenValues[2] * eigenValues[2] + eigenValues[1] * eigenValues[1]));
+            //System.out.println("similarity " + similarity );            
             if (similarity >= EPSILON) {
+                three++;
                 continue;
             }
             p.triangulate();
             graph.removeVertex(v);
+            //verticesToRemove.add(v);
             for (Iterator it2 = p.getTriangles(); it2.hasNext();) {
+                //trianglesToAdd.add((Triangle)it2.next());
                 graph.addTriangle((Triangle)it2.next());
             }
+            System.out.println("NV: " + graph.getNoOfVertices());
+            it = graph.getVertices();
         }
+        
+        
+        int four = 0;
+        int five = 0;
+        int six = 0;
+        /*
+        for (Iterator it = verticesToRemove.iterator(); it.hasNext();) {
+            if (graph.removeVertex((Vertex)it.next())) {
+                four++;
+            }
+            six++;
+        }
+        /*for (Iterator it = trianglesToAdd.iterator(); it.hasNext();) {
+            //graph.addTriangle((Triangle)it.next());
+            five++;
+        }*/        
+        System.out.println("Ergebnis one= " + one + " two " + two + " three " + three + " four " + four + " five " + five + " six " + six);
     }    
     
 }
