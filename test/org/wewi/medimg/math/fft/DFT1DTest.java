@@ -6,13 +6,16 @@
  */
 package org.wewi.medimg.math.fft;
 
+import org.wewi.medimg.math.Complex;
+
 import junit.framework.TestCase;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class DFT1DTest extends TestCase {
+    protected DFT1D dft;
 
     /**
      * Constructor for DFT1DTest.
@@ -21,6 +24,12 @@ public class DFT1DTest extends TestCase {
     public DFT1DTest(String arg0) {
         super(arg0);
     }
+    
+    public void assertEquals(Complex a, Complex b, double EPSILON) {
+        assertEquals(a.real(), b.real(), EPSILON);
+        assertEquals(a.imag(), b.imag(), EPSILON);    
+    }
+    
 
     /**
      * @see TestCase#setUp()
