@@ -2,7 +2,7 @@
  * Created on 20.11.2002 18:15:47
  *
  */
-package org.wewi.medimg.math;
+package org.wewi.medimg.math.vec;
 
 import org.wewi.medimg.image.geom.Point3D;
 

@@ -1,4 +1,4 @@
-/*
+/**
  * Function.java
  *
  * Created on 26. Jänner 2002, 12:28

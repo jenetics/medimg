@@ -2,7 +2,7 @@
  * Created on 21.11.2002 09:54:56
  *
  */
-package org.wewi.medimg.math;
+package org.wewi.medimg.math.vec;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -4,7 +4,9 @@
  * Created on 10. Mai 2002, 21:26
  */
 
-package org.wewi.medimg.math;
+package org.wewi.medimg.math.vec;
+
+import org.wewi.medimg.math.Function;
 
 /**
  *
