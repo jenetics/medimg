@@ -6,12 +6,14 @@
 
 package org.wewi.medimg.image.geom;
 
+import org.wewi.medimg.util.Immutable;
+
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class Point3D implements Point {
+public final class Point3D implements Point, Immutable {
     private final int[] point;
 
     public Point3D(int cx, int cy, int cz) {

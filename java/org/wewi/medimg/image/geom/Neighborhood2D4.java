@@ -26,11 +26,10 @@ public final class Neighborhood2D4 implements Neighborhood {
 
     
     public Iterator getNeighbors(Point p) {
-        Point2D p2d = (Point2D)p;
         PointIterator iterator = new PointIterator(4);
         
-        int x = p2d.getX();
-        int y = p2d.getY();
+        int x = p.getOrdinate(0);
+        int y = p.getOrdinate(1);        
         if (!(x-1 < minX)) {
             iterator.addPoint(new Point2D(x-1, y));
         }
