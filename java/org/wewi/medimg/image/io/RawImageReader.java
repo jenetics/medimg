@@ -48,10 +48,10 @@ public class RawImageReader extends ImageReader {
             in.close();            
         } catch (FileNotFoundException fnfe) {
             image = new NullImage();
-            throw new ImageIOException("" + fnfe);
+            throw new ImageIOException("File not found: " + source.toString(), fnfe);
         } catch (IOException ioe) {
             image = new NullImage();
-            throw new ImageIOException("" + ioe);            
+            throw new ImageIOException("Can't read Image", ioe);            
         }
     }
     

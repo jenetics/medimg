@@ -108,7 +108,7 @@ public class TransformableImage implements Image {
     
     public int getColor(int x, int y, int z) {
         tempPoint1[0] = x; tempPoint1[1] = y; tempPoint1[0] = z;
-        transform.inverseTransform(tempPoint1, tempPoint2);
+        transform.transformBackward(tempPoint1, tempPoint2);
 
         return 0;
     }

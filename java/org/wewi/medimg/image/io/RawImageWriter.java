@@ -38,9 +38,8 @@ public class RawImageWriter extends ImageWriter {
             }
             out.close();
         } catch (IOException ioe) {
-            System.err.println("RawImageDataWriter.write: " + ioe);
             target.delete();
-            throw new ImageIOException("" + ioe);
+            throw new ImageIOException("Can't write Image", ioe);
         }
     }
     

@@ -11,7 +11,7 @@ package org.wewi.medimg.image.io;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class ImageIOException extends java.io.IOException {
+public class ImageIOException extends Exception {
 
     /**
      * Creates new <code>ImageIOException</code> without detail message.
@@ -26,6 +26,14 @@ public class ImageIOException extends java.io.IOException {
      */
     public ImageIOException(String msg) {
         super(msg);
+    }
+    
+    public ImageIOException(Throwable cause) {
+        super(cause);
+    }
+    
+    public ImageIOException(String msg, Throwable cause) {
+        super(msg, cause);
     }
 }
 
