@@ -4,28 +4,33 @@
  */
 package org.wewi.medimg.util.param;
 
-import java.util.List;
+import org.jdom.Element;
+
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public interface Parameter {
-    public void setParameter(Parameter parameter);
+public abstract class Parameter {
+    protected String name;
+    protected String clazz;
     
-    public void setParameter(List parameterList);
+    protected Parameter() {
+        this("");
+    }
     
-    public List getParameterList();    
+    protected Parameter(String name) {
+        clazz = getClass().getName();
+        this.name = name;    
+    }
     
-    public String getName();
+    public abstract Parameter initParameter(Element xml);
     
-    public void setName(String name);
+    public abstract Element createParameterElement();
     
-    public String getClassName();
+    public String getParameterName() {
+        return name;    
+    }
     
-    public String getValue();
-    
-    public void setValue(String value);
-    
-    public Object getInstance();
+    public abstract Object getParameterObject();    
 }
