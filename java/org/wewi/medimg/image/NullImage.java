@@ -74,4 +74,16 @@ public final class NullImage implements Image, Nullable {
         return header;
     }
     
+    public int getPosition(int x, int y, int z) {
+        return 0;
+    }
+    
+    public void resetColor(int color) {
+    }
+    
+    public int[] getCoordinates(int pos) {
+        int[] retVal = {};
+        return retVal;
+    }
+    
 }

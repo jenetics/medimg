@@ -26,7 +26,7 @@ public final class ImageData implements Image {
     }
     
     private ImageData(ImageData id) {
-        this(id.maxX, id.maxY, id.maxZ);
+        this(id.maxX + 1, id.maxY + 1, id.maxZ + 1);
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
@@ -70,6 +70,10 @@ public final class ImageData implements Image {
     
     public void setColor(int pos, int color) {
         data[pos] = (short)color;
+    } 
+
+    public void resetColor(int color) {
+        Arrays.fill(data, (short)color);
     }    
     
     public int getMaxX() {
@@ -108,6 +112,20 @@ public final class ImageData implements Image {
         return new ImageData(this);
     }
     
+    public int getPosition(int x, int y, int z) {
+        return (sizeXY*z + sizeX*y + x);
+    }
+    
+    public int[] getCoordinates(int pos) {
+        int[] erg = new int[3];
+        erg[2] = pos / (sizeXY);
+        pos = pos - (erg[2] * sizeXY);
+        erg[1] = pos / (sizeX);
+        pos = pos - (erg[1] * sizeX);
+        erg[0] = pos;
+        return erg;
+    }  
+    
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("ImageData:\n    ");
@@ -123,6 +141,8 @@ public final class ImageData implements Image {
     public ImageHeader getHeader() {
         return header;
     }
+    
+
     
 }
 
