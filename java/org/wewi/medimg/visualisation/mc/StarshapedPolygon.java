@@ -15,7 +15,8 @@ import java.util.Iterator;
 public class StarshapedPolygon {
     
     /** Creates a new instance of StarshapedPolygon */
-    public StarshapedPolygon(Edge[] edges) {
+    public StarshapedPolygon(Edge[] edges, Vertex nucleus) {
+        close();
     }
     
     public void triangulate() {
@@ -27,6 +28,14 @@ public class StarshapedPolygon {
     
     public boolean isClosed() {
         return true;
+    }
+    
+    public void getEigenValues(double[] eigenValues) {
+        
+    }
+    
+    private void close() {
+    
     }
     
 }

@@ -43,6 +43,11 @@ public class Graph {
         public Iterator getTriangles() {
             return triangles.iterator();
         }
+        
+        public int size() {
+            return triangles.size();
+        }
+        
     }
     
     
@@ -115,7 +120,14 @@ public class Graph {
     public boolean contains(Triangle t) {
         return triangles.contains(t);
     }
-    
+
+    /**
+     * Liefert die Anzahl der Dreiecke, zu denen dieser Punkt (v) gehört.
+     */
+    public int getNoOfTriangles(Vertex v) {
+        return ((VertexTriangles)vertices.get(v)).size();
+    }
+        
     /**
      * Liefert jene Dreiecke, zu denen dieser Punkt (v) gehört.
      */
@@ -149,7 +161,7 @@ public class Graph {
         Edge[] edges = new Edge[e.size()];
         e.toArray(edges);
         
-        return new StarshapedPolygon(edges);
+        return new StarshapedPolygon(edges, v);
     }
     
     public int getNoOfVertices() {
