@@ -6,8 +6,6 @@
 
 package org.wewi.medimg.image;
 
-import fwilhelm.segmentation.image.ImageData;
-
 import java.util.Arrays;
 
 import java.io.File;
