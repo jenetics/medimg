@@ -120,8 +120,8 @@ public class KernelFactory {
         Image image = reader.getImage();
         Kernel kernel = KernelFactory.createEmbossKernel();
         ImageFilter filter = new ConvolutionFilter(image, kernel);
-        filter = new NormalizeFilter(filter, 0, 255);
-        //filter = new NormalizeFilter(new SobelFilter(image), 0, 255);
+        filter = new LinearNormalizeFilter(filter, 0, 255);
+        //filter = new LinearNormalizeFilter(new SobelFilter(image), 0, 255);
         filter.filter();
         
         ImageWriter writer = new TIFFWriter(filter.getImage(), new File("X:/margin.image.tif"));
