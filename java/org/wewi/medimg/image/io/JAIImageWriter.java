@@ -79,23 +79,31 @@ abstract class JAIImageWriter extends ImageWriter {
         try {
             if (image.getMaxZ() == 0) {
                 writeSlice(0, target);
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
                 return;
             } else {
                 target.mkdirs();
             }
 
             StringBuffer buffer;
+            double progress = 0;
             for (int k = image.getMinZ(); k <= image.getMaxZ(); k++) {
                 buffer = new StringBuffer();
                 buffer.append(target.getPath()).append(File.separator);
                 buffer.append("image.").append(Util.format(k, 4));
                 buffer.append(imageExtention);
                 writeSlice(k, new File(buffer.toString()));
+                
+                progress = (double)(k-image.getMinZ())/(double)(image.getMaxZ()-image.getMinZ());
+                notifyProgressListener(new ImageIOProgressEvent(this, progress, false));
             }  
         } catch (IOException ioe) {
             dispose();
+            notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
             throw new ImageIOException("Can't write Image: ", ioe);
         }
+        
+        notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
         
     }
     

@@ -6,11 +6,9 @@
 
 package org.wewi.medimg.image.io;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.wewi.medimg.image.Image;
 
 /**
  *
@@ -20,16 +18,13 @@ import org.wewi.medimg.image.Image;
 public final class ImageWriterThread extends Thread {
     private Vector listeners;
     
-    private Image image;
-    private ImageWriterFactory imageWriterFactory;
-    private File targetFileName;
+    private ImageWriter imageWriter;
+
     
-    public ImageWriterThread(Image image, ImageWriterFactory imageWriterFactory, File targetFileName) {
-        this.image = image;
-        this.imageWriterFactory = imageWriterFactory;
-        this.targetFileName = targetFileName;
+    public ImageWriterThread(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter; 
         
-        listeners = new Vector();
+        listeners = new Vector();   
     }
     
     public void addWriterThreadListener(WriterThreadListener listener) {
@@ -50,13 +45,13 @@ public final class ImageWriterThread extends Thread {
     }
 
     public void run() {
-        ImageWriter imageWriter = imageWriterFactory.createImageWriter(image, targetFileName);
         WriterThreadEvent event = new WriterThreadEvent(this);
         try {
             imageWriter.write();
         } catch (ImageIOException ioe) {
             System.err.println("ImageWriterThread.run: " + ioe);
-            event.setException(ioe);
+            
+            event.setException(ioe);          
         }
         
         notifyListeners(event);      

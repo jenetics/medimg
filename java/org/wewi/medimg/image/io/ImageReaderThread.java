@@ -6,8 +6,11 @@
 
 package org.wewi.medimg.image.io;
 
+import java.awt.Component;
 import java.util.Iterator;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,10 +20,17 @@ import java.util.Vector;
 public final class ImageReaderThread extends Thread {
     private Vector listeners;
     private ImageReader imageReader;
+    
+    private Component component = null;
 
     public ImageReaderThread(ImageReader imageReader) {
         this.imageReader = imageReader;
         listeners = new Vector();
+    }
+    
+    public ImageReaderThread(ImageReader imageReader, Component component) {
+        this(imageReader); 
+        this.component = component;   
     }
     
     public void addReaderThreadListener(ReaderThreadListener listener) {
@@ -50,6 +60,14 @@ public final class ImageReaderThread extends Thread {
             imageReader.read();
         } catch (ImageIOException ioe) {
             event.setException(new ImageIOException(ioe));
+            
+            if (component != null) {
+                JOptionPane.showMessageDialog(component, "Kann Datei: \n" + 
+                                           imageReader.getSource().toString() + 
+                                                         "\n nicht öffnen", 
+                                                 "Fehler", JOptionPane.ERROR_MESSAGE);                
+            }
+            
         }
         
         notifyListeners(event);
