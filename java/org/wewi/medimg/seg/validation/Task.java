@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jdom.DataConversionException;
 import org.jdom.Element;
 import org.wewi.medimg.util.param.Parameter;
 
@@ -15,9 +16,10 @@ import org.wewi.medimg.util.param.Parameter;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class Task {   
+public final class Task {   
     private int id;
     private int iterations;
+    private int iterationsDone;
     private Validator validator;
     private List parameterList;
 
@@ -28,6 +30,7 @@ public class Task {
 		super();
         id = 0;
         iterations = 1;
+        iterationsDone = 0;
         parameterList = new ArrayList();
 	}
     
@@ -51,7 +54,7 @@ public class Task {
         Element task = new Element("Task");
         task.setAttribute("id", Integer.toString(id));
         task.setAttribute("iterations", Integer.toString(iterations));
-        task.setAttribute("iterations.done", Integer.toString(0));
+        task.setAttribute("iterations.done", Integer.toString(iterationsDone));
         
         task.addContent(validator.createValidatorElement());
         
@@ -65,7 +68,60 @@ public class Task {
     
     
     public void initTask(Element task) {
+        try {
+			id = task.getAttribute("id").getIntValue();
+            iterations = task.getAttribute("iterations").getIntValue();
+            iterationsDone = task.getAttribute("iterations.done").getIntValue();
+		} catch (DataConversionException e) {
+            System.err.println("Task.initTask(): " + e);
+            return;
+		}    
         
+        Element validatorElement = task.getChild("Validator");
+        String validatorName = validatorElement.getAttribute("class").getValue();
+        try {
+			validator  = (Validator)Class.forName(validatorName).newInstance();
+		} catch (InstantiationException e) {
+            System.err.println("Task.initTask(): " + e);
+            return;            
+		} catch (IllegalAccessException e) {
+            System.err.println("Task.initTask(): " + e);
+            return;            
+		} catch (ClassNotFoundException e) {
+            System.err.println("Task.initTask(): " + e);
+            return;            
+		}
+        
+        List param = task.getChildren("Parameter");
+        for (Iterator it = param.iterator(); it.hasNext();) {
+            Element paramElement = (Element)it.next();
+            String paramName = paramElement.getAttribute("class").getValue();
+            Parameter p = null;
+            try {
+				p = (Parameter)Class.forName(paramName).newInstance();
+			} catch (InstantiationException e) {
+                System.err.println("Task.initTask(): " + e);
+                return;                 
+			} catch (IllegalAccessException e) {
+                System.err.println("Task.initTask(): " + e);
+                return;       
+			} catch (ClassNotFoundException e) {
+                System.err.println("Task.initTask(): " + e);
+                return;                       
+			}
+            
+            p.initParameter(paramElement);
+            parameterList.add(p);   
+        }
+        
+        validator.setParameterList(parameterList);
+    }
+    
+    public void execute() {
+        for (int i = iterationsDone; i < iterations; i++) {
+            validator.validate();
+            iterationsDone = i;   
+        }    
     }
 
 }

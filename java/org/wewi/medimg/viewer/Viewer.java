@@ -562,7 +562,7 @@ public class Viewer extends JFrame implements Singleton,
         saveMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         saveMenuItem.setMnemonic('S');
         saveMenuItem.setText("Speichern");
-        saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/Save16.gif")));
+        saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/save16.gif")));
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuItemActionPerformed(evt);
@@ -624,7 +624,6 @@ public class Viewer extends JFrame implements Singleton,
 
         activeContourwizardMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         activeContourwizardMenuItem.setText("Aktive Konturen...");
-        activeContourwizardMenuItem.setEnabled(false);
         activeContourwizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 activeContourwizardMenuItemActionPerformed(evt);
@@ -671,8 +670,8 @@ public class Viewer extends JFrame implements Singleton,
 
         pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(new java.awt.Dimension(396, 353));
-        setLocation((screenSize.width-396)/2,(screenSize.height-353)/2);
+        setSize(new java.awt.Dimension(501, 376));
+        setLocation((screenSize.width-501)/2,(screenSize.height-376)/2);
     }//GEN-END:initComponents
 
     private void lnfMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lnfMenuActionPerformed

@@ -1,5 +1,5 @@
-/*
- * ResizeableImagePanel.java
+/**
+ * ImagePanel.java
  *
  * Created on 24. Januar 2002, 15:00
  */
@@ -44,7 +44,7 @@ public class ImagePanel extends JPanel {
          * Konvertierung eines Bildpunktes in einen java.awt.Point
          * in Panel-Koordinaten.
          */
-        public java.awt.Point convert(Point3D p) {
+        public synchronized java.awt.Point convert(Point3D p) {
             int px = (int)Math.rint((double)p.getX()*(((double)getWidth()-2d*ox)/
                                                     (double)sizeX)+(double)ox);
             int py = (int)Math.rint((double)p.getY()*(((double)getHeight()-2d*oy)/
@@ -57,7 +57,7 @@ public class ImagePanel extends JPanel {
          * Konvertierung eines java.awt.Point Panel-Punktes
          * in einen entsprechenden Bildpunkt.
          */
-        public Point3D convert(java.awt.Point p) {
+        public synchronized Point3D convert(java.awt.Point p) {
             int imageX = (int)Math.rint((p.getX()-ox)*((double)sizeX/
                                          ((double)getWidth()-2*ox)));
             int imageY = (int)Math.rint((p.getY()-oy)*((double)sizeY/
@@ -125,16 +125,19 @@ public class ImagePanel extends JPanel {
                                               pointConverter.convert(event.getPoint())));                                            
     }
     
-    public void addVoxelSelectorListener(VoxelSelectorListener l) {
+    public synchronized void addVoxelSelectorListener(VoxelSelectorListener l) {
         listener.add(l);    
     }
     
-    public void removeVoxelSelectorListener(VoxelSelectorListener l) {
+    public synchronized void removeVoxelSelectorListener(VoxelSelectorListener l) {
         listener.remove(l);    
     }
     
     protected void notifyListener(VoxelSelectorEvent event) {
-        Vector list = (Vector)listener.clone();
+        Vector list;
+        synchronized (listener) {
+            list = (Vector)listener.clone();
+        }
         VoxelSelectorListener l;
         for (Iterator it = list.iterator(); it.hasNext();) {
             l = (VoxelSelectorListener)it.next();
