@@ -46,23 +46,40 @@ public class RawImageReader extends ImageReader {
         try {
             fin = new FileInputStream(source);
             zin = new ZipInputStream(fin); 
-            din = new DataInputStream(fin);
-            zin.getNextEntry();
+            din = new DataInputStream(zin);
             
             image = imageFactory.createImage(1, 1, 1);
+            zin.getNextEntry();
             image.getHeader().read(din);
+            din.close();
+            
+            //Der JDOM SAXInputter schlieﬂt leider den Stream nach dem Einleisen
+            fin = new FileInputStream(source);
+            zin = new ZipInputStream(fin); 
+            din = new DataInputStream(zin);            
+            
+            zin.getNextEntry();
+            zin.getNextEntry();
             int size = image.getNVoxels();
+            int stride = size/100;
             for (int i = 0; i < size; i++) {
+                if ((i % stride) == 0) {
+                    notifyProgressListener(new ImageIOProgressEvent(this, (double)i/(double)size, false));    
+                }
                 image.setColor(i, din.readInt());
             }
             din.close();            
         } catch (FileNotFoundException fnfe) {
             image = new NullImage();
+            notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
             throw new ImageIOException("File not found: " + source.toString(), fnfe);
         } catch (IOException ioe) {
             image = new NullImage();
-            throw new ImageIOException("Can't read Image", ioe);            
+            notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
+            throw new ImageIOException("Can't read Image: " + ioe, ioe);            
         }
+        
+        notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
     }
     
 }

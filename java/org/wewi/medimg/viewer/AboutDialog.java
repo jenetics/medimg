@@ -44,7 +44,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
         getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
 
-        centerPanel.setLayout(new java.awt.GridLayout());
+        centerPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         jTextArea1.setBackground(java.awt.SystemColor.control);
         jTextArea1.setEditable(false);
@@ -68,13 +68,6 @@ public class AboutDialog extends javax.swing.JDialog {
         setVisible(false);
         dispose();
     }//GEN-LAST:event_closeDialog
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        new AboutDialog(new javax.swing.JFrame(), true).show();
-    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

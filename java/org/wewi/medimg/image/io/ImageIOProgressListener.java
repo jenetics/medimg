@@ -8,6 +8,7 @@
  */
 package org.wewi.medimg.image.io;
 
+
 /**
  * @author Franz Wilhelmstötter
  *
@@ -17,5 +18,6 @@ package org.wewi.medimg.image.io;
  * Window>Preferences>Java>Code Generation.
  */
 public interface ImageIOProgressListener {
+
     public void progressChanged(ImageIOProgressEvent event);
 }

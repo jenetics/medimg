@@ -10,7 +10,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 
 /**
@@ -34,10 +33,7 @@ public abstract class ImageWriter {
         this.target = target;
         listeners = new Vector();
     }
-    
-    File getTarget() {
-        return target;
-    }
+   
     
     public synchronized void addProgressListener(ImageIOProgressListener l) {
         listeners.add(l);
@@ -55,13 +51,7 @@ public abstract class ImageWriter {
             l.progressChanged(event);
         }
     }    
-    
-    public void setColorConversion(ColorConversion cc) {
-    }
-    
-    public ColorConversion getColorConversion() {
-		return null;
-    }
+
     
     public abstract void write() throws ImageIOException;   
 }

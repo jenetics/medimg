@@ -52,7 +52,7 @@ public abstract class ImageReader {
      *
      * @return Datei von der das Bild gelesen wird.
      */
-    File getSource() {
+    public File getSource() {
         return source;
     }
     
@@ -83,22 +83,6 @@ public abstract class ImageReader {
         this.range = range;
     }
     
-    /**
-     * Setzen der Datei von der gelesen werden soll
-     *
-     * @param source neue Quelldatei (Quellverzeichnis)
-     */
-    void setSource(File source) {
-        this.source = source;
-    }
-    
-    public void setColorConversion(ColorConversion cc) {
-        colorConversion = cc;
-    }
-    
-    public ColorConversion getColorConversion() {
-        return colorConversion;
-    }
     
     /**
      * Starten des Lesevorgangs

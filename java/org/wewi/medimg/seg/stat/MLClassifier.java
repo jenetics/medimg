@@ -78,15 +78,15 @@ public class MLClassifier extends ObservableSegmenter implements Classifier {
                        deviation[f];
     }
     
-    public void interrupt() throws UnsupportedOperationException {
+    public void interruptSegmenter() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();    
     }
     
-    public void resume() throws UnsupportedOperationException {
+    public void resumeSegmenter() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();    
     }
     
-    public void cancel() throws UnsupportedOperationException {
+    public void cancelSegmenter() throws UnsupportedOperationException {
         throw new UnsupportedOperationException();    
     }        
     
