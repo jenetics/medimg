@@ -13,12 +13,8 @@
 
         <target name="compile.all" depends="init">
                 <echo message="Compiling all"/>
-                <mkdir dir="${dir.build}"/>
-	        <copy todir="${dir.build}">
-	           <fileset dir="${dir.src}">
-	                <include name="**/*.gif"/>
-	           </fileset>
-	        </copy>                
+                <delete dir="${dir.build}"/>
+                <mkdir dir="${dir.build}"/>                              
                 <javac srcdir="${dir.src}"
                            destdir="${dir.build}"
                            includes="org/wewi/medimg/**/*.class,
@@ -27,6 +23,12 @@
                            target="1.4"
                            optimize="on"/>
                <!--<copy file="${dir.src}/viewer.cmd" todir="${dir.build}"/>-->
+	        <copy todir="${dir.build}">
+	           <fileset dir="${dir.src}">
+	                <include name="**/*.gif"/>
+	                <include name="**/*.class"/>
+	           </fileset>
+	        </copy>                
         </target>
         
 	<target name="dist" depends="compile.all">
