@@ -6,6 +6,15 @@
 
 package org.wewi.medimg.seg.validation;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.jdom.Attribute;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
@@ -19,46 +28,112 @@ public class MLValidator {
     private MLKMeansClusterer clusterer;
     private Image source;
     private Image target;
+    private Image anatomicalModel;
+    
+    private int k;
     
     private long startTime;
     private long stopTime;
     
-    public MLValidator(MLKMeansClusterer clusterer, Image source) {
-        this.clusterer = clusterer;
-        this.source = source;
+    private File protocolFile;
+    
+    public MLValidator(File protocolFile) {
+        this.protocolFile = protocolFile;
     }      
     
+    public void setSourceImage(Image source) {
+        this.source = source;    
+    }
+    
+    public void setAnatomicalModel(Image am) {
+        anatomicalModel = am;
+    }
+    
+    public void setK(int k) {
+        this.k = k;    
+    }
     
     public void validate() {
+        clusterer = new MLKMeansClusterer(k);
+        
         startTime = System.currentTimeMillis();
         target = clusterer.segment(source);
-        stopTime = System.currentTimeMillis();    
+        stopTime = System.currentTimeMillis();
+        
+        AccumulatorArray accu = new AccumulatorArray(anatomicalModel.getColorRange().getNColors(), k);
+        for (int i = 0, n = source.getNVoxels(); i < n; i++) {
+            accu.inc(anatomicalModel.getColor(i), target.getColor(i));   
+        }
+        
+        T3 t3 = new T3(accu);
+        ErrorMeasure error = new ErrorMeasure(anatomicalModel,target, t3);
+        error.measure();
+          
+        Element protocol = new Element("Protocol");
+        
+        //Daten zum Algorithmus
+        Element alg = new Element("Algorithm");
+        alg.setAttribute(new Attribute("class", clusterer.getClass().getName()));
+        Element param = new Element("Parameter");
+        param.setAttribute("name", "k");
+        param.setAttribute("type", Integer.class.getName());
+        param.addContent(Integer.toString(k));
+        param.addContent(Util.transform(source));
+        alg.addContent(param);
+        Element algResult = new Element("Result");
+        Element exeTime = new Element("ExecutionTime");
+        exeTime.setAttribute(new Attribute("start", Long.toString(startTime)));
+        exeTime.setAttribute(new Attribute("stop", Long.toString(stopTime)));
+        algResult.addContent(exeTime);
+        Element mean = new Element("MeanValues");
+        Element value;
+        double[] mv = clusterer.getMeanValues();
+        for (int i = 0; i < mv.length; i++) {
+            value = new Element("Value");
+            value.addContent(Double.toString(mv[i]));   
+            mean.addContent(value); 
+        }
+        algResult.addContent(mean);
+        protocol.addContent(alg);
+        
+        //Ergebnis
+        Element result = new Element("Result");
+        result.addContent(Util.transform(accu));
+        result.addContent(Util.transform(t3));
+        result.addContent(Util.transform(error));
+        protocol.addContent(result);
+        
+        Document doc = new Document(protocol);
+        
+        XMLOutputter out = new XMLOutputter("    ", true);
+        try {
+			out.output(doc, new FileOutputStream(protocolFile));
+		} catch (FileNotFoundException e) {
+            System.err.println("MLValidator: " + e);
+		} catch (IOException e) {
+            System.err.println("MLValidator: " + e);
+		}
+        
     }
     
-    public long getStartTime() {
-        return startTime;    
-    }
-    
-    public long getStopTime() {
-        return stopTime;    
-    }
-    
-    public Image getSourceImage() {
-        return source;    
-    }
-    
-    public Image getTargetImage() {
-        return target;    
-    }
-    
-    public Class getAlgorithmClass() {
-        return clusterer.getClass();    
-    }
-    
-    public String getAlgorithmName() {
-        return clusterer.toString();    
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
