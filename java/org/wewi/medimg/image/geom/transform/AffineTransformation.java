@@ -335,6 +335,7 @@ public class AffineTransformation implements InterpolateableTransformation,
     
     ////////////////////////////////////////////////////////////////////////////
     
+    
     public AffineTransformation getPerspectiveTransformation() {
         double[] m = new double[12];
         Arrays.fill(m, 0);
@@ -351,29 +352,22 @@ public class AffineTransformation implements InterpolateableTransformation,
         return new AffineTransformation(m);    
     }
     
+    
     public AffineTransformation getTranslateTransformation() {
-        return AffineTransformation.getTranslateInstance(new double[]{tran[U_TRANSX],
-                                                                        tran[U_TRANSY],
-                                                                        tran[U_TRANSZ]});    
+        return getTranslateInstance(new double[]{tran[U_TRANSX], tran[U_TRANSY], tran[U_TRANSZ]});    
     }
     
     public AffineTransformation getRotationTransformation() {
-        return AffineTransformation.getRotateInstance(new double[]{tran[U_ROTATEX],
-                                                                     tran[U_ROTATEY],
-                                                                     tran[U_ROTATEZ]});    
+        return getRotateInstance(new double[]{tran[U_ROTATEX], tran[U_ROTATEY], tran[U_ROTATEZ]});    
     }
        
     
     public AffineTransformation getShearTransformation() {            
-        return AffineTransformation.getShearInstance(new double[]{tran[U_SHEARXY],
-                                                                    tran[U_SHEARXZ],
-                                                                    tran[U_SHEARYZ]});    
+        return getShearInstance(new double[]{tran[U_SHEARXY], tran[U_SHEARXZ], tran[U_SHEARYZ]});    
     }
     
     public AffineTransformation getScaleTransformation() {
-        return AffineTransformation.getScaleInstance(new double[]{tran[U_SCALEX],
-                                                                    tran[U_SCALEY],
-                                                                    tran[U_SCALEY]});    
+        return getScaleInstance(new double[]{tran[U_SCALEX], tran[U_SCALEY], tran[U_SCALEY]});    
     }
 
     public Transformation scale(double alpha) {
@@ -385,8 +379,13 @@ public class AffineTransformation implements InterpolateableTransformation,
         return this;
     }
 
-    public Transformation concatenate(Transformation transform) {
-        //transform*this
+    public Transformation concatenate(Transformation transform) throws IllegalArgumentException {
+        if (!(transform instanceof AffineTransformation)) {
+            throw new IllegalArgumentException("Argument transform is not an " + 
+                                                 "instance of " + getClass().getName());
+        }
+        
+        
         DoubleMatrix2D A = new DenseDoubleMatrix2D(4, 4);
         DoubleMatrix2D B = new DenseDoubleMatrix2D(4, 4);
         A.assign(0);
@@ -466,19 +465,28 @@ public class AffineTransformation implements InterpolateableTransformation,
      * zusammen.
      * 
      * <pre>
-     *       / 1               0               0               \
-     * Rx =  | 0               Cos(rotXYZ[0])  -Sin(rotXYZ[0]) |
-     *       \ 0               Sin(rotXYZ[0]) Cos[rotXYZ[0])   /
      * 
-     *       / Cos(rotXYZ[1])  0               Sin(rotXYZ[1])  \
-     * Ry =  | 0               1               0               |
-     *       \ -Sin(rotXYZ[1]) 0               Cos(rotXYZ[1])  /
+     * a = rotXYZ[0]
+     * b = rotXYZ[1]
+     * c = rotXYZ[2]
      * 
-     *       / Cos(rotXYZ[2])  -Sin(rotXYZ[2])  0              \
-     * Rz =  | Sin(rotXYZ[2]) Cos(rotXYZ[2])    0              |
-     *       \ 0               0                1              /
+     *       / 1         0       0     \
+     * Rx =  | 0       Cos(a)  -Sin(a) |
+     *       \ 0       Sin(a)   Cos(a) /
+     * 
+     *       / Cos(b)    0     Sin(b)  \
+     * Ry =  |    0      1       0     |
+     *       \ -Sin(b)   0     Cos(b)  /
+     * 
+     *       / Cos(c)  -Sin(c)   0     \
+     * Rz =  | Sin(c)   Cos(c)   0     |
+     *       \ 0         0       1     /
      * 
      * R  = Rx.Ry.Rz
+     * 
+     *       /            Cos(b)Cos(c)                     -Cos(b)Sin(c)              Sin(b)    \
+     *    =  | Cos(c)Sin(a)Sin(b)+Cos(a)Sin(c)   Cos(a)Cos(c)-Sin(a)Sin(b)Sin(c)  -Cos(b)Sin(a) |
+     *       \ -Cos(a)Cos(c)Sin(b)+Sin(a)Sin(c)  Cos(c)Sin(a)+Cos(a)Sin(b)Sin(c)   Cos(a)Cos(b) /
      * </pre>
      * 
      * 
@@ -678,40 +686,29 @@ public class AffineTransformation implements InterpolateableTransformation,
             transInterpol[i] = tran[i]*(1-w) + t2.tran[i]*w;    
         }
         
-        double[] m = new double[12];
-        Arrays.fill(m, 0);
-        m[0] = transInterpol[U_SCALEX];
-        m[5] = transInterpol[U_SCALEY];
-        m[10] = transInterpol[U_SCALEZ];
-        AffineTransformation As = new AffineTransformation(m);  
+
+        double a = transInterpol[U_SCALEX];
+        double b = transInterpol[U_SCALEY];
+        double c = transInterpol[U_SCALEZ];
+        AffineTransformation As = getScaleInstance(new double[]{a, b, c});
         
-        Arrays.fill(m, 0);
-        double a = transInterpol[U_ROTATEX];
-        double b = transInterpol[U_ROTATEY];
-        double c = transInterpol[U_ROTATEZ];
-        m[0] = Math.cos(a)*Math.cos(c) - Math.cos(b)*Math.sin(a)*Math.sin(c);
-        m[1] = Math.cos(c)*Math.sin(a) + Math.cos(a)*Math.cos(b)*Math.sin(c);
-        m[2] = Math.sin(b)*Math.sin(c);
-        m[4] = -(Math.cos(b)*Math.cos(c)*Math.sin(a)) - Math.cos(a)*Math.sin(c);
-        m[5] = Math.cos(a)*Math.cos(b)*Math.cos(c) - Math.sin(a)*Math.sin(c);
-        m[6] = Math.cos(c)*Math.sin(b);
-        m[8] = Math.sin(a)*Math.sin(b);
-        m[9] = -(Math.cos(a)*Math.sin(b));
-        m[10] = Math.cos(b);
-        AffineTransformation Ar = new AffineTransformation(m);  
+        a = transInterpol[U_SHEARXY];
+        b = transInterpol[U_SHEARXZ];
+        c = transInterpol[U_SHEARYZ];
+        AffineTransformation Ash = getShearInstance(new double[]{a, b, c});  
+        
+        a = transInterpol[U_ROTATEX];
+        b = transInterpol[U_ROTATEY];
+        c = transInterpol[U_ROTATEZ];
+        AffineTransformation Ar = getRotateInstance(new double[]{a, b, c});  
        
-        Arrays.fill(m, 0);
-        m[3] = transInterpol[U_TRANSX];
-        m[7] = transInterpol[U_TRANSY];
-        m[11] = transInterpol[U_TRANSZ];
-        //Rotationsteil ist Einheitsmatrix
-        m[0] = 1;
-        m[5] = 1;
-        m[10] = 1;         
-        AffineTransformation At = new AffineTransformation(m); 
+        a = transInterpol[U_TRANSX];
+        b = transInterpol[U_TRANSY];
+        c = transInterpol[U_TRANSZ];       
+        AffineTransformation At =getTranslateInstance(new double[]{a, b, c}); 
         
                  
-        return (AffineTransformation)At.concatenate(Ar.concatenate(As));
+        return (AffineTransformation)At.concatenate(Ar.concatenate(Ash.concatenate(As)));
     }    
 
     private void transformBackward(double[] source, double[] target) {
