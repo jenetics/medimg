@@ -7,6 +7,8 @@
 package org.wewi.medimg.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.wewi.medimg.image.FileImageData;
 import org.wewi.medimg.image.Image;
@@ -279,7 +281,13 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       test5();
+       Image rai = null;
+    	try {
+    		rai = new FileImageData(new File("X:/image.rid"));
+    	} catch (FileNotFoundException e) {
+    	} catch (IOException e) {
+    	}
+       System.out.println(rai);
   
     }
     

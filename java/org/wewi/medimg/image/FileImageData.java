@@ -394,5 +394,9 @@ public class FileImageData implements Image {
 	public boolean isNull() {
 		return false;
 	}
+    
+    public String toString() {
+        return "FileImageData (\"" + file + "\"):\n" + dim;    
+    }
 
 }

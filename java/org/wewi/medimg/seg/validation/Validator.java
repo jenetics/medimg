@@ -9,16 +9,11 @@ package org.wewi.medimg.seg.validation;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Hashtable;
 
-import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.PseudoColorConversion;
-import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.RawImageWriter;
-import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 
 /**
@@ -28,6 +23,8 @@ import org.wewi.medimg.image.io.TIFFWriter;
 public class Validator {
     private Image segimg;
     private Image compimg;
+    
+    private Hashtable counter;
     
     
     /** Creates a new instance of Validator */
@@ -43,6 +40,21 @@ public class Validator {
     }
     
     public void validate() {
+    	int c1, c2;
+    	long key = 0;
+    	
+    	for (int k = segimg.getMinZ(); k < segimg.getMaxZ(); k++) {
+    		for (int j = segimg.getMinY(); j < segimg.getMaxY(); j++) {
+    			for (int i= segimg.getMinX(); i < segimg.getMaxX(); i++) {
+    				c1 = segimg.getColor(i, j, k);
+    				c2 = compimg.getColor(i, j, k);
+    							
+    			}	
+    		}	
+    	}
+    	
+    	
+    	
     }
     
     public double getError() {
