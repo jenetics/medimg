@@ -8,10 +8,8 @@ package org.wewi.medimg.reg;
 
 
 
-import org.wewi.medimg.image.VoxelIterator;
-
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.reg.*;
+import org.wewi.medimg.image.VoxelIterator;
 
 /**
  *

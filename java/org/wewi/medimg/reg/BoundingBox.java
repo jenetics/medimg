@@ -6,10 +6,10 @@
 
 package org.wewi.medimg.reg;
 
+import java.util.Vector;
+
 import org.wewi.medimg.image.geom.transform.Transformation;
 import org.wewi.medimg.math.geom.DoubleDataPoint;
-
-import java.util.Vector;
 
 /**
  *

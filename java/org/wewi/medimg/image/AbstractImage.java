@@ -74,6 +74,7 @@ public abstract class AbstractImage extends LineScanImageGeometry
         super(dim);
         header = new AbstractImageHeader(this);
         data = createDiscreteData(size);
+        colorConversion = new GreyColorConversion();
     }
     
     public AbstractImage(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {

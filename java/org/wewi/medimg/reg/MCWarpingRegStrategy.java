@@ -6,18 +6,8 @@
 
 package org.wewi.medimg.reg;
 
-import java.util.Iterator;
-
-import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
-import org.wewi.medimg.image.geom.Neighborhood3D18;
-import org.wewi.medimg.image.geom.Point3D;
-//import org.wewi.medimg.image.geom.transform.DisplacementField;
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
-//import org.wewi.medimg.image.geom.transform.Transformation;
-//import org.wewi.medimg.math.geom.DoubleDataPoint;
-//import org.wewi.medimg.reg.interpolation.InterpolStrategy;
-//import org.wewi.medimg.reg.metric.AffinityMetric;
 
 import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
