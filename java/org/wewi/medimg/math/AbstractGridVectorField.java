@@ -70,6 +70,12 @@ public abstract class AbstractGridVectorField implements GridVectorField {
     
     private RealDataArray data;
     private final int SIZE;
+    
+    
+    public AbstractGridVectorField(AbstractGridVectorField field) {
+        this(field.origin, field.grid, field.stride);  
+        data.copy(field.data);  
+    }
 
 
 	/**
