@@ -8,7 +8,7 @@ package org.wewi.medimg.image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class ImageView extends LineScanImageGeometry implements Image {
+public class ImageView extends RowMajorImageGeometry implements Image {
     private Image image;
     private ROI roi;
     
@@ -21,8 +21,8 @@ public class ImageView extends LineScanImageGeometry implements Image {
 	public ImageView(Image image, ROI roi) throws IllegalArgumentException {
 		super(roi);
         
-        if (!(image instanceof LineScanImageGeometry)) {
-            throw new IllegalArgumentException("Parameter image is not an instance of LineScanImageGeometry");    
+        if (!(image instanceof RowMajorImageGeometry)) {
+            throw new IllegalArgumentException("Parameter image is not an instance of RowMajorImageGeometry");    
         }
         
         this.image = image;

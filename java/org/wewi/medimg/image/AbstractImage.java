@@ -10,7 +10,7 @@ import java.util.RandomAccess;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public abstract class AbstractImage extends LineScanImageGeometry
+public abstract class AbstractImage extends RowMajorImageGeometry
                                       implements Image, RandomAccess {
 
     private final class AbstractImageVoxelIterator implements VoxelIterator {
