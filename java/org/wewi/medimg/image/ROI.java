@@ -148,7 +148,7 @@ public final class ROI extends Dimension {
         int maxY = Math.min(getMaxY(), b.getMaxY());
         int minZ = Math.max(getMinZ(), b.getMinZ());
         int maxZ = Math.min(getMaxZ(), b.getMaxZ());
-
+        //System.out.println("minX" + minX + "minX" + maxX + "minX" + minY + "minX" + maxY + "minX" + minZ + "minX" + maxZ);
         if (minX > maxX || minY > maxY || minZ > maxZ) {
             return new ROI(minX, minX, minY, minY, minZ, minZ);
         }
@@ -213,6 +213,57 @@ public final class ROI extends Dimension {
         
         return rois;
     }
+    
+    /**
+     * Splits <code>this</code> ROI in (equal) <code>n</code> parts.
+     * 
+     * @param n
+     * @return ROI
+     */
+    public ROI[] split(int strideX, int strideY, int strideZ) {
+        if (strideX <= 0 || strideY <= 0 || strideZ <= 0) {
+            throw new IllegalArgumentException("Stride have to be bigger than zero: \n"
+                                                 + "strideX= " + strideX
+                                                 + " strideY= " + strideY 
+                                                 + " strideZ = " + strideZ );
+        }
+        
+        int count = Math.max(1, getSizeX()/strideX) *  
+                    Math.max(1, getSizeY()/strideY) * 
+                    Math.max(1, getSizeZ()/strideZ);
+        ROI[] rois = new ROI[count];
+        count = 0;
+        int[] max = {getMinX(), getMinY(), getMinZ()};
+        int[] min = new int[3];
+
+        for (int i = getMinX(); i <= getMaxX(); i += strideX) {
+            max[0] = i + strideX - 1;
+            min[0] = i;
+            if (i + 2 * strideX - 1 > getMaxX()) {
+                max[0] = getMaxX(); 
+                i += strideX;                 
+            } 
+            for (int j = getMinY(); j <= getMaxY(); j += strideY) {
+                max[1] = j + strideY - 1;
+                min[1] = j;
+                if (j + 2 * strideY - 1> getMaxY()) {
+                    max[1] = getMaxY();
+                    j += strideY;                  
+                }                
+                for (int k = getMinZ(); k <= getMaxZ(); k += strideZ) {
+                    max[2] = k + strideZ - 1;
+                    min[2] = k;
+                    if (k + 2 * strideZ - 1> getMaxZ()) {
+                        max[2] = getMaxZ();   
+                        k += strideZ;                
+                    }      
+                    rois[count] = new ROI(min[0], max[0], min[1], max[1], min[2], max[2]);
+                    count++;
+                }
+            }
+        } 
+        return rois;
+    }    
     
     public void split(int n, ROI[] rois) {
         ROI[] rt = new ROI[2];

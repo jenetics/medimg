@@ -28,18 +28,19 @@ public class ConstVectorFunction implements VectorFunction, GridVectorFunction {
      * Setting each vector to the value <code>constVector</code>
      * given in the constructor.
      * 
-     * @see org.wewi.medimg.math.VectorFunction#transform(double[])
-     */
-    public void transform(double[] vector) {
-        vector[0] = v[0];
-        vector[1] = v[1];
-        vector[2] = v[2];
-    }
-    /**
-     * @see org.wewi.medimg.math.vec.ops.GridVectorFunction#transform(int, int, int, double[])
-     */
-    public void transform(int gridX, int gridY, int gridZ, double[] newVector) {
-        transform(newVector);
-    }
+	 * @see org.wewi.medimg.math.VectorFunction#transform(double[])
+	 */
+	public void transform(double[] startPoint, double[] endPoint) {
+		endPoint[0] = startPoint[0] + v[0];
+		endPoint[1] = startPoint[1] + v[1];
+		endPoint[2] = startPoint[2] + v[2];
+	}
+	/**
+	 * @see org.wewi.medimg.math.vec.ops.GridVectorFunction#transform(int, int, int, double[])
+	 */
+	public void transform(int gridX, int gridY, int gridZ, double[] newVector) {
+        System.arraycopy(v, 0, newVector, 0, 3);
+	}
+
 
 }

@@ -9,5 +9,5 @@ package org.wewi.medimg.math.vec.ops;
  * @version 0.1
  */
 public interface VectorFunction {
-    public void transform(double[] vector);
+    public void transform(double[] startPoint, double[] endPoint);
 }
