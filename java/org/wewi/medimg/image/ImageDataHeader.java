@@ -9,8 +9,6 @@ package org.wewi.medimg.image;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 
 /**
@@ -36,14 +34,13 @@ class ImageDataHeader implements ImageHeader {
         this.image = image;
     }
     
-    public void read(InputStream in) throws IOException {
-        DataInputStream din = new DataInputStream(in);
-        minX = din.readInt();
-        minY = din.readInt();
-        minZ = din.readInt();
-        maxX = din.readInt();
-        maxY = din.readInt();
-        maxZ = din.readInt();
+    public void read(DataInputStream in) throws IOException {
+        minX = in.readInt();
+        minY = in.readInt();
+        minZ = in.readInt();
+        maxX = in.readInt();
+        maxY = in.readInt();
+        maxZ = in.readInt();
         image.init(minX, minY, minZ, maxX, maxY, maxZ);
     }
     
@@ -51,14 +48,13 @@ class ImageDataHeader implements ImageHeader {
         return false;
     }
     
-    public void write(OutputStream out) throws IOException {
-        DataOutputStream dout = new DataOutputStream(out);
-        dout.writeInt(minX);
-        dout.writeInt(minY);
-        dout.writeInt(minZ);
-        dout.writeInt(maxX);
-        dout.writeInt(maxY);
-        dout.writeInt(maxZ);
+    public void write(DataOutputStream out) throws IOException {
+        out.writeInt(minX);
+        out.writeInt(minY);
+        out.writeInt(minZ);
+        out.writeInt(maxX);
+        out.writeInt(maxY);
+        out.writeInt(maxZ);
     }
     
 }

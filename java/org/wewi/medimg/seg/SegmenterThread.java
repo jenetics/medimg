@@ -16,6 +16,7 @@ import org.wewi.medimg.image.NullImage;
 
 /**
  * @author Franz Wilhelmstötter
+ * @version 0.1
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
@@ -36,35 +37,37 @@ public class SegmenterThread extends Thread {
 		segImage = new NullImage();	
 	}
 	
-    public void addSegmenterObserver(SegmenterListener o) {
+    public void addSegmenterListener(SegmenterListener o) {
         observer.add(o);
     }
     
-    public void removeSegmenterObserver(SegmenterListener o) {
+    public void removeSegmenterListener(SegmenterListener o) {
         observer.remove(o);
     }
     
-    private void notifySegmenterFinished() {
+    private void notifySegmenterFinished(SegmenterEvent event) {
         Vector o = (Vector)observer.clone();
         SegmenterListener so;
         for (Iterator it = o.iterator(); it.hasNext();) {
             so = (SegmenterListener)it.next();
-            so.segmenterFinished(new SegmenterEvent(this));
+            so.segmenterFinished(event);
         }
     }
     
-    private void notifySegmenterStarted() {
+    private void notifySegmenterStarted(SegmenterEvent event) {
         Vector o = (Vector)observer.clone();
         SegmenterListener so;
         for (Iterator it = o.iterator(); it.hasNext();) {
             so = (SegmenterListener)it.next();
-            so.segmenterStarted(new SegmenterEvent(this));
+            so.segmenterStarted(event);
         }
-    }    	
+    }   	
 	
 
 	public void run() {
+        notifySegmenterStarted(new SegmenterEvent(this));
 		segImage = segmenter.segment(mrtImage);
+        notifySegmenterFinished(new SegmenterEvent(this));
 	}
 	
 	public void setImage(Image mrtImage) {

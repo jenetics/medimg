@@ -9,8 +9,6 @@ package org.wewi.medimg.seg;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import org.wewi.medimg.image.ImageHeader;
 
@@ -39,8 +37,7 @@ class FeatureImageHeader implements ImageHeader {
         meanValues = mv;
     }
     
-    public void read(InputStream in) throws IOException {
-        DataInputStream din = new DataInputStream(in);
+    public void read(DataInputStream din) throws IOException {
         sizeX = din.readInt();
         sizeY = din.readInt();
         sizeZ = din.readInt();
@@ -58,8 +55,7 @@ class FeatureImageHeader implements ImageHeader {
         return false;
     }
     
-    public void write(OutputStream out) throws IOException {
-        DataOutputStream dout = new DataOutputStream(out);
+    public void write(DataOutputStream dout) throws IOException {
         dout.writeInt(sizeX);
         dout.writeInt(sizeY);
         dout.writeInt(sizeZ);

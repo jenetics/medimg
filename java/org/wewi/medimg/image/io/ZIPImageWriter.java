@@ -43,11 +43,13 @@ public final class ZIPImageWriter extends CompressedImageWriter {
         ZipEntry zipEntry = null;
         FileInputStream in = null;
         ZipOutputStream out = null;
+        
         try {
             out = new ZipOutputStream(new FileOutputStream(dir.getPath() + ".zip"));
         } catch (IOException ioe) {
             System.out.println("ZIPImageFileWriter.writeZIPFile: " + ioe);
         }
+        
         while (fileIterator.hasNext()) {
             file = (File)fileIterator.next();
             zipEntry = new ZipEntry(file.getName());
@@ -64,6 +66,7 @@ public final class ZIPImageWriter extends CompressedImageWriter {
                 System.out.println("ZIPImageWriter.writeZIPFile: " + ioe);
             }            
         }
+        
         try {
             out.close();
         } catch (IOException ioe) {

@@ -6,13 +6,16 @@
 
 package org.wewi.medimg.seg.stat;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Random;
 
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.seg.Clusterer;
 import org.wewi.medimg.seg.ObservableSegmenter;
+import org.wewi.medimg.seg.SegmenterEvent;
 
 
 /**
@@ -34,6 +37,7 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
 	 * @param k Anzahl der zu segmentierenden Merkmalen.
 	 */
     public MLKMeansClusterer(int k) {
+        super();
         this.k = k;
         mean = new double[k];
         meanOld = new double[k];
@@ -42,7 +46,9 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
     }
     
 	/**
-	 * Method initMeans.
+	 * Initialisieren der Anfangsmittelwerte.
+     * Diese werden zufällig erzeugt und danach sortiert.
+     * 
 	 * @param cr
 	 */
     protected void initMeans(ColorRange cr) {
@@ -54,7 +60,31 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
             meanOld[i] = mean[i];
         }
         Arrays.sort(mean);  
-        Arrays.sort(meanOld);        
+        Arrays.sort(meanOld);  
+        
+        /**********************************************************************/
+        logger.info("0: " + formatMeanValues());
+        /**********************************************************************/      
+    }
+    
+    
+    /**
+     * Formatiert die aktuellen Mittelwerte für
+     * die Ausgabe.
+     */
+    private String formatMeanValues() {
+        NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+        format.setMaximumFractionDigits(4);
+        format.setMinimumFractionDigits(4);
+        
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < k; i++) {
+            buffer.append("(");
+            buffer.append(format.format(mean[i]));
+            buffer.append(")");
+        }
+        
+        return buffer.toString();  
     }
     
 	/**
@@ -81,9 +111,13 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
     }
     
 	/**
+     * 
+     * 
 	 * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
 	 */
     public void segment(Image mrt, Image segimg) {
+        notifySegmenterStarted(new SegmenterEvent(this));
+        
         int iterationCount = 0;
         
         createSegimgOld(segimg);
@@ -92,12 +126,20 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
             m1Step(mrt, segimg);
             m2Step(mrt, segimg);
             iterationCount++;
+            
+            /******************************************************************/
+            logger.info("" + iterationCount + ": " + formatMeanValues());
+            /******************************************************************/
         } while(ERROR_LIMIT < error() &&
-                MAX_ITERATION >= iterationCount);        
+                MAX_ITERATION >= iterationCount); 
+                
+        notifySegmenterFinished(new SegmenterEvent(this));       
     }
     
 	/**
 	 * Method m1Step, wie im Algorithmus berschrieben.
+     * Zuordnung der Bildpunkte zu jenem Bereich,
+     * mit dem geringstem Abstand zum Bereichsmittelwert.
 	 * 
 	 * @param mrt
 	 * @param segimg
@@ -133,6 +175,7 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
     
 	/**
 	 * Method m2Step, wie im Algorithmus beschrieben.
+     * Neuberechnen der Mittelwerte.
      * 
 	 * @param mrt das zu segmentierende Bild
 	 * @param segimg das segmentierte Bild

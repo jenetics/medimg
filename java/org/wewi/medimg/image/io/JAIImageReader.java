@@ -17,7 +17,6 @@ import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.NullImage;
-import org.wewi.medimg.image.RGBColorConversion;
 
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
@@ -50,7 +49,7 @@ abstract class JAIImageReader extends ImageReader {
             RenderedImage img =  JAI.create("fileload", filename);
             int comp = img.getColorModel().getColorSpace().getNumComponents();
             if (comp == 3) {
-                colorConversion = new RGBColorConversion();
+                //colorConversion = new RGBColorConversion();
             }
             return img;
         } else {

@@ -14,6 +14,7 @@ package org.wewi.medimg.image;
 public class ColorRange {
     private final int minColor;
     private final int maxColor;
+    private final int nColors;
     
     /** Creates a new instance of ColorRange */
     public ColorRange(int minColor, int maxColor) throws IllegalArgumentException {
@@ -23,6 +24,7 @@ public class ColorRange {
         }
         this.minColor = minColor;
         this.maxColor = maxColor;
+        nColors = maxColor-minColor+1;
     }
     
     public ColorRange(ColorRange range) {
@@ -35,6 +37,10 @@ public class ColorRange {
     
     public int getMaxColor() {
         return maxColor;
+    }
+    
+    public int getNColors() {
+        return nColors;    
     }
     
     public int hashCode() {

@@ -10,6 +10,8 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.wewi.medimg.image.Image;
 
@@ -24,25 +26,29 @@ public class RawImageWriter extends ImageWriter {
         super(image, target);
     }
     
+
     public void write() throws ImageIOException {
-        DataOutputStream out = null;
+        DataOutputStream dout = null;
         FileOutputStream fout = null;
+        ZipOutputStream zout = null;
         int size = image.getNVoxels();
         
         try {
             fout = new FileOutputStream(target);
-            out = new DataOutputStream(fout);
-            image.getHeader().write(fout);
+            zout = new ZipOutputStream(fout);
+            zout.putNextEntry(new ZipEntry("image.rid"));
+            dout = new DataOutputStream(fout);
+            image.getHeader().write(dout);
             for (int i = 0; i < size; i++) {
-                out.writeInt(image.getColor(i));
+                dout.writeInt(image.getColor(i));
             }
-            out.close();
+            dout.close();
         } catch (IOException ioe) {
             target.delete();
             throw new ImageIOException("Can't write Image", ioe);
         }
     }
-    
+
 }
 
 

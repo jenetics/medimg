@@ -96,7 +96,7 @@ public class SegmentationWizard extends Wizard implements Observer,
 	        wizard.segmenter = wizard.segmenterArgumentPanel.getSegmenter();
 	        
 			SegmenterThread segmenterThread = new SegmenterThread(segmenter);
-			segmenterThread.addSegmenterObserver(this);
+			segmenterThread.addSegmenterListener(this);
 			segmenterThread.setPriority(Thread.MIN_PRIORITY);
 			segmenterThread.start();			
 		}

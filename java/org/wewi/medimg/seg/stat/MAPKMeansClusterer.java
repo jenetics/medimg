@@ -77,12 +77,12 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
         return Vc;
     }
     
-    public void setBeta(double b) {
+    public void setBETA(double b) {
         BETA = b;
         BETA_SQRT2 = Math.sqrt(BETA);
     }
     
-    public double getBeta() {
+    public double getBETA() {
         return BETA;
     }
     
