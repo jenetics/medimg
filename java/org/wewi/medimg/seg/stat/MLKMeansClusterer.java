@@ -14,6 +14,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.seg.Clusterer;
 import org.wewi.medimg.seg.ObservableSegmenter;
 
+
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -97,6 +98,12 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         }            
     }
     
+	/**
+	 * Method m2Step.
+     * 
+	 * @param mrt das zu segmentierende Bild
+	 * @param segimg das segmentierte Bild
+	 */
     private void m2Step(Image mrt, Image segimg) {
         long[] meanSum = new long[k];
         int[] meanNo = new int[k];
@@ -123,6 +130,11 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         Arrays.sort(mean);  
     }    
     
+	/**
+	 * Methode error. Berechnet den Fehler zwischen zwei Iterationen.
+     * Dies dient als Abbruchkriterium.
+	 * @return double
+	 */
     protected double error() {
         double err = 0;
         for (int i = 0; i < k; i++) {
