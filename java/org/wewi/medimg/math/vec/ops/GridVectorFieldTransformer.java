@@ -10,7 +10,8 @@ import org.wewi.medimg.math.vec.GridVectorField;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class GridVectorFieldTransformer {
+public final class GridVectorFieldTransformer {    
+    
     private GridVectorField field;
     private GridVectorFunction transformer;
 

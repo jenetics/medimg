@@ -28,6 +28,7 @@ import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.ComplexAmplitudeImage;
 import org.wewi.medimg.image.ComplexImage;
 import org.wewi.medimg.image.ComplexIndexImage;
+import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
@@ -40,6 +41,10 @@ import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.Kernel;
 import org.wewi.medimg.image.filter.LinearNormalizeFilter;
 import org.wewi.medimg.image.filter.UnaryPointTransformerFilter;
+import org.wewi.medimg.image.geom.transform.AffineTransformation;
+import org.wewi.medimg.image.geom.transform.FieldFactory;
+import org.wewi.medimg.image.geom.transform.GlobalInterpolator;
+import org.wewi.medimg.image.geom.transform.RegularDisplacementField;
 import org.wewi.medimg.image.io.ImageIOException;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
@@ -62,6 +67,7 @@ import org.wewi.medimg.math.fft.ImageDFT;
 import org.wewi.medimg.math.fft.NaiveDFT1D;
 import org.wewi.medimg.math.geom.Dimension2D;
 import org.wewi.medimg.math.vec.GridVectorField;
+import org.wewi.medimg.math.vec.VectorField;
 import org.wewi.medimg.math.vec.ops.GridVectorFieldTransformer;
 import org.wewi.medimg.math.vec.ops.MaxVectorLengthOperator;
 import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
@@ -69,6 +75,7 @@ import org.wewi.medimg.math.vec.ops.VectorFieldAnalyzer;
 import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
 import org.wewi.medimg.viewer.VectorFieldImageCanvasAdapter;
+import org.wewi.medimg.viewer.VectorFieldPanel;
 import org.wewi.medimg.viewer.image.ImagePanel;
 
 
@@ -628,19 +635,67 @@ public class Test {
         }
         
         return buffer.toString();
-    }    
+    } 
+    
+    
+    public static void test22() {
+        try {
+            String path = "C:/Workspace/Projekte/Diplom/code/data/image003.tif";
+            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), path);
+            reader.read();
+            
+            Image image = reader.getImage();
+            
+            AffineTransformation affine = AffineTransformation.getRotateInstance(new double[]{0, 0, 0.9});
+            Image affineImage = affine.transform(image);
+            
+            int g = 20;
+            GlobalInterpolator interpol = new GlobalInterpolator();
+            interpol.setWeightFunction(new GlobalInterpolator.ExponentialWeightFunction(50.0));
+            
+            RegularDisplacementField field = FieldFactory.createRegularField(affine, image.getDimension(), g);
+            field.setInterpolator(interpol);
+            
+                           
+            showField(field, image.getDimension()); 
+            
+            showField((VectorField)field.createInverse(), image.getDimension());                                  
+            
+                                                
+            Image fieldImage = field.transform(image);
+            
+            ImageWriter writer = new TIFFWriter(affineImage, "C:/Temp/affine.form002");
+            writer.write();
+            
+            writer = new TIFFWriter(fieldImage, "C:/Temp/field.form002");
+            writer.write();
+            
+            System.out.println("READY");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }        
+    } 
+    
+    public static void showField(VectorField field, Dimension dim) {
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(new VectorFieldPanel(field, dim));
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                System.exit(0);
+            }
+        });
+       
+        frame.setSize(dim.getSizeX(), dim.getSizeY());
+        frame.show();
+    }  
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < 2323; i++) {
-            buffer.append("A");
-        }
-        
-        System.out.println(wordWrap(buffer.toString()));
+        test22();
     }
     
 }
