@@ -17,10 +17,12 @@ public final class ImageFormatEnum extends Enumeration {
     public static final ImageFormatEnum TIFF_IMAGES = new ImageFormatEnum("TIFF Images");
     public static final ImageFormatEnum BMP_IMAGES = new ImageFormatEnum("BMP Images");
     public static final ImageFormatEnum JPEG_IMAGES = new ImageFormatEnum("JPEG Images");
+    public static final ImageFormatEnum PNG_IMAGES = new ImageFormatEnum("PNG Images");
     public static final ImageFormatEnum RAW_IMAGE = new ImageFormatEnum("RAW Images");
     
     public static final ImageFormatEnum[] TYPES = {TIFF_IMAGES, BMP_IMAGES,
-                                                      JPEG_IMAGES, RAW_IMAGE};
+                                                     JPEG_IMAGES, PNG_IMAGES, 
+                                                     RAW_IMAGE};
     
     private final String name;
     

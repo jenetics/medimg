@@ -24,6 +24,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
+import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.util.StringInputStream;
 import org.wewi.medimg.util.StringOutputStream;
 
@@ -80,7 +82,11 @@ class AbstractImageHeader implements ImageHeader {
         root.addContent(cc);
         
         //Schreiben des Farbbereichs (ColorRange)
-        ColorRange colorRange = image.getColorRange();
+        MinMaxOperator op = new MinMaxOperator();
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
+        analyzer.analyze(); 
+        ColorRange colorRange = new ColorRange(op.getMinimum(), op.getMaximum());        
+
         Element cr = new Element("ColorRange");
         cr.addContent((new Element("MinColor")).addContent(Integer.toString(colorRange.getMinColor())));
         cr.addContent((new Element("MaxColor")).addContent(Integer.toString(colorRange.getMaxColor()))); 
@@ -139,7 +145,9 @@ class AbstractImageHeader implements ImageHeader {
 		} catch (ClassNotFoundException e) {
             logger.log(Level.WARNING, "Can't read ColorConversion");
             throw new IOException("" + e);
-		}
+		} finally {
+            //cc = new GreyColorConversion();    
+        }
  
         
         //Einlesen der ImageProperties
@@ -156,6 +164,8 @@ class AbstractImageHeader implements ImageHeader {
         
         
         //"Aufblasen" des Image auf die richtige Größe.
+        //System.out.println(dim);
+        //System.out.println(cc);
         image.init(dim, this); 
         image.setColorConversion(cc);
     }

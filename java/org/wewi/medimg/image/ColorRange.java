@@ -1,4 +1,4 @@
-/*
+/**
  * ColorRange.java
  *
  * Created on 1. Juli 2002, 20:14
@@ -6,12 +6,14 @@
 
 package org.wewi.medimg.image;
 
+import org.wewi.medimg.util.Immutable;
+
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class ColorRange {
+public class ColorRange implements Immutable {
     private final int minColor;
     private final int maxColor;
     private final int nColors;

@@ -11,6 +11,8 @@ package org.wewi.medimg.image;
 public class ImageView extends LineScanImageGeometry implements Image {
     private Image image;
     private ROI roi;
+    
+    private int[] tempPoint = new int[3];
 
 
 	/**
@@ -39,19 +41,29 @@ public class ImageView extends LineScanImageGeometry implements Image {
 	 * @see org.wewi.medimg.image.Image#setColor(int, int)
 	 */
 	public void setColor(int pos, int color) {
+        getCoordinates(pos, tempPoint);
+        setColor(tempPoint[0], tempPoint[1], tempPoint[2], color);
 	}
 
 	/**
 	 * @see org.wewi.medimg.image.Image#resetColor(int)
 	 */
 	public void resetColor(int color) {
+        for (int k = roi.getMinZ(), l = roi.getMaxZ(); k <= l; k++) {
+            for (int j = roi.getMinY(), m = roi.getMaxY(); j <= m; j++) {
+                for (int i = roi.getMinX(), n = roi.getMaxX(); i <= n; i++) {
+                    setColor(i, j, k, color);    
+                }    
+            }    
+        }
 	}
 
 	/**
 	 * @see org.wewi.medimg.image.Image#getColor(int)
 	 */
 	public int getColor(int pos) {
-		return 0;
+        getCoordinates(pos, tempPoint);
+		return getColor(tempPoint[0], tempPoint[1], tempPoint[2]);
 	}
 
 	/**
@@ -59,20 +71,6 @@ public class ImageView extends LineScanImageGeometry implements Image {
 	 */
 	public int getColor(int x, int y, int z) {
 		return image.getColor(x + roi.getMinX(), y + roi.getMinY(), z + roi.getMinZ());
-	}
-
-	/**
-	 * @see org.wewi.medimg.image.Image#getMinColor()
-	 */
-	public int getMinColor() {
-		return 0;
-	}
-
-	/**
-	 * @see org.wewi.medimg.image.Image#getMaxColor()
-	 */
-	public int getMaxColor() {
-		return 0;
 	}
 
 	/**
@@ -87,13 +85,6 @@ public class ImageView extends LineScanImageGeometry implements Image {
 	 */
 	public VoxelIterator getVoxelIterator() {
 		return null;
-	}
-
-	/**
-	 * @see org.wewi.medimg.image.Image#getColorRange()
-	 */
-	public ColorRange getColorRange() {
-		return image.getColorRange();
 	}
 
 
@@ -122,7 +113,16 @@ public class ImageView extends LineScanImageGeometry implements Image {
 	 * @see java.lang.Object#clone()
 	 */
 	public Object clone()  {
-		return null;
+        ImageData id = new ImageData(roi);
+        for (int k = roi.getMinZ(), l = roi.getMaxZ(); k <= l; k++) {
+            for (int j = roi.getMinY(), m = roi.getMaxY(); j <= m; j++) {
+                for (int i = roi.getMinX(), n = roi.getMaxX(); i <= n; i++) {
+                    id.setColor(i, j, k, getColor(i, j, k));    
+                }    
+            }    
+        }
+        
+		return id;
 	}
 
 	/**

@@ -29,9 +29,6 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
     private int[] n12 = new int[12];    
     
 
-	/**
-	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#MLKMeansClusterer(int)
-	 */
     public MAPKMeansClusterer(int k) {
         super(k);
         ERROR_LIMIT = 0.2;
@@ -58,25 +55,15 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
         segimg.getHeader().setImageProperties(segProp);        
     }
     
-	/**
-	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#createSegimgOld(Image)
-	 */
     protected void createSegimgOld(Image segimg) {
         segimgOld = (Image)segimg.clone();
         size = segimgOld.getNVoxels();
     }
     
-	/**
-	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#saveOldFeatureColor(int, int)
-	 */
     protected void saveOldFeatureColor(int pos, int color) {
         segimgOld.setColor(pos, color);
     }
     
-	/**
-	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#getCliquesPotential(int, int)
-     * 
-	 */
     protected double getCliquesPotential(int pos, int f) {
         double Vc = 0.0;
 
@@ -101,7 +88,7 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
             }
         }
         
-        return Vc;
+        return Vc*(double)colorRange.getMaxColor();
     }
     
     public void setBETA(double b) {

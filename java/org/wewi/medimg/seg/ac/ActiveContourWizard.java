@@ -164,7 +164,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
 
         getContentPane().add(southPanel, java.awt.BorderLayout.NORTH);
 
-        centerPanel.setLayout(new java.awt.GridLayout());
+        centerPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         jSplitPane1.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 1, 1, 1)));
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -194,7 +194,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         betaSlider.setMajorTickSpacing(10);
         betaSlider.setMinorTickSpacing(5);
         betaSlider.setPaintTicks(true);
-        betaSlider.setValue(20);
+        betaSlider.setValue(5);
         betaSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 betaSliderStateChanged(evt);
@@ -207,10 +207,11 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         outerEnergyWeigthLabel.setText("    \u00c4u\u00dfere Energie (We):    0,20");
         parameterPanel.add(outerEnergyWeigthLabel);
 
-        outerEnergySlider.setMajorTickSpacing(10);
-        outerEnergySlider.setMinorTickSpacing(5);
+        outerEnergySlider.setMajorTickSpacing(100);
+        outerEnergySlider.setMaximum(1000);
+        outerEnergySlider.setMinorTickSpacing(50);
         outerEnergySlider.setPaintTicks(true);
-        outerEnergySlider.setValue(20);
+        outerEnergySlider.setValue(300);
         outerEnergySlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 outerEnergySliderStateChanged(evt);

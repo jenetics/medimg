@@ -1,3 +1,4 @@
+
 /**
  * JAIImageReader.java
  *
@@ -156,6 +157,7 @@ abstract class JAIImageReader extends ImageReader {
         Raster raster = null;
         int[] pixel = new int[3];
         Dimension dim = image.getDimension();
+        System.out.println(dim);
         //Einlesen der Bilder
         int count = 0;
         int stride = range.getStride();
@@ -173,6 +175,7 @@ abstract class JAIImageReader extends ImageReader {
             for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
                 for (int j = image.getMinY(), m = image.getMaxY(); j <= m; j++) {
                     raster.getPixel(i, j, pixel);
+                    //System.out.println("x: " + i + ", y: " + j + ", z: " + k);
                     image.setColor(i, j, k, colorConversion.convert(pixel));
                 }
             } 

@@ -21,6 +21,10 @@ public abstract class LineScanImageGeometry implements ImageGeometry {
     }
   
     protected LineScanImageGeometry(Dimension dimension) {
+        init(dimension);
+    }
+    
+    protected void init(Dimension dimension) {
         this.dimension = dimension;
         
         maxX = dimension.getMaxX();
@@ -33,7 +37,7 @@ public abstract class LineScanImageGeometry implements ImageGeometry {
         sizeY = dimension.getSizeY();            
         sizeZ = dimension.getSizeZ();
         sizeXY = sizeX*sizeY;
-        size = sizeXY*sizeZ;
+        size = sizeXY*sizeZ;            
     }
     
     public int getMaxX() {

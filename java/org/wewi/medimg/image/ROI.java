@@ -8,7 +8,7 @@ package org.wewi.medimg.image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class ROI extends Dimension {
+public final class ROI extends Dimension {
 
 	/**
 	 * Constructor for ROI.

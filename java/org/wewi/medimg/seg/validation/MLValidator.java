@@ -14,7 +14,10 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
+import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
 
@@ -62,7 +65,12 @@ public class MLValidator {
         target = clusterer.segment(source);
         stopTime = System.currentTimeMillis();
         
-        AccumulatorArray accu = new AccumulatorArray(anatomicalModel.getColorRange().getNColors(), k);
+        MinMaxOperator op = new MinMaxOperator();
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(anatomicalModel, op);
+        analyzer.analyze(); 
+        ColorRange cr = new ColorRange(op.getMinimum(), op.getMaximum());        
+        
+        AccumulatorArray accu = new AccumulatorArray(cr.getNColors(), k);
         for (int i = 0, n = source.getNVoxels(); i < n; i++) {
             accu.inc(anatomicalModel.getColor(i), target.getColor(i));   
         }

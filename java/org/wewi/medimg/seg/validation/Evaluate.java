@@ -49,6 +49,30 @@ public class Evaluate {
 
     }
     
+    private class BetaMeanVar {
+        public double beta;
+        public double mean;
+        public double var;    
+    }
+    
+    private class BetaMeanVarComparator implements Comparator {
+        
+        public int compare(Object o1, Object o2) {
+            if (!(o1 instanceof BetaMeanVar) || !(o2 instanceof BetaMeanVar)) {
+                return 0;    
+            }    
+            
+            BetaMeanVar b1 = (BetaMeanVar)o1;
+            BetaMeanVar b2 = (BetaMeanVar)o2;
+            
+            if (b1.beta < b2.beta) {
+                return -1;    
+            } else {
+                return 1;    
+            }
+        }    
+    }
+    
     
     
     private File dir;
@@ -114,7 +138,7 @@ public class Evaluate {
         kmvList.toArray(array);
         Arrays.sort(array, new KMeanVarComparator());   
         
-        int[] k = new int[kmvList.size()];
+        double[] k = new double[kmvList.size()];
         double[] mean = new double[kmvList.size()];
         double[] stddev = new double[kmvList.size()]; 
         
@@ -125,6 +149,63 @@ public class Evaluate {
         } 
         
         new ErrorListPlot("Gesamtfehlerdiagramm", k, mean, stddev).show();    
+    }
+    
+    public void evalBETAOverallError() {
+       //Zusammenfassen der Protokolle
+        Hashtable betaTable = new Hashtable();
+        for (int i = 0; i < files.length; i++) {
+            Protocol protocol = new Protocol(files[i]);
+            
+            Double beta = new Double(protocol.getBeta());
+            double error = protocol.getOverallError();
+            
+            if (!betaTable.containsKey(beta)) {
+                betaTable.put(beta, new Vector());      
+            }
+            ((Vector)betaTable.get(beta)).add(new Double(error));
+        } 
+        
+        List betaList = new ArrayList();
+        for (Enumeration keys = betaTable.keys(); keys.hasMoreElements();) {
+            Double b = (Double)keys.nextElement();
+            
+            List list = (List)betaTable.get(b);
+            double meanError = 0;
+            for (Iterator it = list.iterator(); it.hasNext();) {
+                meanError += ((Double)it.next()).doubleValue();            
+            }
+            meanError /= list.size();
+            double variance = 0;
+            for (Iterator it = list.iterator(); it.hasNext();) {
+                variance += MathUtil.sqr(((Double)it.next()).doubleValue() - meanError);    
+            }
+            variance /= (list.size()-1);
+            
+            BetaMeanVar beta = new BetaMeanVar();
+            beta.beta = b.doubleValue();
+            beta.mean = meanError;
+            beta.var = Math.sqrt(variance);
+            
+            betaList.add(beta); 
+             
+        }  
+        
+        BetaMeanVar[] array = new BetaMeanVar[betaList.size()];
+        betaList.toArray(array);
+        Arrays.sort(array, new BetaMeanVarComparator());   
+        
+        double[] b = new double[betaList.size()];
+        double[] mean = new double[betaList.size()];
+        double[] stddev = new double[betaList.size()];
+        
+        for (int i = 0; i < betaList.size(); i++) {
+            b[i] = array[i].beta;
+            mean[i] = array[i].mean;
+            stddev[i] = array[i].var;    
+        } 
+        
+        new ErrorListPlot("Gesamtfehlerdiagramm", b, mean, stddev).show();        
     }
     
     public void evalNoOfIterations() {
@@ -171,7 +252,7 @@ public class Evaluate {
         kmvList.toArray(array);
         Arrays.sort(array, new KMeanVarComparator());   
         
-        int[] k = new int[kmvList.size()];
+        double[] k = new double[kmvList.size()];
         double[] mean = new double[kmvList.size()];
         double[] stddev = new double[kmvList.size()]; 
         
@@ -237,8 +318,9 @@ public class Evaluate {
     
     
     public static void main(String[] args) {
-        Evaluate eval = new Evaluate(new File("C:/Workspace/fwilhelm/Projekte/Diplom/validation/ml/protocols/t1.n9.rf20"));
-        eval.evalNoOfIterations(); 
+        Evaluate eval = new Evaluate(new File("C:/Workspace/fwilhelm/Projekte/Diplom/code/data/validation/map/protocols/t1.n7.rf20"));
+        eval.evalBETAOverallError(); 
+        //eval.evalNoOfIterations();
          
     }
 

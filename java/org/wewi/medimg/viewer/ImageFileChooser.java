@@ -21,6 +21,8 @@ import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageWriterFactory;
 import org.wewi.medimg.image.io.JPEGReaderFactory;
 import org.wewi.medimg.image.io.JPEGWriterFactory;
+import org.wewi.medimg.image.io.PNGReaderFactory;
+import org.wewi.medimg.image.io.PNGWriterFactory;
 import org.wewi.medimg.image.io.Range;
 import org.wewi.medimg.image.io.RawImageReaderFactory;
 import org.wewi.medimg.image.io.RawImageWriterFactory;
@@ -131,6 +133,8 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
                 imageReaderFactory = new RawImageReaderFactory();
             } else if (ImageFormatEnum.JPEG_IMAGES.equals(type)) {
                 imageReaderFactory = new JPEGReaderFactory();
+            } else if (ImageFormatEnum.PNG_IMAGES.equals(type)) {
+                imageReaderFactory = new PNGReaderFactory();
             }
             imageReaderFactory.setRange(rangePanel.getRange());
         } else {
@@ -142,6 +146,8 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
                 imageWriterFactory = new JPEGWriterFactory();
             } else if (ImageFormatEnum.RAW_IMAGE.equals(type)) {
                 imageWriterFactory = new RawImageWriterFactory();
+            } else if (ImageFormatEnum.PNG_IMAGES.equals(type)) {
+                imageWriterFactory = new PNGWriterFactory();
             }
             imageWriterFactory.setRange(rangePanel.getRange());
         }

@@ -24,6 +24,7 @@ public class Protocol {
     
     private String algorithmName;
     private int k;
+    private double beta = 0;
     private Properties imageProperties;
     private long startTime;
     private long stopTime;
@@ -67,6 +68,8 @@ public class Protocol {
             String name = param.getAttribute("name").getValue();
             if ("k".equals(name)) {
                 k = Integer.parseInt(param.getText());       
+            } else if ("beta".equals(name)) { 
+                beta = Double.parseDouble(param.getText());
             } else if ("image".equals(name)) {
                 Element image = param.getChild("ImageHeader");
                 List imageParameter = image.getChildren();
@@ -181,6 +184,10 @@ public class Protocol {
 	public int getK() {
 		return k;
 	}
+    
+    public double getBeta() {
+        return beta;    
+    }
 
 	/**
 	 * Returns the meanValues.

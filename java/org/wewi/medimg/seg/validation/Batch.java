@@ -84,11 +84,11 @@ public class Batch {
     
     
     protected void executeTask(Element task) { 
-        int id = 0;
+        String id = "";
         
         int iterations = 0, iterationsDone = 0;
         try {
-            id = task.getAttribute("id").getIntValue();
+            id = task.getAttribute("id").getValue();
 			iterations = task.getAttribute("iterations").getIntValue();
             iterationsDone  = task.getAttribute("iterations.done").getIntValue();
 		} catch (DataConversionException e) {
