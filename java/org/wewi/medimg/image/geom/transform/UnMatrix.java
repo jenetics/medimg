@@ -18,7 +18,7 @@
 /**
  * UnMatrix.java
  * 
- * Created on 19.03.2003, 17:04:41
+ * Created on 19.03.2003, 17:04:41 
  *
  */
 package org.wewi.medimg.image.geom.transform;
@@ -94,7 +94,7 @@ public final class UnMatrix {
             Matrix4d invpmat = new Matrix4d(pmat);
             invpmat.invert();
             invpmat.transpose();
-            Vector4d psol = (Vector4d)prsh.clone();
+            Vector4d psol = new Vector4d(prsh);
             invpmat.transform(psol);
             
      
