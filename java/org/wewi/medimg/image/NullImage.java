@@ -7,24 +7,17 @@
 package org.wewi.medimg.image;
 
 import org.wewi.medimg.util.Nullable;
-import org.wewi.medimg.util.Singleton;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.2
  */
-public final class NullImage implements Image, Singleton {
-    private static NullImage singleton = null;
+public final class NullImage implements Image, Nullable {
+    private NullImageHeader header;
 
-    private NullImage() {
-    }
-    
-    public static NullImage getInstance() {
-        if (singleton == null) {
-            singleton = new NullImage();
-        }
-        return singleton;
+    public NullImage() {
+        header = new NullImageHeader();
     }
     
     public int getColor(int x, int y, int z) {
@@ -74,12 +67,11 @@ public final class NullImage implements Image, Singleton {
     }
     
     public Object clone() {
-        //throw new UnsupportedOperationException();
-        return getInstance();
+        return new NullImage();
     }    
     
     public ImageHeader getHeader() {
-        return NullImageHeader.getInstance();
+        return header;
     }
     
 }
