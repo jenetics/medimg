@@ -15,7 +15,7 @@ import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.seg.ImageSegmentationStrategy;
 import org.wewi.medimg.seg.SegmentationEvent;
 import org.wewi.medimg.seg.ModelBasedSegmentation;
-import org.wewi.medimg.seg.LightSegmentationImage;
+import org.wewi.medimg.seg.SimpleSegmentationImage;
 import org.wewi.medimg.seg.FeatureImage;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
     private double[] center;
     private double[] variance;
     private double[] pi;  //a posteriori probability for the i-th feature
-    private double[][] interval;
+    private IntervalTree intervalTree;
     
     private int sizeX;
     private int sizeY;
@@ -65,21 +65,8 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
             center[i] = random.nextDouble()*(COLORS-1);
         }
         Arrays.sort(center);
-        
-        interval = new double[k][2];
-        calculateInterval();        
-    }
-    
-    private void calculateInterval() {
-        //Initialisieren der Intervalle; geht sicher noch schneller!
-        for (int i = 1; i < k-1; i++) {
-            interval[i][0] = (center[i-1]+center[i])/2;
-            interval[i][1] = (center[i]+center[i+1])/2;
-        }
-        interval[0][0] = 0;
-        interval[0][1] = interval[1][0];
-        interval[k-1][1] = COLORS; // schiach
-        interval[k-1][0] = interval[k-2][1];        
+            
+        intervalTree = new IntervalTree(center);
     }
     
     public double[] getCenter() {
@@ -102,12 +89,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
         double temp;
         for (VoxelIterator it = (VoxelIterator)imageVoxelIterator.clone(); it.hasNext();) {
             color = it.next();
-            for (int i = 0; i < k; i++) {
-                if (color >= interval[i][0] && color < interval[i][1]) {
-                    feature = i;
-                    break;
-                }
-            }  
+            feature = intervalTree.intervalNumber(color); 
             temp = center[feature]-color;
             sum[feature] = temp*temp;
             ++count[feature];
@@ -142,13 +124,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
             int feature = 0, color = 0;
             for (VoxelIterator it = (VoxelIterator)imageVoxelIterator.clone(); it.hasNext();) {
                 color = it.next();
-                for (int i = 0; i < k; i++) {
-                    if (color >= interval[i][0] && color < interval[i][1]) {
-                        feature = i;
-                        break;
-                    }
-                }
-
+                feature = intervalTree.intervalNumber(color);
                 colorSum[feature] += color;
                 ++colorCount[feature];
             }
@@ -161,7 +137,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
                 epsilon += Math.abs(centerTemp[i] - center[i]);
             }
             System.arraycopy(centerTemp, 0, center, 0, k);
-            calculateInterval();
+            intervalTree = new IntervalTree(center);
             
 ////////////////////////////////////////////////////////////////////
 StringBuffer buffer = new StringBuffer();
