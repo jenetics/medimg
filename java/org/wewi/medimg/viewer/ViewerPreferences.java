@@ -99,6 +99,20 @@ final class ViewerPreferences implements Singleton {
         }         
     }
     
+    public String getMostRecentFileType() {
+        return viewerNode.get("VIEWER_MOST_RECENT_FILE_TYPE", "");    
+    }
+    
+    public void setMostRecentFileType(String type) {
+        viewerNode.put("VIEWER_MOST_RECENT_FILE_TYPE", type);
+        
+        try {
+            viewerNode.sync();  
+        } catch (Exception e) {
+            logger.throwing(ViewerPreferences.class.getName(), "getMostRecentFileType()", e);
+        }         
+    }    
+    
     public String getLookAndFeelClassName() {
         return viewerNode.get("VIEWER_LOOK_AND_FEEL_CLASS_NAME", 
                                UIManager.getCrossPlatformLookAndFeelClassName());   
