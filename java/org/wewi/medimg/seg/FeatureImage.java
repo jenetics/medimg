@@ -54,9 +54,6 @@ public final class FeatureImage implements Image {
     private int size, sizeX, sizeY, sizeZ, sizeXY;
     private int nfeatures;
     private double[] meanValues;
-    private int[] n6 = new int[6];
-    private int[] n12 = new int[12];
-    private int[] n18 = new int[18];
     
     private FeatureImageHeader header;
 
@@ -136,6 +133,7 @@ public final class FeatureImage implements Image {
     }
     
     public int[] getNeighbor3D6Positions(int pos) {
+        int[] n6 = new int[6];
         n6[0] = pos - 1;
         n6[1] = pos + 1;
         n6[2] = pos - sizeX;
@@ -145,7 +143,17 @@ public final class FeatureImage implements Image {
         return n6;
     }
     
+    public void getNeighbor3D6Positions(int pos, int[] n6) {
+        n6[0] = pos - 1;
+        n6[1] = pos + 1;
+        n6[2] = pos - sizeX;
+        n6[3] = pos + sizeX;
+        n6[4] = pos - sizeXY;
+        n6[5] = pos + sizeXY;        
+    }
+    
     public int[] getNeighbor3D12Positions(int pos) {
+        int[] n12 = new int[12];
         n12[0] = pos - 1 - sizeXY;
         n12[1] = pos - 1 + sizeXY;
         n12[2] = pos - 1 - sizeX;
@@ -161,7 +169,23 @@ public final class FeatureImage implements Image {
         return n12;
     }
     
+    public void getNeighbor3D12Positions(int pos, int[] n12) {
+        n12[0] = pos - 1 - sizeXY;
+        n12[1] = pos - 1 + sizeXY;
+        n12[2] = pos - 1 - sizeX;
+        n12[3] = pos - 1 + sizeX;
+        n12[4] = pos + 1 - sizeXY;
+        n12[5] = pos + 1 + sizeXY;
+        n12[6] = pos + 1 - sizeX;
+        n12[7] = pos + 1 + sizeX;
+        n12[8] = pos - sizeX - sizeXY;
+        n12[9] = pos - sizeX + sizeXY;
+        n12[10] = pos + sizeX - sizeXY;
+        n12[11] = pos + sizeX + sizeXY;        
+    }
+    
     public int[] getNeighbor3D18Positions(int pos) {
+        int[] n18 = new int[18];
         n18[0] = pos - 1;
         n18[1] = pos + 1;
         n18[2] = pos - sizeX;
@@ -181,6 +205,27 @@ public final class FeatureImage implements Image {
         n18[16] = pos + sizeX - sizeXY;
         n18[17] = pos + sizeX + sizeXY;        
         return n18;
+    }
+    
+    public void getNeighbor3D18Positions(int pos, int[] n18) {
+        n18[0] = pos - 1;
+        n18[1] = pos + 1;
+        n18[2] = pos - sizeX;
+        n18[3] = pos + sizeX;
+        n18[4] = pos - sizeXY;
+        n18[5] = pos + sizeXY;  
+        n18[6] = pos - 1 - sizeXY;
+        n18[7] = pos - 1 + sizeXY;
+        n18[8] = pos - 1 - sizeX;
+        n18[9] = pos - 1 + sizeX;
+        n18[10] = pos + 1 - sizeXY;
+        n18[11] = pos + 1 + sizeXY;
+        n18[12] = pos + 1 - sizeX;
+        n18[13] = pos + 1 + sizeX;
+        n18[14] = pos - sizeX - sizeXY;
+        n18[15] = pos - sizeX + sizeXY;
+        n18[16] = pos + sizeX - sizeXY;
+        n18[17] = pos + sizeX + sizeXY;        
     }
     
     public void setMeanValues(double[] mv) {
