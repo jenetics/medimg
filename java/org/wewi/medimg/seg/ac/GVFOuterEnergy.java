@@ -9,7 +9,6 @@ import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.LinearNormalizeFilter;
 import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.math.GridVectorField;
-import org.wewi.medimg.math.MathUtil;
 
 /**
  * @author Franz Wilhelmstötter
