@@ -46,6 +46,8 @@ public interface Image extends Nullable, Cloneable {
      */    
     public void setColor(int pos, int color);
     
+    public void resetColor(int color);
+    
     public int getColor(int pos);
     
     public int getColor(int x, int y, int z);    
@@ -63,6 +65,10 @@ public interface Image extends Nullable, Cloneable {
     public int getMinZ();
     
     public int getNVoxels();
+    
+    public int getPosition(int x, int y, int z);
+    
+    public int[] getCoordinates(int pos);    
     
     public Object clone();
     

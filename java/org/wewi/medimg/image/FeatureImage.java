@@ -206,6 +206,11 @@ public final class FeatureImage implements Image {
         setFeature(x, y, z, (byte)color);
     }
     
+    public void resetColor(int color) {
+        Arrays.fill(features, (byte)color);
+        Arrays.fill(featuresOld, (byte)color);        
+    }    
+    
     public int getNVoxels() {
         return size;
     }
@@ -213,6 +218,20 @@ public final class FeatureImage implements Image {
     public ImageHeader getHeader() {
         return header;
     }
+    
+    public int getPosition(int x, int y, int z) {
+        return (sizeXY*z + sizeX*y + x);
+    }
+    
+    public int[] getCoordinates(int pos) {
+        int[] erg = new int[3];
+        erg[2] = pos / (sizeXY);
+        pos = pos - (erg[2] * sizeXY);
+        erg[1] = pos / (sizeX);
+        pos = pos - (erg[1] * sizeX);
+        erg[0] = pos;
+        return erg;
+    }  
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -232,5 +251,4 @@ public final class FeatureImage implements Image {
     public Object clone() {
         return new FeatureImage(this);
     }
-    
 }

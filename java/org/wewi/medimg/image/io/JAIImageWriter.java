@@ -78,7 +78,7 @@ abstract class JAIImageWriter extends ImageWriter {
     
     public void write() throws ImageIOException {
         try {
-            if (image.getMaxZ() == 1) {
+            if (image.getMaxZ() == 0) {
                 writeSlice(0, target);
                 return;
             } else {
@@ -95,8 +95,8 @@ abstract class JAIImageWriter extends ImageWriter {
             }  
         } catch (IOException ioe) {
             dispose();
-            System.err.println("Can't write Image");
-            throw new ImageIOException("Can't write Image");
+            System.err.println("Can't write Image: " + ioe);
+            throw new ImageIOException("Can't write Image: " + ioe);
         }
         
     }
