@@ -10,7 +10,7 @@ package org.wewi.medimg.math.vec;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class DoubleVectorVector {
+final class DoubleVectorVector {
     
     private class DoubleVectorIterator implements VectorIterator {
         private int pos = 0;
@@ -109,6 +109,18 @@ public final class DoubleVectorVector {
         int pos = index*2*DIM;
         System.arraycopy(start, 0, data, pos, DIM);
         System.arraycopy(end, 0,data, pos + DIM, DIM);       
+    }
+    
+    public void get(int index, double[] start, double[] end) {
+    	if (index >= vectorCount) {
+            throw new ArrayIndexOutOfBoundsException(index + " >= " + (vectorCount));
+        } else if (index < 0) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        } 
+        
+        int pos = index*2*DIM;
+        System.arraycopy(data, pos, start, 0, DIM);
+        System.arraycopy(data, pos + DIM, end, 0, DIM); 
     }
     
     public void removeElementAt(int index) {

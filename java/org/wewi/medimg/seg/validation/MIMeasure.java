@@ -60,7 +60,7 @@ System.out.println("4:ASDFASDF");
         
 System.out.println("5:ASDFASDF");        
         
-        return miop.getMutialInformation();
+        return miop.getMutualInformation();
     }
 
 }

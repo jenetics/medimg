@@ -14,9 +14,7 @@ import org.wewi.medimg.util.AccumulatorArray;
  *
  */
 public class DirectComparison {
-
-    
-    public AccumulatorArray accu;
+    private AccumulatorArray accu;
     private final double N;
 
     /**
@@ -34,18 +32,15 @@ public class DirectComparison {
     /**
       */
     public double getDirectComparison(ColorRange cr1, ColorRange cr2) {
-        if (accu == null) {
-            return 0;    
-        }
-       
         if (N <= 0) {
             return 0;    
         }
+        
         double dc = 0;
         int min = Math.max(cr1.getMinColor(), cr2.getMinColor());
         int max = Math.min(cr1.getMaxColor(), cr2.getMaxColor());
         for (int i = min; i <= max; i++) {
-                dc += accu.getValue(i, i);    
+            dc += accu.getValue(i, i);    
         }
         return dc/N;        
     }

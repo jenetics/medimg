@@ -14,10 +14,7 @@ import org.wewi.medimg.util.AccumulatorArray;
  * @author werner weiser
  */
 public class CrossCorrelation {
-
-
-
-    public AccumulatorArray accu;
+    private AccumulatorArray accu;
     private final double N;
 
     /**
@@ -50,10 +47,6 @@ public class CrossCorrelation {
      * 
      */
     public double getCrossCorrelation() {
-        if (accu == null) {
-            return 0;    
-        }
-       
         if (N <= 0) {
             return 0;    
         }
@@ -86,7 +79,7 @@ public class CrossCorrelation {
         return cc/cc1;        
     }
     
-    public void calculateProbabilities(double[] x, double[] y) {
+    private void calculateProbabilities(double[] x, double[] y) {
     	long pxsum = 0;
         for (int i = 0, n = accu.getCols(); i < n; i++) {
             pxsum = 0;
