@@ -6,12 +6,17 @@ import java.io.InputStreamReader;
 
 public final class Base64 {
     
-	public static String encode(byte[] raw) {
+	public static String encode(byte[] raw, int offset, int length) {
 		StringBuffer encoded = new StringBuffer();
-		for (int i = 0; i < raw.length; i += 3)
-			encoded.append(encodeBlock(raw, i));
+		for (int i = 0; i < length; i += 3)
+			encoded.append(encodeBlock(raw, offset + i));
 		return encoded.toString();
 	}
+    
+    
+    public static String encode(byte[] raw) {
+        return encode(raw, 0, raw.length);
+    }
     
 	private static char[] encodeBlock(byte[] raw, int offset) {
 		int block = 0;
@@ -124,4 +129,5 @@ public final class Base64 {
 			System.out.write(decoded);
 		}
 	}
+
 }
