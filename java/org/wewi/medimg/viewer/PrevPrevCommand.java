@@ -11,7 +11,7 @@ package org.wewi.medimg.viewer;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class PrevPrevCommand implements Command {
+final class PrevPrevCommand implements Command {
     private ImageViewer imageViewer;
     private int stride;
 

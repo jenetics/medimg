@@ -44,7 +44,7 @@
     </target>
 
     <target depends="init,compile" name="jar.class">
-        <jar basedir="${dir.build}" compress="true" jarfile="${dir.build}/segreg.zip">
+        <jar basedir="${dir.build}" compress="true" jarfile="${dir.build}/segreg.jar">
             <include name="**/*.class"/>
             <include name="**/*.gif"/>
             <manifest>
@@ -64,7 +64,7 @@
         </javadoc>
     </target>
     
-    <target depends="init,compile,jar.source,jar.class" name="build">
+    <target depends="init,compile,jar.source,jar.class,javadoc" name="build">
     </target>
 
 </project>

@@ -7,6 +7,7 @@
 package org.wewi.medimg.seg.statistic;
 
 import org.wewi.medimg.seg.ImageSegmentationStrategy;
+import org.wewi.medimg.seg.SegmentationEvent;
 
 import org.wewi.medimg.image.io.*;
 import org.wewi.medimg.image.Image;
@@ -31,6 +32,8 @@ import java.io.File;
 public class MLSegmentation extends ImageSegmentationStrategy {
     protected final static int MAX_ITER = 25;
     protected final static double ERROR_LIMIT = 0.001;
+    
+    protected int m1m2Count = 0;
     
     protected int nfeatures;
     protected double[] meanValues;
@@ -115,7 +118,6 @@ public class MLSegmentation extends ImageSegmentationStrategy {
                 for (int j = 0; j < maxY; j++) {
                     for (int k = 0; k < maxZ; k++) {
                         color = image.getColor(i, j, k);
-//System.out.println(color);
                         minFeature = Integer.MAX_VALUE;
                         minFeatureIndex = 0;
                         for (int l = 0; l < nfeatures; l++) {
@@ -161,40 +163,29 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         featureData.setMeanValues(meanValues);
 
         //Debuging/////////////////////////////////////////////////////////////
-        String number;
-        for (int i = 0; i < nfeatures; i++) {
-            number = Double.toString(meanValues[i]);
-            if (number.length() > 8) {
-                number = number.substring(0, 8);    
-            }
-            System.out.print(" m" + i + ": " + number);
-        }
-        System.out.println();
+        SegmentationEvent state = new SegmentationEvent(this, m1m2Count, meanValues);
+        System.out.println(state);
         ///////////////////////////////////////////////////////////////////////
       
     }
     
     public void doSegmentation() {
         featureData = new FeatureData(image.getMaxX(), image.getMaxY(), image.getMaxZ(), nfeatures);
-        int m1m2Count = 0;
 
         initMeanValues();
+        notifySegmentationStarted(new SegmentationEvent(this, m1m2Count, meanValues));
         do {
+            //Informieren der Observer; start einer neuen Iteration
             m1Step();
             m2Step();
-            m1m2Count++;
+            ++m1m2Count;
+            
+            notifyIterationFinished(new SegmentationEvent(this, m1m2Count, meanValues));
         } while(!isM1M2Ready(m1m2Count));
 
         ///Debugging////////////////////////////////////////////////////////////
-        String number;
-        for (int i = 0; i < nfeatures; i++) {
-            number = Double.toString(meanValues[i]);
-            if (number.length() > 8) {
-                number = number.substring(0, 8);
-            }
-            System.out.print(" m" + i + ": " + number);
-        }
-        System.out.println();
+        SegmentationEvent state = new SegmentationEvent(this, m1m2Count, meanValues);
+        System.out.println(state);
         System.out.println("Varianz:");
         double[] variance = getVariance();
         for (int i = 0; i < variance.length; i++) {
@@ -203,9 +194,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         //////////////////////////////////////////////////////////////////////// 
         
         //Informieren der Observer, wenn die Segmentierung beendet ist
-        setChanged();
-        notifyObservers();
-        clearChanged();
+        notifySegmentationFinished(new SegmentationEvent(this, m1m2Count, meanValues));
     }
     
 

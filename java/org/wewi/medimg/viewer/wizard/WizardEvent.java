@@ -14,21 +14,9 @@ import java.util.EventObject;
  * @version 0.1
  */
 public class WizardEvent extends EventObject {
-    private WizardEventCommand command;
     
     /** Creates a new instance of WizardEvent */
     public WizardEvent(Object source) {
         super(source);
-    }
-    
-    public WizardEvent(Object source, WizardEventCommand command) {
-        super(source);
-        this.command = command;
-    }
-    
-    public void execute() {
-        if (command != null) {
-            command.execute();
-        }
     }
 }

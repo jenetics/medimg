@@ -9,7 +9,7 @@ package org.wewi.medimg.image;
 /**
  *
  * @author  fwilhelm
- * @version 
+ * @version 0.1
  */
 public final class Range {
     private int min;
