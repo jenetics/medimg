@@ -1,4 +1,4 @@
-/*
+/**
  * ActiveContour.java
  *
  * Created on 20. Februar 2002, 17:21

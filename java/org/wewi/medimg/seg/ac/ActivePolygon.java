@@ -25,7 +25,7 @@ public class ActivePolygon implements ActiveContour {
         synchronized (ac.basePoints) {
             this.basePoints = (Vector)ac.basePoints.clone();
         }
-        polygonCanvas = new ActivePolygonCanvas(this);  
+        polygonCanvas = new ActivePolygonImageCanvasAdapter(this);  
     }
 
 	/**
@@ -33,7 +33,7 @@ public class ActivePolygon implements ActiveContour {
 	 */
 	public ActivePolygon() {
         basePoints = new Vector();
-        polygonCanvas = new ActivePolygonCanvas(this);
+        polygonCanvas = new ActivePolygonImageCanvasAdapter(this);
 	}
     
     public ImagePanel.ImageCanvas getImageCanvas() {
