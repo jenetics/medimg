@@ -257,13 +257,13 @@ public class RegistrationWizard extends Wizard implements Observer,
 				}
 				grid = reader.getImage();
 				
-                
+                */
                 
                 transformation = (ImageTransformation)registratorThread.getTransformation();
                 work = transformation.transform(imageData1);
                 
-				grid = transformation.transform(grid);
-                */
+				//grid = transformation.transform(grid);
+                
                 WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
                 BBAffinityMetric myMetric = new BBAffinityMetric();
                 myImportance.setErrorLimit(0.2);
