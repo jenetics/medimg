@@ -17,5 +17,7 @@ import java.io.File;
  */
 public interface ImageWriterFactory {
     public ImageWriter createImageWriter(Image image, File file);
+    
+    public void setRange(Range range);
 }
 

@@ -18,21 +18,21 @@ import java.io.File;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class RawImageWriterFactory implements ImageWriterFactory, Singleton {
-    private static RawImageWriterFactory singleton = null;
+public final class RawImageWriterFactory implements ImageWriterFactory {
+    private Range range;
 
-    private RawImageWriterFactory() {
+    public RawImageWriterFactory() {
+        range = new Range(0, Integer.MAX_VALUE, 1);
     }
     
-    public static RawImageWriterFactory getInstance() {
-        if (singleton == null) {
-            singleton = new RawImageWriterFactory();
-        }
-        return singleton;
-    }
 
     public ImageWriter createImageWriter(Image image, File file) {
-        return new RawImageWriter(image, file);
+        ImageWriter writer = new RawImageWriter(image, file);
+        //writer.setRange(range);
+        return writer;
     }
     
+    public void setRange(Range range) {
+        this.range = range;
+    }
 }

@@ -8,7 +8,6 @@ package org.wewi.medimg.image.io;
 
 import org.wewi.medimg.image.Image;
 
-import org.wewi.medimg.util.Singleton;
 
 import java.io.File;
 
@@ -17,21 +16,21 @@ import java.io.File;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class TIFFWriterFactory implements ImageWriterFactory, Singleton {
-    private static TIFFWriterFactory singleton = null;
-
-    private TIFFWriterFactory() {
+public final class TIFFWriterFactory implements ImageWriterFactory {
+    private Range range;
+    
+    public TIFFWriterFactory() {
+        range = new Range(0, Integer.MAX_VALUE, 1);
     }
     
-    public static TIFFWriterFactory getInstance() {
-        if (singleton == null) {
-            singleton = new TIFFWriterFactory();
-        }
-        return singleton; 
-    }
 
     public ImageWriter createImageWriter(Image image, File file) {
-        return new TIFFWriter(image, file);
+        ImageWriter writer = new TIFFWriter(image, file);
+        //writer.setRange(range);
+        return writer;
     }
     
+    public void setRange(Range range) {
+        this.range = range;
+    }
 }

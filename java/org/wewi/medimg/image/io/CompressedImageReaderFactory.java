@@ -17,13 +17,21 @@ import java.io.File;
  */
 public abstract class CompressedImageReaderFactory implements ImageReaderFactory {
     private ImageReaderFactory component;
+    private Range range;
 
     protected CompressedImageReaderFactory(ImageReaderFactory component) {
         this.component = component;
+        range = new Range(0, Integer.MAX_VALUE, 1);
     }
 
     public ImageReader createImageReader(ImageFactory imageFactory, File file) {
+        ImageReader reader = component.createImageReader(imageFactory, file);
+        reader.setRange(range);
         return component.createImageReader(imageFactory, file);
+    }
+    
+    public void setRange(Range range) {
+        this.range = range;
     }
     
 }

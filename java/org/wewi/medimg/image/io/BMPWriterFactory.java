@@ -7,7 +7,6 @@
 package org.wewi.medimg.image.io;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.util.Singleton;
 
 import java.io.File;
 
@@ -16,21 +15,21 @@ import java.io.File;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class BMPWriterFactory implements ImageWriterFactory, Singleton {
-    private static BMPWriterFactory singleton = null;
+public final class BMPWriterFactory implements ImageWriterFactory {
+    private Range range;
 
-    private BMPWriterFactory() {
-    }
-    
-    public static BMPWriterFactory getInstance() {
-        if (singleton == null) {
-            singleton = new BMPWriterFactory();
-        }
-        return singleton;
+    public BMPWriterFactory() {
+        range = new Range(0, Integer.MAX_VALUE, 1);
     }
 
     public ImageWriter createImageWriter(Image image, File file) {
-        return new BMPWriter(image, file);
+        ImageWriter writer = new BMPWriter(image, file);
+        //writer.setRange(range);
+        return writer;
+    }
+    
+    public void setRange(Range range) {
+        this.range = range;
     }
     
 }

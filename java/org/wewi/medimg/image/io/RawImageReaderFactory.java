@@ -19,19 +19,20 @@ import java.io.File;
  */
 public final class RawImageReaderFactory implements ImageReaderFactory, Singleton {
     private static RawImageReaderFactory singleton = null;
+    private Range range;
 
-    private RawImageReaderFactory() {
-    }
-
-    public static RawImageReaderFactory getInstance() {
-        if (singleton == null) {
-            singleton = new RawImageReaderFactory();
-        }
-        return singleton;
+    public RawImageReaderFactory() {
+        range = new Range(0, Integer.MAX_VALUE, 1);
     }
     
     public ImageReader createImageReader(ImageFactory imageFactory, File file) {
-        return new RawImageReader(imageFactory, file);
+        ImageReader reader = new RawImageReader(imageFactory, file);
+        reader.setRange(range);
+        return reader;
+    }
+    
+    public void setRange(Range range) {
+        this.range = range;
     }
     
 }
