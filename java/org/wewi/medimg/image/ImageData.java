@@ -82,7 +82,7 @@ public class ImageData implements Image, RandomAccess {
     }
     
     public ImageData(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-        init(minX, minY, minZ, maxX, maxY, maxZ, new ImageDataHeader(this));
+        init(minX, maxX, minY, maxY, minZ, maxZ, new ImageDataHeader(this));
     }
     
         
