@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 
+import org.wewi.medimg.alg.InterruptableAlgorithm;
+import org.wewi.medimg.alg.IterationEvent;
+import org.wewi.medimg.alg.IterationListener;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
@@ -21,8 +24,6 @@ import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
-import org.wewi.medimg.seg.IterationEvent;
-import org.wewi.medimg.seg.IterationListener;
 import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.SegmenterEnumeration;
 import org.wewi.medimg.seg.SegmenterEvent;
@@ -122,27 +123,62 @@ public class SegmentationWizard extends Wizard {
         }
         
         public void interruptSegmenter() {
-            segmenter.interruptSegmenter();    
+            InterruptableAlgorithm algorithm;
+            if (!(segmenter instanceof InterruptableAlgorithm)) {
+                return;
+            }
+            
+            algorithm = (InterruptableAlgorithm)segmenter;
+            try {
+                algorithm.interruptAlgorithm();
+            } catch (UnsupportedOperationException e) {
+                //nichts
+            }  
         }
         
         public void resumeSegmenter() {
-            segmenter.resumeSegmenter();    
+            InterruptableAlgorithm algorithm;
+            if (!(segmenter instanceof InterruptableAlgorithm)) {
+                return;
+            }
+            
+            algorithm = (InterruptableAlgorithm)segmenter;
+            try {
+                algorithm.resumeAlgorithm();               
+            } catch (UnsupportedOperationException e) {
+                //nichts
+            }    
         }
         
         public void cancelSegmenter() {
-            segmenter.cancelSegmenter();    
+            InterruptableAlgorithm algorithm;
+            if (!(segmenter instanceof InterruptableAlgorithm)) {
+                return;
+            }
+            
+            algorithm = (InterruptableAlgorithm)segmenter;
+            try {
+                algorithm.cancelAlgorithm();
+                wizard.setClosable(true);
+                wizard.closeButton.setEnabled(true);
+                wizard.startButton.setEnabled(true); 
+                wizard.cancelButton.setEnabled(false);
+                wizard.cancelButton.setEnabled(false);               
+            } catch (UnsupportedOperationException e) {
+                //nichts
+            }    
         }
         
         public void iterationStarted(IterationEvent event) {
-            wizard.cancelButton.setEnabled(true);
-            wizard.interruptToggleButton.setEnabled(true);            
+            wizard.cancelButton.setEnabled(true);          
         }
         
         public void iterationFinished(IterationEvent event) {
             if (twinImageViewer != null) {
                 twinImageViewer.redrawImages();    
             }
-        }        
+        } 
+               
         
         /**
          * @see org.wewi.medimg.seg.SegmenterObserver#segmenterFinished(SegmenterEvent)
@@ -156,7 +192,6 @@ public class SegmentationWizard extends Wizard {
             wizard.startButton.setEnabled(true); 
             wizard.cancelButton.setEnabled(false);
             wizard.cancelButton.setEnabled(false);
-            wizard.interruptToggleButton.setEnabled(false);
             
             /**************************************************************/
             wizard.getLogger().info("Segmentiervorgang beendet");
@@ -231,8 +266,7 @@ public class SegmentationWizard extends Wizard {
         
         addLoggerHandler(logHandlerPanel.getHandler());
         
-        interruptToggleButton.setEnabled(false);
-        cancelButton.setEnabled(false);
+        cancelButton.setEnabled(true);
     }    
     
 	/**
@@ -336,7 +370,6 @@ public class SegmentationWizard extends Wizard {
         wizardStep3 = new javax.swing.JPanel();
         ws3NorthPanel = new javax.swing.JPanel();
         startButton = new javax.swing.JButton();
-        interruptToggleButton = new javax.swing.JToggleButton();
         cancelButton = new javax.swing.JButton();
         ws3CenterPanel = new javax.swing.JPanel();
         ws3SouthPanel = new javax.swing.JPanel();
@@ -365,7 +398,6 @@ public class SegmentationWizard extends Wizard {
             }
         });
 
-        getAccessibleContext().setAccessibleDescription("null");
         getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
 
         centerPanel.setLayout(new java.awt.GridLayout(1, 0));
@@ -441,23 +473,6 @@ public class SegmentationWizard extends Wizard {
 
         ws3NorthPanel.add(startButton);
 
-        interruptToggleButton.setFont(new java.awt.Font("Dialog", 0, 12));
-        interruptToggleButton.setMnemonic('U');
-        interruptToggleButton.setText("Unterbrechen");
-        interruptToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                interruptToggleButtonActionPerformed(evt);
-            }
-        });
-
-        interruptToggleButton.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                interruptToggleButtonStateChanged(evt);
-            }
-        });
-
-        ws3NorthPanel.add(interruptToggleButton);
-
         cancelButton.setFont(new java.awt.Font("Dialog", 0, 12));
         cancelButton.setMnemonic('A');
         cancelButton.setText("Abbrechen");
@@ -506,34 +521,12 @@ public class SegmentationWizard extends Wizard {
         setLocation((screenSize.width-564)/2,(screenSize.height-301)/2);
     }//GEN-END:initComponents
 
-    private void interruptToggleButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_interruptToggleButtonStateChanged
-        if (segmenterWorker == null) {
-            interruptToggleButton.setSelected(false);
-            return;    
-        }
-        
-        if (!interruptToggleButton.isSelected()) {
-            segmenterWorker.resumeSegmenter();
-            interruptToggleButton.setText("Unterbrechen");    
-        } else {
-            segmenterWorker.interruptSegmenter();
-            interruptToggleButton.setText("Fortsetzen");
-        }
-    }//GEN-LAST:event_interruptToggleButtonStateChanged
-
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         if (segmenterWorker == null) {
             return;    
         }
-        
-        segmenterWorker.cancelSegmenter();
-        
-        setClosable(true);        
+        segmenterWorker.cancelSegmenter();       
     }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void interruptToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptToggleButtonActionPerformed
-
-    }//GEN-LAST:event_interruptToggleButtonActionPerformed
     
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         if (!checkSegmentationStart()) {
@@ -604,7 +597,6 @@ public class SegmentationWizard extends Wizard {
     private javax.swing.JPanel centerPanel;
     private javax.swing.JPanel ws3SouthPanel;
     private javax.swing.JTabbedPane wizardTappedPanel;
-    private javax.swing.JToggleButton interruptToggleButton;
     private javax.swing.JPanel comboBoxPanel;
     private javax.swing.JPanel ws3CenterPanel;
     private javax.swing.JPanel jPanel30;
