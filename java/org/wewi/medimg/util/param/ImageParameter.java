@@ -5,6 +5,9 @@
 package org.wewi.medimg.util.param;
 
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import org.jdom.Element;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
@@ -25,7 +28,7 @@ import org.wewi.medimg.image.io.TIFFReader;
 public class ImageParameter extends Parameter {
     private String file;
     private ImageFactory factory;
-    private ImageReader reader;
+    private Class readerClass;
     
     private Image image = null;
     
@@ -37,10 +40,10 @@ public class ImageParameter extends Parameter {
         super(name);    
     }
     
-    public ImageParameter(String name, ImageFactory factory, ImageReader reader, String file) {
+    public ImageParameter(String name, ImageFactory factory, Class reader, String file) {
         this(name);
         this.factory = factory;
-        this.reader = reader;
+        this.readerClass = reader;
         this.file = file;    
     }
 
@@ -55,7 +58,7 @@ public class ImageParameter extends Parameter {
         e.setAttribute("name", name);
         e.setAttribute("class", clazz);
         e.setAttribute("image.factory", factory.getClass().getName());
-        e.setAttribute("image.reader", reader.getClass().getName());
+        e.setAttribute("image.reader", readerClass.getName());
         e.setText(name);
         
 		return e;
@@ -68,6 +71,27 @@ public class ImageParameter extends Parameter {
         if (image != null) {
             return image;            
         }
+        
+        ImageReader reader = null;
+        
+        try {
+			Constructor c = readerClass.getConstructor(new Class[]{ImageFactory.class, String.class});
+		    reader = (ImageReader)c.newInstance(new Object[]{factory, file});
+		} catch (NoSuchMethodException e) {
+            System.err.println("ImageParameter.getParameterObject:" + e);
+            return null;
+		} catch (InstantiationException e) {
+            System.err.println("ImageParameter.getParameterObject:" + e);
+            return null;            
+        } catch (IllegalAccessException e) {
+            System.err.println("ImageParameter.getParameterObject:" + e);
+            return null;            
+        } catch (InvocationTargetException e) {
+            System.err.println("ImageParameter.getParameterObject:" + e);
+            return null;            
+        }
+        
+        
         
         try {
 			reader.read();
@@ -94,6 +118,8 @@ public class ImageParameter extends Parameter {
             factory = ImageDataFactory.getInstance();    
         }
         
+        ImageReader reader = null;
+        
         if (readerName.equals(TIFFReader.class.getName())) {
             reader = new TIFFReader(factory, file);        
         } else if (readerName.equals(BMPReader.class.getName())) {
@@ -110,6 +136,11 @@ public class ImageParameter extends Parameter {
         
 		return this;
 	}
+    
+    
+    public static void main(String[] args) {
+        Parameter p = new ImageParameter("", ImageDataFactory.getInstance(), null, "");    
+    }
 
 }
 
