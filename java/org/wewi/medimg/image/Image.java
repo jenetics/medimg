@@ -68,7 +68,11 @@ public interface Image extends Nullable, Cloneable {
     
     public int getPosition(int x, int y, int z);
     
-    public int[] getCoordinates(int pos);    
+    public int[] getCoordinates(int pos);   
+    
+    public void getCoordinates(int pos, int[] coordinate);
+    
+    public VoxelIterator getVoxelIterator();
     
     public Object clone();
     
