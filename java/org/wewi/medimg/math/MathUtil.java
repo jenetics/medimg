@@ -64,4 +64,115 @@ public final class MathUtil {
         }            
     }
     
+    
+    public static int min(int[] values) {
+        int m = Integer.MAX_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m > values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    }
+    
+    public static long min(long[] values) {
+        long m = Long.MAX_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m > values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    } 
+    
+    public static float min(float[] values) {
+        float m = Float.MAX_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m > values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    }
+    
+    public static double min(double[] values) {
+        double m = Double.MAX_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m > values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    } 
+    
+    public static int max(int[] values) {
+        int m = Integer.MIN_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m < values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    }
+    
+    public static long max(long[] values) {
+        long m = Long.MIN_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m < values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    } 
+    
+    public static float max(float[] values) {
+        float m = -Float.MAX_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m < values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    }
+    
+    public static double max(double[] values) {
+        double m = -Double.MAX_VALUE;
+        for (int i = 0; i < values.length; i++) {
+            if (m < values[i]) {
+                m = values[i];    
+            }    
+        }       
+        
+        return m;
+    }          
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
