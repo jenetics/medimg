@@ -43,5 +43,9 @@ public class AccumulatorArray {
     public int getValue(int row, int col) {
         return accu[row][col];    
     }
+    
+    public void setValue(int row, int col, int value) {
+        accu[row][col] = value;    
+    }
 
 }
