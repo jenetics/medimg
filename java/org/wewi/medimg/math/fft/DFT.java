@@ -19,12 +19,12 @@ public abstract class DFT {
      * Constructor for DFT.
      */
     public DFT() {
-        super();
+        this(1, -1);
     }
 
-    public DFT(double alpha, double beta) {
-        this.alpha = alpha;
-        this.beta = beta;
+    public DFT(double a, double b) {
+        this.alpha = a;
+        this.beta = b;
     }
 
     protected boolean isPowerOfTwo(int n) {

@@ -11,10 +11,13 @@ import java.text.NumberFormat;
 import org.wewi.medimg.util.Immutable;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz Wilhelmstï¿½tter
  * @version 0.1
  */
 public class Complex implements Immutable, Cloneable {
+    public static final Complex ONE = new Complex(1);
+    public static final Complex I = new Complex(0, 1);
+    
     double re;
     double im;
     

@@ -6,9 +6,12 @@
 
 package org.wewi.medimg.math;
 
+import java.util.List;
+import java.util.Vector;
+
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz Wilhelmstï¿½tter
  * @version 0.1
  */
 public final class MathUtil {
@@ -51,9 +54,9 @@ public final class MathUtil {
 
         return value;
     }
-    
+
     public static int pow2(int n) {
-        return (1 << n);    
+        return (1 << n);
     }
 
     public static double log2(double x) {
@@ -64,6 +67,49 @@ public final class MathUtil {
     public static double log10(double x) {
         //return Math.log(x)*(1/Math.log(10));
         return Math.log(x) * 0.434294481903251827651128918917;
+    }
+
+    public static long[] primeFactors(long number) {
+        List v = new Vector();
+        long divisor = 2L;
+        long exponent;
+        long root;
+        if (number > 0) {
+            if (number % divisor == 0) {
+                exponent = 0;
+                v.add(new Long(divisor));
+                do {
+                    exponent++;
+                    number /= divisor;
+                } while (number % divisor == 0);
+                v.add(new Long(exponent));
+            }
+            divisor = 3L;
+            root = (long) Math.sqrt(number) + 1;
+            while (divisor <= root) {
+                if (number % divisor == 0) {
+                    exponent = 0;
+                    v.add(new Long(divisor));
+                    do {
+                        exponent++;
+                        number /= divisor;
+                    } while (number % divisor == 0);
+                    v.add(new Long(exponent));
+                    root = (long) Math.sqrt(number) + 1L;
+                }
+                divisor += 2L;
+            }
+            if (number > 1) {
+                v.add(new Long(number));
+                v.add(new Long(1L));
+            }
+        }
+
+        long[] result = new long[v.size()];
+        for (int i = 0, n = v.size(); i < n; i++) {
+            result[i] = ((Long)v.get(i)).longValue();    
+        }
+        return result;
     }
 
     // Series on the interval [0,1]
@@ -235,7 +281,7 @@ public final class MathUtil {
     }
 
     /*
-     * Statische Methoden für den Umgang mit Komplexen-Zahlen.
+     * Statische Methoden fï¿½r den Umgang mit Komplexen-Zahlen.
      * Originalcode siehe nachstehenden Kommentar.
      */
 
@@ -271,18 +317,21 @@ public final class MathUtil {
     }
 
     public static Complex mult(Complex a, Complex b) {
-        return new Complex(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re);
+        return new Complex(
+            a.re * b.re - a.im * b.im,
+            a.re * b.im + a.im * b.re);
     }
-    
+
     public static Complex mult(double a, Complex b) {
-        return new Complex(a*b.re, a*b.im);    
+        return new Complex(a * b.re, a * b.im);
     }
-    
+
     public static Complex div(Complex a, Complex b) {
-        double den = b.re*b.re + b.im*b.im;
-        return new Complex((a.re*b.re+a.im*b.im)/den, (a.im*b.re-a.re*b.im)/den);   
+        double den = b.re * b.re + b.im * b.im;
+        return new Complex(
+            (a.re * b.re + a.im * b.im) / den,
+            (a.im * b.re - a.re * b.im) / den);
     }
-    
 
     /** 
      *  Returns the absolute value (modulus) of a Complex, |z|. 
