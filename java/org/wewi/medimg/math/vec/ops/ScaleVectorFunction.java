@@ -20,19 +20,22 @@ public class ScaleVectorFunction implements VectorFunction, GridVectorFunction {
     }
 
 
-    /**
-     * @see org.wewi.medimg.math.vec.ops.VectorFunction#transform(double[])
-     */
-    public void transform(double[] vector) {
-        vector[0] *= scale;
-        vector[1] *= scale;
-        vector[2] *= scale;
-    }
-    /**
-     * @see org.wewi.medimg.math.vec.ops.GridVectorFunction#transform(int, int, int, double[])
-     */
-    public void transform(int gridX, int gridY, int gridZ, double[] newVector) {
-        transform(newVector);
-    }
+	/**
+	 * @see org.wewi.medimg.math.vec.ops.VectorFunction#transform(double[])
+	 */
+	public void transform(double[] startPoint, double[] endPoint) {
+        endPoint[0] = startPoint[0] + (endPoint[0] - startPoint[0])*scale;
+		endPoint[1] = startPoint[1] + (endPoint[1] - startPoint[1])*scale;
+		endPoint[2] = startPoint[2] + (endPoint[2] - startPoint[2])*scale;
+	}
+	/**
+	 * @see org.wewi.medimg.math.vec.ops.GridVectorFunction#transform(int, int, int, double[])
+	 */
+	public void transform(int gridX, int gridY, int gridZ, double[] newVector) {
+        newVector[0] *= scale;
+        newVector[1] *= scale;
+        newVector[2] *= scale;
+	}
+
 
 }

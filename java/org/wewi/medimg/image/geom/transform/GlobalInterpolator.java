@@ -15,7 +15,7 @@ import org.wewi.medimg.math.vec.VectorIterator;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class GlobalInterpolator extends DisplacementF.Interpolator {
+public class GlobalInterpolator extends DisplacementField.Interpolator {
     
     public static interface WeightFunction extends Cloneable {
         
@@ -86,6 +86,8 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
         
         double w = 1;
         double wsum = 0;
+        //System.out.println("AAAAA" + getField());
+        //System.out.println("BBBBB" + getField().getVectorIterator());
         for (VectorIterator it = getField().getVectorIterator(); it.hasNext();) {
             it.next(start, end);
 

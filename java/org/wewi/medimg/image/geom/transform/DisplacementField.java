@@ -1,129 +1,188 @@
 /**
- * DisplacementField.java
+ * DisplacementF.java
+ * 
+ * Created on 07.03.2003, 14:02:42
  *
- * Created on 13. April 2002, 10:23
  */
-
 package org.wewi.medimg.image.geom.transform;
 
-import java.util.Arrays;
-import java.util.Vector;
+import org.wewi.medimg.math.vec.VectorField;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.math.geom.DoubleDataPoint;
+
 /**
- *
- * @author  Werner Weiser
+ * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class DisplacementField implements Transformation {
-    
-    protected int DIM;
-    protected DoubleDataPoint[][][] field;
-    protected boolean[] filled;
-    public Vector referencePoints;
-    private int sizeX;
-    private int sizeY; 
-    private int sizeZ;
+public abstract class DisplacementField extends ImageTransformation implements VectorField {
 
-   
-    /** Creates new DisplacementField */
-    protected DisplacementField(int sizeX, int sizeY, int sizeZ) {
-        field = new DoubleDataPoint[sizeX][sizeY][sizeZ];
-        filled = new boolean[sizeX * sizeY * sizeZ];
-        Arrays.fill(filled, false);
-        referencePoints = new Vector();
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.sizeZ = sizeZ;
-    }
-    
-    /** Creates new DisplacementField */
-    protected DisplacementField(Image image) {
-        this(image.getMaxX() - image.getMinX() + 1, image.getMaxY() - image.getMinY() + 1, image.getMaxZ() - image.getMinZ() + 1);
-    }
+    public static abstract class Interpolator implements Cloneable {
+        private DisplacementField field;
         
-    public double[] transform(double[] source) {
-        return null;
-    }
-    
-    public double[] transformBackward(double[] source) {
-        return null;
-    }
-    
-    public void addDisplacementVector(DoubleDataPoint vec, DoubleDataPoint src) {
-        //Ausgangspunkt des DisplacementVectors wird in Liste der DisplacementVectoren eingetragen
-        // und der DisplacementVector selbst in das Transformationsarray
-        referencePoints.add(src);
-        field[(int)src.getValue(0)][(int)src.getValue(1)][(int)src.getValue(2)] = vec;
-        filled[(int)src.getValue(0) + ((int)src.getValue(1) * sizeX) + ((int)src.getValue(2) * sizeX * sizeY)] = true;
-    }
-    
-    public void addNewDisplacementVector(DoubleDataPoint vec, DoubleDataPoint src) {
-        field[(int)src.getValue(0)][(int)src.getValue(1)][(int)src.getValue(2)] = vec;
-        filled[(int)src.getValue(0) + ((int)src.getValue(1) * sizeX) + ((int)src.getValue(2) * sizeX * sizeY)] = true;
-    }    
-    
-    public DoubleDataPoint getDisplacementVector(DoubleDataPoint src) {
-        double[] zero = new double[DIM];
-        Arrays.fill(zero, (double) 0);
-        DoubleDataPoint temp = new DoubleDataPoint(zero);
-        if (filled[(int)src.getValue(0) + ((int)src.getValue(1) * sizeX) + ((int)src.getValue(2) * sizeX * sizeY)]) {
-            temp = field[(int)src.getValue(0)][(int)src.getValue(1)][(int)src.getValue(2)];
+        
+        private void setField(DisplacementField field) {
+            this.field = field;
         }
-        return temp;        
+        
+        public DisplacementField getField() {
+            return field;
+        }
+        
+        
+        private double[] start = new double[3];
+        private double[] end = new double[3];
+        /**
+         * Interpolating the end-point from a given start-point.
+         * The start-point is not necessarily a start-point from
+         * a vector in the vector field.
+         * 
+         * @param startPoint the start-point from which you want
+         *          to interpolate the end-point.
+         * @param endPoint the interpolated end-point
+         */
+        public void interpolateEndPoint(int[] startPoint, int[] endPoint) {
+            start[0] = startPoint[0];
+            start[1] = startPoint[1];
+            start[2] = startPoint[2];
+            
+            interpolateEndPoint(start, end);
+            
+            endPoint[0] = (int)Math.round(end[0]);
+            endPoint[1] = (int)Math.round(end[1]);
+            endPoint[2] = (int)Math.round(end[2]);
+        }
+        
+        /**
+         * Interpolating the end-point from a given start-point.
+         * The start-point is not necessarily a start-point from
+         * a vector in the vector field.
+         * 
+         * @param startPoint the start-point from which you want
+         *          to interpolate the end-point.
+         * @param endPoint the interpolated end-point
+         */        
+        public void interpolateEndPoint(float[] startPoint, float[] endPoint) {
+            start[0] = startPoint[0];
+            start[1] = startPoint[1];
+            start[2] = startPoint[2];
+            
+            interpolateEndPoint(start, end);
+            
+            endPoint[0] = (float)end[0];
+            endPoint[1] = (float)end[1];
+            endPoint[2] = (float)end[2];            
+        }
+        
+        /**
+         * Interpolating the end-point from a given start-point.
+         * The start-point is not necessarily a start-point from
+         * a vector in the vector field.
+         * 
+         * @param startPoint the start-point from which you want
+         *          to interpolate the end-point.
+         * @param endPoint the interpolated end-point
+         */        
+        public abstract void interpolateEndPoint(double[] startPoint, double[] endPoint); 
+        
+        /**
+         * Interpolating the start-point from a given end-point.
+         * The end-pont is not necessarily a end-point from a vector
+         * in the vector field. This method is logical equvalent to an
+         * inverse transformation of an end point.
+         * 
+         * @param endPoint the end-point from which you want to 
+         *           interpolate the start-point.
+         * @param startPoint the interpolated start-point.
+         */
+        public void interpolateStartPoint(int[] endPoint, int[] startPoint) {
+            end[0] = endPoint[0];
+            end[1] = endPoint[1];
+            end[2] = endPoint[2];
+            
+            interpolateEndPoint(end, start);
+            
+            startPoint[0] = (int)Math.round(start[0]);
+            startPoint[1] = (int)Math.round(start[1]);
+            startPoint[2] = (int)Math.round(start[2]);
+        }
+        
+        /**
+         * Interpolating the start-point from a given end-point.
+         * The end-pont is not necessarily a end-point from a vector
+         * in the vector field. This method is logical equvalent to an
+         * inverse transformation of an end point.
+         * 
+         * @param endPoint the end-point from which you want to 
+         *           interpolate the start-point.
+         * @param startPoint the interpolated start-point.
+         */        
+        public void interpolateStartPoint(float[] endPoint, float[] startPoint) {
+            end[0] = endPoint[0];
+            end[1] = endPoint[1];
+            end[2] = endPoint[2];
+            
+            interpolateEndPoint(end, start);
+            
+            startPoint[0] = (float)start[0];
+            startPoint[1] = (float)start[1];
+            startPoint[2] = (float)start[2];
+        }
+        
+        /**
+         * Interpolating the start-point from a given end-point.
+         * The end-pont is not necessarily a end-point from a vector
+         * in the vector field. This method is logical equvalent to an
+         * inverse transformation of an end point.
+         * 
+         * @param endPoint the end-point from which you want to 
+         *           interpolate the start-point.
+         * @param startPoint the interpolated start-point.
+         */        
+        public abstract void interpolateStartPoint(double[] endPoint, double[] startPoint); 
+        
+        public abstract Object clone();  
     }
     
-    public boolean displacementVectorExists(DoubleDataPoint src) {
-        return (filled[(int)src.getValue(0) + ((int)src.getValue(1) * sizeX) + ((int)src.getValue(2) * sizeX * sizeY)]);
+    
+    
+    
+    
+    private Interpolator interpolator;
+    
+    protected DisplacementField() {    
     }
     
-    public void transformBackward(double[] source, double[] target) {
+    
+    public void setFieldInterpolator(Interpolator interpolator) {
+        this.interpolator = (Interpolator)interpolator.clone();
+        this.interpolator.setField(this);
     }
     
-    public void transformBackward(float[] source, float[] target) {
-    }
-    
-    /**
-     * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(int[], int[])
-     */
-    public void transformBackward(int[] target, int[] source) {
-    }    
-    
-    public void transform(double[] source, double[] target) {
-    }
-    
-    public void transform(float[] source, float[] target) {
+    public Interpolator getFieldInterpolator() {
+        return interpolator;
     }    
     
     public void transform(int[] source, int[] target) {
-    }    
-        
-    public void transform(Image source, Image target) {
+        interpolator.interpolateEndPoint(source, target);    
     }
-        
-    public Image transform(Image source) {
-        return null;
-    } 
-    
-    public Transformation scale(double alpha) {
-        return null;
-    }
-    
-    public Transformation concatenate(Transformation trans) {
-        return null;
-    }
-    
-    public Transformation createInverse() {// throw TransformationException();
-        //später
-        return null;
-    }
-    
-    public String toString() {
-        return null;
-    }    
 
+    public void transform(float[] source, float[] target) {
+        interpolator.interpolateEndPoint(source, target);
+    }
 
-
+    public void transform(double[] source, double[] target) {
+        interpolator.interpolateEndPoint(source, target);
+    }
     
+    public void transformBackward(int[] target, int[] source) {
+        interpolator.interpolateStartPoint(target, source);
+    }
+    
+    public void transformBackward(float[] target, float[] source) {
+        interpolator.interpolateStartPoint(target, source);
+    }
+    
+    public void transformBackward(double[] target, double[] source) {
+        interpolator.interpolateStartPoint(target, source);
+    }
+
 }

@@ -8,11 +8,14 @@ package org.wewi.medimg.reg;
 
 import java.io.File;
 
+import javax.swing.JFrame;
+
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
+import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.image.ops.AnalyzerUtils;
@@ -21,9 +24,11 @@ import org.wewi.medimg.image.ops.CrossCorrelationOperator;
 import org.wewi.medimg.image.ops.DirectComparisonOperator;
 import org.wewi.medimg.image.ops.MutualInformationOperator;
 import org.wewi.medimg.image.ops.NormalizedMutualInformationOperator;
+import org.wewi.medimg.math.vec.VectorField;
 import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
 import org.wewi.medimg.reg.pca.RigidPCARegistration;
 import org.wewi.medimg.util.Timer;
+import org.wewi.medimg.viewer.VectorFieldPanel;
 
 /**
  *
@@ -45,8 +50,8 @@ public class Test {
         timer1.start();       
         Timer timer3 = new Timer("Test: Image lesen");
         timer3.start();     
-        File source1 = new File(path + "more01.tif");
-        File source2 = new File(path + "more01b.tif");                
+        File source1 = new File(path + "circle003a.tif");
+        File source2 = new File(path + "circle003.tif");                
         //File source1 = new File("D:/temp/circle004.tif");
         //File source2 = new File("D:/temp/circle005.tif");   
         //File source1 = new File(path + "erg02/");
@@ -96,8 +101,9 @@ public class Test {
             myImportance.setImportance(9, 0.0);
             myImportance.setImportance(10, 0.0);
             myImportance.setImportance(11, 0.0); */           
-        NonRigidPCARegistration strategy = new NonRigidPCARegistration();
+        //NonRigidPCARegistration strategy = new NonRigidPCARegistration();
         //RigidPCARegistration strategy = new RigidPCARegistration();
+        MonteCarloWarping strategy = new MonteCarloWarping();
         strategy.setAffinityMetric(myMetric);
         strategy.setTransformationImportance(myImportance);
         
@@ -105,15 +111,17 @@ public class Test {
         //System.out.println("Mist222222");
         Timer timer2 = new Timer("Test: calculate");
         timer2.start();
-        AffineTransformation transformation = null;
+        ImageTransformation transformation = null;
         Image show = null;
         try {
-            transformation = (AffineTransformation)strategy.registrate(data1, data2);
+            /*transformation = (ImageTransformation)strategy.registrate(data1, data2);
             timer2.stop();
             timer2.print();
             //Image show = new ImageData(0, 500, 0, 500, 0, 0);
             ImageDataFactory fac = ImageDataFactory.getInstance();
             show = transformation.transform(data1, fac);
+            */
+            
             //Image show = transformation.transform(data1);
 
             
@@ -130,8 +138,46 @@ public class Test {
             System.out.println("Punkt: 500 -500 - 0: " +  erg[0] + ", " + erg[1] + ", " + erg[2]);*/
             
             //System.out.println((AffineTransformation)transformation.getScaleTransformation());
-            TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg/"));   
-            rwriter.write();         
+            
+            
+            //TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg/"));   
+            //rwriter.write();  
+            /*for (int i = 0; i < 10; i++) {
+                    transformation = (ImageTransformation)strategy.registrate(data1, data2);
+                    timer2.stop();
+                    timer2.print();
+                    //Image show = new ImageData(0, 500, 0, 500, 0, 0);
+                    ImageDataFactory fac = ImageDataFactory.getInstance();
+                    show = transformation.transform(data1, fac);
+                    TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg." + i));   
+                    rwriter.write();  
+                
+                    data1 = show;
+            
+            }*/
+            
+            transformation = (ImageTransformation)strategy.registrate(data1, data2);
+            timer2.stop();
+            timer2.print();
+            //Image show = new ImageData(0, 500, 0, 500, 0, 0);
+            ImageDataFactory fac = ImageDataFactory.getInstance();
+            show = transformation.transform(data1, fac);
+            TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg"));   
+            rwriter.write();
+            
+            JFrame frame = new JFrame();
+            frame.getContentPane().add(new VectorFieldPanel((VectorField)transformation, show.getDimension()));
+            frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                public void windowClosing(java.awt.event.WindowEvent evt) {
+                    System.exit(0);
+                }
+            });
+           
+            frame.setSize(show.getDimension().getSizeX(), show.getDimension().getSizeY());
+            frame.show();
+            
+            
+                   
         } catch (Exception re) {
             System.out.println("Mist");
             re.printStackTrace();

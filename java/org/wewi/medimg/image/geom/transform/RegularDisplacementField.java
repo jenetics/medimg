@@ -19,7 +19,7 @@ import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class RegularDisplacementField extends DisplacementF 
+public class RegularDisplacementField extends DisplacementField 
                                        implements GridVectorField {
     
     private static class NearestNeighborInterpolator extends Interpolator {
