@@ -22,6 +22,7 @@ import java.io.*;
  */
 public class MarchingCubes {                        
     private Image image;
+    private Graph graph;
     private CubeIterator cubeIterator;
     private int gridSize;
     private float lower, upper;
@@ -35,26 +36,31 @@ public class MarchingCubes {
         cubeIterator = new ImageCubeIterator(image, gridSize, lower, upper);
     }
     
-    protected TriangleList compactation(TriangleList tl) {
-        return tl;
+    protected Graph compactation(Graph g) {
+        return g;
     }
     
-    public TriangleList march() {
-        TriangleList tl = new TriangleList();
-        Graph graph = new Graph();
+    public Graph getGraph() {
+        return graph;
+    }
+    
+    public Graph march() {
+        graph = new Graph();
         TriangleFactory tf = new TriangleFactory();
         
         Cube cube;
+        int count = 0;
         while (cubeIterator.hasNext()) {
             cube = cubeIterator.next();
+            if ((count++) % 1000 == 0)
+                System.out.println(count);
             for (Iterator it = tf.createTriangles(cube); it.hasNext();) {
-                //tl.add((Triangle)it.next());
                 graph.addTriangle((Triangle)it.next());
             }
         }
-        tl = compactation(tl);        
+        graph = compactation(graph);        
         
-        return tl;
+        return graph;
     }
     
 }

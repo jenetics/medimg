@@ -10,9 +10,11 @@ import java.util.Iterator;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author Franz Wilhelmstötter
+ * @author Werner Weiser
+ * @version 0.1
  */
-public class StarshapedPolygon {
+class StarshapedPolygon {
     
     /** Creates a new instance of StarshapedPolygon */
     public StarshapedPolygon(Edge[] edges, Vertex nucleus) {

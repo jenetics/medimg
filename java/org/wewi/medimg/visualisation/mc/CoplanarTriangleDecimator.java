@@ -13,14 +13,20 @@ import java.util.Iterator;
  * @author  werner weiser
  * @version 
  */
-public class CoplanarTriangleDecimator implements TriangleDecimator {
+public class CoplanarTriangleDecimator extends TriangleDecimator {
     
     private static final double EPSILON = 0.1;
     /** Creates new CoplanarTriangleDecimator */
     public CoplanarTriangleDecimator() {
     }
+    
+    public CoplanarTriangleDecimator(TriangleDecimator component) {
+        super(component);
+    }
 
     public void decimate(Graph graph) {
+        super.decimate(graph);
+        
         Vertex v;
         Triangle t;
         StarshapedPolygon p;
@@ -30,7 +36,7 @@ public class CoplanarTriangleDecimator implements TriangleDecimator {
             v = (Vertex)it.next();
             // Ein Punkt mit 2 Dreiecksnachbarn ist jedenfalls ein Punkt der Auﬂenkontur
             // und darf daher nicht entfernt werden
-            if (graph.getNoOfTriangles(v) <= 2) {
+            if (graph.getNoOfIncidentTriangles(v) <= 2) {
                 continue;
             }
             p = graph.getPolygon(v);

@@ -8,12 +8,27 @@ package org.wewi.medimg.visualisation.mc;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
-public interface TriangleDecimator {
+public abstract class TriangleDecimator {
+    private TriangleDecimator component;
     
-    public void decimate(Graph graph); 
+    public TriangleDecimator() {
+        component = null;
+    }
+    
+    public TriangleDecimator(TriangleDecimator component) {
+        this.component = component;
+    }
+    
+    public void decimate(Graph graph) {
+        if (component == null) {
+            return;
+        }
+        component.decimate(graph);
+    }
 
 }
 

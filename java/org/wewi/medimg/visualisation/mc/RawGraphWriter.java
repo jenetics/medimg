@@ -30,9 +30,17 @@ public class RawGraphWriter implements GraphWriter {
     public void write() throws IOException {
         DataOutputStream out = new DataOutputStream(new FileOutputStream(file));
         
-        for (Iterator it = graph.getVertices(); it.hasNext();) {
-            
+        Triangle t;
+        out.writeInt(graph.getNoOfTriangles());
+        for (Iterator it = graph.getTriangles(); it.hasNext();) {
+            t = (Triangle)it.next();
+            writePoint(t.getA(), out);
+            writePoint(t.getB(), out);
+            writePoint(t.getC(), out);
+            writePoint(t.getNormal(), out);
         }
+        
+        out.close();
     }
     
     private void writePoint(Point p, DataOutputStream out) throws IOException {

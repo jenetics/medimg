@@ -35,6 +35,7 @@ import com.sun.j3d.utils.picking.*;
  */
 public class TestViewer extends Applet {
     private SimpleUniverse u = null;
+    private Graph graph;
     
     public BranchGroup createSceneGraph(javax.media.j3d.TriangleArray triangleArray, Canvas3D canvas) {
         Appearance app = new Appearance();
@@ -100,7 +101,7 @@ public class TestViewer extends Applet {
         return objRoot;
     }   
     
-    public void init() {
+    private void newMarch() {
         ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
                                             new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
         try {
@@ -118,23 +119,49 @@ public class TestViewer extends Applet {
         mbs.segmentate(image);
         
         MarchingCubes mc = new MarchingCubes(image, 1, 1, 4);
-        TriangleList tl = mc.march();
-        
-        //Berechnen der Nachbarn der Dreiecke
-        Timer timer = new Timer("Dreiecke");
+        Timer timer = new Timer("Marching");
         timer.start();
-        //tl.calculateTriangleMesh();
+        graph = mc.march();
+        System.out.println("Dreiecke (vor dem Ausduennen): " + graph.getNoOfTriangles());
         timer.stop();
         timer.print();
         
+        TriangleDecimator decimator = new SingleTriangleDecimator();
+        decimator.decimate(graph);
+        System.out.println("Dreiecke (nach dem Ausduennen): " + graph.getNoOfTriangles());
         
-        //System.out.println("Dreiecke: " + tl.size());
-        TriangleArray triangleArray = new TriangleArray(3*tl.size(), GeometryArray.COORDINATES);
+        try {
+            //GraphWriter gw = new RawGraphWriter(graph, new File("C:/Temp/graph.raw"));
+            GraphWriter gw = new FlatGraphWriter(graph, new File("C:/Temp/graph.flat"));
+            gw.write();
+        } catch (Exception e) {
+            System.out.println("" + e);
+        }        
+    }
+    
+    private void loadMarch() {
+        try {
+            GraphReader gr = new RawGraphReader(new File("C:/Temp/graph.raw"));
+            gr.read();
+            graph = gr.getGraph();
+        } catch (Exception e) {
+            System.out.println("" + e);
+            e.printStackTrace();
+            System.exit(0);
+        }        
+    }
+    
+    public void init() {
+        newMarch();
+        //loadMarch();
+        
+        System.out.println("Dreiecke: " + graph.getNoOfTriangles());
+        TriangleArray triangleArray = new TriangleArray(3*graph.getNoOfTriangles(), GeometryArray.COORDINATES);
         float[] coord = new float[9];
         Triangle tri;
         Point A, B, C;
         int counter = 0;
-        for (Iterator it = tl.iterator(); it.hasNext();) {
+        for (Iterator it = graph.getTriangles(); it.hasNext();) {
             tri = (Triangle)it.next();
             A = tri.getA(); B = tri.getB(); C = tri.getC();
             coord[0] = A.x; coord[1] = A.y; coord[2] = A.z;

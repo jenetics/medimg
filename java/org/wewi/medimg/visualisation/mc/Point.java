@@ -16,7 +16,7 @@ public class Point {
      * Mit dieser Konstante wird die Genauigkeit auf
      * zwei Nachkommastellen beschränkt (RATIO = 100).
      */
-    public static final int RATIO = 100;
+    public static final int RATIO = 10;
     float x = 0, y = 0, z = 0;
     
     Point() {
@@ -30,6 +30,10 @@ public class Point {
         x = (float)((int)(xcoord*RATIO))/(float)RATIO;
         y = (float)((int)(ycoord*RATIO))/(float)RATIO;
         z = (float)((int)(zcoord*RATIO))/(float)RATIO;
+        
+        //x = xcoord;
+        //y = ycoord;
+        //z = zcoord;
     }
     
     public float getX() {
