@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -184,8 +185,8 @@ public class ListMap implements Map {
         return set;
 	}
     
-    public Collection entryCollection() {
-        return (Collection)entries.clone();
+    public List entryCollection() {
+        return (List)entries.clone();
     }
 
 }
