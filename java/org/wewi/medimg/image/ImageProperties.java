@@ -38,19 +38,27 @@ public class ImageProperties {
             value = "CDATA[" + value + "]";
         }
         
-        props.put(key, value);
+        props.put(key.trim(), value);
+    }
+    
+    public void setProperty(int pos, String key, String value) {
+        props.add(pos, key, value);
     }
     
     public boolean containsKey(String key) {
-        return props.containsKey(key);
+        return props.containsKey(key.trim());
     }
     
     public String remove(String key) {
         return (String)props.remove(key);
     }
     
+    public void clear() {
+        props.clear();
+    }
+    
     public String getProperty(String key){
-        return (String)props.get(key);
+        return (String)props.get(key.trim());
     }
     
     public String getPorperty(String key, String defaultValue) {
@@ -69,6 +77,10 @@ public class ImageProperties {
      */
     public Iterator iterator() {
         return props.entryList().iterator();
+    }
+    
+    public int size() {
+        return props.size();
     }
     
     public String toString() {
