@@ -44,6 +44,11 @@ public final class Timer {
         print(System.out);
     }
     
+    public void printSplitTime(String name) {
+    	
+    }
+    
+    
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(timerName).append(": ");

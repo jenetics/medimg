@@ -36,17 +36,21 @@ public class Dimension implements Cloneable {
 		maxZ = dim.maxZ;
 	}
 	
-	public Dimension(int sizeX, int sizeY, int sizeZ) {
-		this.sizeX = sizeX;
-		this.sizeY = sizeY;
-		this.sizeZ = sizeZ;
-		maxX = sizeX-1;
-		maxY = sizeY-1;
-		maxZ = sizeZ-1;
-		minX = minY = minZ = 0;		
+	public Dimension(int sizeX, int sizeY, int sizeZ) throws IllegalArgumentException {
+		this(0, sizeX-1, 0, sizeY-1, 0, sizeZ-1);		
 	}
 	
-	public Dimension(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+	public Dimension(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) 
+                                                        throws IllegalArgumentException {
+        
+        if (minX > maxX || minY > maxY || minZ > maxZ) {
+            throw new IllegalArgumentException("One of the \"min\" argument is " +
+                                                "bigger than the coresponding \"max\" argument \n" +
+                                                "(" + minX + "," + maxX + ")\n" +
+                                                "(" + minY + "," + maxY + ")\n" +
+                                                "(" + minZ + "," + maxZ + ")");    
+        }
+                                                                    
 		this.sizeX = maxX-minX+1;
 		this.sizeY = maxY-minY+1;
 		this.sizeZ = maxZ-minZ+1;
