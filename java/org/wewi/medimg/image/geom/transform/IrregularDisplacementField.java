@@ -1,19 +1,3 @@
-/* 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
-
 /**
  * IrregularDisplacementField.java
  * 
@@ -23,6 +7,7 @@
 package org.wewi.medimg.image.geom.transform;
 
 
+import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.math.vec.ArbitraryVectorField;
 import org.wewi.medimg.math.vec.DoubleVectorField;
 import org.wewi.medimg.math.vec.VectorIterator;
@@ -43,6 +28,7 @@ public class IrregularDisplacementField extends DisplacementField
         field = new DoubleVectorField();
         setFieldInterpolator(new GlobalInterpolator(
                              new GlobalInterpolator.ExponentialWeightFunction(1)));
+                             //new GlobalInterpolator.CityBlockWeightFunction(1)));
     }
 
     /**
@@ -82,6 +68,23 @@ public class IrregularDisplacementField extends DisplacementField
 
     public void addVector(double[] startPoint, double[] endPoint) {
         field.addVector(startPoint, endPoint);
+    }
+    
+    public void clean(double epsilon) {
+        double[] p = new double[3];
+        double[] q = new double[3];
+        double d;
+        int removedVectors = 0;
+        for (int i = 0, n = field.size(); i <n; ++i) {
+            field.getVector(i - removedVectors, p, q);
+            d = Math.sqrt(MathUtil.sqr(p[0] - q[0]) + 
+                      MathUtil.sqr(p[1] - q[1]) +
+                      MathUtil.sqr(p[2] - q[2]));
+            if (d < epsilon) {
+                field.removeVector(i - removedVectors);
+                removedVectors++;
+            }
+        }
     }
 
     public VectorIterator getVectorIterator() {
@@ -128,14 +131,15 @@ public class IrregularDisplacementField extends DisplacementField
 	 * @see org.wewi.medimg.image.geom.transform.InterpolateableTransformation#interpolate(InterpolateableTransformation, double)
 	 */
 	public InterpolateableTransformation interpolate(InterpolateableTransformation trans, double w) {
-		/*IrregularDisplacementField t = (IrregularDisplacementField)trans;
+		IrregularDisplacementField t = (IrregularDisplacementField)trans;
         scale(1 - w);
         double[] start = new double[3];
         double[] end = new double[3];
         
         for (int i = 0, n = t.size(); i < n; i++) {
-            
-        }*/
+            t.getVector(i, start, end);
+            field.addVector(start, end);
+        }
         
         return this;
 	}

@@ -1,19 +1,3 @@
-/* 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
-
 /*
  * RegistrationWizard
  *
@@ -32,8 +16,7 @@ import javax.swing.JFileChooser;
 
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageFactory;
-import org.wewi.medimg.image.IntImageFactory;
+import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.io.ImageReader;
@@ -41,9 +24,11 @@ import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
+import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.image.io.WriterThreadEvent;
 import org.wewi.medimg.image.io.WriterThreadListener;
 import org.wewi.medimg.reg.BBAffinityMetric;
+import org.wewi.medimg.reg.MonteCarloWarping;
 import org.wewi.medimg.reg.Registrator;
 import org.wewi.medimg.reg.WeightPointTransformationImportance;
 import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
@@ -70,13 +55,14 @@ public class RegistrationWizard extends Wizard implements Observer,
 	private ImageReader imageReader1;
 	private ImageReader imageReader2;
 	private RegistratorEnumeration registrationEnumeration = RegistratorEnumeration.PCA_METHOD_RIGID;
-	//private int nfeatures = 4;
+	private int regCount = 0;
 	private ImageTransformation transformation;
 	private Registrator registrator;
 	private ObservableRegistrator obReg = null;
 	private Image imageData1;
 	private Image imageData2;
-	private Image resultData;  
+	private Image resultData;
+    private Image work = null;  
 
 	private RegistratorThread registratorThread;
 	private ImageReaderThread readerThread1;
@@ -172,17 +158,31 @@ public class RegistrationWizard extends Wizard implements Observer,
 		        myRegistration.setTransformationImportance(myImportance);
 		        obReg = myRegistration;
 			} else if (registrationEnumeration.equals(RegistratorEnumeration.MC_METHOD)) {
-				WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+				     
+                WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
 				//ImportanceStrategy myStrategy = new ImportanceStrategy();
 				//FittnessStrategy myStrategy = new FittnessStrategy();
 				BBAffinityMetric myMetric = new BBAffinityMetric();
 				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
 				myImportance.setErrorLimit(0.2);
-				RigidPCARegistration myRegistration = new RigidPCARegistration();
+				MonteCarloWarping myRegistration = new MonteCarloWarping();
+                //RigidPCARegistration myRegistration = new RigidPCARegistration();
 		        myRegistration.setAffinityMetric(myMetric);
 		        myRegistration.setTransformationImportance(myImportance);
 		        obReg = myRegistration;
-			}
+			} else if (registrationEnumeration.equals(RegistratorEnumeration.COMBINED_MC_PCA_METHOD)) {
+                     
+                WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+                //ImportanceStrategy myStrategy = new ImportanceStrategy();
+                //FittnessStrategy myStrategy = new FittnessStrategy();
+                BBAffinityMetric myMetric = new BBAffinityMetric();
+                //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
+                myImportance.setErrorLimit(0.2);
+                NonRigidPCARegistration myRegistration = new NonRigidPCARegistration();
+                myRegistration.setAffinityMetric(myMetric);
+                myRegistration.setTransformationImportance(myImportance);
+                obReg = myRegistration;
+            }
 			//obReg.addRegistratorListener(this);
 			registratorThread = new RegistratorThread(obReg);			
 			registratorThread.addRegistratorListener(this);
@@ -199,36 +199,107 @@ public class RegistrationWizard extends Wizard implements Observer,
     }
 
     public void registratorStarted(RegistratorEvent event) {
-        ImageViewer viewer1 = new ImageViewer("Ausgangsbild", imageData1);
-        ImageViewer viewer2 = new ImageViewer("Zielbild", imageData2);
-        viewer1.pack();
-        viewer2.pack();
-        imageSynchronizer = new ImageViewerSynchronizer();
-        imageSynchronizer.addImageViewer(viewer1, new Point(0, 0), new Dimension(300, 300));
-        imageSynchronizer.addImageViewer(viewer2, new Point(300, 0), new Dimension(300, 300));
-        Viewer.getInstance().addImageViewerSynchronizer(imageSynchronizer);
-        //registrationStateTextField.setText(event.toString());
+         if (registrationEnumeration.equals(RegistratorEnumeration.COMBINED_MC_PCA_METHOD)) {
+            if (regCount == 0) {
+                ImageViewer viewer1 = new ImageViewer("Ausgangsbild", imageData1);
+                ImageViewer viewer2 = new ImageViewer("Zielbild", imageData2);
+                viewer1.pack();
+                viewer2.pack();
+                imageSynchronizer = new ImageViewerSynchronizer();
+                imageSynchronizer.addImageViewer(viewer1, new Point(0, 0), new Dimension(300, 300));
+                imageSynchronizer.addImageViewer(viewer2, new Point(300, 0), new Dimension(300, 300));
+                Viewer.getInstance().addImageViewerSynchronizer(imageSynchronizer);
+                //registrationStateTextField.setText(event.toString());
+            }
+         } else {
+            ImageViewer viewer1 = new ImageViewer("Ausgangsbild", imageData1);
+            ImageViewer viewer2 = new ImageViewer("Zielbild", imageData2);
+            viewer1.pack();
+            viewer2.pack();
+            imageSynchronizer = new ImageViewerSynchronizer();
+            imageSynchronizer.addImageViewer(viewer1, new Point(0, 0), new Dimension(300, 300));
+            imageSynchronizer.addImageViewer(viewer2, new Point(300, 0), new Dimension(300, 300));
+            Viewer.getInstance().addImageViewerSynchronizer(imageSynchronizer);
+            //registrationStateTextField.setText(event.toString());         
+         }
     }
 
     public void registratorFinished(RegistratorEvent event) {
         regStartButton.setText("Transformieren der Bilder...");
         //registrationStateTextField.setText(event.toString());
-        transformation = (AffineTransformation)registratorThread.getTransformation();
-        ImageFactory fac = IntImageFactory.getInstance();
-        resultData = transformation.transform(imageData1, fac);
-        //resultData = transformation.transform(imageData1);
-        ImageViewer viewer3 = new ImageViewer("Ergebnisbild", resultData);
-        int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
-        int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
-        //viewer3.setPreferredSize(new Dimension(sizeX, sizeY));    
-        viewer3.setPreferredSize(new Dimension(300, 300));    
-        regStartButton.setText("Start");        
-        viewer3.pack();
-        Viewer.getInstance().addViewerDesktopFrame(viewer3, new Point(150, 300), new Dimension(sizeX, sizeY));
-        setClosable(true);
-        cancelButton.setEnabled(true);
-        closeButton.setEnabled(true);
-        regStartButton.setEnabled(true);
+        if (registrationEnumeration.equals(RegistratorEnumeration.COMBINED_MC_PCA_METHOD)) {
+            
+            
+            if (regCount == 0) {
+                regCount++;
+                transformation = (ImageTransformation)registratorThread.getTransformation();
+                work = transformation.transform(imageData1);
+                WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+                BBAffinityMetric myMetric = new BBAffinityMetric();
+                myImportance.setErrorLimit(0.2);
+                MonteCarloWarping myRegistration = new MonteCarloWarping();
+                myRegistration.setAffinityMetric(myMetric);
+                myRegistration.setTransformationImportance(myImportance);
+                obReg = myRegistration;
+                registratorThread = new RegistratorThread(obReg);           
+                registratorThread.addRegistratorListener(this);
+                registratorThread.setPriority(Thread.MIN_PRIORITY);
+                registratorThread.setImage(work, imageData2);
+                registratorThread.start();         
+            
+            }  else {
+                transformation = (ImageTransformation)registratorThread.getTransformation();
+                //ImageDataFactory fac = ImageDataFactory.getInstance();
+                //resultData = transformation.transform(work, fac);
+                resultData = transformation.transform(work);
+                ImageViewer viewer3 = new ImageViewer("Ergebnisbild", resultData);
+                int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
+                int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
+                //viewer3.setPreferredSize(new Dimension(sizeX, sizeY));    
+                viewer3.setPreferredSize(new Dimension(300, 300));    
+                regStartButton.setText("Start");        
+                viewer3.pack();
+                Viewer.getInstance().addViewerDesktopFrame(viewer3, new Point(150, 300), new Dimension(300, 300));
+                
+                
+                /*try {
+                TIFFWriter rwriter = new TIFFWriter(resultData, new File("E:/Daten/Diplom/data/reg.test.img/final/image" + 0 + "/rigidPCA."));   
+                rwriter.write();        
+                } catch (Exception e) {
+                }*/
+                
+                setClosable(true);
+                cancelButton.setEnabled(true);
+                closeButton.setEnabled(true);
+                regStartButton.setEnabled(true);
+            } 
+        } else {
+            transformation = (ImageTransformation)registratorThread.getTransformation();
+            //ImageDataFactory fac = ImageDataFactory.getInstance();
+            //resultData = transformation.transform(work, fac);
+            resultData = transformation.transform(imageData1);
+            ImageViewer viewer3 = new ImageViewer("Ergebnisbild", resultData);
+            int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
+            int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
+            //viewer3.setPreferredSize(new Dimension(sizeX, sizeY));    
+            viewer3.setPreferredSize(new Dimension(300, 300));    
+            regStartButton.setText("Start");        
+            viewer3.pack();
+            Viewer.getInstance().addViewerDesktopFrame(viewer3, new Point(150, 300), new Dimension(300, 300));
+            
+            
+            /*try {
+            TIFFWriter rwriter = new TIFFWriter(resultData, new File("E:/Daten/Diplom/data/reg.test.img/final/image" + 0 + "/rigidPCA."));   
+            rwriter.write();        
+            } catch (Exception e) {
+            }*/
+            
+            setClosable(true);
+            cancelButton.setEnabled(true);
+            closeButton.setEnabled(true);
+            regStartButton.setEnabled(true);
+        }
+        
     }
 
     /** This method is called from within the constructor to
@@ -254,6 +325,7 @@ public class RegistrationWizard extends Wizard implements Observer,
             jPanel31 = new javax.swing.JPanel();
             rigidPCARegRadioButton = new javax.swing.JRadioButton();
             monteCarloRegRadioButton = new javax.swing.JRadioButton();
+            combinedMCPCARegKindRadioButton = new javax.swing.JRadioButton();
             nonRigidPCARegRadioButton = new javax.swing.JRadioButton();
             jPanel33 = new javax.swing.JPanel();
             wizardStep3 = new javax.swing.JPanel();
@@ -364,8 +436,22 @@ public class RegistrationWizard extends Wizard implements Observer,
             gridBagConstraints1 = new java.awt.GridBagConstraints();
             gridBagConstraints1.gridx = 0;
             gridBagConstraints1.gridy = 4;
+            gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;            
             gridBagConstraints1.insets = new java.awt.Insets(0, 0, 0, 25);
             jPanel31.add(monteCarloRegRadioButton, gridBagConstraints1);
+            
+            combinedMCPCARegKindRadioButton.setText("Kombinierte MC-PCA Registrierung");
+            combinedMCPCARegKindRadioButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    combinedMCPCARegKindRadioButtonActionPerformed(evt);
+                }
+            });
+            
+            gridBagConstraints1 = new java.awt.GridBagConstraints();
+            gridBagConstraints1.gridx = 0;
+            gridBagConstraints1.gridy = 6;
+            gridBagConstraints1.insets = new java.awt.Insets(0, 0, 0, 25);
+            jPanel31.add(combinedMCPCARegKindRadioButton, gridBagConstraints1);            
             
             nonRigidPCARegRadioButton.setText("Affine PCA Registrierung");
             nonRigidPCARegRadioButton.addActionListener(new java.awt.event.ActionListener() {
@@ -447,6 +533,7 @@ public class RegistrationWizard extends Wizard implements Observer,
     private void nonRigidPCARegRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NonRigidPCARegRadioButtonActionPerformed
         monteCarloRegRadioButton.setSelected(false);
         rigidPCARegRadioButton.setSelected(false);
+        combinedMCPCARegKindRadioButton.setSelected(false);
         registrationEnumeration = RegistratorEnumeration.PCA_METHOD_NONRIGID;        
     }//GEN-LAST:event_NonRigidPCARegRadioButtonActionPerformed
 
@@ -468,7 +555,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         String fileName = chooser.getSelectedFile().getAbsolutePath();
         imageReader2 =
             readerFactory.createImageReader(
-                IntImageFactory.getInstance(),
+                ImageDataFactory.getInstance(),
                 new File(fileName));
         //imageReader2.setRange(new Range(100, 119)); 
         FeatureColorConversion fcc = new FeatureColorConversion();
@@ -524,7 +611,18 @@ public class RegistrationWizard extends Wizard implements Observer,
         // Add your handling code here:
         rigidPCARegRadioButton.setSelected(false);
         nonRigidPCARegRadioButton.setSelected(false);
+        combinedMCPCARegKindRadioButton.setSelected(false);
         registrationEnumeration = RegistratorEnumeration.MC_METHOD;
+    } //GEN-LAST:event_otherRegKindRadioButtonActionPerformed
+
+    private void combinedMCPCARegKindRadioButtonActionPerformed(
+        java.awt.event.ActionEvent evt) {
+        //GEN-FIRST:event_otherRegKindRadioButtonActionPerformed
+        // Add your handling code here:
+        rigidPCARegRadioButton.setSelected(false);
+        nonRigidPCARegRadioButton.setSelected(false);
+        monteCarloRegRadioButton.setSelected(false);
+        registrationEnumeration = RegistratorEnumeration.COMBINED_MC_PCA_METHOD;
     } //GEN-LAST:event_otherRegKindRadioButtonActionPerformed
 
     private void rigidPCARadioButtonActionPerformed(
@@ -533,6 +631,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         // Add your handling code here:
         monteCarloRegRadioButton.setSelected(false);
         nonRigidPCARegRadioButton.setSelected(false);
+        combinedMCPCARegKindRadioButton.setSelected(false);
         registrationEnumeration = RegistratorEnumeration.PCA_METHOD_RIGID;
     } //GEN-LAST:event_pcaRegKindRadioButtonActionPerformed
 
@@ -553,7 +652,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         String fileName = chooser.getSelectedFile().getAbsolutePath();
         imageReader1 =
             readerFactory.createImageReader(
-                IntImageFactory.getInstance(),
+                ImageDataFactory.getInstance(),
                 new File(fileName));
         //reader.setRange(new Range(100, 119));     
         FeatureColorConversion fcc = new FeatureColorConversion();
@@ -582,6 +681,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         private javax.swing.JPanel jPanel31;
         private javax.swing.JRadioButton rigidPCARegRadioButton;
         private javax.swing.JRadioButton monteCarloRegRadioButton;
+        private javax.swing.JRadioButton combinedMCPCARegKindRadioButton;
         private javax.swing.JRadioButton nonRigidPCARegRadioButton;
         private javax.swing.JPanel jPanel33;
         private javax.swing.JPanel wizardStep3;

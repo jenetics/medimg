@@ -162,6 +162,20 @@
                         </Constraint>
                       </Constraints>
                     </Component>
+                    <Component class="javax.swing.JRadioButton" name="combinedMCPCARegKindRadioButton">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Kombinierte MC-PCA Registrierung"/>
+                      </Properties>
+
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="combinedMCPCARegKindRadioButtonActionPerformed"/>
+                      </Events>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                          <GridBagConstraints anchor="10" fill="0" gridHeight="1" gridWidth="1" gridX="0" gridY="4" insetsBottom="0" insetsLeft="0" insetsRight="25" insetsTop="0" ipadX="0" ipadY="0" weightX="0.0" weightY="0.0"/>
+                        </Constraint>
+                      </Constraints>
+                    </Component>
                     <Component class="javax.swing.JRadioButton" name="otherRegKindRadioButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Andere Registrierung"/>
