@@ -17,8 +17,6 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.VoxelSelectorEvent;
 import org.wewi.medimg.image.VoxelSelectorListener;
-import org.wewi.medimg.image.geom.Point2D;
-import org.wewi.medimg.image.geom.Point3D;
 import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
@@ -93,40 +91,12 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         }
     } 
     
-    private Point2D center = null;
-    private Point2D secondPoint = null;
     public void voxelSelected(VoxelSelectorEvent event) {
-        /*
         if (contour == null) {
-            //return;
-        }
-        if (center == null) {
-            center = new Point2D(event.getSelectedImagePoint().getX(), 
-                                 event.getSelectedImagePoint().getY());
             return;
         }
-        if (secondPoint == null) {
-            int rad = (int)Math.sqrt(MathUtil.sqr(event.getSelectedImagePoint().getX() - center.getX()) + 
-                      MathUtil.sqr(event.getSelectedImagePoint().getY() - center.getY()));
-            contour = ActivePolygonFactory.createCircle(center, rad, 20);
-            
-            if (imageViewer != null) {
-                imageViewer.setImageCanvas(new ActivePolygonCanvasAdapter((ActivePolygon)contour));
-            }            
-            
-            imageViewer.repaintImage();
-            
-            center = null;
-            secondPoint = null;
-            return;
-        }
-        */
-        Point3D p = event.getSelectedImagePoint();
-        contour = ActivePolygonFactory.createCircle(new Point2D(p.getX(), p.getY()), 10, 20);
-        if (imageViewer != null) {
-            imageViewer.setImageCanvas(new ActivePolygonCanvasAdapter((ActivePolygon)contour));
-        }
-        //contour.addBasePoint(event.getSelectedImagePoint());
+        
+        contour.addBasePoint(event.getSelectedImagePoint());
         imageViewer.repaintImage();
     }
     
@@ -194,7 +164,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
 
         getContentPane().add(southPanel, java.awt.BorderLayout.NORTH);
 
-        centerPanel.setLayout(new java.awt.GridLayout(1, 0));
+        centerPanel.setLayout(new java.awt.GridLayout());
 
         jSplitPane1.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 1, 1, 1)));
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -224,7 +194,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         betaSlider.setMajorTickSpacing(10);
         betaSlider.setMinorTickSpacing(5);
         betaSlider.setPaintTicks(true);
-        betaSlider.setValue(5);
+        betaSlider.setValue(20);
         betaSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 betaSliderStateChanged(evt);
@@ -237,11 +207,10 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         outerEnergyWeigthLabel.setText("    \u00c4u\u00dfere Energie (We):    0,20");
         parameterPanel.add(outerEnergyWeigthLabel);
 
-        outerEnergySlider.setMajorTickSpacing(100);
-        outerEnergySlider.setMaximum(1000);
-        outerEnergySlider.setMinorTickSpacing(50);
+        outerEnergySlider.setMajorTickSpacing(10);
+        outerEnergySlider.setMinorTickSpacing(5);
         outerEnergySlider.setPaintTicks(true);
-        outerEnergySlider.setValue(300);
+        outerEnergySlider.setValue(20);
         outerEnergySlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 outerEnergySliderStateChanged(evt);
@@ -338,7 +307,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
 
     private void outerEnergySliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_outerEnergySliderStateChanged
         minimizerOuterEnergyWeight = (double)outerEnergySlider.getValue()/100d;
-        outerEnergyWeigthLabel.setText("    \u00c4u\u00dfere Energie (Gamma):    " + format.format(minimizerOuterEnergyWeight));
+        outerEnergyWeigthLabel.setText("    \u00c4u\u00dfere Energie (We):    " + format.format(minimizerOuterEnergyWeight));
         if (minimizer != null) {
             minimizer.setGAMMA(minimizerOuterEnergyWeight);
         }
@@ -372,7 +341,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
     }//GEN-LAST:event_doAllButtonActionPerformed
 
     private void newContourButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newContourButtonActionPerformed
-        //contour = new ActivePolygon();
+        contour = new ActivePolygon();
         originalContour = null;
         minimizer = new GreedySnakeMinimizer(image, contour);
         minimizer.setALPHA(minimizerAlpha);
@@ -446,7 +415,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         } else {
             logger.info("fertig");
             imageViewer.repaintImage();  
-        }
+        } 
     }//GEN-LAST:event_nextIterationButtonActionPerformed
 
     public String getMenuName() {

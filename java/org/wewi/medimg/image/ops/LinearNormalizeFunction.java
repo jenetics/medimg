@@ -18,8 +18,8 @@ public class LinearNormalizeFunction implements UnaryFunction {
 		super();
         
         //Berechnen der Parameter der Geradengleichung y = k*x + d
-        k = (float)(imageMaxColor-imageMinColor) / (float)(maxColor-minColor);
-        d = (float)minColor - k*minColor;        
+        k = (float)(maxColor-minColor) / (float)(imageMaxColor-imageMinColor);
+        d = (float)minColor - k*imageMinColor;        
 	}
 
 	/**

@@ -134,14 +134,14 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
     }
     
     private double energy(ActiveContour ac) {
-        List cpList = ac.getContourPoints();
+        //List cpList = ac.getContourPoints();
         List bpList = ac.getBasePoints();
         Point[] bp = new Point[bpList.size()];
-        Point[] cp = new Point[cpList.size()];
-        cpList.toArray(cp);
+        //Point[] cp = new Point[cpList.size()];
+        //cpList.toArray(cp);
         bpList.toArray(bp);
         
-        return innerEnergy(bp) + outerEnergy(cp);    
+        return innerEnergy(bp) + outerEnergy(bp);    
     }
     
     private void iteration() {

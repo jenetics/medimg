@@ -52,4 +52,16 @@ public final class MathUtil {
         return value;
     }
     
+    
+    public static void normalize(double[] array) {
+        double value = 0;
+        for (int i = 0, n = array.length; i < n; i++) {
+            value += array[i];
+        }
+        
+        for (int i = 0, n = array.length; i < n; i++) {
+            array[i] /= value;    
+        }            
+    }
+    
 }

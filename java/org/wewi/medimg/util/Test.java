@@ -27,6 +27,7 @@ import org.wewi.medimg.image.filter.EdgeDetectionFilter;
 import org.wewi.medimg.image.filter.ErosionFilter;
 import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.Kernel;
+import org.wewi.medimg.image.filter.LinearNormalizeFilter;
 import org.wewi.medimg.image.filter.TresholdFilter;
 import org.wewi.medimg.image.filter.UnaryPointTransformerFilter;
 import org.wewi.medimg.image.io.ImageIOException;
@@ -47,6 +48,7 @@ import org.wewi.medimg.math.MaxVectorLengthOperator;
 import org.wewi.medimg.math.ScaleVectorFunction;
 import org.wewi.medimg.math.VectorFieldAnalyzer;
 import org.wewi.medimg.math.VectorFieldImageCanvasAdapter;
+import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
 
 
@@ -229,7 +231,7 @@ public class Test {
         try {
             
             ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-                                                 new File("C:/Workspace/kappa/test.02.100x100.tif"));
+                                                 new File("C:/Workspace/kappa/test.05.50x50.tif"));
             reader.read();
             Image image = reader.getImage();
             /*JFrame frame = new JFrame("HelloWorldSwing");
@@ -251,7 +253,18 @@ public class Test {
             System.out.println(field);
             */
             
-            GradientVectorFlow flow = new GradientVectorFlow(image);
+            ImageFilter dilation = new DilationFilter((Image)image.clone());
+            dilation.filter();
+            ImageFilter erosion = new ErosionFilter(image);
+            erosion.filter();
+            
+            BinaryPointTransformer sub = new BinaryPointTransformer(dilation.getImage(),
+                                                                     erosion.getImage(),
+                                                                     new SubFunction());
+            sub.transform();
+            Image edgeMap = sub.getImage();            
+            
+            GradientVectorFlow flow = new GradientVectorFlow(edgeMap);
             flow.start();
             GridVectorField field = (GridVectorField)flow.getGradientVectorField();
             
@@ -270,12 +283,14 @@ public class Test {
             frame2.getContentPane().add(ip2);
 
             frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame2.setSize(300, 300);
             frame2.pack();
             frame2.setVisible(true);
             frame2.show();
             frame2.repaint();
             ip2.repaintImage();            
             
+            /*
             ImageData id = new ImageData(image.getDimension());
             double[] p = new double[3];
             for (int i = 0; i <= id.getMaxX(); i++) {
@@ -283,8 +298,16 @@ public class Test {
                     field.getVector(i, j, 0, p);
                     id.setColor(i, j, 0, (int)(256*Math.sqrt(MathUtil.sqr(p[0])+MathUtil.sqr(p[1]))));        
                 }    
-            }
-            ImageWriter writer = new TIFFWriter(id, new File("X:/out.tiff"));
+            }*/
+            
+            GVFIntegral integral = new GVFIntegral(field);
+            integral.calculate();
+            Image img = integral.getImage();
+            ImageFilter normal = new LinearNormalizeFilter(img, 0, 255);
+            normal.filter();
+            System.out.println(normal);
+            
+            ImageWriter writer = new TIFFWriter(normal.getImage(), new File("X:/out.tiff"));
             writer.write();
             
             
@@ -298,12 +321,12 @@ public class Test {
     
     public static void test11() {         
         try {
-            ImageReader reader = new JPEGReader(ImageDataFactory.getInstance(),
-                                           new File("C:/Workspace/kappa/cube40016.jpg"));
+            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+                                           new File("C:/Workspace/kappa/kappa.3.tif"));
             reader.read();
             Image image = reader.getImage();
             
-            Image b = new ImageData(5, 5, 1);
+            Image b = new ImageData(3, 3, 1);
             for (int i = 0; i < b.getNVoxels(); i++) {
                 b.setColor(i, 0);    
             }
@@ -326,11 +349,21 @@ public class Test {
                                                                      erosion.getImage(),
                                                                      new SubFunction());
             sub.transform();
-            image = sub.getImage();
-            ImageFilter op = new TresholdFilter(image, 30, 255);
-            op.filter();
             
-            ImageWriter writer = new TIFFWriter(image, new File("C:/Workspace/kappa/test11.erg"));
+            /*
+            image = sub.getImage();
+            
+            ImageFilter op = new ErosionFilter(image, b);
+            //erosion = new ErosionFilter(erosion, b);
+            //erosion = new ErosionFilter(erosion, b);
+            //erosion = new ErosionFilter(erosion, b);
+            //erosion.filter();
+            
+            op = new TresholdFilter(op, 40, 250);
+            op = new LinearNormalizeFilter(op, 0, 255);
+            op.filter();
+            */
+            ImageWriter writer = new TIFFWriter(sub.getImage(), new File("C:/Workspace/kappa/test11.erg"));
             writer.write();            
             
             

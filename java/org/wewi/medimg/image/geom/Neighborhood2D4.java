@@ -1,4 +1,4 @@
-/*
+/**
  * Neighborhood2D4.java
  *
  * Created on 18. Februar 2002, 20:47
@@ -8,6 +8,8 @@ package org.wewi.medimg.image.geom;
 
 import java.util.Iterator;
 
+import org.wewi.medimg.image.Dimension;
+
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -16,6 +18,10 @@ import java.util.Iterator;
 public final class Neighborhood2D4 implements Neighborhood {
     private int minX, minY;
     private int maxX, maxY;
+    
+    public Neighborhood2D4(Dimension dim) {
+        this(dim.getMinX(), dim.getMinY(), dim.getMaxX(), dim.getMaxY());   
+    }    
     
     public Neighborhood2D4(int minX, int minY, int maxX, int maxY) {
         this.minX = minX;

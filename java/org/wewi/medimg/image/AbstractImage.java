@@ -145,9 +145,9 @@ public abstract class AbstractImage extends LineScanImageGeometry
     }
     
     public ColorRange getColorRange() {
-        if (colorRange == null) {
+        //if (colorRange == null) {
             updateColorRange();
-        }
+        //}
         return colorRange;
     }
     

@@ -9,10 +9,7 @@ import org.wewi.medimg.alg.IterateableAlgorithm;
 import org.wewi.medimg.alg.ObservableAlgorithm;
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.filter.ConvolutionFilter;
-import org.wewi.medimg.image.filter.EdgeDetectionFilter;
 import org.wewi.medimg.image.filter.GradientFilter;
-import org.wewi.medimg.image.filter.Kernel;
 import org.wewi.medimg.image.geom.Point3D;
 import org.wewi.medimg.math.ConstVectorFunction;
 import org.wewi.medimg.math.DoubleGridVectorField;
@@ -30,7 +27,7 @@ import org.wewi.medimg.math.VectorFieldAnalyzer;
 public class GradientVectorFlow extends ObservableAlgorithm 
                                  implements IterateableAlgorithm {
                                     
-    private Image image;
+    private Image edgeMap;
     private GridVectorField gvf;
     private GridVectorField gradient;
     
@@ -43,15 +40,15 @@ public class GradientVectorFlow extends ObservableAlgorithm
 	/**
 	 * Constructor for GradientVectorFlow.
 	 */
-	public GradientVectorFlow(Image image) {
+	public GradientVectorFlow(Image edgeMap) {
 		super();
-        this.image = (Image)image.clone();
+        this.edgeMap = edgeMap;
         init();
 	}
     
     private void init() {
         
-        Dimension dim = image.getDimension();
+        Dimension dim = edgeMap.getDimension();
         Point3D origin = new Point3D(dim.getMinX(), dim.getMinY(), dim.getMinZ());
         gvf = new DoubleGridVectorField(origin, new int[]{dim.getSizeX(), dim.getSizeY(), 1}, new int[]{1, 1, 1});
         GridVectorFieldTransformer trans = new GridVectorFieldTransformer(gvf, 
@@ -59,10 +56,7 @@ public class GradientVectorFlow extends ObservableAlgorithm
         trans.transform();  
   
         
-        GradientFilter filter = new GradientFilter(
-                                new EdgeDetectionFilter(
-                                new ConvolutionFilter(image, Kernel.BLUR),
-                                     Kernel.SOBEL_HORIZONTAL, Kernel.SOBEL_VERTICAL));
+        GradientFilter filter = new GradientFilter(edgeMap);
         filter.filter();
         gradient = filter.getGradientVectorField();
         
@@ -111,7 +105,7 @@ public class GradientVectorFlow extends ObservableAlgorithm
     }
     
     public void start() {
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 1000; i++) {
             System.out.println("Iteration: " + (i+1));
             iteration();    
         }  
