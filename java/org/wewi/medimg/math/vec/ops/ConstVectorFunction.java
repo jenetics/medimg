@@ -6,7 +6,8 @@ package org.wewi.medimg.math.vec.ops;
 
 
 /**
- * This <code>VectorFunction</code>
+ * This <code>VectorFunction</code> sets all vectors of a vector field
+ * to a constant value <code>constVector</code>.
  * 
  * @author Franz Wilhelmstötter
  * @version 0.1
@@ -24,6 +25,9 @@ public class ConstVectorFunction implements VectorFunction {
 	}
 
 	/**
+     * Setting each vector to the value <code>constVector</code>
+     * given in the constructor.
+     * 
 	 * @see org.wewi.medimg.math.VectorFunction#transform(double[])
 	 */
 	public void transform(double[] vector) {

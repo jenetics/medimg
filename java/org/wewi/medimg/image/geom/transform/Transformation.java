@@ -1,4 +1,4 @@
-/*
+/**
  * Transform.java
  *
  * Created on 21. März 2002, 13:27

@@ -133,6 +133,27 @@ public abstract class AbstractGridVectorField implements GridVectorField {
         temp[2] = vector[2] + origin.getZ() + gridZ*stride[2];
         data.set(gridX, gridY, gridZ, temp);
     }
+    
+    /**
+     * This method rounds the value <code>startPoint</code> to the nearest
+     * valid grid position (gridX, gridY, gridZ) and puts the vector
+     * <code>endPoint - (gridX, gridY, gridZ)</code> into the vector field. <p/>
+     * 
+     * <pre>
+     *   setGridEndPoint((int)Math.round((startPoint[0] - origin.getX())/(double)stride[0]),
+     *                   (int)Math.round((startPoint[1] - origin.getY())/(double)stride[1]),
+     *                   (int)Math.round((startPoint[2] - origin.getZ())/(double)stride[2]), endPoint);
+     * </pre>
+     * 
+     * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
+     */
+    public void setVector(double[] startPoint, double[] endPoint) {
+        setGridEndPoint((int)Math.round((startPoint[0] - origin.getX())/(double)stride[0]),
+                        (int)Math.round((startPoint[1] - origin.getY())/(double)stride[1]),
+                        (int)Math.round((startPoint[2] - origin.getZ())/(double)stride[2]), endPoint);
+        
+        
+    }
 
 	public VectorIterator getVectorIterator() {
 		return new RegularVectorIterator();

@@ -10,6 +10,8 @@ package org.wewi.medimg.math.vec;
  * @version 0.1
  */
 public interface VectorField {
+    
+    public void setVector(double[] startPoint, double[] endPoint);
 
     public VectorIterator getVectorIterator();
 }
