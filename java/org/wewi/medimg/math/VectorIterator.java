@@ -2,7 +2,7 @@
  * Created on 19.11.2002 16:30:50
  *
  */
-package org.wewi.medimg.image.geom;
+package org.wewi.medimg.math;
 
 /**
  * @author Franz Wilhelmstötter
@@ -13,7 +13,5 @@ public interface VectorIterator {
     public boolean hasNext();
     
     public void next(double[] start, double[] end);
-    
-    public void next(float[] start, float[] end);
     
 }
