@@ -248,7 +248,7 @@ public class RegistrationWizard extends Wizard implements Observer,
                 regCount++;
                 
 				////////////////////////////////////////////////////////////////
-				ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
+				/*ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
 									 "/home/fwilhelm/Workspace/Projekte/Papers/WSCG2004/document/v04/test/grid.tif");
 				try {
 					reader.read();
@@ -263,7 +263,7 @@ public class RegistrationWizard extends Wizard implements Observer,
                 work = transformation.transform(imageData1);
                 
 				grid = transformation.transform(grid);
-                
+                */
                 WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
                 BBAffinityMetric myMetric = new BBAffinityMetric();
                 myImportance.setErrorLimit(0.2);

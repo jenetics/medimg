@@ -14,6 +14,7 @@ import org.wewi.medimg.image.ROI;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
 import org.wewi.medimg.image.geom.transform.IrregularDisplacementField;
+
 import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
 /**
@@ -94,9 +95,9 @@ public class MonteCarloWarping extends LocalRegistrator {
         IrregularDisplacementField field = new IrregularDisplacementField();
         
         ROI[] rois;
-        int m = 3;
+        int m = 0;
         //m = strideX/offsetX;
-        int l = 4;
+        int l = 0;
         //l = strideY/offsetY;
         int split = 0;
         
