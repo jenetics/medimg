@@ -2,13 +2,16 @@
  * Created on 21.11.2002 13:42:49
  *
  */
-package org.wewi.medimg.math.vec;
+package org.wewi.medimg.math.vec.ops;
+
+import org.wewi.medimg.math.vec.VectorField;
+import org.wewi.medimg.math.vec.VectorIterator;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class VectorFieldAnalyzer {
+public final class VectorFieldAnalyzer {
     private VectorField field;
     private VectorOperator analyzer;
 
