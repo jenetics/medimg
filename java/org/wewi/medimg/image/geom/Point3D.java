@@ -13,17 +13,12 @@ package org.wewi.medimg.image.geom;
  */
 public final class Point3D implements Point {
     private final int[] point;
-    private final LightInteger[] integer;
 
     public Point3D(int cx, int cy, int cz) {
         point = new int[3];
         point[0] = cx;
         point[1] = cy;
         point[2] = cz;
-        integer = new LightInteger[3];
-        integer[0] = new LightInteger(cx);
-        integer[1] = new LightInteger(cy);
-        integer[2] = new LightInteger(cz);
     }
     
     public Point3D(Point3D p) {
@@ -34,11 +29,7 @@ public final class Point3D implements Point {
         return point[i];
     }
     
-    public Comparable getComparableOrdinate(int dim) {
-        return integer[dim];
-    }
-    
-    public int getNDim() {
+    public int getDimensions() {
         return 3;
     }  
     
