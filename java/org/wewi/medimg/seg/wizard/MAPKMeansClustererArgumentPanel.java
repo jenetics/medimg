@@ -36,6 +36,11 @@ public final class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPane
         format.setMinimumIntegerDigits(1);
     }
     
+    private void init() {
+        nfeatures = nfeaturesSlider.getValue();
+        beta = betaSlider.getValue();    
+    }
+    
     public ObservableSegmenter getSegmenter() {
         MAPKMeansClusterer clusterer = new MAPKMeansClusterer(nfeatures);
         clusterer.setBETA((double)beta/BETA_DIVISOR);
