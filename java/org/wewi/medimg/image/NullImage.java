@@ -14,6 +14,25 @@ import org.wewi.medimg.util.Nullable;
  * @version 0.2
  */
 public final class NullImage implements Image, Nullable {
+    
+    private class NullImageVoxelIterator implements VoxelIterator {
+        public boolean hasNext() {
+            return false;
+        }
+        
+        public int next() {
+            return 0;
+        }
+        
+        public int size() {
+            return 0;
+        }
+        public Object clone() {
+            return new NullImageVoxelIterator();
+        }
+    }
+    
+    
     private NullImageHeader header;
 
     public NullImage() {
@@ -84,6 +103,13 @@ public final class NullImage implements Image, Nullable {
     public int[] getCoordinates(int pos) {
         int[] retVal = {};
         return retVal;
+    }
+    
+    public void getCoordinates(int pos, int[] coordinates) {
+    }
+    
+    public VoxelIterator getVoxelIterator() {
+        return new NullImageVoxelIterator();
     }
     
 }
