@@ -20,7 +20,7 @@
  */
 package org.wewi.medimg.image;
 
-import java.util.RandomAccess;
+import java.util.RandomAccess; 
 
 /**
  * Abstract implementation of the <code>Image</code>-interface.
