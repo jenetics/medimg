@@ -6,6 +6,8 @@
 
 package org.wewi.medimg.image.geom;
 
+import org.wewi.medimg.image.Image;
+
 /**
  *
  * @author  Franz Wilehlmstötter
@@ -17,12 +19,47 @@ public final class IdentityTransform implements Transform {
     public IdentityTransform() {
     }
     
-    public void inverseTransform(float[] source, float[] dest) {
-        System.arraycopy(source, 0, dest, 0, dest.length);
+    public void transform(int[] source, int[] target) {
+        System.arraycopy(source, 0, target, 0, target.length);
     }
     
-    public void transform(float[] source, float[] dest) {
-        System.arraycopy(source, 0, dest, 0, dest.length);
+    public void transform(double[] source, double[] target) {
+        System.arraycopy(source, 0, target, 0, target.length);
     }
     
+    public void transform(float[] source, float[] target) {
+        System.arraycopy(source, 0, target, 0, target.length);
+    }
+    
+    public void transformBackward(int[] source, int[] target) {
+        System.arraycopy(source, 0, target, 0, target.length);    
+    }
+    
+    public void transformBackward(double[] source, double[] target) {
+        System.arraycopy(source, 0, target, 0, target.length);
+    }
+    
+    public void transformBackward(float[] source, float[] target) {
+        System.arraycopy(source, 0, target, 0, target.length);
+    }
+    
+    public Image transform(Image source) {
+        return null;
+    }    
+    
+    public Transform scale(double alpha) {
+        return null;
+    }       
+    
+    public Transform concatenate(Transform trans) {
+        return null;
+    }
+    
+    public Transform invert() {
+        return null;
+    }
+    
+    public String toString() {
+        return "Identity-Transformation";
+    }
 }
