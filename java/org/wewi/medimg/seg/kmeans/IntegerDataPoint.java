@@ -6,6 +6,8 @@
 
 package org.wewi.medimg.seg.kmeans;
 
+import java.util.Arrays;
+
 /**
  * Diese Klasse ist eine konkrete Erweiterung eines Datenpunktes.
  * Aufgenommen werden Integerwerte bzw. Integervektoren.
@@ -18,24 +20,18 @@ package org.wewi.medimg.seg.kmeans;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class IntegerDataPoint implements DataPoint {
+public final class IntegerDataPoint implements DataPoint {  
     private int[] point;
-    private Integer[] comparablePoint;
     
     public IntegerDataPoint(int p) {
         point = new int[1];
-        comparablePoint = new Integer[1];
-        
         point[0] = p;
-        comparablePoint[0] = new Integer(p);
     }
     
     public IntegerDataPoint(int[] p) {
         point = new int[p.length];
-        comparablePoint = new Integer[p.length];
         for (int i = 0; i < point.length; i++) {
             point[i] = p[i];
-            comparablePoint[i] = new Integer(p[i]);
         }
     }
     
@@ -46,8 +42,11 @@ public final class IntegerDataPoint implements DataPoint {
     public double distance(DataPoint p) {
         IntegerDataPoint ip = (IntegerDataPoint)p;
         double dist = 0;
+        double diff = 0;
         for (int i = 0; i < point.length; i++) {
-            dist += Math.pow(ip.point[i]-point[i], 2);
+            diff = (ip.point[i]-point[i]);
+            diff *= diff;
+            dist += diff;
         }
         dist = Math.sqrt(dist);
         return dist;
@@ -56,7 +55,7 @@ public final class IntegerDataPoint implements DataPoint {
     public double norm() {
         double n = 0;
         for (int i = 0; i < point.length; i++) {
-            n += Math.pow(point[i], 2);
+            n += point[i]*point[i];
         }
         n = Math.sqrt(n);
         return n;
@@ -93,18 +92,30 @@ public final class IntegerDataPoint implements DataPoint {
     public DataPoint div(double d) {
         int[] temp = new int[point.length];
         for (int i = 0; i < point.length; i++) {
-            temp[i] = (int)((double)point[i]/d);
+            temp[i] = (int)Math.rint(((double)point[i]/d));
         }
         
         return new IntegerDataPoint(temp);
+    } 
+    
+    public Number getOrdinateNumber(int dim) {
+        return new Integer(point[dim]);
     }
     
-    public int getNDim() {
+    public int getDim() {
         return point.length;
+    }    
+    
+    public DataPoint getNullInstance() {
+        IntegerDataPoint point = new IntegerDataPoint(this);
+        Arrays.fill(point.point, 0);
+        return point;
     }
     
-    public Comparable getComparableOrdinate(int dimension) {
-        return comparablePoint[dimension];
+    public DataPoint getOneInstance() {
+        IntegerDataPoint point = new IntegerDataPoint(this);
+        Arrays.fill(point.point, 1);
+        return point;        
     }    
     
     public boolean equals(Object p) {
@@ -140,15 +151,19 @@ public final class IntegerDataPoint implements DataPoint {
      
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("(");
+        buffer.append("{");
         for (int i = 0; i < point.length; i++) {
             buffer.append(point[i]);
             if (i < point.length-1) {
                 buffer.append(",");
             }
         }
-        buffer.append(")");
+        buffer.append("}");
         return buffer.toString();
+    }
+    
+    public String toMathematicaString() {
+        return toString();
     }
     
 }

@@ -6,6 +6,9 @@
 
 package org.wewi.medimg.seg.kmeans;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -22,22 +25,20 @@ import javax.swing.JPanel;
  * @version 0.1
  */
 public class ClusterPanel extends JPanel {
-    private DataPoint[][] data;
+    private Collection[] cluster;
     private DataPoint[] center;
-    private int nclusters;
     private Stroke[] strokes;
     private Stroke centerStroke;
     private Color[] colors;
 
     /** Creates new ClusterPanel */
-    public ClusterPanel(DataPoint[][] data, DataPoint[] center) {
-        this.data = data;
+    public ClusterPanel(Collection[] cluster, DataPoint[] center) {
+        this.cluster = cluster;
         this.center = center;
-        nclusters = data.length;
         setBackground(Color.white);
         
-        strokes = new Stroke[nclusters];
-        for (int i = 0; i < nclusters; i++) {
+        strokes = new Stroke[center.length];
+        for (int i = 0; i < center.length; i++) {
             strokes[i] = new BasicStroke(3);
         }
         centerStroke = new BasicStroke(5);
@@ -57,11 +58,11 @@ public class ClusterPanel extends JPanel {
         Graphics2D g = (Graphics2D)graphics;
         int[] point;
         
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < cluster.length; i++) {
             g.setStroke(strokes[i]);
             g.setColor(colors[i]);
-            for (int j = 0; j < data[i].length; j++) {
-                IntegerDataPoint p = (IntegerDataPoint)data[i][j];
+            for (Iterator it = cluster[i].iterator(); it.hasNext();) {
+                IntegerDataPoint p = (IntegerDataPoint)it.next();
                 point = p.getValue();
                 g.drawOval(point[0], point[1], 3, 3);
             }
