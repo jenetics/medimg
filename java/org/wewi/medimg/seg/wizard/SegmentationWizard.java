@@ -77,18 +77,20 @@ public class SegmentationWizard extends Wizard implements Observer,
     private TwinImageViewer imageViewer;
     
     /** Creates new form SegmentationWizard */
-    private SegmentationWizard() {
+    public SegmentationWizard() {
         super(MENU_NAME, false, true, false, false);
         initComponents();
         init();
     }
     
+    /*
     public static SegmentationWizard getInstance() {
         if (singleton == null) {
             singleton = new SegmentationWizard();
         }
         return singleton;
     }
+    */
     
     public String getMenuName() {
         return MENU_NAME;
