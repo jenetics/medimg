@@ -93,13 +93,7 @@ public abstract class ObservableSegmenter implements Segmenter {
             l = (IterationListener)it.next();
             l.iterationFinished(event);
         }
-    } 
-    
-    public abstract void interruptSegmenter() throws UnsupportedOperationException;
-    
-    public abstract void resumeSegmenter() throws UnsupportedOperationException;
-    
-    public abstract void cancelSegmenter() throws UnsupportedOperationException;   
+    }  
     
     public abstract String getSegmenterName();  
     
