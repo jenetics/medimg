@@ -7,6 +7,7 @@
 package org.wewi.medimg.viewer;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -73,24 +74,34 @@ final class OpenCommand implements Command, ImageIOProgressListener {
     }
     
 	/**
+     * Das Laden des Bilder erfolgt asynchron. Diese
+     * Methode wird aufgerufen, wenn sich der Lesefortschritt
+     * des Bildes geändert hat. Im Besonderen wird das Ende
+     * des Einlesen des Bildes angezeigt.
+     * 
 	 * @see org.wewi.medimg.image.io.ImageIOProgressListener#progressChanged(ProgressEvent)
 	 */
 	public void progressChanged(ImageIOProgressEvent event) {
-        if (event.isFinished()) {
-            progressFrame.setVisible(false);
-            viewer.removeViewerDesktopFrame(progressFrame);
-            
-            Image image = ((ImageReader)event.getSource()).getImage();
-            ImageViewer iv = new ImageViewer(selectedFile, image);
-            
-            int sizeX = image.getMaxX() - image.getMinX() + 1;
-            int sizeY = image.getMaxY() - image.getMinY() + 1;
-            iv.setPreferredSize(new Dimension(sizeX, sizeY));            
-            iv.pack();
-            viewer.addViewerDesktopFrame(iv);                    
-        } else {
+        if (!event.isFinished()) {
             progressFrame.setProgress(event.getProgress());
+            return;    
         }
+        
+        progressFrame.setVisible(false);
+        viewer.removeViewerDesktopFrame(progressFrame);
+        
+        Image image = ((ImageReader)event.getSource()).getImage();
+        int iw = image.getMaxX() - image.getMinX() + 1;
+        int ih = image.getMaxY() - image.getMinY() + 1;
+        int vw = viewer.getWidth()/2;
+        int vh = viewer.getHeight()/2;
+        Point pos = new Point(0, 0);
+        Dimension size = new Dimension(Math.min(iw, vw), Math.min(iw, vw));
+        
+        ImageViewer iv = new ImageViewer(selectedFile, image);           
+        iv.pack();
+        viewer.addViewerDesktopFrame(iv, pos, size);  
+              
 	}
 
 }
