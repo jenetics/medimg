@@ -22,20 +22,36 @@ public class DFT3D {
     public DFT3D(DFT1D ft) {
         this.ft = ft;    
     }
+    
+    public void transform(Complex[][][] data) {
+        transform(data, new TransformFunction() {
+                            public void transform(Complex[] data) {
+                                ft.transform(data);    
+                            }    
+                        });        
+    }
+    
+    public void transformInverse(Complex[][][] data) {
+        transform(data, new TransformFunction() {
+                            public void transform(Complex[] data) {
+                                ft.transformInverse(data);    
+                            }    
+                        });        
+    }
 
     /**
      * In Place Transformation.
      * 
      * @param a Komplexes Eingabearray.
      */
-    public void transform(Complex[][][] a) {
-        int sizeX = a.length;
-        int sizeY = a[0].length;
-        int sizeZ = a[0][0].length;
+    private void transform(Complex[][][] data, TransformFunction f) {
+        int sizeX = data.length;
+        int sizeY = data[0].length;
+        int sizeZ = data[0][0].length;
         
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                ft.transform(a[i][j]);    
+                f.transform(data[i][j]);    
             }    
         }
         
@@ -43,13 +59,13 @@ public class DFT3D {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeZ; j++) {
                 for (int k = 0; k < sizeY; k++) {
-                    z[k] = a[i][k][j];    
+                    z[k] = data[i][k][j];    
                 }
                 
-                ft.transform(z);
+                f.transform(z);
             
                 for (int k = 0; k < sizeY; k++) {
-                    a[i][k][j] = z[k];    
+                    data[i][k][j] = z[k];    
                 }            
             }    
         }
@@ -58,13 +74,13 @@ public class DFT3D {
         for (int i = 0; i < sizeY; i++) {
             for (int j = 0; j < sizeZ; j++) {
                 for (int k = 0; k < sizeX; k++) {
-                    z[k] = a[k][i][j];    
+                    z[k] = data[k][i][j];    
                 }
                 
-                ft.transform(z);
+                f.transform(z);
             
                 for (int k = 0; k < sizeX; k++) {
-                    a[k][i][j] = z[k];    
+                    data[k][i][j] = z[k];    
                 }            
             }    
         }        
