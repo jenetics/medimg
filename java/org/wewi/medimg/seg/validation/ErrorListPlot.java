@@ -27,6 +27,7 @@ import com.jrefinery.data.IntervalCategoryDataset;
  * @version 0.1
  */
 public class ErrorListPlot extends javax.swing.JFrame {
+    private String title;
     private int[] k;
     private double[] mean;
     private double[] var;
@@ -41,7 +42,8 @@ public class ErrorListPlot extends javax.swing.JFrame {
     }
     
     /** Creates new form ErrorListPlot */
-    public ErrorListPlot(int[] k, double[] mean, double[] var) {
+    public ErrorListPlot(String title, int[] k, double[] mean, double[] var) {
+        this.title = title;
         this.k = k;
         this.mean = mean;
         this.var = var;
@@ -64,9 +66,8 @@ public class ErrorListPlot extends javax.swing.JFrame {
         m[0] = mean;
         DefaultCategoryDataset lineData = new DefaultCategoryDataset(m);            
         
-        String title = "Anzahl der Merkmale Diagramm";
         String xTitle = "Anzahl der Merkmale k";
-        String yTitle = "Relative Fehlerhäufigkeit";
+        String yTitle = "Iterationen";
         HorizontalCategoryAxis xAxis = new HorizontalCategoryAxis(xTitle);
         VerticalNumberAxis yAxis = new VerticalNumberAxis(yTitle);        
         OverlaidVerticalCategoryPlot plot = new 
@@ -76,6 +77,7 @@ public class ErrorListPlot extends javax.swing.JFrame {
         
         VerticalIntervalBarRenderer renderer = new VerticalIntervalBarRenderer();
         VerticalCategoryPlot bar = new VerticalCategoryPlot(intervalData, null, null, renderer); 
+        bar.setSeriesPaint(new Color[]{Color.LIGHT_GRAY});
         plot.add(bar);  
        
         LineAndShapeRenderer lineRenderer = null;
@@ -89,7 +91,11 @@ public class ErrorListPlot extends javax.swing.JFrame {
         freeChart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, false);       
         freeChart.setBackgroundPaint(Color.WHITE);
         chartPanel = new ChartPanel(freeChart);
-        getContentPane().add(chartPanel);                 
+        getContentPane().add(chartPanel); 
+        
+        for (int i = 0; i < k.length; i++) {
+            System.out.println("k: " + k[i] + ", mean: " + mean[i] + ", var: " + var[i]);        
+        }                
                           
     }
     
@@ -130,7 +136,7 @@ public class ErrorListPlot extends javax.swing.JFrame {
             var[i] = Math.random();    
         }
         
-        new ErrorListPlot(k, mean, var).show();
+        new ErrorListPlot("Titel", k, mean, var).show();
     }
     
     

@@ -17,17 +17,17 @@ public class PseudoColorConversion implements ColorConversion {
     public PseudoColorConversion() {
     }
     
-    private int redConversion(int grey) {
+    protected int redConversion(int grey) {
         double g = ((double)grey/128d)*Math.PI;
         return (int)Math.abs(Math.rint(255d*Math.sin(g + 2.0)));
     }
     
-    private int greenConversion(int grey) {
+    protected int greenConversion(int grey) {
         double g = ((double)grey/128d)*Math.PI;
         return (int)Math.abs(Math.rint(255d*Math.sin(g + 0.0)));
     }
     
-    public int blueConversion(int grey) {
+    protected int blueConversion(int grey) {
         double g = ((double)grey/128d)*Math.PI;
         return (int)Math.abs(Math.rint(255d*Math.sin(g + 1.0)));
     }

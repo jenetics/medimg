@@ -93,29 +93,32 @@ public class ScriptGenerator {
     
     
     public static void main(String[] args) {
-        Validator validator = new MAPValidator();
-        ParameterIterator it1 = new IntegerParameterIterator("k", 2, 20, 1);
-        ParameterIterator it2 = new DoubleParameterIterator("BETA", 0.1, 2, 0.1); 
+        //Validator validator = new MAPValidator();
+        ParameterIterator it1 = new IntegerParameterIterator("k", 6, 6, 1);
+        ParameterIterator it2 = new DoubleParameterIterator("BETA", 0.0, 2, 0.2); 
         ParameterIterator it3 = new ImageParameterIterator("source.image", 
                                                             ImageDataFactory.getInstance(),
                                                             TIFFReader.class,
-                                                            new String[]{"file1", "file2", "file3"});
+                                                            new String[]{"X:/medimages/nhead/t1.n3.rf20", 
+                                                                         "X:/medimages/nhead/t1.n5.rf20", 
+                                                                         "X:/medimages/nhead/t1.n7.rf20",
+                                                                         "X:/medimages/nhead/t1.n3.rf20"});
         ParameterIterator it4 = new ImageParameterIterator("model.image",
                                                             ImageDataFactory.getInstance(),
                                                             TIFFReader.class,
-                                                            new String[]{"file"});
+                                                            new String[]{"X:/medimages/nhead/seg.model"});
                                                             
-        ScriptGenerator gen = new ScriptGenerator(validator);
-        gen.addParameterIterator(it1);  
-        gen.addParameterIterator(it2);
-        gen.addParameterIterator(it3);
-        gen.addParameterIterator(it4);
+        //ScriptGenerator gen = new ScriptGenerator(validator);
+        //gen.addParameterIterator(it1);  
+        //gen.addParameterIterator(it2);
+        //gen.addParameterIterator(it3);
+        //gen.addParameterIterator(it4);
         
-        try {
-			gen.writeScript("X:/out.xml");
-		} catch (IOException e) {
-            System.err.println("ScriptGenerator.main: " + e);
-		}     
+        //try {
+		//	gen.writeScript("X:/out.xml");
+		//} catch (IOException e) {
+        //    System.err.println("ScriptGenerator.main: " + e);
+		//}     
         
     }
 

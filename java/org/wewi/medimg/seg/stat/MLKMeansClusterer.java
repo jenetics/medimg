@@ -31,7 +31,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
         
     public static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
     
-    protected int MAX_ITERATION = 150;
+    protected int MAX_ITERATION = 200;
     protected double ERROR_LIMIT = 0.1;
     
     protected final int k;

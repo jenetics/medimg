@@ -14,9 +14,10 @@ import java.io.Serializable;
  * @version 0.2
  */
 public interface ColorConversion extends Cloneable, Serializable {
-    public void convert(int grey, int[] rgb);
+    
+    public void convert(int imageValue, int[] pixelComponents);
 
-    public int convert(int[] rgb);
+    public int convert(int[] pixelComponents);
     
     public Object clone();
 }

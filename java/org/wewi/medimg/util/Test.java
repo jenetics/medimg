@@ -13,9 +13,11 @@ import java.net.URL;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.RGBColorConversion;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
@@ -154,13 +156,48 @@ public class Test {
            
     }
     
+    public static void test8() {
+        Image img = new ImageData(381, 318, 381);
+        ColorConversion cc = new RGBColorConversion();//img.getColorConversion();
+        Timer timer = new Timer("SetTest");
+        
+        timer.start();
+        int[] pixel = new int[3];
+        for (int i = 0, n = img.getNVoxels(); i < n; i++) {
+            cc.convert(img.getColor(i), pixel);    
+        }
+        timer.stop();
+        timer.print();         
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test7();
+        test8();
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

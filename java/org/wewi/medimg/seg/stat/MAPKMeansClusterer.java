@@ -41,6 +41,8 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
         this(k);
         this.BETA = BETA;
         BETA_SQRT2 = Math.sqrt(BETA); 
+        
+        logger.info("k: " + k + ", beta: " + BETA);
     }
     
     protected void setImageProperties(Image segimg) {
@@ -73,6 +75,7 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
     
 	/**
 	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#getCliquesPotential(int, int)
+     * 
 	 */
     protected double getCliquesPotential(int pos, int f) {
         double Vc = 0.0;

@@ -18,6 +18,7 @@ import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.NullImage;
+import org.wewi.medimg.image.RGBColorConversion;
 
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
@@ -86,7 +87,8 @@ abstract class JAIImageReader extends ImageReader {
      */
     private void readWithoutHeader() throws ImageIOException {
         RenderedImage rimage = null;
-        Raster raster = null;         
+        Raster raster = null;   
+              
         
         int minSlice = 0;
         int maxSlice = slices.length-1;
@@ -200,7 +202,8 @@ abstract class JAIImageReader extends ImageReader {
         }
         
         image = imageFactory.createImage(raster.getWidth(), raster.getHeight(), 1);
-        colorConversion = image.getColorConversion();  
+image.setColorConversion(new RGBColorConversion());
+        colorConversion = image.getColorConversion();         
         
         int[] pixel = new int[3];
         for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
