@@ -56,9 +56,8 @@ public class RawImageDataReader extends ImageReader {
             }
             in.close();
         } catch (IOException ioe) {
-            System.err.println("RawImageReader.read: ");
             image = new NullImage();
-            throw new ImageIOException("Can't read Image: " + ioe);
+            throw new ImageIOException("Can't read Image: ", ioe);
         }
     }
     

@@ -53,13 +53,15 @@ public final class ImageWriterThread extends Thread {
 
     public void run() {
         ImageWriter imageWriter = imageWriterFactory.createImageWriter(image, targetFileName);
+        WriterThreadEvent event = new WriterThreadEvent(this);
         try {
             imageWriter.write();
-        } catch (IOException ioe) {
-            System.out.println("ImageWriterThread.run: " + ioe);
+        } catch (ImageIOException ioe) {
+            System.err.println("ImageWriterThread.run: " + ioe);
+            event.setException(ioe);
         }
         
-        notifyListeners(new WriterThreadEvent(this));      
+        notifyListeners(event);      
     }
     
 }

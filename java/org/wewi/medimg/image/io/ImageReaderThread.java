@@ -47,13 +47,14 @@ public final class ImageReaderThread extends Thread {
     }
 
     public void run() {
+        ReaderThreadEvent event = new ReaderThreadEvent(this);
         try {
             imageReader.read();
-        } catch (IOException ioe) {
-            System.out.println("ImageReaderThread.run: " + ioe);
+        } catch (ImageIOException ioe) {
+            event.setException(new ImageIOException(ioe));
         }
         
-        notifyListeners(new ReaderThreadEvent(this));
+        notifyListeners(event);
     }
     
 }

@@ -94,9 +94,8 @@ abstract class JAIImageReader extends ImageReader {
             rimage = readRenderedImage(slices[minSlice].toString());
             raster = rimage.getData();
         } catch (IOException e) {
-            System.err.println("JAIImageReader.read: " + e);
             image = new NullImage();
-            throw new ImageIOException("Can't read JAI Image; Slice 0");
+            throw new ImageIOException("Can't read JAI Image; Slice 0", e);
         }
         
         int sizeX = raster.getWidth();
@@ -119,9 +118,8 @@ abstract class JAIImageReader extends ImageReader {
                 rimage = readRenderedImage(slices[k].toString());
                 raster = rimage.getData();
             } catch (Exception e) {
-                System.err.println("JAIImageReader.read: " + e);
                 image = new NullImage();
-                throw new ImageIOException("Can't read JAI Image; Slice " + k);
+                throw new ImageIOException("Can't read JAI Image; Slice " + k, e);
             }
             for (int i = 0; i < sizeX; i++) {
                 for (int j = 0; j < sizeY; j++) {

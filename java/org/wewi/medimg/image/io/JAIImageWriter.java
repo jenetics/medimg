@@ -95,8 +95,7 @@ abstract class JAIImageWriter extends ImageWriter {
             }  
         } catch (IOException ioe) {
             dispose();
-            System.err.println("Can't write Image: " + ioe);
-            throw new ImageIOException("Can't write Image: " + ioe);
+            throw new ImageIOException("Can't write Image: ", ioe);
         }
         
     }
