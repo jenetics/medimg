@@ -19,6 +19,9 @@ public final class ImageFormatTypes extends Enumeration {
     public static final ImageFormatTypes RAW_IMAGE = new ImageFormatTypes("RAW Images");
     public static final ImageFormatTypes ZIPED_IMAGES = new ImageFormatTypes("(Ziped)");
     
+    public static final ImageFormatTypes[] TYPES = {TIFF_IMAGES, BMP_IMAGES,
+                                                    RAW_IMAGE, ZIPED_IMAGES};
+    
     public final String name;
     
     private static int refCount = 0;  
