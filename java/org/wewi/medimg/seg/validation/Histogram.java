@@ -10,7 +10,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ColorRange;
 
 import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.image.*;
 import java.io.File;
@@ -35,7 +35,7 @@ public class Histogram {
     public Histogram(Image image) {
         this.image = image;
         
-        MinMaxOperator op = new MinMaxOperator();
+        ColorRangeOperator op = new ColorRangeOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
         analyzer.analyze();       
         

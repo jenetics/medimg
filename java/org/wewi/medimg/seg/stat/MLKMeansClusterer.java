@@ -16,7 +16,7 @@ import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.Clusterer;
 import org.wewi.medimg.seg.ObservableSegmenter;
@@ -140,7 +140,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
         
         createSegimgOld(segimg);
         
-        MinMaxOperator op = new MinMaxOperator();
+        ColorRangeOperator op = new ColorRangeOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(mrt, op);
         analyzer.analyze();      
         
@@ -174,7 +174,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
 	 */
     public void segment(Image mrt, Image segimg) {
         //Feststellen des Farbbereiches
-        MinMaxOperator op = new MinMaxOperator();
+        ColorRangeOperator op = new ColorRangeOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(mrt, op);
         analyzer.analyze();
         colorRange = new ColorRange(op.getMinimum(), op.getMaximum());

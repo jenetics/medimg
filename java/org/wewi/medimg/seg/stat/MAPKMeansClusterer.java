@@ -39,7 +39,7 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
         this.BETA = BETA;
         BETA_SQRT2 = Math.sqrt(BETA); 
         
-        logger.info("k: " + k + ", beta: " + BETA);
+        logger.info("k: " + k + ", b: " + BETA);
     }
     
     protected void setImageProperties(Image segimg) {

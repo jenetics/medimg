@@ -6,7 +6,7 @@ package org.wewi.medimg.image.filter;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ops.LinearNormalizeFunction;
-import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.image.ops.UnaryPointTransformer;
 
@@ -45,7 +45,7 @@ public final class LinearNormalizeFilter extends ImageFilter {
 	protected void componentFilter() {
         
         //Feststellen der minimalen und maximalen Farbe
-        MinMaxOperator op = new MinMaxOperator();
+        ColorRangeOperator op = new ColorRangeOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
         analyzer.analyze();
         

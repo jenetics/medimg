@@ -54,7 +54,7 @@ public final class RecursiveFFT1D extends DFT implements DFT1D {
         Complex[] ffta = recursiveTransform(data, dir);
         
         //Skalieren der Daten
-        final double M = 1d/(Math.pow((double)N, (1d - (dir*alpha))/2d));
+        final double M = 1d/(Math.pow((double)N, (1d - (dir*a))/2d));
         for (int i = 0; i < N; i++) {
             data[i] = MathUtil.mult(M, ffta[i]);    
         }        
@@ -80,7 +80,7 @@ public final class RecursiveFFT1D extends DFT implements DFT1D {
         Complex[] y = new Complex[N];
         Complex W = Complex.ONE;
 
-        final Complex Wn = MathUtil.exp(new Complex(0, dir*2*Math.PI*beta/(double)N));
+        final Complex Wn = MathUtil.exp(new Complex(0, dir*2*Math.PI*b/(double)N));
         
         for (int k = 0, n = N/2; k < n; k++) {
             y[k] = y0[k].add(W.mult(y1[k]));

@@ -15,7 +15,8 @@ import org.wewi.medimg.util.Immutable;
  * @version 0.1
  */
 public class Complex implements Immutable, Cloneable {
-    public static final Complex ONE = new Complex(1);
+    public static final Complex NULL = new Complex(0, 0);
+    public static final Complex ONE = new Complex(1, 0);
     public static final Complex I = new Complex(0, 1);
     
     double re;
@@ -65,12 +66,20 @@ public class Complex implements Immutable, Cloneable {
         return new Complex((re*n.re+im*n.im)/den, (im*n.re-re*n.im)/den);
     }
     
-    public double real() {
-        return re;    
+    /**
+     * Returns the im.
+     * @return double
+     */
+    public double getIm() {
+        return im;
     }
-    
-    public double imag() {
-        return im;    
+
+    /**
+     * Returns the re.
+     * @return double
+     */
+    public double getRe() {
+        return re;
     }
     
     public int hashCode() {
@@ -106,7 +115,7 @@ public class Complex implements Immutable, Cloneable {
     public Object clone() {
         return new Complex(this);    
     }
-    
+
 }
 
 

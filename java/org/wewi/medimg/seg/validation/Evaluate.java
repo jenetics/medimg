@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.wewi.medimg.image.ops.MutualInformation;
 import org.wewi.medimg.math.MathUtil;
 
 /**
@@ -94,6 +95,8 @@ public class Evaluate {
                                   });                           
     }
     
+
+    
     public void evalKOverallError() {
         //Zusammenfassen der Protokolle
         Hashtable ktable = new Hashtable();
@@ -101,7 +104,9 @@ public class Evaluate {
             Protocol protocol = new Protocol(files[i]);
             
             Integer k = new Integer(protocol.getK());
-            double error = protocol.getOverallError();
+            MutualInformation mi = new MutualInformation(protocol.getAccu());
+            double error = mi.getMutualInformation();            
+            //double error = protocol.getOverallError();
             
             if (!ktable.containsKey(k)) {
                 ktable.put(k, new Vector());      
@@ -150,6 +155,71 @@ public class Evaluate {
         
         new ErrorListPlot("Gesamtfehlerdiagramm", k, mean, stddev).show();    
     }
+    
+    
+    public void evalBETAMutualInformation() {
+       //Zusammenfassen der Protokolle
+       System.out.println("Files: " + files.length);
+        Hashtable betaTable = new Hashtable();
+        for (int i = 0; i < files.length; i++) {
+            Protocol protocol = new Protocol(files[i]);
+            
+            
+            Double beta = new Double(protocol.getBeta());
+            
+            
+            //System.out.println(protocol.getAccu());
+            MutualInformation mi = new MutualInformation(protocol.getAccu());
+            double error = mi.getMutualInformation();//protocol.getOverallError();
+            //System.out.println(error);
+            
+            if (!betaTable.containsKey(beta)) {
+                betaTable.put(beta, new Vector());      
+            }
+            ((Vector)betaTable.get(beta)).add(new Double(error));
+        } 
+        
+        List betaList = new ArrayList();
+        for (Enumeration keys = betaTable.keys(); keys.hasMoreElements();) {
+            Double b = (Double)keys.nextElement();
+            
+            List list = (List)betaTable.get(b);
+            double meanError = 0;
+            for (Iterator it = list.iterator(); it.hasNext();) {
+                meanError += ((Double)it.next()).doubleValue();            
+            }
+            meanError /= list.size();
+            double variance = 0;
+            for (Iterator it = list.iterator(); it.hasNext();) {
+                variance += MathUtil.sqr(((Double)it.next()).doubleValue() - meanError);    
+            }
+            variance /= (list.size()-1);
+            
+            BetaMeanVar beta = new BetaMeanVar();
+            beta.beta = b.doubleValue();
+            beta.mean = meanError;
+            beta.var = Math.sqrt(variance);
+            
+            betaList.add(beta); 
+             
+        }  
+        
+        BetaMeanVar[] array = new BetaMeanVar[betaList.size()];
+        betaList.toArray(array);
+        Arrays.sort(array, new BetaMeanVarComparator());   
+        
+        double[] b = new double[betaList.size()];
+        double[] mean = new double[betaList.size()];
+        double[] stddev = new double[betaList.size()];
+        
+        for (int i = 0; i < betaList.size(); i++) {
+            b[i] = array[i].beta;
+            mean[i] = array[i].mean;
+            stddev[i] = array[i].var;    
+        } 
+        
+        new ErrorListPlot("Mutual Information", b, mean, stddev).show();         
+    }    
     
     public void evalBETAOverallError() {
        //Zusammenfassen der Protokolle
@@ -318,9 +388,12 @@ public class Evaluate {
     
     
     public static void main(String[] args) {
-        Evaluate eval = new Evaluate(new File("C:/Workspace/fwilhelm/Projekte/Diplom/code/data/validation/map/protocols/t1.n7.rf20"));
-        eval.evalBETAOverallError(); 
+        Evaluate eval = new Evaluate(new File(
+         "C:/Workspace/fwilhelm/Projekte/Diplom/code/data/validation/ml/protocols/t1.n7.rf20"));
+        //eval.evalBETAMutualInformation();
+        //eval.evalBETAOverallError(); 
         //eval.evalNoOfIterations();
+        eval.evalKOverallError();
          
     }
 
