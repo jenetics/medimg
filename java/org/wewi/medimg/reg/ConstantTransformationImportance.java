@@ -9,7 +9,8 @@ import java.util.Arrays;
  * 
  * @version 0.1  
  */
-public class ConstantTransformationImportance implements TransformationImportance {
+public class ConstantTransformationImportance extends AbstractTransformationImportance {
+
     public static final ConstantTransformationImportance INSTANCE = new ConstantTransformationImportance();
 
 	/**
@@ -29,6 +30,7 @@ public class ConstantTransformationImportance implements TransformationImportanc
         Arrays.fill(result, 1d/(double)features.length);
         return result;
 	}
+
     
 }
 
