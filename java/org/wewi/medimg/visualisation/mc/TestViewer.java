@@ -31,7 +31,6 @@ import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.Range;
 import org.wewi.medimg.image.io.RawImageReader;
-import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.util.Timer;
 
 import com.sun.j3d.utils.applet.MainFrame;
