@@ -41,7 +41,7 @@ public class MutualInformation {
             return 0;    
         }
         
-        final double N = accu.getSum();
+        final double N = accu.elementSum();
         
         if (N <= 0) {
             return 0;    
