@@ -38,8 +38,6 @@ import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Geometry;
 import javax.media.j3d.Group;
 import javax.media.j3d.Material;
-import javax.media.j3d.Morph;
-import javax.media.j3d.QuadArray;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
@@ -68,11 +66,10 @@ public class Viewer3D extends ViewerDesktopFrame {
     private SimpleUniverse u = null; 
     
     //private View view = null;
-    private Morph morph;    
+ 
     private PickRotateBehavior behavior1;
     private PickZoomBehavior   behavior2;
     private PickTranslateBehavior behavior3;    
-    private QuadArray geomMorph[] = new QuadArray[3];
 
     //Navigation-Commands
     private Command firstCommand;

@@ -1,4 +1,6 @@
 /* 
+ * SobelFilter.java, created on 21. Februar 2002, 17:11
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,11 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * SobelFilter.java
- *
- * Created on 21. Februar 2002, 17:11
- */
 
 package org.wewi.medimg.image.filter;
 
@@ -28,20 +25,14 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
-//import org.wewi.medimg.math.MathUtil;
 
 
 /**
- *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
 public final class SobelFilter extends ImageFilter {
     
-    private class Mask {
-        //public short get
-    }
-
     /** Creates new SobelFilter */
     public SobelFilter(Image image) {
         super(image);

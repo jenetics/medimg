@@ -39,15 +39,11 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
      * @see org.wewi.medimg.reg.MultipleFeatureRegistrator#getTransformation(VoxelIterator, VoxelIterator)
      */
     protected InterpolateableTransformation getTransformation(VoxelIterator source, VoxelIterator target) {
-        double[] temp = new double[3];
         Algebra alg = new Algebra();
         
         //Berechnung der Schwerpunkte und Hauptachsen und Mediane
         double[] cog1 = new double[3];
         double[] cog2 = new double[3];
-        
-        double[] median1 = new double[3];
-        double[] median22 = new double[3];  
               
         centreOfGravity((VoxelIterator)source.clone(), cog1);
         centreOfGravity((VoxelIterator)target.clone(), cog2);   

@@ -16,7 +16,6 @@ import org.wewi.medimg.image.ops.DirectComparisonOperator;
 public class DirectComparisonAffinityMetric implements AffinityMetric {
     
     private Transformation trans;
-    private static double EPSILON = 0.01;
 
     public static final DirectComparisonAffinityMetric INSTANCE = new DirectComparisonAffinityMetric();
     

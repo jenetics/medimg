@@ -110,7 +110,7 @@ public class MLKMeansEstimator implements Estimator {
         int size = mrt.getNVoxels();
         int minDistanceFeature;
         int color;
-        double cp, distance, minDistance;
+        double distance, minDistance;
 
         
         Arrays.fill(colorSum, 0);

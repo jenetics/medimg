@@ -85,12 +85,6 @@ public final class StringOutputStream extends OutputStream {
         count = 0;
     }
 
-    private synchronized byte[] toByteArray() { 
-        byte newbuf[] = new byte[count];
-        System.arraycopy(buf, 0, newbuf, 0, count);
-        return newbuf;
-    }
-
     public int size() {
         return count;
     }

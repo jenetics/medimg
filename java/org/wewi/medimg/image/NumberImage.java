@@ -1,4 +1,6 @@
 /* 
+ * NumberImage.java, created on 28.04.2003
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,11 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * NumberImage.java
- * Created on 28.04.2003
- *
- */
 package org.wewi.medimg.image;
 
 import org.wewi.medimg.math.MutableDouble;
@@ -154,37 +151,37 @@ public class NumberImage extends RowMajorImageGeometry {
 
     public void resetImage(byte n) {
         for (int i = 0, m = getNVoxels(); i < m; i++) {
-            setColor(i, m);    
+            setColor(i, n);    
         }
     }
     
     public void resetImage(short n) {
         for (int i = 0, m = getNVoxels(); i < m; i++) {
-            setColor(i, m);    
+            setColor(i, n);    
         }
     }
     
     public void resetImage(int n) {
         for (int i = 0, m = getNVoxels(); i < m; i++) {
-            setColor(i, m);    
+            setColor(i, n);    
         }
     }
     
     public void resetImage(long n) {
         for (int i = 0, m = getNVoxels(); i < m; i++) {
-            setColor(i, m);    
+            setColor(i, n);    
         }
     }
     
     public void resetImage(float n) {
         for (int i = 0, m = getNVoxels(); i < m; i++) {
-            setColor(i, m);    
+            setColor(i, n);    
         }
     }
     
     public void resetImage(double n) {
         for (int i = 0, m = getNVoxels(); i < m; i++) {
-            setColor(i, m);    
+            setColor(i, n);    
         }
     }
 

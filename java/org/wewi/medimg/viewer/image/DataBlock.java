@@ -330,7 +330,6 @@ final class DataBlock implements ImageObserver {
         
         //Convert endpoints to 16.16 fixed-point format
         double fixScale = 65536.0;
-        double invFixScale = 1.0 / fixScale;
         double deltaScale = fixScale / (xmax - 1 - xmin);
         
         int dx = (int)((end.getX() - start.getX()) * deltaScale);

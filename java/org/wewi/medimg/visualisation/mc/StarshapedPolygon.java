@@ -34,7 +34,6 @@ import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.linalg.Algebra;
 import cern.colt.matrix.linalg.EigenvalueDecomposition;
 
 
@@ -125,7 +124,6 @@ class StarshapedPolygon {
         float qx = p.x + l * n.x;
         float qy = p.y + l * n.y;
         float qz = p.z + l * n.z;
-        Vertex q = new Vertex(qx, qy, qz);
         //System.out.println(" q " + q);
         // reduzieren die Koordinate, bei der der Normalvektor die größte Abmessung hat
         float p1x, p1y;
@@ -217,7 +215,6 @@ class StarshapedPolygon {
         for (int i = 0; i < n; i++) {
             data1.viewRow(i).assign(cog, cern.jet.math.Functions.minus);
         }
-        DoubleMatrix2D data2;
         DoubleMatrix2D covarianceMatrix = factory2D.make(p, p);
         data1.zMult(data1, covarianceMatrix, 1.0, 0.0, true, false);
         EigenvalueDecomposition eigen = new EigenvalueDecomposition(covarianceMatrix);
@@ -238,7 +235,6 @@ class StarshapedPolygon {
     private DoubleMatrix1D centreOfGravity(DoubleMatrix2D data) {
         int cols = data.columns();
         int rows = data.rows();
-         Algebra alg = new Algebra();
         DoubleFactory1D factory1D;
         factory1D = DoubleFactory1D.dense;
         DoubleMatrix1D cog = factory1D.make(cols);
@@ -259,7 +255,6 @@ class StarshapedPolygon {
         HashSet verticesUsed = new HashSet();
         Hashtable h1 = new Hashtable();
         Hashtable h2 = new Hashtable();
-        Vertex vertex;
         Vertex key;
         Vertex value;
         for (int i = 0; i < edges.length; i++) {
@@ -281,7 +276,6 @@ class StarshapedPolygon {
         verticesUsed.add(key);
         //System.out.println(" Hallo ht1" + h1);
         //System.out.println(" Hallo ht2" + h2);
-        boolean closed = false;
         do {
             value = (Vertex)h1.get(key);
             //System.out.println(" Hallo 1" + value);

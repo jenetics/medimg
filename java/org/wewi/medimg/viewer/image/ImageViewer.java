@@ -25,7 +25,6 @@ package org.wewi.medimg.viewer.image;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -296,11 +295,6 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
         if (pageIndex!=0) {
             return NO_SUCH_PAGE;
         }
-        Graphics2D g2 = (Graphics2D)g;
-        double x = pf.getImageableX();
-        double y = pf.getImageableY();
-        double w = pf.getImageableWidth();
-        double h = pf.getImageableHeight();
         imagePanel.printAll(g);
         
         return PAGE_EXISTS;

@@ -33,7 +33,6 @@ import org.wewi.medimg.util.Singleton;
  * @version 0.1
  */
 public final class RawImageReaderFactory implements ImageReaderFactory, Singleton {
-    private static RawImageReaderFactory singleton = null;
     private Range range;
 
     public RawImageReaderFactory() {

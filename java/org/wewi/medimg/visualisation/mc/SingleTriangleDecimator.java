@@ -47,7 +47,6 @@ public class SingleTriangleDecimator extends TriangleDecimator {
         
         int ntri = 0;
         Vertex v;
-        Triangle t;
         Vector verticesToRemove = new Vector();
         for (Iterator it = graph.getVertices(); it.hasNext();) {
             v = (Vertex)it.next();

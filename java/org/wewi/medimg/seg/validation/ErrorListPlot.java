@@ -45,7 +45,6 @@ import com.jrefinery.data.IntervalCategoryDataset;
 public class ErrorListPlot extends javax.swing.JFrame {
     private String title;
     private double[] k;
-    private double[] beta;
     private double[] mean;
     private double[] var;
     

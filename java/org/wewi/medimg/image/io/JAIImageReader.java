@@ -83,17 +83,11 @@ abstract class JAIImageReader extends ImageReader {
         RenderedImage img = null;
         if (System.getProperty("JAI_IMAGE_READER_USE_CODECS") == null) {       
             img =  JAI.create("fileload", filename);
-            int comp = img.getColorModel().getColorSpace().getNumComponents();
-            if (comp == 3) {
-                //colorConversion = new RGBColorConversion();
-            }
         } else {
             SeekableStream stream = new FileSeekableStream(filename);
             String[] names = ImageCodec.getDecoderNames(stream);
             ImageDecoder dec = ImageCodec.createImageDecoder(names[0], stream, null);
             img = dec.decodeAsRenderedImage();
-            
-            int colorType = img.getColorModel().getColorSpace().getNumComponents();
         }
         return img;
     } 
@@ -176,7 +170,7 @@ abstract class JAIImageReader extends ImageReader {
         System.out.println(dim);
         //Einlesen der Bilder
         int count = 0;
-        int stride = range.getStride();
+
         for (int k = dim.getMinZ(); k <= dim.getMaxZ(); k++) {
             try {
                 rimage = readRenderedImage(slices[count].toString());
@@ -191,7 +185,6 @@ abstract class JAIImageReader extends ImageReader {
             for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
                 for (int j = image.getMinY(), m = image.getMaxY(); j <= m; j++) {
                     raster.getPixel(i, j, pixel);
-                    //System.out.println("x: " + i + ", y: " + j + ", z: " + k);
                     image.setColor(i, j, k, colorConversion.convert(pixel));
                 }
             } 

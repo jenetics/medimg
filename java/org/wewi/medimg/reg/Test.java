@@ -6,18 +6,13 @@
 
 package org.wewi.medimg.reg;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.io.File;
 import java.io.FileWriter;
-
-import javax.swing.JFrame;
 
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.IntImageFactory;
-import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.geom.transform.Transformation;
 import org.wewi.medimg.image.io.TIFFReader;
@@ -33,11 +28,7 @@ import org.wewi.medimg.math.vec.VectorIterator;
 import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
 import org.wewi.medimg.reg.pca.RigidPCARegistration;
 import org.wewi.medimg.util.Timer;
-import org.wewi.medimg.viewer.ImageViewerSynchronizer;
-import org.wewi.medimg.viewer.VectorFieldPanel;
-import org.wewi.medimg.viewer.Viewer;
-import org.wewi.medimg.viewer.image.ImagePanel;
-import org.wewi.medimg.viewer.image.ImageViewer;
+
 
 /**
  *

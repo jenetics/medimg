@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.event.InternalFrameEvent;
 
-import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.viewer.Command;
 import org.wewi.medimg.viewer.ImageContainer;
@@ -45,8 +44,6 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     private JPanel rootPanel;
     private ImagePanel imagePanel1;
     private ImagePanel imagePanel2;
-    private ColorConversion conversion1 = null;
-    private ColorConversion conversion2 = null;
     private int slice = 0;
     
     private String frameTitle;

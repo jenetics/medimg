@@ -139,7 +139,6 @@ public class Graph {
             return false;
         }
 
-        Vector trianglesToRemove = new Vector();
         Triangle t;
         //Wird ein Knoten entfernt, so müssen auch alle Dreiecke
         //entfernt werden, zu denen dieser Knoten gehört.        

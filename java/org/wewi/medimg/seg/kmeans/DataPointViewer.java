@@ -100,7 +100,6 @@ public class DataPointViewer extends JPanel implements MathematicaStringable {
     
     public void paint(Graphics graphics) {
         Graphics2D g = (Graphics2D)graphics;
-        int[] point;
         
         DataPoint center;
         DataPoint[] data;
@@ -127,8 +126,7 @@ public class DataPointViewer extends JPanel implements MathematicaStringable {
     public void getCovarianceMatrix(int pos) {
         DoubleFactory2D factory2D;
         factory2D = DoubleFactory2D.dense;
-        DoubleFactory1D factory1D;
-        factory1D = DoubleFactory1D.dense;  
+
         
         DataPoint[] points = cluster.getData(pos);
         DoubleMatrix2D data1 = factory2D.make(points.length, 2);  
@@ -143,7 +141,6 @@ public class DataPointViewer extends JPanel implements MathematicaStringable {
         for (int i = 0; i < n; i++) {
             data1.viewRow(i).assign(cog, cern.jet.math.Functions.minus);
         }
-        DoubleMatrix2D data2;
         DoubleMatrix2D covarianceMatrix = factory2D.make(p, p);
         data1.zMult(data1, covarianceMatrix, 1.0, 0.0, true, false);
         covarianceMatrix.assign(cern.jet.math.Functions.mult(1.0 / (points.length-1)));

@@ -1,4 +1,6 @@
 /* 
+ * NullImageHeader.java, created on 22. Februar 2002, 09:27
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,12 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * NullImageHeader.java
- *
- * Created on 22. Februar 2002, 09:27
- */
-
 package org.wewi.medimg.image;
 
 import java.io.IOException;
@@ -30,13 +26,10 @@ import java.util.Properties;
 import org.wewi.medimg.util.Nullable;
 
 /**
- *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
 public class NullImageHeader implements ImageHeader, Nullable {
-    private static NullImageHeader singleton = null;
-    
     
     public NullImageHeader() {
     }
