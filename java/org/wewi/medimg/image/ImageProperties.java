@@ -7,6 +7,7 @@
 package org.wewi.medimg.image;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import org.jdom.Verifier;
 import org.wewi.medimg.util.ListMap;
@@ -70,5 +71,25 @@ public class ImageProperties {
         return props.entryList().iterator();
     }
     
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        
+        Map.Entry entry;
+        String key, value;
+        for (Iterator it = props.iterator(); it.hasNext();) {
+            entry = (Map.Entry)it.next();
+            key = (String)entry.getKey();
+            value = (String)entry.getValue();
+            
+            buffer.append(key).append(":").append(value).append("\n");
+        }
+        
+        return buffer.toString();
+    }
+    
 
 }
+
+
+
+
