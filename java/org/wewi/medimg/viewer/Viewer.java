@@ -34,7 +34,7 @@ public class Viewer extends JFrame implements Singleton,
                                               InternalFrameListener {
     
     private static Viewer singleton = null;
-    private Properties viewerStates;
+    private Properties viewerStates; 
     private Dimension desktopDim;
     
     //Angemeldete Wizard
