@@ -59,7 +59,6 @@ public class GVFOuterEnergy extends OuterEnergyFunction {
      * @see org.wewi.medimg.seg.ac.OuterEnergyFunction#energy(Point[])
      */
     public double energy(Point[] ac) {
-        double[] p = new double[3];
         double e = 0;
         
         for (int i = 0; i < ac.length; i++) {

@@ -16,7 +16,6 @@ import org.wewi.medimg.image.ops.NormalizedMutualInformationOperator;
 public class NormalizedMIAffinityMetric implements AffinityMetric {
     
     private Transformation trans;
-    private static double EPSILON = 0.01;
 
     public static final NormalizedMIAffinityMetric INSTANCE = new NormalizedMIAffinityMetric();
     

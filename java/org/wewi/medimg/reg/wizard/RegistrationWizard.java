@@ -17,19 +17,16 @@ import javax.swing.JFileChooser;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.IntImageFactory;
-import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
-import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.image.io.WriterThreadEvent;
 import org.wewi.medimg.image.io.WriterThreadListener;
 import org.wewi.medimg.reg.BBAffinityMetric;
 import org.wewi.medimg.reg.MonteCarloWarping;
-import org.wewi.medimg.reg.Registrator;
 import org.wewi.medimg.reg.WeightPointTransformationImportance;
 import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
 import org.wewi.medimg.reg.pca.RigidPCARegistration;
@@ -50,14 +47,11 @@ public class RegistrationWizard extends Wizard implements Observer,
 															  RegistratorListener {
 
 	private static final String MENU_NAME = "Registration-Wizard";
-	private static RegistrationWizard singleton = null;
-
 	private ImageReader imageReader1;
 	private ImageReader imageReader2;
 	private RegistratorEnumeration registrationEnumeration = RegistratorEnumeration.PCA_METHOD_RIGID;
 	private int regCount = 0;
 	private ImageTransformation transformation;
-	private Registrator registrator;
 	private ObservableRegistrator obReg = null;
 	private Image imageData1;
 	private Image imageData2;
@@ -253,8 +247,8 @@ public class RegistrationWizard extends Wizard implements Observer,
                 //resultData = transformation.transform(work, fac);
                 resultData = transformation.transform(work);
                 ImageViewer viewer3 = new ImageViewer("Ergebnisbild", resultData);
-                int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
-                int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
+                //int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
+                //int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
                 //viewer3.setPreferredSize(new Dimension(sizeX, sizeY));    
                 viewer3.setPreferredSize(new Dimension(300, 300));    
                 regStartButton.setText("Start");        
@@ -279,8 +273,8 @@ public class RegistrationWizard extends Wizard implements Observer,
             //resultData = transformation.transform(work, fac);
             resultData = transformation.transform(imageData1);
             ImageViewer viewer3 = new ImageViewer("Ergebnisbild", resultData);
-            int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
-            int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
+            //int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
+            //int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
             //viewer3.setPreferredSize(new Dimension(sizeX, sizeY));    
             viewer3.setPreferredSize(new Dimension(300, 300));    
             regStartButton.setText("Start");        

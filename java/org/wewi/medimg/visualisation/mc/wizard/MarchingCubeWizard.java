@@ -43,9 +43,6 @@ public class MarchingCubeWizard extends Wizard {
     private static final String MENU_NAME = "Marching Cube";
     
     private ImageReader imageReader = null;
-    private int greyValueFrom = 0;
-    private int greyValueTo = 0;
-    private int gridSize = 1;
     
     /** Creates new form SegmentationWizard */
     public MarchingCubeWizard() {

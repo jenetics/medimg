@@ -1,4 +1,6 @@
 /* 
+ * AbstractImageHeader.java, created on 22. Februar 2002, 10:42
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,11 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * AbstractImageHeader.java
- *
- * Created on 22. Februar 2002, 10:42
- */
 
 package org.wewi.medimg.image;
 
@@ -45,7 +42,6 @@ import org.wewi.medimg.util.StringOutputStream;
 
 
 /**
- *
  * @author  Franz Wilhelmsötter
  * @version 0.1
  */
@@ -191,29 +187,6 @@ class AbstractImageHeader implements ImageHeader {
               
         return element;
     }
-    
-    /**
-     * Method for converting a XML-Element to a ColorRange-Object
-     * 
-     * @param element
-     * @return ColorRange
-     */
-    private ColorRange toColorRange(Element element) {
-        if (element == null) {
-            return new ColorRange(0,0);
-        }
-        
-        int min, max;
-        try {
-            min = Integer.parseInt(element.getChildText("MinColor"));
-            max = Integer.parseInt(element.getChildText("MaxColor"));
-        } catch (NumberFormatException e) {
-            min = 0; max = 0;
-        }
-         
-        return new ColorRange(min, max);
-    }
-    
     
     private Element toXML(ImageProperties properties) {
         Element element = new Element("ImageProperties");

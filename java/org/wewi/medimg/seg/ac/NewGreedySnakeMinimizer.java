@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.wewi.medimg.alg.AlgorithmIterator;
 import org.wewi.medimg.image.Dimension;
-import org.wewi.medimg.image.geom.Neighborhood;
-import org.wewi.medimg.image.geom.Neighborhood2D8;
 import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.math.MathUtil;
 
@@ -109,11 +107,9 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
         pointDistance /= (double)points.length;
         
         Point lastPoint, currentPoint, nextPoint;
-        Neighborhood nhood = new Neighborhood2D8(dim);        
         Point[] neighbors = new Point[9];
         double[] inner = new double[9];
         double[] outer = new double[9];
-        int best = 1;
         int counter = 0;
         double energy = 0;
         for (int i = 2, n = points.length+2; i < n; i++) {

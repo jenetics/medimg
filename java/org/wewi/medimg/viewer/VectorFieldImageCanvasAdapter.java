@@ -56,8 +56,7 @@ public class VectorFieldImageCanvasAdapter implements ImageCanvas {
         Graphics2D graph = (Graphics2D)g;
         graph.setColor(Color.BLUE);        
         
-        ImagePanel.PointConverter converter = panel.getPointConverter();
-        
+      
         for (VectorIterator it = field.getVectorIterator(); it.hasNext();) {
             it.next(start, end);
             

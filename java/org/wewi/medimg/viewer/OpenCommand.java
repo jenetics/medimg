@@ -109,9 +109,7 @@ public final class OpenCommand implements Command, ImageIOProgressListener {
         
         Image image = ((ImageReader)event.getSource()).getImage();
         int iw = image.getMaxX() - image.getMinX() + 1;
-        int ih = image.getMaxY() - image.getMinY() + 1;
         int vw = viewer.getWidth()/2;
-        int vh = viewer.getHeight()/2;
         Point pos = new Point(0, 0);
         Dimension size = new Dimension(Math.min(iw, vw), Math.min(iw, vw));
         

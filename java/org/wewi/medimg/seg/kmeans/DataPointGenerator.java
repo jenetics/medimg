@@ -37,7 +37,6 @@ import org.wewi.medimg.math.geom.IntegerDataPoint;
 public class DataPointGenerator {
     private double[] mean;
     private double[][] var;
-    private int k;
     
     private Vector[] data;
     private Random rand;

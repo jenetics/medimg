@@ -23,7 +23,6 @@
 package org.wewi.medimg.visualisation.mc;
 
 import java.util.Iterator;
-import java.util.Vector;
 
 /**
  *
@@ -45,15 +44,12 @@ public class CoplanarTriangleDecimator extends TriangleDecimator {
         super.decimate(graph);
    
         Vertex v;
-        Triangle t;
         StarshapedPolygon p;
         double similarity = 0.0;
         double[] eigenValues = new double[3];
         int one = 0;
         int two = 0;
         int three = 0;
-        Vector verticesToRemove = new Vector();
-        Vector trianglesToAdd = new Vector(); 
         
         Vertex[] vertices = new Vertex[graph.getNoOfVertices()];
         int count = 0;

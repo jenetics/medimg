@@ -31,7 +31,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 
 import org.wewi.medimg.image.Image;
 
@@ -269,12 +268,6 @@ final class SliceViewerPanelImpl extends JPanel {
     
     private int oldMouseX, oldMouseY;
     
-    
-    //Needed components
-    private JToolBar toolBar;  
-    private SliceViewerToolPanel toolPanel;
-    private JPanel graphicPanel;
-
     /**
      * Constructor for SliceViewerPanelImpl.
      */

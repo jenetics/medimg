@@ -31,8 +31,6 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
     
     private Transformation transformation;
 
-    private double[] weights;
-
     /**
      * Constructor for MultipleFeatureRegistrator.
      */

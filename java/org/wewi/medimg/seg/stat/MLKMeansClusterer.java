@@ -57,7 +57,6 @@ public class MLKMeansClusterer extends ObservableSegmenter
     protected double[] meanOld;
     
     protected int iterationCount = 0;
-    private boolean interrupted = false;
     private boolean cancelled = false;
     
 

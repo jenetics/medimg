@@ -1,4 +1,6 @@
 /* 
+ * Created on 14.11.2002 08:15:59
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 14.11.2002 08:15:59
- *
- */
 package org.wewi.medimg.image.filter;
 
 
@@ -27,8 +25,6 @@ package org.wewi.medimg.image.filter;
  * @version 0.1
  */
 public final class GaussianKernel extends Kernel {
-    private double stddev;
-
     public GaussianKernel(int dim, double stddev) {
         super();
         this.dim = dim;

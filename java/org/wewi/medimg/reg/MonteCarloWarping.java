@@ -14,8 +14,6 @@ import org.wewi.medimg.image.ROI;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
 import org.wewi.medimg.image.geom.transform.IrregularDisplacementField;
-import org.wewi.medimg.image.geom.transform.Transformation;
-
 import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
 /**
@@ -30,65 +28,13 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
     public int act = 0;
     public int act1 = 0;
     public int act2 = 0;    
-    private AffinityMetric affinityMetric;
-    
-    private ImageGrid sourceGrid;
-    private ImageGrid targetGrid;    
-    
-    //private RegisterParameter param;
-    
     private static final double epsilon = 0.5;
 
-    private static final int DIM = 3;
-    
     /** Creates new MCWarpingRegStrategy */
     public MonteCarloWarping() {
         super();
 
     }    
-    
-    /*public Transformation registrate(Image source, Image target) {
-        Dimension dim1 = source.getDimension();
-        Dimension dim2 = target.getDimension();
-        int offsetX = 13;
-        int offsetY = 13;
-        int strideX = 43;
-        int strideY = 47;
-        int strideZ = 1;
-        ROI roi = ROI.create(dim1).intersect(ROI.create(dim2));
-        // Durch Verändern von ROI kann der Offset erzielt werden
-        
-        Dimension shrinked;
-        ROI offsetted;
-        
-        
-        
-        IrregularDisplacementField field = new IrregularDisplacementField();
-        
-        ROI[] rois;
-        double[] start, end;
-        RandomWalk walk;
-        //int m = strideX/offsetX;
-        int m = 0;
-        //int l = strideY/offsetY;
-        int l = 0;
-        for (int h = 0; h <= 0; h++) {
-        for (int j = 0; j <= m; j++) {
-            for (int k = 0; k <= l; k++) {
-                System.out.println("Hallo" + j + " " + k);
-                shrinked = new Dimension(Math.min(roi.getMinX() + j * offsetX, roi.getMaxX()), roi.getMaxX(),
-                                          Math.min(roi.getMinY() + k * offsetY, roi.getMaxY()), roi.getMaxY(),
-                                          roi.getMinZ(), roi.getMaxZ());
-                offsetted = ROI.create(shrinked);                                      
-                rois = offsetted.split(43 + h * 10, 47 + h * 10, 1);
-                //createVectors(rois, source, target, field, true);
-                createVectors(rois, source, target, field, false);
-            }
-        }
-        }
-      System.out.println("HAllo " + field.size());  
-      return field;
-    }*/
     
     private boolean createVectors(ROI[] rois, Image source, Image target, IrregularDisplacementField field, boolean dive, int color) {
         RandomWalk walk;
@@ -97,39 +43,31 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
         boolean existence = false;
         boolean temp;
         
-                for (int i = 0, n = rois.length; i < n; i++) {
-                    walk = new RandomWalk(rois[i], source, 1500);
-                    walk.walk(color);
-                    if ((start = walk.getReferencePoint()) != null) {
-                        walk = new RandomWalk(rois[i], target, 1500);
-                        walk.walk(color);
-                        if ((end = walk.getReferencePoint()) != null) {
-                            
-                            
-                            //Versuch
-                            
-                            if (dive) {
-                                try {
-                                subrois = ((ROI)rois[i]).split(21, 23, 1);
-                                temp = createVectors(subrois, source, target, field, false, color);
-                                if (!temp) {
-                                    field.addVector(start, end);
-                                }
-                                } catch(Exception e) {
-                                    System.out.println(e);
-                                }
-                            } else {
-                                field.addVector(start, end);
-                            }
-                            existence = true;                            
-                            
-                            
-                            
-                            //end Versuch
+        for (int i = 0, n = rois.length; i < n; i++) {
+            walk = new RandomWalk(rois[i], source, 1500);
+            walk.walk(color);
+            if ((start = walk.getReferencePoint()) != null) {
+                walk = new RandomWalk(rois[i], target, 1500);
+                walk.walk(color);
+                if ((end = walk.getReferencePoint()) != null) {
+                    if (dive) {
+                        try {
+                        subrois = ((ROI)rois[i]).split(21, 23, 1);
+                        temp = createVectors(subrois, source, target, field, false, color);
+                        if (!temp) {
+                            field.addVector(start, end);
                         }
+                        } catch(Exception e) {
+                            System.out.println(e);
+                        }
+                    } else {
+                        field.addVector(start, end);
                     }
+                    existence = true;                            
                 }
-                return existence;    
+            }
+        }
+        return existence;    
     }
     
     
@@ -156,7 +94,6 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
         IrregularDisplacementField field = new IrregularDisplacementField();
         
         ROI[] rois;
-        double[] start, end;
         int m = 0;
         //m = strideX/offsetX;
         int l = 0;
@@ -173,24 +110,6 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
                 offsetted = ROI.create(shrinked);                                      
                 rois = offsetted.split(43 + h * 10, 47 + h * 10, 1);
                 createVectors(rois, sourceI, targetI, field, true, color);
-                //createVectors(rois, sourceI, targetI, field, false, color);
-                /*for (int i = 0, n = rois.length; i < n; i++) {
-                    walk = new RandomWalk(rois[i], source, 1500);
-                    walk.walk();
-                    if ((start = walk.getReferencePoint()) != null) {
-                        walk = new RandomWalk(rois[i], target, 1500);
-                        walk.walk();
-                        if ((end = walk.getReferencePoint()) != null) {
-                            field.addVector(start, end);
-                            //Versuch
-                            
-                            
-                            
-                            
-                            //end Versuch
-                        }
-                    }
-                }*/
             }
         }
         }

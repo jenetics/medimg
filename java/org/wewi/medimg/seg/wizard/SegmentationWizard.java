@@ -100,7 +100,6 @@ public class SegmentationWizard extends Wizard {
                                                 AlgorithmIterationListener {
         private SegmentationWizard wizard;
         private ObservableSegmenter segmenter;
-        private TwinImageViewer twinImageViewer;
         
         private ImageViewerSynchronizer imageSynchronizer;
         
@@ -235,7 +234,6 @@ public class SegmentationWizard extends Wizard {
      * Beginn des eigentlichen SegmentationWizards.
      */
     private static final String MENU_NAME = "Segmentierung";
-    private static SegmentationWizard singleton = null;
     
     private SegmenterArgumentPanel segmenterArgumentPanel;
     private LogHandlerPanel logHandlerPanel;

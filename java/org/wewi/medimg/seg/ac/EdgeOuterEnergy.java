@@ -21,10 +21,6 @@
 package org.wewi.medimg.seg.ac;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.filter.ConvolutionFilter;
-import org.wewi.medimg.image.filter.EdgeFilter;
-import org.wewi.medimg.image.filter.ImageFilter;
-import org.wewi.medimg.image.filter.Kernel;
 import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.math.MathUtil;
 
@@ -43,11 +39,7 @@ public final class EdgeOuterEnergy extends OuterEnergyFunction {
         super(image);
         
         gradient = (Image)image.clone();
-        
-        ImageFilter filter = new EdgeFilter(
-                             new ConvolutionFilter(gradient, Kernel.GAUSSIAN), 
-                                  Kernel.SOBEL_HORIZONTAL, Kernel.SOBEL_VERTICAL);
-        filter.filter();        
+              
     }
 
     /**

@@ -1,4 +1,6 @@
 /* 
+ * Created on 20.11.2002 17:54:53
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 20.11.2002 17:54:53
- *
- */
 package org.wewi.medimg.image.filter;
 
 import org.wewi.medimg.image.Dimension;
@@ -82,7 +80,6 @@ public class GradientFilter extends ImageFilter {
         KernelMaskSum maskSumX = new KernelMaskSum(tempImage, dim.getMinZ(), kernelX);
         KernelMaskSum maskSumY = new KernelMaskSum(tempImage, dim.getMinZ(), kernelY);
         
-        double[] point = new double[3];
         double[] vector = new double[3];
         vector[2] = 0;
         double maxLength = 0;

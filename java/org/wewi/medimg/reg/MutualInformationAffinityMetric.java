@@ -16,7 +16,6 @@ import org.wewi.medimg.image.ops.MutualInformationOperator;
 public class MutualInformationAffinityMetric implements AffinityMetric {
     
     private Transformation trans;
-    private static double EPSILON = 0.01;
 
     public static final MutualInformationAffinityMetric INSTANCE = new MutualInformationAffinityMetric();
     
