@@ -13,7 +13,7 @@ import java.util.Iterator;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class TriangleFactory {
+final class TriangleFactory {
     private final static int EDGE_TABLE[] = 
            {0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
             0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
@@ -370,9 +370,10 @@ public class TriangleFactory {
     }
     
     private Point interpolation(Point p1, Point p2) {
-        float x = p1.getX() + ((p2.getX()-p1.getX())/2f);
-        float y = p1.getY() + ((p2.getY()-p1.getY())/2f);
-        float z = p1.getZ() + ((p2.getZ()-p1.getZ())/2f);
+        float x = p1.x + (p2.x-p1.x)/2f;
+        float y = p1.y + (p2.y-p1.y)/2f;
+        float z = p1.z + (p2.z-p1.z)/2f;
         return new Point(x, y, z);
     }
+        
 }

@@ -33,6 +33,8 @@ public abstract class ImageSegmentationStrategy implements SegmentationStrategy 
     protected Image image;
     
     protected ImageSegmentationStrategy() {
+        listeners = new Vector();
+        logger = Logger.getLogger(getClass().getPackage().getName());        
     }
     
     public ImageSegmentationStrategy(Image image) {

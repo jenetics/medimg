@@ -8,6 +8,8 @@ package org.wewi.medimg.seg.statistic;
 
 import org.wewi.medimg.QualityMeasure;
 
+import org.wewi.medimg.math.GaussianDistribution;
+
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
 
@@ -16,6 +18,8 @@ import org.wewi.medimg.seg.ModelBasedSegmentation;
 
 import cern.jet.random.engine.RandomEngine;
 
+import java.util.Arrays;
+
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -23,10 +27,11 @@ import cern.jet.random.engine.RandomEngine;
  */
 public class MCCVSegmentation extends ImageSegmentationStrategy {
     //Maximal number of features
-    private int K_MAX = 5;
+    private int K_MAX = 10;
     //Number of cross-validation runs
-    private int M = 10;
+    private int M = 30;
     
+    private int bestK;
     
     public MCCVSegmentation(Image image) {
         super(image);
@@ -36,25 +41,58 @@ public class MCCVSegmentation extends ImageSegmentationStrategy {
      * Starting the segmentation-procedure.
      */
     public void segmentate() {
-        VoxelIterator trainImage;
-        VoxelIterator testImage;
+        VoxelIterator trainImageVoxelIterator;
+        VoxelIterator testImageVoxelIterator;
+        KMeansSegmentation kms;
+        ModelBasedSegmentation mbkms;
         
+        double[] averageLikelihood = new double[K_MAX+1];
+        Arrays.fill(averageLikelihood, 0);
         for (int m = 0; m < M; m++) {
             //Generate train/test partitions
-            trainImage = new RandomPartitionVoxelIterator(image, 0.3, 1000*(m+1));
-            testImage = new RandomPartitionVoxelIterator(image, 0.5, 1001*(m+2));
-            for (int k = 1; k <= K_MAX; k++) {
+            trainImageVoxelIterator = new RandomPartitionVoxelIterator(image, 0.5, 1000*(m+1));
+            testImageVoxelIterator = new RandomPartitionVoxelIterator(image, 0.5, 1001*(m+2));
+            double[] likelihood = new double[K_MAX+1];
+            for (int k = 3; k <= K_MAX; k++) {
                 //Initialize the segmentation algorithm
+                kms = new KMeansSegmentation(trainImageVoxelIterator, k);
                 //run the segmentation algorithm with the training partition
-                
+                kms.segmentate();
                 //apply the found model to the test partition and
-                //calculate the log-likelihood (Equation 3 -- seee paper)
+                //calculate the log-likelihood (Equation 3 -- see paper)
+                GaussianDistribution[] distribution = new GaussianDistribution[k];
+                double[] mean = kms.getCenter();
+                double[] variance = kms.getVariance();
+                double[] pi = kms.getPi();
+                for (int i = 0; i < k; i++) {
+System.out.println("fff: " +variance[i]);
+                    distribution[i] = new GaussianDistribution(mean[i], variance[i]);
+                }
+                MixtureModelDistribution mmd = new MixtureModelDistribution(distribution, pi);
+                LogLikelihoodFunction llf = new LogLikelihoodFunction(testImageVoxelIterator, mmd);
+                likelihood[k] = llf.eval();
+                System.out.println("asdf: " + likelihood[k]);
+                averageLikelihood[k] += likelihood[k];
+                
+                System.out.println("M: " + m + ", K: " + k);
             }
         }
         
         //Average the cross-validated estimates for each k over all m.
         //Take the k with the highest estimates
+        double maxVal = Double.MIN_VALUE;
+        int maxK = 0;
+        for (int i = 3; i <= K_MAX; i++) {
+            System.out.println("k: " + i + "   likelihood: " + averageLikelihood[i]);
+            if (averageLikelihood[i] > maxVal) {
+                maxVal = averageLikelihood[i];
+                maxK = i;
+            }
+        }
         
+        bestK = maxK;
+        
+        System.out.println("Bestes K: " + bestK);
     }    
     
     public Image getSegmentedImage() {

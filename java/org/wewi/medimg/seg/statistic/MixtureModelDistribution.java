@@ -25,9 +25,14 @@ public class MixtureModelDistribution implements DistributionFunction {
         System.arraycopy(pi, 0, weights, 0, length);
     }
     
+    public double[] eval(double[] arg) {
+        return null;
+    }
+    
     public double eval(double x) {
         double result = 0;
         for (int i = 0; i < length; i++) {
+            //System.out.println("MMD: " + x);
             result += weights[i]*distributions[i].eval(x);
         }
         

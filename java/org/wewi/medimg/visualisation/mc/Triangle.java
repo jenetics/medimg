@@ -11,7 +11,7 @@ package org.wewi.medimg.visualisation.mc;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class Triangle {
+final class Triangle {
     private final Point A;
     private final Point B;
     private final Point C;

@@ -39,7 +39,7 @@ public class RandomPartitionVoxelIterator implements VoxelIterator, Cloneable {
         
         counter = 0;
         imageSize = image.getNVoxels();
-        nvoxel = (int)((double)imageSize/fraction);
+        nvoxel = (int)((double)imageSize*fraction);
         
         random = new MersenneTwister(seed);
     }
@@ -50,8 +50,9 @@ public class RandomPartitionVoxelIterator implements VoxelIterator, Cloneable {
     
     public int next() {
         ++counter;
-        int pos = (int)Math.round(random.nextDouble()*imageSize);
+        int pos = (int)Math.round(random.nextFloat()*(imageSize-1));
         return image.getColor(pos);
+        //return image.getColor(counter);
     }
     
     public Object clone() {

@@ -9,6 +9,7 @@ package org.wewi.medimg.seg.statistic;
 import org.wewi.medimg.seg.ModelBasedSegmentation;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.VoxelIterator;
 
 import java.util.Arrays;
 
