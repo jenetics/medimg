@@ -63,7 +63,23 @@ abstract class JAIImageReader extends ImageReader {
             
             return im;
         }
-    }    
+    } 
+    
+    public int getSlices() throws ImageIOException {
+        File[] slices = null;
+        if (source.isFile()) {
+            return 1;
+        } else {
+            slices = source.listFiles(fileFilter);
+            if (slices == null) {
+                return 0;
+            }
+            if (slices.length <= 0) {
+                return 0;
+            } 
+            return slices.length;           
+        }
+    }   
     
     public void read() throws ImageIOException {
         File[] slices = null;

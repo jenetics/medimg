@@ -9,7 +9,6 @@ package org.wewi.medimg.viewer;
 import java.awt.Cursor;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -17,11 +16,9 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.geom.Transformation;
-import org.wewi.medimg.image.io.TIFFReader;
-////////////////////////////////////////////////////////////////////////////////
+
 
 /**
  *
@@ -34,6 +31,8 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     private ImagePanel imagePanel;
     private Vector observers;
     
+    private String frameTitle;
+    
     private ColorConversion cc = null;
     
     private Command prevCommand;
@@ -45,7 +44,10 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     
     public ImageViewer(String title, Image image) {
         super(title, true, true, true, true);
-        this.image = image;//new TransformableImage(image);
+        this.image = image;
+        
+        frameTitle = title;
+        
         observers = new Vector();   
         slice = image.getMinZ();
         initFrame();
@@ -70,7 +72,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         imagePanel.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
         
         //Anmelden der Listener
-        addListeners();
+        addListeners(this);
         
         //Initialisieren der Navigationsleiste
         prevCommand = new PrevCommand(this);
@@ -80,6 +82,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         prevPrevCommand = new PrevPrevCommand(this, 10);
         nextNextCommand = new NextNextCommand(this, 10);
          
+        setSlice(0);
     }
     
     public synchronized void addImageViewerObserver(ImageViewerObserver o) {
@@ -102,6 +105,8 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     public void setSlice(int s) {
         slice = s;
         imagePanel.setSlice(slice);
+        
+        setTitle("(" + slice + "-" + image.getMaxZ() + ") " + frameTitle);
     }
     
     public int getSlice() {
@@ -192,51 +197,6 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
                 //Nothing
         }
 
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-    public static void main(String[] args) {
-        TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
-                                           new File("C:/Temp/head.in.001"));
-        try {
-            reader.read();
-        } catch (Exception e) {
-            System.out.println("Viewer: " + e);
-        }
-        
-        Image image = reader.getImage();
-        System.out.println(image);
-        ImageViewer iv = new ImageViewer("ImageViewer", image);  
-        //iv.repaint();
-        iv.setSlice(90);
-        iv.show();
-        
-        
     }
     
 }

@@ -6,6 +6,11 @@
 
 package org.wewi.medimg.viewer;
 
+
+import java.io.File;
+
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.Range;
 
 /**
@@ -14,13 +19,17 @@ import org.wewi.medimg.image.io.Range;
  * @version 0.1
  */
 class RangePanel extends javax.swing.JPanel {
+    private ImageFileChooser fileChooser;
+    
     private int min = 0;
     private int max = 1000;
     private int stride = 1;
     
     /** Creates new form RangePanel */
-    public RangePanel() {
+    public RangePanel(ImageFileChooser fileChooser) {
+        this.fileChooser = fileChooser;
         initComponents();
+        strideReadButton.setVisible(false);
     }
     
     public Range getRange() {
@@ -92,16 +101,20 @@ class RangePanel extends javax.swing.JPanel {
         strideLabel = new javax.swing.JLabel();
         strideTextField = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
+        strideReadButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridLayout(4, 1));
 
-        setBorder(new javax.swing.border.TitledBorder("Bildbereich"));
-        rangeFromLabel.setText("Schicht von");
+        setBorder(new javax.swing.border.TitledBorder(null, "Bildbereich", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
+        rangeFromLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        rangeFromLabel.setText("Schicht von:");
         jPanel1.add(rangeFromLabel);
 
         rangeFromTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         rangeFromTextField.setText("0");
-        rangeFromTextField.setPreferredSize(new java.awt.Dimension(40, 20));
+        rangeFromTextField.setDoubleBuffered(true);
+        rangeFromTextField.setDragEnabled(true);
+        rangeFromTextField.setPreferredSize(new java.awt.Dimension(75, 20));
         rangeFromTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 rangeFromTextFieldFocusLost(evt);
@@ -112,12 +125,15 @@ class RangePanel extends javax.swing.JPanel {
 
         add(jPanel1);
 
-        rangeToLabel.setText("Schicht bis");
+        rangeToLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        rangeToLabel.setText("Schicht bis:");
         jPanel2.add(rangeToLabel);
 
         rangeToTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         rangeToTextField.setText("1000");
-        rangeToTextField.setPreferredSize(new java.awt.Dimension(40, 20));
+        rangeToTextField.setDoubleBuffered(true);
+        rangeToTextField.setDragEnabled(true);
+        rangeToTextField.setPreferredSize(new java.awt.Dimension(75, 20));
         rangeToTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 rangeToTextFieldFocusLost(evt);
@@ -128,14 +144,13 @@ class RangePanel extends javax.swing.JPanel {
 
         add(jPanel2);
 
-        strideLabel.setText("Stride");
+        strideLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        strideLabel.setText("Schrittweite:");
         jPanel3.add(strideLabel);
 
         strideTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         strideTextField.setText("1");
-        strideTextField.setToolTipText("null");
         strideTextField.setMinimumSize(new java.awt.Dimension(5, 20));
-        strideTextField.setName("null");
         strideTextField.setPreferredSize(new java.awt.Dimension(70, 20));
         strideTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -147,26 +162,58 @@ class RangePanel extends javax.swing.JPanel {
 
         add(jPanel3);
 
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
+
+        strideReadButton.setFont(new java.awt.Font("Dialog", 0, 12));
+        strideReadButton.setMnemonic('L');
+        strideReadButton.setText("Lesen der Schichten");
+        strideReadButton.setToolTipText("null");
+        strideReadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                strideReadButtonActionPerformed(evt);
+            }
+        });
+
+        jPanel4.add(strideReadButton);
+
         add(jPanel4);
 
     }//GEN-END:initComponents
 
+    private void strideReadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_strideReadButtonActionPerformed
+        try {
+            fileChooser.actionPerformed(null);
+            String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+            ImageReader reader = fileChooser.getImageReaderFactory().
+                                        createImageReader(ImageDataFactory.getInstance(),
+                                                               new File(fileName));
+            int slices = 0;
+            slices = reader.getSlices();
+            min = 0;
+            max = Math.max(slices-1, 0);
+            stride = 1;
+
+            strideTextField.setText("" + stride);
+            rangeFromTextField.setText("" + min);
+            rangeToTextField.setText("" + max);
+        } catch (Exception e) {
+            return;
+        }
+    }//GEN-LAST:event_strideReadButtonActionPerformed
+
     private void strideTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_strideTextFieldFocusLost
-        // Add your handling code here:
         if (!testStride(strideTextField.getText())) {
             strideTextField.setText("" + stride);
         }
     }//GEN-LAST:event_strideTextFieldFocusLost
 
     private void rangeToTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rangeToTextFieldFocusLost
-        // Add your handling code here:
         if (!testMaxSlice(rangeToTextField.getText())) {
             rangeToTextField.setText("" + max);
         }
     }//GEN-LAST:event_rangeToTextFieldFocusLost
 
     private void rangeFromTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rangeFromTextFieldFocusLost
-        // Add your handling code here:
         if (!testMinSlice(rangeFromTextField.getText())) {
             rangeToTextField.setText("" + min);
         }        
@@ -181,6 +228,7 @@ class RangePanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField strideTextField;
     private javax.swing.JLabel rangeFromLabel;
+    private javax.swing.JButton strideReadButton;
     private javax.swing.JLabel strideLabel;
     private javax.swing.JTextField rangeToTextField;
     private javax.swing.JTextField rangeFromTextField;

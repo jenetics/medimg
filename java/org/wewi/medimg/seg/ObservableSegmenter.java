@@ -17,11 +17,13 @@ import java.util.logging.Logger;
  * @author  Franz Wilhelmstötter
  */
 public abstract class ObservableSegmenter implements Segmenter { 
-    private Vector listeners;
+    private Vector segmenterListener;
+    private Vector iterationListener;
     protected Logger logger;
     
     public ObservableSegmenter() {
-        listeners = new Vector();
+        segmenterListener = new Vector();
+        iterationListener = new Vector();
         logger = Logger.getLogger(getClass().getPackage().getName());        
     }
     
@@ -41,16 +43,24 @@ public abstract class ObservableSegmenter implements Segmenter {
         return logger.getLevel();
     }
     
-    public void addSegmenterListener(SegmenterListener o) {
-        listeners.add(o);
+    public synchronized void addSegmenterListener(SegmenterListener o) {
+        segmenterListener.add(o);
     }
     
-    public void removeSegmenterListener(SegmenterListener o) {
-        listeners.remove(o);
+    public synchronized void removeSegmenterListener(SegmenterListener o) {
+        segmenterListener.remove(o);
+    }
+    
+    public synchronized void addIterationListener(IterationListener il) {
+        iterationListener.add(il);   
+    }
+    
+    public synchronized void removeIterationListener(IterationListener il) {
+        iterationListener.remove(il);    
     }
     
     protected void notifySegmenterStarted(SegmenterEvent event) {
-        Vector lv = (Vector)listeners.clone();
+        Vector lv = (Vector)segmenterListener.clone();
         SegmenterListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
             l = (SegmenterListener)it.next();
@@ -59,12 +69,43 @@ public abstract class ObservableSegmenter implements Segmenter {
     }    
     
     protected void notifySegmenterFinished(SegmenterEvent event) {
-        Vector lv = (Vector)listeners.clone();
+        Vector lv = (Vector)segmenterListener.clone();
         SegmenterListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
             l = (SegmenterListener)it.next();
             l.segmenterFinished(event);
         }
+    } 
+    
+    protected void notifyIterationStarted(IterationEvent event) {
+        Vector lv = (Vector)iterationListener.clone();
+        IterationListener l;
+        for (Iterator it = lv.iterator(); it.hasNext();) {
+            l = (IterationListener)it.next();
+            l.iterationStarted(event);
+        }
     }    
     
+    protected void notifyIterationFinished(IterationEvent event) {
+        Vector lv = (Vector)iterationListener.clone();
+        IterationListener l;
+        for (Iterator it = lv.iterator(); it.hasNext();) {
+            l = (IterationListener)it.next();
+            l.iterationFinished(event);
+        }
+    } 
+    
+    public abstract void interrupt() throws UnsupportedOperationException;
+    
+    public abstract void resume() throws UnsupportedOperationException;
+    
+    public abstract void cancel() throws UnsupportedOperationException;   
+    
+    public abstract String getSegmenterName();  
+    
+    public abstract String toString(); 
+    
 }
+
+
+

@@ -36,8 +36,8 @@ public class BrainWebDataConverter {
 	}
     
     public static void readBrain() {
-        final String input = "../../data/nbrain.model.greymatter.dat";
-        final String output = "X:/images/nbrain.model.greymatter.rid";
+        final String input = "../../data/nbrain.t1.n3.rf20.1byte.dat";
+        final String output = "X:/images/nbrain.t1.n3.rf20.1byte.rid";
         
         final int maxX = 181;
         final int maxY = 217;

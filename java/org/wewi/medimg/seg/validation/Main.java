@@ -51,7 +51,7 @@ public class Main {
             mimg = reader.getImage();
             System.out.println("Lesen des Bildes");
             reader = new RawImageReader(ImageDataFactory.getInstance(),
-                                            new File("X:/images/nbrain.rid"));
+                                            new File("X:/images/nbrain.t1.n3.rf20.rid"));
             reader.read();
             oimg = reader.getImage();
             

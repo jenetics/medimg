@@ -6,6 +6,8 @@
 
 package org.wewi.medimg.seg.wizard;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.prefs.Preferences;
 
 import org.wewi.medimg.util.Singleton;
@@ -27,9 +29,9 @@ final class SegmentationWizardPreferences implements Singleton {
         userRoot = Preferences.userRoot();
         try {
             viewerNode = userRoot.node("org.wewi.medimg.viewer.Viewer");
-            swNode = viewerNode.node("segmentationwizard");
+            swNode = viewerNode.node("SegmentationWizard");
         } catch (Exception e) {
-            System.out.println("ViewerPreferences: " + e);
+            System.err.println("SegmentationWizardPreferences: " + e);
         }        
     }
     
@@ -39,5 +41,40 @@ final class SegmentationWizardPreferences implements Singleton {
         }
         return singleton;
     }
+    
+    public Dimension getWizardDimension() {
+        int width = viewerNode.getInt("WIZARD_DIMENSION_WIDTH", 500);
+        int height = viewerNode.getInt("WIZARD_DIMENSION_HEIGHT", 300);
+        
+        return new Dimension(width, height);
+    }
+    
+    public void setWizardDimension(Dimension dim) {
+        swNode.putInt("WIZARD_DIMENSION_WIDTH", (int)dim.getWidth());
+        swNode.putInt("WIZARD_DIMENSION_HEIGHT", (int)dim.getHeight());
+        try {
+            viewerNode.sync();  
+        } catch (Exception e) {
+            System.err.println("SegmentationWizardPreferences.setWizardDimension: " + e);
+        }
+    } 
+    
+    public Point getWizardLocation() {
+        int x = swNode.getInt("WIZARD_LOCATION_X", 0);
+        int y = swNode.getInt("WIZARD_LOCATION_Y", 0);  
+        
+        return new Point(x, y);
+    }
+    
+    public void setWizardLocation(Point p) {
+        swNode.putInt("WIZARD_LOCATION_X", (int)p.getX());
+        swNode.putInt("WIZARD_LOCATION_Y", (int)p.getY());
+        
+        try {
+            viewerNode.sync();  
+        } catch (Exception e) {
+            System.out.println("SegmentationWizardPreferences.setWizardLocation: " + e);
+        }        
+    }       
     
 }

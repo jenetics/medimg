@@ -23,4 +23,6 @@ public interface ImageHeader extends Nullable {
 
     public void write(DataOutputStream out) throws IOException;
     
+    public Dimension readDimension(DataInputStream in) throws IOException;
+    
 }

@@ -1,29 +1,29 @@
-/*
- * MLKMeansClustererArgumentPanel.java
- *
- * Created on 11. August 2002, 21:16
- */
-
-package org.wewi.medimg.seg.wizard;
-
-import org.wewi.medimg.seg.ObservableSegmenter;
-import org.wewi.medimg.seg.stat.MLKMeansClusterer;
-
-/**
- *
- * @author  Franz Wilhelmstötter
- * @version 0.1
- */
-public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
-    private int nfeatures = 4;
+    /*
+     * MLKMeansClustererArgumentPanel.java
+     *
+     * Created on 11. August 2002, 21:16
+     */
+    
+    package org.wewi.medimg.seg.wizard;
+    
+    import org.wewi.medimg.seg.ObservableSegmenter;
+    import org.wewi.medimg.seg.stat.MLKMeansClusterer;
+    
+    /**
+     *
+     * @author  Franz Wilhelmstötter 
+     * @version 0.1
+     */
+public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel { 
+    private int nfeatures = 1;
     
     /** Creates new form MLKMeansClustererArgumentPanel */
-    public MLKMeansClustererArgumentPanel() {
+    public MLKMeansClustererArgumentPanel() { 
         initComponents();
     }
     
     public ObservableSegmenter getSegmenter() {
-        return new MLKMeansClusterer(nfeatures);
+        return new MLKMeansClusterer(nfeatures); 
     }     
     
     /** This method is called from within the constructor to
@@ -33,43 +33,41 @@ public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         propertyLabel = new javax.swing.JLabel();
-        propertieTextField = new javax.swing.JTextField();
+        nfeatureSlide = new javax.swing.JSlider();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new java.awt.GridLayout(1, 0));
 
-        setBorder(new javax.swing.border.TitledBorder("ML-Segmenter"));
-        propertyLabel.setText("Number of Features: ");
-        propertyLabel.setToolTipText("null");
-        add(propertyLabel, new java.awt.GridBagConstraints());
+        setBorder(new javax.swing.border.TitledBorder(null, "ML-Segmentierer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
+        propertyLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        propertyLabel.setText("Anzahl der Merkmale:    1");
+        add(propertyLabel);
 
-        propertieTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        propertieTextField.setText("4");
-        propertieTextField.setToolTipText("null");
-        propertieTextField.setMinimumSize(new java.awt.Dimension(60, 20));
-        propertieTextField.setPreferredSize(new java.awt.Dimension(100, 20));
-        propertieTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                propertieTextFieldFocusLost(evt);
+        nfeatureSlide.setMajorTickSpacing(15);
+        nfeatureSlide.setMaximum(15);
+        nfeatureSlide.setMinimum(1);
+        nfeatureSlide.setMinorTickSpacing(1);
+        nfeatureSlide.setPaintTicks(true);
+        nfeatureSlide.setSnapToTicks(true);
+        nfeatureSlide.setValue(1);
+        nfeatureSlide.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                nfeatureSlideStateChanged(evt);
             }
         });
 
-        add(propertieTextField, new java.awt.GridBagConstraints());
+        add(nfeatureSlide);
 
     }//GEN-END:initComponents
 
-    private void propertieTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_propertieTextFieldFocusLost
-        // Add your handling code here:
-        try {
-            nfeatures = Integer.parseInt(propertieTextField.getText());
-        } catch (NumberFormatException nfe) {
-            propertieTextField.setText("4");
-        }
-    }//GEN-LAST:event_propertieTextFieldFocusLost
-       
-    
+    private void nfeatureSlideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nfeatureSlideStateChanged
+        nfeatures = nfeatureSlide.getValue();
+        propertyLabel.setText("Anzahl der Merkmale:    " + nfeatures);
+    }//GEN-LAST:event_nfeatureSlideStateChanged
+               
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField propertieTextField;
     private javax.swing.JLabel propertyLabel;
+    private javax.swing.JSlider nfeatureSlide;
     // End of variables declaration//GEN-END:variables
-    
+        
 }

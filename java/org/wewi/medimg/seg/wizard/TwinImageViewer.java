@@ -27,6 +27,7 @@ import org.wewi.medimg.viewer.Command;
 import org.wewi.medimg.viewer.ImageContainer;
 import org.wewi.medimg.viewer.NavigationPanel;
 import org.wewi.medimg.viewer.NullCommand;
+import org.wewi.medimg.viewer.SaveCommand;
 import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.ViewerDesktopFrame;
 import org.wewi.medimg.viewer.wizard.WizardEvent;
@@ -48,10 +49,12 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     private ColorConversion conversion2 = null;
     private int slice = 0;
     
+    private String frameTitle;
+    
     private JPopupMenu popUpMenu;
     private JMenuItem saveImageMenuItem;
     
-    //Navigation-Commands
+    //Navigation-Kommandos
     private Command firstCommand;
     private Command lastCommand;
     private Command nextCommand;
@@ -59,12 +62,17 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     private Command nextNextCommand;
     private Command prevPrevCommand;
     
+    //Menü-Kommandos
+    private Command saveCommand;
+    
     
     /** Creates a new instance of TwinImageViewer */
-    public TwinImageViewer(String frameName, Image image1, Image image2) {
-        super(frameName, true, true, true, true);
+    public TwinImageViewer(String frameTitle, Image image1, Image image2) {
+        super(frameTitle, true, true, true, true);
         this.image1 = image1;
         this.image2 = image2;
+        
+        this.frameTitle = frameTitle;
         
         init();
         setSlice(0);
@@ -107,6 +115,7 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         prevCommand = new PrevCommand(this);
         nextNextCommand = new NextNextCommand(this, 10);
         prevPrevCommand = new PrevPrevCommand(this, 10);
+        saveCommand = new SaveCommand(Viewer.getInstance(), image2);
         setCommands();
     }
     
@@ -118,23 +127,47 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     
     private void setCommands() {
         NavigationPanel np = Viewer.getInstance().getNavigationPanel();
+        Viewer v = Viewer.getInstance();
+        
         np.setFirstCommand(firstCommand);
         np.setLastCommand(lastCommand);
         np.setNextCommand(nextCommand);
         np.setPrevCommand(prevCommand);
         np.setNextNextCommand(nextNextCommand);
         np.setPrevPrevCommand(prevPrevCommand);
+        
+        v.setSaveCommand(saveCommand);
     }
     
     private void setNullCommands() {
         NavigationPanel np = Viewer.getInstance().getNavigationPanel();
+        Viewer v = Viewer.getInstance();
+        
         np.setFirstCommand(new NullCommand());
         np.setLastCommand(new NullCommand());
         np.setNextCommand(new NullCommand());
         np.setPrevCommand(new NullCommand());
         np.setNextNextCommand(new NullCommand());
-        np.setPrevPrevCommand(new NullCommand());        
+        np.setPrevPrevCommand(new NullCommand());   
+        
+        v.setSaveCommand(new NullCommand());     
     }
+    
+    public void focusGained(FocusEvent focusEvent) {
+        setCommands();
+    }
+    
+    public void internalFrameActivated(InternalFrameEvent internalFrameEvent) {
+        setCommands();
+    }
+    
+    public void internalFrameClosed(InternalFrameEvent internalFrameEvent) {
+        imagePanel1 = null;
+        imagePanel2 = null;
+        image1 = null;
+        image2 = null;        
+        setNullCommands();
+    }     
     
     public Image getImage1() {
         return image1;
@@ -170,19 +203,16 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         slice = s;
         imagePanel1.setSlice(slice);
         imagePanel2.setSlice(slice);
+        
+        setTitle("(" + slice + "-" + image1.getMaxZ() + ") " + frameTitle);
     }
     
     public int getSlice() {
         return slice;
     }
     
-    public void focusGained(FocusEvent focusEvent) {
-        setCommands();
-    }
-    
-    
-    public void internalFrameActivated(InternalFrameEvent internalFrameEvent) {
-        setCommands();
+    public void redrawImages() {
+        setSlice(getSlice());    
     }
     
     public void keyPressed(KeyEvent event) {
@@ -220,13 +250,5 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         imagePanel1.repaint();
         imagePanel2.repaint();
     }
-    
-    public void internalFrameClosed(InternalFrameEvent internalFrameEvent) {
-        imagePanel1 = null;
-        imagePanel2 = null;
-        image1 = null;
-        image2 = null;
-        setNullCommands();
-    }    
-        
+  
 }

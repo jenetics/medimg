@@ -19,6 +19,7 @@ import java.io.IOException;
 class ImageDataHeader implements ImageHeader {
     private int minX, minY, minZ;
     private int maxX, maxY, maxZ;
+    private Dimension dim;
     private ImageData image;
 
     static final int HEADER_SIZE = 24;
@@ -55,6 +56,10 @@ class ImageDataHeader implements ImageHeader {
         out.writeInt(maxX);
         out.writeInt(maxY);
         out.writeInt(maxZ);
+    }
+    
+    public Dimension readDimension(DataInputStream in) throws IOException {
+        return dim;    
     }
     
 }

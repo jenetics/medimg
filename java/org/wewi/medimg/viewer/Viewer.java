@@ -7,15 +7,14 @@
 package org.wewi.medimg.viewer;
 
 import java.awt.Dimension;
-import java.io.File;
+import java.awt.Point;
+import java.awt.event.ComponentListener;
+import java.awt.event.ComponentEvent;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameListener;
 
-import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.reg.wizard.RegistrationWizard;
 import org.wewi.medimg.seg.wizard.SegmentationWizard;
 import org.wewi.medimg.util.Singleton;
@@ -26,68 +25,186 @@ import org.wewi.medimg.visualisation.mc.wizard.MarchingCubeWizard;
 /**
  *
  * @author  Franz Wilhelmstötter
- * @version 0.1
+ * @version 0.2
+ * 
+ * Die Viewer-Klasse ist die gemeinsame Oberfläche
+ * der Segmentierungs- und Registrierungsalgorithmen.
+ * Der Viewer ist <code>Singleton</code>, und kann von
+ * den Segmentierungs- und Registrierungsklassen über
+ * die <code>getInstance()</code>-Methode jeder Zeit
+ * angesprochen werden, um z.B. die <code>Command</code>-
+ * Objekte der Menüzeile auszutauschen. 
  */
 public class Viewer extends JFrame implements Singleton,
                                               ImageViewerObserver,
                                               InternalFrameListener {
+                                                  
+    private final class ScrollPanelHelper implements ComponentListener {
+        private Viewer viewer;
+        private int minX, minY, maxX, maxY;
+        
+        public ScrollPanelHelper(Viewer viewer) {
+            this.viewer = viewer;          
+        }
+         
+        public void componentHidden(ComponentEvent componentEvent) {
+        }        
+        
+        public void componentMoved(ComponentEvent componentEvent) {
+            calcSize();
+        }
+        
+        public void componentResized(ComponentEvent componentEvent) {
+            calcSize();
+        }
+        
+        public void componentShown(ComponentEvent componentEvent) {
+            calcSize();
+        }
+        
+        private void calcSize() {
+            int tminX = Integer.MAX_VALUE;
+            int tminY = Integer.MAX_VALUE;
+            int tmaxX = Integer.MIN_VALUE;
+            int tmaxY = Integer.MIN_VALUE;
+            
+            JInternalFrame[] frames = viewer.desktopPane.getAllFrames();
+            Point pos = null;
+            Dimension dim = null;
+            for (int i = 0; i < frames.length; i++) {
+                pos = frames[i].getLocation();
+                dim = frames[i].getPreferredSize();
+                tminX = (int)Math.min(tminX, pos.getX());
+                tminY = (int)Math.min(tminY, pos.getY());
+                tmaxX = (int)Math.max(tmaxX, pos.getX() + dim.getWidth());
+                tmaxY = (int)Math.max(tmaxY, pos.getY() + dim.getHeight());
+            }
+            
+            //if (tmaxX > maxX || tmaxY > maxY) {
+                maxX = tmaxX;
+                maxY = tmaxY;
+                minX = tminX;
+                minY = tminY;
+                //viewer.desktopPane.setLocation(minX, minY);
+                viewer.desktopPane.setPreferredSize(new Dimension(maxX, maxY));
+                viewer.desktopPane.updateUI();
+            //}
+        }
+        
+    }
     
     private static Viewer singleton = null;
     private ViewerPreferences viewerPrefs; 
-    private Dimension desktopDim;
+    private ScrollPanelHelper scrollPanelHelper;
     
     //Command Objekte für Menübar
-    private Command openCommand;
-    private Command saveCommand;
-    private Command saveAsCommand;
+    private Command openCommand = new NullCommand();
+    private Command saveCommand = new NullCommand();
+    private Command saveAsCommand = new NullCommand();
     
-    /** Creates new form Viewer */
+    /** 
+     * Privater Konstruktor für Singleton-Pattern
+     */
     private Viewer() {
+        super();
         viewerPrefs = ViewerPreferences.getInstance();
         initComponents();
         init();
     }
     
-    private void init() {
-        toolBar.add(NavigationPanel.getInstance());
-        openCommand = new OpenCommand(this);
-        
-        setSize(viewerPrefs.getViewerDimension());
-        setLocation(viewerPrefs.getViewerLocation());
-    }
-    
-    private void onExit() {
-        viewerPrefs.setViewerDimension(this.getSize());
-        viewerPrefs.setViewerLocation(this.getLocation());
-    }
-    
+    /**
+     * Über diese Methode kann die einzig existierende
+     * Instanz des <code>Viewer</code> geholt werden.
+     * 
+     * @return einzige Viewer-Instanz
+     */
     public static Viewer getInstance() {
         if (singleton == null) {
             singleton = new Viewer();
         }
         return singleton;
+    }    
+    
+    /**
+     * Eigene Initialisierungsmethod, die nach der
+     * automatischen Komponenteninitialisierung
+     * aufgerufen wird.
+     */
+    private void init() {
+        toolBar.add(NavigationPanel.getInstance());
+        openCommand = new OpenCommand(this);
+        scrollPanelHelper = new ScrollPanelHelper(this);
+        
+        setSize(viewerPrefs.getViewerDimension());
+        setLocation(viewerPrefs.getViewerLocation());
     }
     
+    /**
+     * Diese Methode soll beim Beenden des
+     * Viewers aufgerufen werden.
+     */
+    private void onExit() {
+        //Sichern der aktuellen Viewerposition und Größe.
+        viewerPrefs.setViewerDimension(this.getSize());
+        viewerPrefs.setViewerLocation(this.getLocation());
+    }
+    
+    /**
+     * Diese Methde erlaubt es das Öffnen-Kommando
+     * in der Menüzeile zu änndern.
+     * 
+     * @param command Das Öffnen-Kommando
+     */
     public void setOpenCommand(Command command) {
         openCommand = command;
     }
     
+	/**
+	 * Diese Methode liefert das aktuelle Öffnen-Kommando
+     * der Menüzeile wieder.
+     * 
+	 * @return Öffnene-Kommando
+	 */
     public Command getOpenCommand() {
         return openCommand;
     }
     
+    /**
+     * Diese Methde erlaubt es das Speichern-Kommando
+     * in der Menüzeile zu änndern.
+     * 
+     * @param command Das Speichern-Kommando
+     */
     public void setSaveCommand(Command command) {
         saveCommand = command;
     }
     
+    /**
+     * Diese Methode liefert das aktuelle Speichern-Kommando
+     * der Menüzeile wieder.
+     * 
+     * @return Speichern-Kommando
+     */    
     public Command getSaveCommand() {
         return saveCommand;
     }
     
+    /**
+     * Diese Methde erlaubt es das Speichern als-Kommando
+     * in der Menüzeile zu änndern.
+     * 
+     * @param command Das Speichern als-Kommando
+     */    
     public void setSaveAsCommand(Command command) {
         saveAsCommand = command;
     }
     
+    /**
+     * Diese Methode liefert das aktuelle Speichern als-Kommando
+     * der Menüzeile wieder.
+     * 
+     * @return Speichern als-Kommando
+     */    
     public Command getSaveAsCommand() {
         return saveAsCommand;
     }
@@ -100,28 +217,73 @@ public class Viewer extends JFrame implements Singleton,
         statePanel.remove(state);
     }
     
+    /**
+     * Hinzufügen eines zusätzlichen DesktopFrame. Der
+     * Frame wird gleichzeitig zu den FrameListenern 
+     * hinzugefügt.
+     * 
+     * @param frame ViewerDesktopFrame der hinzugefügt wird.
+     */
     public void addViewerDesktopFrame(ViewerDesktopFrame frame) {
         desktopPane.add(frame);
+        frame.addComponentListener(scrollPanelHelper);
         frame.addInternalFrameListener(this);
         frame.show();
     }
     
+    /**
+     * Entfernen eines ViewerDesktopFrame. Wird auch gleichzeitig
+     * von den Listenern ausgehängt.
+     * 
+     * @param frame ViewerDesktopFrame der entfernt wreden soll.
+     */
     public void removeViewerDesktopFrame(ViewerDesktopFrame frame) {
         desktopPane.remove(frame);
         frame.removeInternalFrameListener(this);
+        frame.removeComponentListener(scrollPanelHelper);
     }
     
+    /**
+     * Hinzufügen eines Wizards. Der Wizard-Menüpunkt 
+     * wird auf <code>enabled = false</code> geschaltet.
+     * Dadurch soll verhindert werden, daß zwei 
+     * Wizards gleichzeitig aktiv sind und sich
+     * in die Quere kommen.
+     * 
+     * @param wizard der Hinzugefügt wird.
+     */
     public void addWizard(Wizard wizard) {
         desktopPane.add(wizard);
+        wizard.addComponentListener(scrollPanelHelper);
         wizard.show();
         wizardMenu.setEnabled(false);
+        segmentaionWizardMenuItem.setEnabled(false);
+        registrationWizardMenuItem.setEnabled(false);
+        //marchingCubeWizardMenuItem.setEnabled(false);
     }
     
+    /**
+     * Entfernen eines Wizards. Der Wizard-Menüpunkt wird
+     * wieder benutzbar.
+     * 
+     * @param wizard der Entfent werden soll
+     */
     public void removeWizard(Wizard wizard) {
         desktopPane.remove(wizard);
+        wizard.removeComponentListener(scrollPanelHelper);
         wizardMenu.setEnabled(true);
+        segmentaionWizardMenuItem.setEnabled(true);
+        registrationWizardMenuItem.setEnabled(true);  
+        //marchingCubeWizardMenuItem.setEnabled(true);
     }
     
+    /**
+     * Liefert die einzig existierende Instance des NavigationPanel
+     * wieder. Dort können dann die entsprechenden Command-Objekte
+     * ausgetauscht werden.
+     * 
+     * @return NavigationPanel
+     */
     public NavigationPanel getNavigationPanel() {
         return NavigationPanel.getInstance();
     }
@@ -136,32 +298,25 @@ public class Viewer extends JFrame implements Singleton,
         jPanel10 = new javax.swing.JPanel();
         toolBar = new javax.swing.JToolBar();
         rightSplitPanel = new javax.swing.JPanel();
-        jScrollPane7 = new javax.swing.JScrollPane();
+        scrollPane = new javax.swing.JScrollPane();
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
         wizardMenu = new javax.swing.JMenu();
         segmentaionWizardMenuItem = new javax.swing.JMenuItem();
         registrationWizardMenuItem = new javax.swing.JMenuItem();
         marchingCubeWizardMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
-        contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
-        show3D = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Segmentierungs- und Registrierungsviewer");
+        setFont(new java.awt.Font("Dialog", 0, 12));
         setForeground(java.awt.Color.white);
-        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/logo.gif")).getImage());
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/logo_seg.gif")).getImage());
         setName("viewerFrame");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -179,18 +334,26 @@ public class Viewer extends JFrame implements Singleton,
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.NORTH);
 
-        rightSplitPanel.setLayout(new java.awt.GridLayout(1, 0));
+        rightSplitPanel.setLayout(new java.awt.GridLayout());
 
         rightSplitPanel.setAutoscrolls(true);
-        jScrollPane7.setAutoscrolls(true);
-        jScrollPane7.setViewportView(desktopPane);
+        scrollPane.setDoubleBuffered(true);
+        scrollPane.setAutoscrolls(true);
+        scrollPane.setViewportView(desktopPane);
 
-        rightSplitPanel.add(jScrollPane7);
+        rightSplitPanel.add(scrollPane);
 
         getContentPane().add(rightSplitPanel, java.awt.BorderLayout.CENTER);
 
+        menuBar.setFont(new java.awt.Font("Dialog", 0, 12));
+        fileMenu.setMnemonic('D');
         fileMenu.setText("Datei");
+        fileMenu.setFont(new java.awt.Font("Dialog", 0, 12));
+        openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        openMenuItem.setMnemonic('f');
         openMenuItem.setText("\u00d6ffnen");
+        openMenuItem.setToolTipText("null");
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openMenuItemActionPerformed(evt);
@@ -198,6 +361,9 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         fileMenu.add(openMenuItem);
+        saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        saveMenuItem.setMnemonic('S');
         saveMenuItem.setText("Speichern");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,15 +372,10 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         fileMenu.add(saveMenuItem);
-        saveAsMenuItem.setText("Speichern als...");
-        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveAsMenuItemActionPerformed(evt);
-            }
-        });
-
-        fileMenu.add(saveAsMenuItem);
+        exitMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        exitMenuItem.setMnemonic('e');
         exitMenuItem.setText("Beenden");
+        exitMenuItem.setToolTipText("null");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
@@ -223,18 +384,12 @@ public class Viewer extends JFrame implements Singleton,
 
         fileMenu.add(exitMenuItem);
         menuBar.add(fileMenu);
-        editMenu.setText("Bearbeiten");
-        cutMenuItem.setText("Ausschneiden");
-        editMenu.add(cutMenuItem);
-        copyMenuItem.setText("Kopieren");
-        editMenu.add(copyMenuItem);
-        pasteMenuItem.setText("Einf\u00fcgen");
-        editMenu.add(pasteMenuItem);
-        deleteMenuItem.setText("Enfernen");
-        editMenu.add(deleteMenuItem);
-        menuBar.add(editMenu);
+        wizardMenu.setMnemonic('A');
         wizardMenu.setText("Assistenten");
-        segmentaionWizardMenuItem.setText("Segmentierungsassistent");
+        wizardMenu.setFont(new java.awt.Font("Dialog", 0, 12));
+        segmentaionWizardMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        segmentaionWizardMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        segmentaionWizardMenuItem.setText("Segmentierung...");
         segmentaionWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 segmentaionWizardMenuItemActionPerformed(evt);
@@ -242,7 +397,9 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         wizardMenu.add(segmentaionWizardMenuItem);
-        registrationWizardMenuItem.setText("Registrieringsassistent");
+        registrationWizardMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        registrationWizardMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        registrationWizardMenuItem.setText("Registrierung...");
         registrationWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registrationWizardMenuItemActionPerformed(evt);
@@ -250,7 +407,10 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         wizardMenu.add(registrationWizardMenuItem);
-        marchingCubeWizardMenuItem.setText("Marching Cube Assistent");
+        marchingCubeWizardMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        marchingCubeWizardMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        marchingCubeWizardMenuItem.setText("Marching Cube...");
+        marchingCubeWizardMenuItem.setEnabled(false);
         marchingCubeWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 marchingCubeWizardMenuItemActionPerformed(evt);
@@ -259,22 +419,19 @@ public class Viewer extends JFrame implements Singleton,
 
         wizardMenu.add(marchingCubeWizardMenuItem);
         menuBar.add(wizardMenu);
+        helpMenu.setMnemonic('H');
         helpMenu.setText("Hilfe");
+        helpMenu.setToolTipText("null");
+        helpMenu.setFont(new java.awt.Font("Dialog", 0, 12));
         helpMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 helpMenuActionPerformed(evt);
             }
         });
 
-        contentMenuItem.setText("Contents");
-        contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contentMenuItemActionPerformed(evt);
-            }
-        });
-
-        helpMenu.add(contentMenuItem);
-        aboutMenuItem.setText("About");
+        aboutMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        aboutMenuItem.setMnemonic('I');
+        aboutMenuItem.setText("Info...");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItemActionPerformed(evt);
@@ -282,34 +439,23 @@ public class Viewer extends JFrame implements Singleton,
         });
 
         helpMenu.add(aboutMenuItem);
-        show3D.setText("show3D");
-        show3D.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                show3DMenuItemActionPerformed(evt);
-            }
-        });
-
-        helpMenu.add(show3D);
         menuBar.add(helpMenu);
         setJMenuBar(menuBar);
 
         pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(new java.awt.Dimension(614, 422));
-        setLocation((screenSize.width-614)/2,(screenSize.height-422)/2);
+        setSize(new java.awt.Dimension(396, 353));
+        setLocation((screenSize.width-396)/2,(screenSize.height-353)/2);
     }//GEN-END:initComponents
 
     private void marchingCubeWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marchingCubeWizardMenuItemActionPerformed
-        // Add your handling code here:
         addWizard(new MarchingCubeWizard());
     }//GEN-LAST:event_marchingCubeWizardMenuItemActionPerformed
 
     private void helpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuActionPerformed
-        // Add your handling code here:
     }//GEN-LAST:event_helpMenuActionPerformed
 
     private void show3DMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_show3DMenuItemActionPerformed
-        // Add your handling code here:
         Viewer3D viewer3D = new Viewer3D("Test");
         viewer3D.setPreferredSize(new Dimension(640, 640));            
         viewer3D.pack();        
@@ -317,77 +463,26 @@ public class Viewer extends JFrame implements Singleton,
     }//GEN-LAST:event_show3DMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        // Add your handling code here:
+        saveCommand.execute();
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void registrationWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrationWizardMenuItemActionPerformed
-        // Add your handling code here:
         addWizard(new RegistrationWizard());        
     }//GEN-LAST:event_registrationWizardMenuItemActionPerformed
-
-    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
-        // Add your handling code here:
-        Object obj = desktopPane.getSelectedFrame();
-        if (obj == null) {
-            return;
-        }
-        Class[] interfaces = obj.getClass().getInterfaces();
-        ImageContainer imageContainer = null;
-        for (int i = 0; i < interfaces.length; i++) {
-            System.out.println(interfaces[i].toString());
-            if (interfaces[i].getName().endsWith("org.wewi.medimg.viewer.ImageContainer")) {
-                imageContainer = (ImageContainer)obj;
-            }
-        }
-        if (imageContainer == null) {
-            return;
-        }
-        
-        ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datensatz auswählen");
-        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
-        
-        int returnVal = chooser.showSaveDialog(this);
-        if(returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-        }        
-        
-        ImageWriter writer = chooser.getImageWriterFactory()
-                                         .createImageWriter(imageContainer.getImage(),
-                                                            chooser.getSelectedFile());
-        try {
-            writer.write();
-        } catch (Exception e) {
-            System.err.println("Viewer.openMenuItemActionPerformed: " + e);
-            JOptionPane.showMessageDialog(this, "Kann Datei: \n" + chooser.getSelectedFile().getAbsolutePath() + 
-                                                "\n nicht öffnen", "Fehler", JOptionPane.ERROR_MESSAGE);
-            return;
-        }        
-    }//GEN-LAST:event_saveAsMenuItemActionPerformed
     
     private void segmentaionWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_segmentaionWizardMenuItemActionPerformed
-        // Add your handling code here:
         addWizard(new SegmentationWizard());
     }//GEN-LAST:event_segmentaionWizardMenuItemActionPerformed
     
-                                                  private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-                                                      // Add your handling code here:
-                                                      JInternalFrame about = new AboutFrame();
-                                                      desktopPane.add(about);
-                                                      about.show();
-                                                      aboutMenuItem.setEnabled(false);
-                                                  }//GEN-LAST:event_aboutMenuItemActionPerformed
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        AboutDialog about = new AboutDialog(this, true);
+        about.show();
+     }//GEN-LAST:event_aboutMenuItemActionPerformed
                                                   
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        // Add your handling code here:
         openCommand.execute();
     }//GEN-LAST:event_openMenuItemActionPerformed
-    
-    private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
-        // Add your handling code here:
-    }//GEN-LAST:event_contentMenuItemActionPerformed
-    
+        
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         onExit();
         System.exit(0);
@@ -437,27 +532,19 @@ public class Viewer extends JFrame implements Singleton,
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JMenuItem segmentaionWizardMenuItem;
     private javax.swing.JMenuItem registrationWizardMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JPanel statePanel;
     private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JMenuItem show3D;
-    private javax.swing.JMenuItem contentMenuItem;
     private javax.swing.JMenu wizardMenu;
-    private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JScrollPane scrollPane;
     private javax.swing.JMenuItem marchingCubeWizardMenuItem;
     private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JMenu editMenu;
     private javax.swing.JPanel rightSplitPanel;
-    private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenu helpMenu;
     // End of variables declaration//GEN-END:variables
     

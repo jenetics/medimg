@@ -14,6 +14,7 @@ import java.util.Random;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.seg.Clusterer;
+import org.wewi.medimg.seg.IterationEvent;
 import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.SegmenterEvent;
 
@@ -24,12 +25,17 @@ import org.wewi.medimg.seg.SegmenterEvent;
  * @version 0.1
  */
 public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer {
+    private static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
+    
     protected final static int MAX_ITERATION = 50;
     protected final static double ERROR_LIMIT = 0.001;
     
     protected final int k;
     protected double[] mean;
     protected double[] meanOld;
+    
+    protected boolean interrupted = false;
+    protected boolean cancelled = false;
     
 
 	/**
@@ -115,23 +121,44 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
      * 
 	 * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
 	 */
-    public void segment(Image mrt, Image segimg) {
+    public synchronized void segment(Image mrt, Image segimg) {
         notifySegmenterStarted(new SegmenterEvent(this));
         
         int iterationCount = 0;
         
         createSegimgOld(segimg);
         initMeans(mrt.getColorRange());
+        
         do {
+            /*
+            if (interrupted) {
+                try {
+					wait();
+				} catch (InterruptedException e) {
+                    interrupted = false;
+                    continue;
+				}    
+            }
+            */
+            if (cancelled) {
+                segimg.resetColor(0);
+                break;
+            }
+            
+            notifyIterationStarted(new IterationEvent(this));
+            
             m1Step(mrt, segimg);
             m2Step(mrt, segimg);
             iterationCount++;
             
-            /******************************************************************/
+            notifyIterationFinished(new IterationEvent(this));
+            
+            /**************************************************************/
             logger.info("" + iterationCount + ": " + formatMeanValues());
-            /******************************************************************/
+            /**************************************************************/
         } while(ERROR_LIMIT < error() &&
                 MAX_ITERATION >= iterationCount); 
+    
                 
         notifySegmenterFinished(new SegmenterEvent(this));       
     }
@@ -243,6 +270,27 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
 	 */
     protected double getCliquesPotential(int pos, int f) {
         return 0;
+    }
+    
+    public void interrupt() {
+        interrupted = true;
+    }
+    
+    public void resume() {
+        interrupted = false;
+        //notifyAll();
+    }
+    
+    public void cancel() {
+        cancelled = true;
+    }
+    
+    public String getSegmenterName() {
+        return SEGMENTER_NAME;    
+    }
+    
+    public String toString() {
+        return SEGMENTER_NAME + " (k:= " + k + ")";    
     }
     
 }

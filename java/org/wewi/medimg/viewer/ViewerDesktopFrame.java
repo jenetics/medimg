@@ -57,24 +57,24 @@ public abstract class ViewerDesktopFrame extends JInternalFrame
         super(name, resizeable, closable, maximizable, iconable);
     }
     
-    protected void addListeners() {
+    protected void addListeners(ViewerDesktopFrame frame) {
         //Anmelden der Listener
-        getContentPane().addFocusListener(this);
-        getContentPane().addMouseListener(this);
-        getContentPane().addMouseMotionListener(this);
-        getContentPane().addKeyListener(this);
-        addInternalFrameListener(this);
-        getContentPane().addComponentListener(this);        
+        getContentPane().addFocusListener(frame);
+        getContentPane().addMouseListener(frame);
+        getContentPane().addMouseMotionListener(frame);
+        getContentPane().addKeyListener(frame);
+        addInternalFrameListener(frame);
+        getContentPane().addComponentListener(frame);        
     }
     
-    protected void removeListeners() {
+    protected void removeListeners(ViewerDesktopFrame frame) {
         //Abmelden der Listener
-        getContentPane().removeFocusListener(this);
-        getContentPane().removeMouseListener(this);
-        getContentPane().removeMouseMotionListener(this);
-        getContentPane().removeKeyListener(this);
-        removeInternalFrameListener(this);
-        getContentPane().removeComponentListener(this);
+        getContentPane().removeFocusListener(frame);
+        getContentPane().removeMouseListener(frame);
+        getContentPane().removeMouseMotionListener(frame);
+        getContentPane().removeKeyListener(frame);
+        removeInternalFrameListener(frame);
+        getContentPane().removeComponentListener(frame);
     }
     
     /*
