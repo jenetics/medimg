@@ -4,7 +4,7 @@
  * Created on 12.03.2003, 11:04:25
  *
  */
-package org.wewi.medimg.math.geom;
+package org.wewi.medimg.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
