@@ -8,7 +8,7 @@ package org.wewi.medimg.math;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public interface GridVectorField extends VectorField {
+public interface GridVectorField extends VectorField, Cloneable {
     
     public void setGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint);
     
