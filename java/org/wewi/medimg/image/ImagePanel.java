@@ -35,12 +35,10 @@ public class ImagePanel extends JPanel {
 
     public ImagePanel(org.wewi.medimg.image.Image image) {
         this.image = image;
-        sizeX = image.getMaxX() - image.getMinX();
-        sizeY = image.getMaxY() - image.getMinY();
+        sizeX = image.getMaxX() - image.getMinX() + 1;
+        sizeY = image.getMaxY() - image.getMinY() + 1;
         qxy = (double)sizeX/(double)sizeY;
         conversion = new GreyRGBConversion();
-        int sizeX = image.getMaxX() - image.getMinX();
-        int sizeY = image.getMaxY() - image.getMinY();
         rawData = new int[sizeX*sizeY*3];      
         bufferedImage = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_3BYTE_BGR); 
         
@@ -79,13 +77,13 @@ public class ImagePanel extends JPanel {
     }    
       
     public void setSlice(int slice) { 
-        int sizeX = image.getMaxX() - image.getMinX();
-        int sizeY = image.getMaxY() - image.getMinY();
-
+        if (slice < image.getMinZ() || slice > image.getMaxZ()) {
+            return;
+        }
         int[] pixel = new int[3];
         int counter = 0;
-        for (int j = image.getMinY(); j < image.getMaxY(); j++) {
-            for (int i = image.getMinX(); i < image.getMaxX(); i++) {
+        for (int j = image.getMinY(); j <= image.getMaxY(); j++) {
+            for (int i = image.getMinX(); i <= image.getMaxX(); i++) {
                 conversion.convert(image.getColor(i, j, slice), pixel);
                 rawData[3*counter+0] = pixel[0];
                 rawData[3*counter+1] = pixel[1];

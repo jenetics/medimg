@@ -102,6 +102,9 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     }
 
     private void m1Step() {
+        int minX = image.getMinX();
+        int minY = image.getMinY();
+        int minZ = image.getMinZ();
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
         int maxZ = image.getMaxZ();
@@ -114,9 +117,9 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         int count = 0;
         do {
             count = 0;
-            for (int i = 0; i < maxX; i++) {
-                for (int j = 0; j < maxY; j++) {
-                    for (int k = 0; k < maxZ; k++) {
+            for (int i = minX; i <= maxX; i++) {
+                for (int j = minY; j <= maxY; j++) {
+                    for (int k = minZ; k <= maxZ; k++) {
                         color = image.getColor(i, j, k);
                         minFeature = Integer.MAX_VALUE;
                         minFeatureIndex = 0;
@@ -170,7 +173,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     }
     
     public void doSegmentation() {
-        featureData = new FeatureData(image.getMaxX(), image.getMaxY(), image.getMaxZ(), nfeatures);
+        featureData = new FeatureData(image.getMaxX()+1, image.getMaxY()+1, image.getMaxZ()+1, nfeatures);
 
         initMeanValues();
         notifySegmentationStarted(new SegmentationEvent(this, m1m2Count, meanValues));

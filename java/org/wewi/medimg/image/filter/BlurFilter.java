@@ -32,9 +32,8 @@ public final class BlurFilter extends ImageFilter {
     }
     
     private void init() {
-        neighborhood = new Neighborhood3D18(image.getMaxX(), 
-                                            image.getMaxY(), 
-                                            image.getMaxZ());        
+        neighborhood = new Neighborhood3D18(image.getMinX(), image.getMinY(), image.getMinZ(),
+                                            image.getMaxX(), image.getMaxY(), image.getMaxZ());        
     }
 
     public void filter() {

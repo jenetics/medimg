@@ -14,14 +14,16 @@ import java.util.Iterator;
  * @version 0.1
  */
 public final class Neighborhood3D18 implements Neighborhood {
-    private int maxX;
-    private int maxY;
-    private int maxZ;
+    private int minX, minY, minZ;
+    private int maxX, maxY, maxZ;
 
-    public Neighborhood3D18(int sizeX, int sizeY, int sizeZ) {
-        maxX = sizeX;
-        maxY = sizeY;
-        maxZ = sizeZ;
+    public Neighborhood3D18(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        this.minX = minX;
+        this.minY = minY;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this.maxZ = maxZ;
     }
 
     public Iterator getNeighbors(Point p) {
@@ -31,58 +33,58 @@ public final class Neighborhood3D18 implements Neighborhood {
         int z = p3d.getZ();
         
         PointIterator it = new PointIterator(18);
-        if (x-1 >= 0) {
+        if (x-1 >= minX) {
             it.addPoint(new Point3D(x-1, y, z));
         }
-        if (y-1 >= 0) {
+        if (y-1 >= minY) {
             it.addPoint(new Point3D(x, y-1, z));
         }
-        if (z-1 >= 0) {
+        if (z-1 >= minZ) {
             it.addPoint(new Point3D(x, y, z-1));
         }
-        if (x+1 < maxX) {
+        if (x+1 <= maxX) {
             it.addPoint(new Point3D(x+1, y, z));
         }
-        if (y+1 < maxY) {
+        if (y+1 <= maxY) {
             it.addPoint(new Point3D(x, y+1, z));
         }
-        if (z+1 < maxZ) {
+        if (z+1 <= maxZ) {
             it.addPoint(new Point3D(x, y, z+1));
         }
-        if (x-1 >= 0 && z-1 >= 0) {
+        if (x-1 >= minX && z-1 >= minZ) {
             it.addPoint(new Point3D(x-1, y, z-1));
         }
-        if (x-1 >= 0 && z+1 < maxZ) {
+        if (x-1 >= minX && z+1 < maxZ) {
             it.addPoint(new Point3D(x-1, y, z+1));
         }
-        if (x-1 >= 0 && y-1 >= 0) {
+        if (x-1 >= minX && y-1 >= minY) {
             it.addPoint(new Point3D(x-1, y-1, z));
         }
-        if (y-1 >= 0 && z-1 >= 0) {
+        if (y-1 >= minY && z-1 >= minZ) {
             it.addPoint(new Point3D(x, y-1, z-1));
         }
-        if (y-1 >= 0 && z+1 < maxZ) {
+        if (y-1 >= minY && z+1 <= maxZ) {
             it.addPoint(new Point3D(x, y-1, z+1));
         }
-        if (x+1 < maxX && y-1 >= 0) {
+        if (x+1 <= maxX && y-1 >= minY) {
             it.addPoint(new Point3D(x+1, y-1, z));
         }
-        if (x+1 < maxX && z+1 < maxZ) {
+        if (x+1 < maxX && z+1 <= maxZ) {
             it.addPoint(new Point3D(x+1, y, z+1));
         }
-        if (x+1 < maxX && z-1 >= 0) {
+        if (x+1 <= maxX && z-1 >= minZ) {
             it.addPoint(new Point3D(x+1, y, z-1));
         }
-        if (x+1 < maxX && y+1 < maxY) {
+        if (x+1 <= maxX && y+1 <= maxY) {
             it.addPoint(new Point3D(x+1, y+1, z));
         }
-        if (y+1 < maxY && z+1 < maxZ) {
+        if (y+1 <= maxY && z+1 <= maxZ) {
             it.addPoint(new Point3D(x, y+1, z+1));
         }
-        if (y+1 < maxX && z-1 >= 0) {
+        if (y+1 <= maxX && z-1 >= minZ) {
             it.addPoint(new Point3D(x, y+1, z-1));
         }
-        if (x-1 >= 0 && y+1 < maxY) {
+        if (x-1 >= minX && y+1 <= maxY) {
             it.addPoint(new Point3D(x-1, y+1, z));
         }        
         
