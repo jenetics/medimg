@@ -107,7 +107,7 @@ public class RegularDisplacementField extends DisplacementF
         //Init the field to the identity transformation
         FieldFactory.toIdentityField(this);
         
-        setInterpolator(NEAREST_NEIGHBOR);        
+        setFieldInterpolator(NEAREST_NEIGHBOR);        
     }
 
 
@@ -147,7 +147,7 @@ public class RegularDisplacementField extends DisplacementF
                 vectorField.getGridStartPoint(gridX, gridY, gridZ, end);
                 
 //              Interpolating the start point from the inverse end point.
-                getInterpolator().interpolateStartPoint(end, start);
+                getFieldInterpolator().interpolateStartPoint(end, start);
                 
                 getVectorField().setGridEndPoint(gridX, gridY, gridZ, start);
 			}

@@ -58,5 +58,20 @@ public class IrregularDisplacementField extends DisplacementF {
 	public VectorIterator getVectorIterator() {
 		return field.getVectorIterator();
 	}
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(int[], int[])
+	 */
+	public void transformBackward(int[] target, int[] source) {
+	}
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(float[], float[])
+	 */
+	public void transformBackward(float[] target, float[] source) {
+	}
+	/**
+	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(double[], double[])
+	 */
+	public void transformBackward(double[] target, double[] source) {
+	}
 
 }

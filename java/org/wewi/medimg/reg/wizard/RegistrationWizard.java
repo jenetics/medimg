@@ -18,7 +18,7 @@ import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
-import org.wewi.medimg.image.geom.transform.Transformation;
+import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
@@ -54,7 +54,7 @@ public class RegistrationWizard extends Wizard implements Observer,
 	private ImageReader imageReader2;
 	private RegistratorEnumeration registrationEnumeration = RegistratorEnumeration.PCA_METHOD_RIGID;
 	//private int nfeatures = 4;
-	private Transformation transformation;
+	private ImageTransformation transformation;
 	private Registrator registrator;
 	private ObservableRegistrator obReg = null;
 	private Image imageData1;

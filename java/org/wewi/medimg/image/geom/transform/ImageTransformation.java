@@ -6,15 +6,19 @@
  */
 package org.wewi.medimg.image.geom.transform;
 
+import java.util.logging.Logger;
+
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.ops.ImageLoop;
+import org.wewi.medimg.math.MathUtil;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ImageTransformation {
+public abstract class ImageTransformation implements Transformation {
     
     public static abstract class Interpolator {
         private Transformation transformation;
@@ -25,7 +29,7 @@ public final class ImageTransformation {
             this.transformation = transformation;
         }
         
-        public Transformation getTransformation() {
+        protected Transformation getTransformation() {
             return transformation;
         }
         
@@ -33,7 +37,7 @@ public final class ImageTransformation {
             this.sourceImage = sourceImage;
         }
         
-        public Image getSourceImage() {
+        protected Image getSourceImage() {
             return sourceImage;        
         }
         
@@ -81,29 +85,68 @@ public final class ImageTransformation {
 		}
     }
 
+    private static Logger logger = Logger.getLogger("org.wewi.medimg.image.geom.transform");
 
-    private Transformation transformation;
     private Interpolator interpolator;
 
 	/**
 	 * Constructor for ImageTransformation.
 	 */
-	public ImageTransformation(Transformation transformation, Interpolator interpolator) {
-		this.transformation = transformation;
+	public ImageTransformation(Interpolator interpolator) {
         setInterpolator(interpolator);
 	}
     
+    /**
+     * Constructs a ImageTransformation with the NearestNeighborInterpolator
+     * as default interpolation strategy.
+     * 
+     * @param transformation
+     */
+    public ImageTransformation() {
+        this(new NearestNeighborInterpolator());
+    }
+    
     public void setInterpolator(Interpolator interpolator) {
         this.interpolator = interpolator;
-        interpolator.setTransformation(transformation);
+        interpolator.setTransformation(this);
     }
     
     public Interpolator getInterpolator() {
         return interpolator;
     }
 
+    /**
+     * Performes a backward transformation from a source image.
+     * 
+     * @param source image to be transformed.
+     * @return Image transformed image.
+     */
     public Image transform(Image source) {
         Image target = (Image)source.clone();
+        transform(source, target);
+        
+        return target;
+    }
+    
+    /**
+     * Performes a backward transformation from the source image. The
+     * dimension of the target image is as large as necessary to contain
+     * the whole transformed source image.
+     * 
+     * @param source image to be transformed.
+     * @param factory image factory for the target image.
+     * @return Image transformed image.
+     */
+    public Image transform(Image source, ImageFactory factory) {
+        Dimension dim = transform(source.getDimension());
+        Image target = null;
+        try {
+            target = factory.createImage(dim);
+        } catch (OutOfMemoryError e) {
+            logger.throwing(getClass().getName(), "transform(Image, Image)", e);
+            target = (Image)source.clone();
+        }
+        
         transform(source, target);
         
         return target;
@@ -119,6 +162,47 @@ public final class ImageTransformation {
         });
         loop.loop();
     }
+    
+    public Dimension transform(Dimension dim) {
+        //Die acht Eckpunkte der Bounding-Box
+        int[] p1 = {dim.getMinX(), dim.getMinY(), dim.getMinZ()};
+        int[] p2 = {dim.getMaxX(), dim.getMinY(), dim.getMinZ()};
+        int[] p3 = {dim.getMaxX(), dim.getMaxY(), dim.getMinZ()};
+        int[] p4 = {dim.getMinX(), dim.getMaxY(), dim.getMinZ()};
+        int[] p5 = {dim.getMinX(), dim.getMinY(), dim.getMaxZ()};
+        int[] p6 = {dim.getMaxX(), dim.getMinY(), dim.getMaxZ()};
+        int[] p7 = {dim.getMaxX(), dim.getMaxY(), dim.getMaxZ()};
+        int[] p8 = {dim.getMinX(), dim.getMaxY(), dim.getMaxZ()};
+        
+        //Die transformierten Eckpunkte der Bounting-Box
+        int[] tp1 = new int[3];
+        int[] tp2 = new int[3];
+        int[] tp3 = new int[3];
+        int[] tp4 = new int[3];
+        int[] tp5 = new int[3];
+        int[] tp6 = new int[3];
+        int[] tp7 = new int[3];
+        int[] tp8 = new int[3];
+        
+        transform(p1, tp1);
+        transform(p2, tp2);
+        transform(p3, tp3);
+        transform(p4, tp4);
+        transform(p5, tp5);
+        transform(p6, tp6);
+        transform(p7, tp7);
+        transform(p8, tp8);
+        
+        //Die neuen Eckpunkte der Bounding-Box
+        int minX = MathUtil.min(new int[]{tp1[0], tp2[0], tp3[0], tp4[0], tp5[0], tp6[0], tp7[0],tp8[0]});
+        int minY = MathUtil.min(new int[]{tp1[1], tp2[1], tp3[1], tp4[1], tp5[1], tp6[1], tp7[1],tp8[1]});
+        int minZ = MathUtil.min(new int[]{tp1[2], tp2[2], tp3[2], tp4[2], tp5[2], tp6[2], tp7[2],tp8[2]});
+        int maxX = MathUtil.max(new int[]{tp1[0], tp2[0], tp3[0], tp4[0], tp5[0], tp6[0], tp7[0],tp8[0]});
+        int maxY = MathUtil.max(new int[]{tp1[1], tp2[1], tp3[1], tp4[1], tp5[1], tp6[1], tp7[1],tp8[1]});
+        int maxZ = MathUtil.max(new int[]{tp1[2], tp2[2], tp3[2], tp4[2], tp5[2], tp6[2], tp7[2],tp8[2]});        
+      
+        return new Dimension(minX, maxX, minY, maxY, minZ, maxZ);      
+    }    
 }
 
 

@@ -14,7 +14,7 @@ import org.wewi.medimg.util.Immutable;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class Complex implements Immutable, Cloneable {
+public class Complex implements Immutable {
     public static final Complex NULL = new Complex(0, 0);
     public static final Complex ONE = new Complex(1, 0);
     public static final Complex I = new Complex(0, 1);
@@ -112,9 +112,6 @@ public class Complex implements Immutable, Cloneable {
         return "(" + format.format(re) + "; " + format.format(im) + ")";    
     }
 
-    public Object clone() {
-        return new Complex(this);    
-    }
 
 }
 

@@ -15,7 +15,7 @@ import org.wewi.medimg.math.vec.VectorField;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public abstract class DisplacementF implements Transformation, VectorField {
+public abstract class DisplacementF extends ImageTransformation implements VectorField {
 
     public static abstract class Interpolator implements Cloneable {
         private DisplacementF field;
@@ -154,12 +154,12 @@ public abstract class DisplacementF implements Transformation, VectorField {
     }
     
     
-    public void setInterpolator(Interpolator interpolator) {
+    public void setFieldInterpolator(Interpolator interpolator) {
         this.interpolator = (Interpolator)interpolator.clone();
         interpolator.setField(this);
     }
     
-    public Interpolator getInterpolator() {
+    public Interpolator getFieldInterpolator() {
         return interpolator;
     }    
     
@@ -182,6 +182,18 @@ public abstract class DisplacementF implements Transformation, VectorField {
      */
     public void transform(double[] source, double[] target) {
         interpolator.interpolateEndPoint(source, target);
+    }
+    
+    public void transformBackward(int[] target, int[] source) {
+        interpolator.interpolateStartPoint(target, source);
+    }
+    
+    public void transformBackward(float[] target, float[] source) {
+        interpolator.interpolateStartPoint(target, source);
+    }
+    
+    public void transformBackward(double[] target, double[] source) {
+        interpolator.interpolateStartPoint(target, source);
     }
 
     /**
@@ -214,7 +226,7 @@ public abstract class DisplacementF implements Transformation, VectorField {
         private double[] targetPixel = new double[3];
         private int sx, sy, sz;
 		public final void execute(int x, int y, int z) {
-            targetPixel[0] = x;
+            targetPixel[0] = x; 
             targetPixel[1] = y;
             targetPixel[2] = z;
             

@@ -654,7 +654,7 @@ public class Test {
             interpol.setWeightFunction(new GlobalInterpolator.ExponentialWeightFunction(50.0));
             
             RegularDisplacementField field = FieldFactory.createRegularField(affine, image.getDimension(), g);
-            field.setInterpolator(interpol);
+            field.setFieldInterpolator(interpol);
             
                            
             showField(field, image.getDimension()); 

@@ -12,6 +12,7 @@ package org.wewi.medimg.alg;
  * 
  * @author Franz Wilhelmstötter
  * @version 0.1
+ * @since 0.1
  */
 public interface IterateableAlgorithm {
     
