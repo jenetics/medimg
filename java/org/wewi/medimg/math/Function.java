@@ -12,6 +12,6 @@ package org.wewi.medimg.math;
  * @version 0.1
  */
 public interface Function {
-    public double[] eval(double[] arg);
+    public double eval(double[] args);
 }
 
