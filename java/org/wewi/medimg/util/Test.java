@@ -649,7 +649,7 @@ public class Test {
             AffineTransformation affine = AffineTransformation.getRotateInstance(0, 0, 0.1);
             Image affineImage = affine.transform(image);
             
-            int g = 10;
+            int g = 15;
             GlobalInterpolator interpol = new GlobalInterpolator();
             interpol.setWeightFunction(new GlobalInterpolator.ExponentialWeightFunction(50.0));
             

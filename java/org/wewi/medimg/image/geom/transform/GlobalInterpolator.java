@@ -33,10 +33,6 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
             this.b = b;    
         }
         
-        
-		/**
-		 * @see org.wewi.medimg.image.geom.transform.GlobalInterpolator.WeightFunction#eval(double[], double[])
-		 */
 		public double eval(double[] p, double[] q) {
             
             double d = Math.sqrt(MathUtil.sqr(p[0] - q[0]) + 
@@ -44,18 +40,14 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
                                   MathUtil.sqr(p[2] - q[2]));
 			//return Math.exp(-d*b);
             
-            if (d < 100) {
-                return 1/(d*d+1);
-            } else {
-                return 0;
-            }
+            //if (d < 100) {
+                return 1/(d+1);
+            //} else {
+            //    return 0;
+            //}
             //return 1000-d*d;
 		}
         
-        
-		/**
-		 * @see org.wewi.medimg.image.geom.transform.GlobalInterpolator.WeightFunction#clone()
-		 */
 		public Object clone() {
 			return new ExponentialWeightFunction(this.b);
 		}
@@ -85,9 +77,6 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
     }
     
     
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.DisplacementF.Interpolator#interpolateEndPoint(double[], double[])
-	 */
 	public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
         double[] start = new double[3];
         double[] end = new double[3];
@@ -101,6 +90,11 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
             it.next(start, end);
 
             w = weightFunction.eval(start, startPoint);
+            
+            if (Double.isInfinite(w)) {
+                System.arraycopy(end, 0, endPoint, 0, 3);
+                return; 
+            }
             
             vector[0] += (end[0] - start[0])*w;
             vector[1] += (end[1] - start[1])*w;
@@ -119,9 +113,6 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
         
 	}
     
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.DisplacementF.Interpolator#interpolateStartPoint(double[], double[])
-	 */
 	public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
         double[] start = new double[3];
         double[] end = new double[3];
@@ -135,7 +126,11 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
             it.next(start, end);
 
             w = weightFunction.eval(end, endPoint);
-            //System.out.println(w); 
+ 
+            if (Double.isInfinite(w)) {
+                //System.arraycopy(start, 0, startPoint, 0, 3);
+                //return; 
+            }
             
             vector[0] += (end[0] - start[0])*w;
             vector[1] += (end[1] - start[1])*w;

@@ -161,23 +161,14 @@ public abstract class DisplacementF extends ImageTransformation implements Vecto
         return interpolator;
     }    
     
-    /**
-     * @see org.wewi.medimg.image.geom.transform.Transformation#transform(int, int)
-     */
     public void transform(int[] source, int[] target) {
         interpolator.interpolateEndPoint(source, target);    
     }
 
-    /**
-     * @see org.wewi.medimg.image.geom.transform.Transformation#transform(float, float)
-     */
     public void transform(float[] source, float[] target) {
         interpolator.interpolateEndPoint(source, target);
     }
 
-    /**
-     * @see org.wewi.medimg.image.geom.transform.Transformation#transform(double, double)
-     */
     public void transform(double[] source, double[] target) {
         interpolator.interpolateEndPoint(source, target);
     }

@@ -147,7 +147,7 @@ public abstract class AbstractGridVectorField implements GridVectorField {
      * 
      * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
      */
-    public void setVector(double[] startPoint, double[] endPoint) {
+    public void addVector(double[] startPoint, double[] endPoint) {
         setGridEndPoint((int)Math.round((startPoint[0] - origin.getX())/(double)stride[0]),
                         (int)Math.round((startPoint[1] - origin.getY())/(double)stride[1]),
                         (int)Math.round((startPoint[2] - origin.getZ())/(double)stride[2]), endPoint);

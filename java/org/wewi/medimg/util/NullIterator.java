@@ -1,4 +1,4 @@
-/*
+/**
  * NullIterator.java
  *
  * Created on 10. Juni 2002, 17:40
