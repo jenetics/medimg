@@ -30,8 +30,7 @@ import cern.jet.math.Functions;
  *
  * @version 0.1
  */
-public class AffineTransformation implements Transformation, 
-                                                Interpolateable,
+public class AffineTransformation implements InterpolateableTransformation,
                                                 Immutable {
     private double[] matrix;
     private double[] inverseMatrix;
