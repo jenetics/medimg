@@ -86,6 +86,15 @@ public class Dimension implements Cloneable, Immutable {
 	public int getMaxZ() {
 		return maxZ;
 	}
+    
+    public int getMax(int dim){
+        switch (dim) {
+            case 0: return maxX;
+            case 1: return maxY;
+            case 2: return maxZ;
+            default: return 0;
+        }
+    }
 
 	/**
 	 * Returns the minX.
@@ -110,6 +119,15 @@ public class Dimension implements Cloneable, Immutable {
 	public int getMinZ() {
 		return minZ;
 	}
+    
+    public int getMin(int dim) {
+        switch (dim) {
+            case 0: return minX;
+            case 1: return minY;
+            case 2: return minZ;
+            default: return 0;
+        }
+    }
 
 	/**
 	 * Returns the sizeX.
@@ -134,6 +152,15 @@ public class Dimension implements Cloneable, Immutable {
 	public int getSizeZ() {
 		return sizeZ;
 	}
+    
+    public int getSize(int dim) {
+        switch (dim) {
+            case 0: return sizeX;
+            case 1: return sizeY;
+            case 2: return sizeZ;
+            default: return 0;
+        }
+    }
     
     public int getStep() {
         return step;
