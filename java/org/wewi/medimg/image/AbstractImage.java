@@ -13,7 +13,7 @@ import java.util.RandomAccess;
  * @version 0.1
  */
 public abstract class AbstractImage extends RowMajorImageGeometry
-                                      implements Image, RandomAccess {
+                                    implements Image, RandomAccess {
 
     private final class AbstractImageVoxelIterator implements VoxelIterator {
         private int pos = 0;
@@ -96,21 +96,49 @@ public abstract class AbstractImage extends RowMajorImageGeometry
         return data.get(getPosition(x, y, z));
     }
     
+    public int getIntColor(int x, int y, int z) {
+        return data.getInt(getPosition(x, y, z));
+    }
+    
+    public double getDoubleColor(int x, int y, int z) {
+        return data.getDouble(getPosition(x, y, z));
+    }
+    
     public int getColor(int pos) {
         return data.get(pos);
+    }
+    
+    public int getIntColor(int pos) {
+        return data.getInt(pos);
+    }
+    
+    public double getDoubleColor(int pos) {
+        return data.getDouble(pos);
     }
     
     public void setColor(int x, int y, int z, int color) {
         data.set(getPosition(x, y, z), color);
     }
     
-    public final void setColor(int pos, int color) {
+    public void setColor(int x, int y, int z, double color) {
+        data.set(getPosition(x, y, z), color);
+    }
+    
+    public void setColor(int pos, int color) {
         data.set(pos, color);
     } 
+    
+    public void setColor(int pos, double color) {
+        data.set(pos, color);
+    }
 
     public void resetColor(int color) {
         data.fill(color);
-    }      
+    } 
+    
+    public void resetColor(double color) {
+        data.fill(color);     
+    }
     
     public boolean isNull() {
         return false;

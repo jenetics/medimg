@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.wewi.medimg.image.AbstractImage;
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.ComplexAmplitudeImage;
@@ -687,14 +688,27 @@ public class Test {
        
         frame.setSize(dim.getSizeX(), dim.getSizeY());
         frame.show();
-    }  
+    } 
+    
+    public static void test23() {
+        Timer timer = new Timer("");
+        AbstractImage image = new ImageData(150, 150, 150);
+        
+        timer.start();
+        for (int i = 0, n = image.getNVoxels(); i < n; ++i) {
+            image.getIntColor(i);    
+        }    
+        timer.stop();
+        timer.print();
+        Math.sqrt(2);
+    } 
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test22();
+        test23();
     }
     
 }

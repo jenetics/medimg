@@ -36,6 +36,10 @@ public class ImageView extends RowMajorImageGeometry implements Image {
 	public void setColor(int x, int y, int z, int color) {
         image.setColor(x + roi.getMinX(), y + roi.getMinY(), z + roi.getMinZ(), color);
     }
+    
+    public void setColor(int x, int y, int z, double color) {
+        image.setColor(x + roi.getMinX(), y + roi.getMinY(), z + roi.getMinZ(), color);
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.Image#setColor(int, int)
@@ -44,6 +48,11 @@ public class ImageView extends RowMajorImageGeometry implements Image {
         getCoordinates(pos, tempPoint);
         setColor(tempPoint[0], tempPoint[1], tempPoint[2], color);
 	}
+    
+    public void setColor(int pos, double color) {
+        getCoordinates(pos, tempPoint);
+        setColor(tempPoint[0], tempPoint[1], tempPoint[2], color);
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.Image#resetColor(int)
@@ -57,6 +66,16 @@ public class ImageView extends RowMajorImageGeometry implements Image {
             }    
         }
 	}
+    
+    public void resetColor(double color) {
+        for (int k = roi.getMinZ(), l = roi.getMaxZ(); k <= l; k++) {
+            for (int j = roi.getMinY(), m = roi.getMaxY(); j <= m; j++) {
+                for (int i = roi.getMinX(), n = roi.getMaxX(); i <= n; i++) {
+                    setColor(i, j, k, color);    
+                }    
+            }    
+        }
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.Image#getColor(int)
@@ -65,6 +84,16 @@ public class ImageView extends RowMajorImageGeometry implements Image {
         getCoordinates(pos, tempPoint);
 		return getColor(tempPoint[0], tempPoint[1], tempPoint[2]);
 	}
+    
+    public int getIntColor(int pos) {
+        getCoordinates(pos, tempPoint);
+        return getIntColor(tempPoint[0], tempPoint[1], tempPoint[2]);
+    }
+    
+    public double getDoubleColor(int pos) {
+        getCoordinates(pos, tempPoint);
+        return getDoubleColor(tempPoint[0], tempPoint[1], tempPoint[2]);
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.Image#getColor(int, int, int)
@@ -72,6 +101,14 @@ public class ImageView extends RowMajorImageGeometry implements Image {
 	public int getColor(int x, int y, int z) {
 		return image.getColor(x + roi.getMinX(), y + roi.getMinY(), z + roi.getMinZ());
 	}
+    
+    public int getIntColor(int x, int y, int z) {
+        return image.getIntColor(x + roi.getMinX(), y + roi.getMinY(), z + roi.getMinZ());
+    }
+    
+    public double getDoubleColor(int x, int y, int z) {
+        return image.getDoubleColor(x + roi.getMinX(), y + roi.getMinY(), z + roi.getMinZ());
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.Image#getNVoxels()

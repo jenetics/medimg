@@ -152,11 +152,19 @@ public abstract class ImageAdapter implements Image {
     public void setColor(int x, int y, int z, int color) {
         image.setColor(x, y, z, color);
     }
+    
+    public void setColor(int x, int y, int z, double color) {
+        image.setColor(x, y, z, color);
+    }
 
     /**
      * @see org.wewi.medimg.image.ImageAccess#setColor(int, int)
      */
     public void setColor(int pos, int color) {
+        image.setColor(pos, color);
+    }
+    
+    public void setColor(int pos, double color) {
         image.setColor(pos, color);
     }
 
@@ -166,6 +174,10 @@ public abstract class ImageAdapter implements Image {
     public void resetColor(int color) {
         image.resetColor(color);
     }
+    
+    public void resetColor(double color) {
+        image.resetColor(color);
+    }
 
     /**
      * @see org.wewi.medimg.image.ImageAccess#getColor(int)
@@ -173,12 +185,28 @@ public abstract class ImageAdapter implements Image {
     public int getColor(int pos) {
         return image.getColor(pos);
     }
+    
+    public int getIntColor(int pos) {
+        return image.getIntColor(pos);
+    }
+    
+    public double getDoubleColor(int pos) {
+        return image.getDoubleColor(pos);
+    }
 
     /**
      * @see org.wewi.medimg.image.ImageAccess#getColor(int, int, int)
      */
     public int getColor(int x, int y, int z) {
         return image.getColor(x, y, z);
+    }
+    
+    public int getIntColor(int x, int y, int z) {
+        return image.getIntColor(x, y, z);
+    }
+    
+    public double getDoubleColor(int x, int y, int z) {
+        return image.getDoubleColor(x, y, z);
     }
 
     /**
