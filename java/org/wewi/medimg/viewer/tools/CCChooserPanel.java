@@ -52,6 +52,7 @@ public class CCChooserPanel extends javax.swing.JPanel implements VoxelSelectorL
 
         setLayout(new java.awt.GridLayout(2, 0));
 
+        setBorder(new javax.swing.border.TitledBorder(null, "Colorconversion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
         jColorChooser1.setBorder(new javax.swing.border.TitledBorder(""));
         jColorChooser1.setDoubleBuffered(true);
         add(jColorChooser1);
