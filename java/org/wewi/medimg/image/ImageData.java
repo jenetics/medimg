@@ -7,31 +7,33 @@
 package org.wewi.medimg.image;
 
 import java.util.Arrays;
+import java.util.RandomAccess;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.2
  */
-public final class ImageData implements Image { 
+public final class ImageData implements Image, RandomAccess { 
     
-    private class ImageDataVoxelIterator implements VoxelIterator {
+    private final class ImageDataVoxelIterator implements VoxelIterator {
         private int[] data;
         private int size;
         private int pos;
         
         public ImageDataVoxelIterator(int[] data) {
             this.data = data;
-            size = data.length;
-            pos = 0;
+            size = data.length-1;
+            pos = -1;
         }
         
         public boolean hasNext() {
+            ++pos;
             return pos < size;
         }
         
         public int next() {
-            return data[pos++];
+            return data[pos];
         }
         
         public int size() {
@@ -43,8 +45,39 @@ public final class ImageData implements Image {
         }
     }
     
+    final static class CoordinatesToPosition {
+        private Dimension dim;
+        private int minX, minY, minZ;
+        private int sizeX, sizeXY;
+        
+        public CoordinatesToPosition(Dimension dim) {
+            this.dim = dim; 
+            minX = dim.getMinX();
+            minY = dim.getMinY();
+            minZ = dim.getMinZ();
+            sizeX = dim.getMaxX()-dim.getMinX()+1;
+            sizeXY = sizeX*(dim.getMaxY()-dim.getMinY()+1);   
+        }
+        
+        public int getPosition(int x, int y, int z) {
+            return sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX);
+        } 
+        
+        public void getCoordinates(int pos, int[] coordinate) {
+            coordinate[2] = pos / (sizeXY);
+            pos = pos - (coordinate[2] * sizeXY);
+            coordinate[1] = pos / (sizeX);
+            pos = pos - (coordinate[1] * sizeX);
+            coordinate[0] = pos; 
+            
+            coordinate[0] += minX;
+            coordinate[1] += minY;
+            coordinate[2] += minZ;                
+        }           
+    }
     
-    private int minColor = Integer.MAX_VALUE;
+    
+    private int minColor = Integer.MIN_VALUE;
     private int maxColor = Integer.MAX_VALUE;
     private ColorRange colorRange = null;
     private int maxX, maxY, maxZ;

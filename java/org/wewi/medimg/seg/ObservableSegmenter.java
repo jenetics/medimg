@@ -41,28 +41,28 @@ public abstract class ObservableSegmenter implements Segmenter {
         return logger.getLevel();
     }
     
-    public void addSegmentationListener(SegmenterObserver o) {
+    public void addSegmenterListener(SegmenterListener o) {
         listeners.add(o);
     }
     
-    public void removeSegmentationListener(SegmenterObserver o) {
+    public void removeSegmenterListener(SegmenterListener o) {
         listeners.remove(o);
     }
     
     protected void notifySegmenterStarted(SegmenterEvent event) {
         Vector lv = (Vector)listeners.clone();
-        SegmenterObserver l;
+        SegmenterListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
-            l = (SegmenterObserver)it.next();
+            l = (SegmenterListener)it.next();
             l.segmenterStarted(event);
         }
     }    
     
     protected void notifySegmenterFinished(SegmenterEvent event) {
         Vector lv = (Vector)listeners.clone();
-        SegmenterObserver l;
+        SegmenterListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
-            l = (SegmenterObserver)it.next();
+            l = (SegmenterListener)it.next();
             l.segmenterFinished(event);
         }
     }    

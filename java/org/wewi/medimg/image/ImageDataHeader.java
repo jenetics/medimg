@@ -23,6 +23,8 @@ class ImageDataHeader implements ImageHeader {
     private int maxX, maxY, maxZ;
     private ImageData image;
 
+    static final int HEADER_SIZE = 24;
+
     public ImageDataHeader(int minX, int minY, int minZ,
                            int maxX, int maxY, int maxZ, ImageData image) {
         this.minX = minX;

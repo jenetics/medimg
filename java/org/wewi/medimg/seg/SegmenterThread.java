@@ -36,28 +36,28 @@ public class SegmenterThread extends Thread {
 		segImage = new NullImage();	
 	}
 	
-    public void addSegmenterObserver(SegmenterObserver o) {
+    public void addSegmenterObserver(SegmenterListener o) {
         observer.add(o);
     }
     
-    public void removeSegmenterObserver(SegmenterObserver o) {
+    public void removeSegmenterObserver(SegmenterListener o) {
         observer.remove(o);
     }
     
     private void notifySegmenterFinished() {
         Vector o = (Vector)observer.clone();
-        SegmenterObserver so;
+        SegmenterListener so;
         for (Iterator it = o.iterator(); it.hasNext();) {
-            so = (SegmenterObserver)it.next();
+            so = (SegmenterListener)it.next();
             so.segmenterFinished(new SegmenterEvent(this));
         }
     }
     
     private void notifySegmenterStarted() {
         Vector o = (Vector)observer.clone();
-        SegmenterObserver so;
+        SegmenterListener so;
         for (Iterator it = o.iterator(); it.hasNext();) {
-            so = (SegmenterObserver)it.next();
+            so = (SegmenterListener)it.next();
             so.segmenterStarted(new SegmenterEvent(this));
         }
     }    	
