@@ -21,7 +21,7 @@
 package org.wewi.medimg.alg;
 
 import java.util.EventObject;
-
+  
 /**
  * This Object represents an iteration event. This event is sent, when the
  * algorithm starts a new iteration.
