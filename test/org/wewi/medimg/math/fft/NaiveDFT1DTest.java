@@ -13,7 +13,7 @@ import org.wewi.medimg.math.Complex;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class NaiveDFT1DTest extends DFT1DTest {
+public class NaiveDFT1DTest extends DFTTest {
     protected static final double EPSILON = 0.01;
 
     /**
@@ -73,7 +73,7 @@ public class NaiveDFT1DTest extends DFT1DTest {
                                        new Complex(5.4),
                                        new Complex(3.45)};
                              
-        dft.transformBackward(data);
+        dft.transformInverse(data);
                              
         assertEquals(new Complex(15.565, 0), data[0], EPSILON);
         assertEquals(new Complex(-3.2075, 2.55333), data[1], EPSILON);
@@ -84,6 +84,8 @@ public class NaiveDFT1DTest extends DFT1DTest {
     }
     
     public void testBothTransformations() {
+        dft = new NaiveDFT1D(-1.5, 1);
+        
         Complex[] data = new Complex[64];
         Complex[] result = new Complex[64];
         for (int i = 0; i < data.length; i++) {
@@ -92,7 +94,7 @@ public class NaiveDFT1DTest extends DFT1DTest {
         }
         
         dft.transform(result);
-        dft.transformBackward(result);
+        dft.transformInverse(result);
         
         for (int i = 0; i < data.length; i++) {
             assertEquals(result[i], data[i], EPSILON);    
