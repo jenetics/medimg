@@ -23,7 +23,7 @@ public class DisplacementField implements Transformation {
     protected boolean[] filled;
     public Vector referencePoints;
     private int sizeX;
-    private int sizeY;
+    private int sizeY; 
     private int sizeZ;
 
    
@@ -78,11 +78,17 @@ public class DisplacementField implements Transformation {
         return (filled[(int)src.getValue(0) + ((int)src.getValue(1) * sizeX) + ((int)src.getValue(2) * sizeX * sizeY)]);
     }
     
-    private void transformBackward(double[] source, double[] target) {
+    public void transformBackward(double[] source, double[] target) {
     }
     
-    private void transformBackward(float[] source, float[] target) {
+    public void transformBackward(float[] source, float[] target) {
     }
+    
+    /**
+     * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(int[], int[])
+     */
+    public void transformBackward(int[] target, int[] source) {
+    }    
     
     public void transform(double[] source, double[] target) {
     }
@@ -116,5 +122,8 @@ public class DisplacementField implements Transformation {
     public String toString() {
         return null;
     }    
+
+
+
     
 }

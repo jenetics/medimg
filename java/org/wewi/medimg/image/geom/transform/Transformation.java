@@ -5,7 +5,7 @@
  */
 package org.wewi.medimg.image.geom.transform;
 
-import org.wewi.medimg.image.Image;
+//import org.wewi.medimg.image.Image;
 
 /**
  *
@@ -23,9 +23,15 @@ public interface Transformation {
     
     public void transform(double[] source, double[] target);
     
-    public Image transform(Image source); 
+    public void transformBackward(int[] target, int[] source);
     
-    public void transform(Image source, Image taget);     
+    public void transformBackward(float[] target, float[] source);
+    
+    public void transformBackward(double[] target, double[] source);
+    
+    //public Image transform(Image source); 
+    
+    //public void transform(Image source, Image taget);     
     
     public Transformation scale(double alpha);
     

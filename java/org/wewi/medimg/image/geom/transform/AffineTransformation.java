@@ -9,10 +9,6 @@ package org.wewi.medimg.image.geom.transform;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
-import org.wewi.medimg.image.Dimension;
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageFactory;
-import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.util.Immutable;
 
 import cern.colt.function.DoubleDoubleFunction;
@@ -33,8 +29,8 @@ import cern.jet.math.Functions;
  *
  * @version 0.1
  */
-public class AffineTransformation implements InterpolateableTransformation,
-                                                Immutable {
+public class AffineTransformation extends ImageTransformation 
+                                   implements InterpolateableTransformation, Immutable {
     private double[] matrix;
     private double[] inverseMatrix;
     
@@ -80,9 +76,27 @@ public class AffineTransformation implements InterpolateableTransformation,
         unmatrix();        
     }
     
-    public double[] getMatrix() {
+    public double[] getMatrixArray() {
         double[] m = new double[12];
         System.arraycopy(matrix, 0, m, 0, 12);
+        return m;
+    }
+    
+    public double[][] getMatrix() {
+        double[][] m = new double[4][4];
+        
+        int count = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0;j < 4; j++) {
+                m[i][j] = matrix[count];
+                count++;   
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            m[3][i] = 0;
+        }
+        m[3][3] = 1;
+        
         return m;
     }
     
@@ -376,7 +390,7 @@ public class AffineTransformation implements InterpolateableTransformation,
     }
 
     public Transformation scale(double alpha) {
-        double[] m = getMatrix();
+        double[] m = getMatrixArray();
         
         m[0] *= alpha;
         m[5] *= alpha;
@@ -474,14 +488,14 @@ public class AffineTransformation implements InterpolateableTransformation,
      * <pre>
      *       / 1               0               0               \
      * Rx =  | 0               Cos(rotXYZ[0])  -Sin(rotXYZ[0]) |
-     *       \ 0               Sin(rotXYZ[0]) Cos[rotXYZ[0])   /
+     *       \ 0               Sin(rotXYZ[0])  Cos[rotXYZ[0])  /
      * 
      *       / Cos(rotXYZ[1])  0               Sin(rotXYZ[1])  \
      * Ry =  | 0               1               0               |
      *       \ -Sin(rotXYZ[1]) 0               Cos(rotXYZ[1])  /
      * 
      *       / Cos(rotXYZ[2])  -Sin(rotXYZ[2])  0              \
-     * Rz =  | Sin(rotXYZ[2]) Cos(rotXYZ[2])    0              |
+     * Rz =  | Sin(rotXYZ[2])  Cos(rotXYZ[2])   0              |
      *       \ 0               0                1              /
      * 
      * R  = Rx.Ry.Rz
@@ -561,165 +575,6 @@ public class AffineTransformation implements InterpolateableTransformation,
         return new AffineTransformation(m);    
     }
     
-    public Image transform(Image source) {
-        Image target = (Image)source.clone();
-        transform(source, target);
-        return target;
-    }     
-
-    public void transform(Image source, Image target) {
-        target.resetColor(0);
-        target.setColorConversion(source.getColorConversion());
-        //System.out.println("&&&" + target.getColorConversion());
-
-        int tminX = target.getMinX();
-        int tminY = target.getMinY();
-        int tminZ = target.getMinZ();
-        int tmaxX = target.getMaxX();
-        int tmaxY = target.getMaxY();
-        int tmaxZ = target.getMaxZ();
-
-        int sminX = source.getMinX();
-        int sminY = source.getMinY();
-        int sminZ = source.getMinZ();
-        int smaxX = source.getMaxX();
-        int smaxY = source.getMaxY();
-        int smaxZ = source.getMaxZ();
-
-        int[] p = new int[3];
-        int[] q = new int[3];
-        int x, y, z;
-        for (int i = tminX; i <= tmaxX; i++) {
-            for (int j = tminY; j <= tmaxY; j++) {
-                for (int k = tminZ; k <= tmaxZ; k++) {
-                    p[0] = i; p[1] = j; p[2] = k;
-                    transformBackward(p, q);
-                    x = (int)q[0];
-                    y = (int)q[1];
-                    z = (int)q[2];
-                    //System.out.println("Punkt: x: " + x + " y: " + y + " z: " + z);
-                    if (x <= smaxX && x >= sminX &&
-                        y <= smaxY && y >= sminY &&
-                        z <= smaxZ && z >= sminZ) {
-                            target.setColor(i, j, k, source.getColor(x, y, z));
-                    }
-                }
-            }
-        }
-    }
-    
-    public Image transform(Image source, ImageFactory targetFactory) {
-        final Dimension MAX_DIM = new Dimension(2000, 2000, 2000);
-    	final int maxDim = 2000;
-
-        int sminX = source.getMinX();
-        int sminY = source.getMinY();
-        int sminZ = source.getMinZ();
-        int smaxX = source.getMaxX();
-        int smaxY = source.getMaxY();
-        int smaxZ = source.getMaxZ();
-        
-        int[] minPoint = {sminX, sminY, sminZ};
-        int[] maxPoint = {smaxX, smaxY, smaxZ};
-        int[] transformPoint1 = new int[3];
-        int[] transformPoint2 = new int[3];
-        transform(minPoint, transformPoint1);
-        transform(maxPoint, transformPoint2);
-        
-        int[] dims = {sminX, sminY, sminZ, smaxX, smaxY, smaxZ};
-        int[] result = new int[6];
-        transformDimensions(dims, result);
-        int sizeX = Math.abs(result[0] - result[3]);
-        int sizeY = Math.abs(result[1] - result[4]);
-        int sizeZ = Math.abs(result[2] - result[5]);
-        //System.out.println("MinPunkt: x: " + result[0] + " y: " + result[1] + " z: " + result[2]);
-        //System.out.println("MAxPunkt: x: " + result[3] + " y: " + result[4] + " z: " + result[5]);
-        //System.out.println("Size: x: " + sizeX + " y: " + sizeY + " z: " + sizeZ);        
-        Dimension dim = new Dimension(result[0], result[3] , result[1], result[4], result[2], result[5]);
-        if (!( ( sizeX > maxDim) || ( sizeY > maxDim) || ( sizeZ > maxDim))) {
-        	Image target = targetFactory.createImage(dim);
-        	transform(source, target);
-        	return target;
-        } else {
-        	return transform(source);
-        }
-    }   
-    
-    private void transformDimensions(int[] param, int[] result) {
-    	int[][] tempPoints = new int[8][3];
-    	int[] transformPoint1 = new int[3];
-    	int[] pos = new int[3];
-    	int count = 0;
-    	for(int i = 0; i < 2; i++) {
-    		for(int j = 0; j < 2; j++) {
-    			for(int k = 0; k < 2; k++) {
-    				pos[0] = i; pos[1] = j; pos[2] = k;
-    				for(int l = 0; l < 3; l++) {
-	    				transformPoint1[l] = param[(3 + l) * pos[l]];
-    				}
-    				transform(transformPoint1, tempPoints[count]);
-    				count++;
-    			}
-    		}
-    	}
-        for (int i = 0; i < 3; i++) {
-                result[i] = Integer.MAX_VALUE;
-                result[i + 3] = Integer.MIN_VALUE;
-        }    	
-    	for(int i = 0; i < 8; i++) {
-    		for(int j = 0; j < 3; j++) {
-                if (tempPoints[i][j] < result[j]) {
-                    result[j] = tempPoints[i][j];
-                }
-                if (tempPoints[i][j] > result[j + 3]) {
-                    result[j + 3] = tempPoints[i][j];
-                }
-    		}
-    	}    	
-    	
-    } 
-    
-    private Dimension transform(Dimension dim) {
-        //Die acht Eckpunkte der Bounding-Box
-        int[] p1 = {dim.getMinX(), dim.getMinY(), dim.getMinZ()};
-        int[] p2 = {dim.getMaxX(), dim.getMinY(), dim.getMinZ()};
-        int[] p3 = {dim.getMaxX(), dim.getMaxY(), dim.getMinZ()};
-        int[] p4 = {dim.getMinX(), dim.getMaxY(), dim.getMinZ()};
-        int[] p5 = {dim.getMinX(), dim.getMinY(), dim.getMaxZ()};
-        int[] p6 = {dim.getMaxX(), dim.getMinY(), dim.getMaxZ()};
-        int[] p7 = {dim.getMaxX(), dim.getMaxY(), dim.getMaxZ()};
-        int[] p8 = {dim.getMinX(), dim.getMaxY(), dim.getMaxZ()};
-        
-        //Die transformierten Eckpunkte der Bounting-Box
-        int[] tp1 = new int[3];
-        int[] tp2 = new int[3];
-        int[] tp3 = new int[3];
-        int[] tp4 = new int[3];
-        int[] tp5 = new int[3];
-        int[] tp6 = new int[3];
-        int[] tp7 = new int[3];
-        int[] tp8 = new int[3];
-        
-        transform(p1, tp1);
-        transform(p2, tp2);
-        transform(p3, tp3);
-        transform(p4, tp4);
-        transform(p5, tp5);
-        transform(p6, tp6);
-        transform(p7, tp7);
-        transform(p8, tp8);
-        
-        //Die neuen Eckpunkte der Bounding-Box
-        int minX = MathUtil.min(new int[]{tp1[0], tp2[0], tp3[0], tp4[0], tp5[0], tp6[0], tp7[0],tp8[0]});
-        int minY = MathUtil.min(new int[]{tp1[1], tp2[1], tp3[1], tp4[1], tp5[1], tp6[1], tp7[1],tp8[1]});
-        int minZ = MathUtil.min(new int[]{tp1[2], tp2[2], tp3[2], tp4[2], tp5[2], tp6[2], tp7[2],tp8[2]});
-        int maxX = MathUtil.max(new int[]{tp1[0], tp2[0], tp3[0], tp4[0], tp5[0], tp6[0], tp7[0],tp8[0]});
-        int maxY = MathUtil.max(new int[]{tp1[1], tp2[1], tp3[1], tp4[1], tp5[1], tp6[1], tp7[1],tp8[1]});
-        int maxZ = MathUtil.max(new int[]{tp1[2], tp2[2], tp3[2], tp4[2], tp5[2], tp6[2], tp7[2],tp8[2]});        
-      
-        return new Dimension(minX, maxX, minY, maxY, minZ, maxZ);      
-    }   
-
     public void transform(double[] source, double[] target) {
         double x = matrix[0] * source[0] +
                    matrix[1] * source[1] +
@@ -822,7 +677,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         return (AffineTransformation)At.concatenate(Ar.concatenate(Ash.concatenate(As)));
     }    
 
-    private void transformBackward(double[] source, double[] target) {
+    public void transformBackward(double[] source, double[] target) {
         double x = inverseMatrix[0] * source[0] +
                    inverseMatrix[1] * source[1] +
                    inverseMatrix[2] * source[2] +
@@ -843,7 +698,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         target[2] = z;
     }
 
-    private void transformBackward(float[] source, float[] target) {
+    public void transformBackward(float[] source, float[] target) {
         float x = (float)inverseMatrix[0] * source[0] +
                   (float)inverseMatrix[1] * source[1] +
                   (float)inverseMatrix[2] * source[2] +
@@ -864,7 +719,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         target[2] = z;
     }
 
-    private void transformBackward(int[] source, int[] target) {
+    public void transformBackward(int[] source, int[] target) {
         float x = (float)inverseMatrix[0] * (float)source[0] +
                   (float)inverseMatrix[1] * (float)source[1] +
                   (float)inverseMatrix[2] * (float)source[2] +
