@@ -1,4 +1,4 @@
-/*
+/**
  * GreyRGBConversion.java
  *
  * Created on 21. Februar 2002, 12:39
