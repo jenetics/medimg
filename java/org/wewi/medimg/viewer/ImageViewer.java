@@ -47,7 +47,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     //Menü-Kommandos
     private Command saveCommand;
     
-    private long id = System.currentTimeMillis();
+    private final long id = System.currentTimeMillis();
     
     public ImageViewer(String title, Image image) {
         super(title, true, true, true, true);
@@ -63,7 +63,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     public ImageViewer(String title, Image image, ColorConversion cc) {
         super(title, true, true, true, true);
         this.cc = cc;
-        this.image = image;//new TransformableImage(image);
+        this.image = image;
         listener = new Vector();   
         slice = image.getMinZ();
         initFrame();       
@@ -127,7 +127,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     }
     
     /**
-     * Diese Listener werden durchgereicht zum ImagePanel.
+     * Diese Listener werden zum ImagePanel durchgereicht .
      */
     public synchronized void addVoxelSelectorListener(VoxelSelectorListener listener) {
         imagePanel.addVoxelSelectorListener(listener);

@@ -179,7 +179,8 @@ public class SegmentationWizard extends Wizard {
             
             algorithm = (InterruptableAlgorithm)segmenter;
             try {
-                algorithm.cancelAlgorithm();             
+                algorithm.cancelAlgorithm();  
+                wizard.cancelButton.setEnabled(false);           
             } catch (UnsupportedOperationException e) {
                 getLogger().warning("cancleAlgorithm not implemented");
             }    
@@ -190,9 +191,6 @@ public class SegmentationWizard extends Wizard {
         }
         
         public void iterationFinished(AlgorithmIterationEvent event) {
-            //if (twinImageViewer != null) {
-            //    twinImageViewer.redrawImages();    
-            //}
             if (imageSynchronizer != null) {
                 imageSynchronizer.repaintImages();    
             }
@@ -216,9 +214,6 @@ public class SegmentationWizard extends Wizard {
             wizardLogger.info("Segmentiervorgang beendet");
             /**************************************************************/ 
             
-            //if (twinImageViewer != null) {
-            //     twinImageViewer.redrawImages();    
-            //}
             if (imageSynchronizer != null) {
                 imageSynchronizer.repaintImages();    
             }                      

@@ -1,4 +1,4 @@
-/*
+/**
  * MAPKMeansClustererArgumentPanel.java
  *
  * Created on 11. August 2002, 21:16
@@ -16,7 +16,7 @@ import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
+public final class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
     private int nfeatures = 1;
     
     private final static double BETA_DIVISOR = 100d;
@@ -79,7 +79,7 @@ public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
         add(nfeaturesSlider);
 
         betaLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        betaLabel.setText("  Beta (Gibbspotential):    0.30");
+        betaLabel.setText("  Beta (Gibbspotential):    0,30");
         add(betaLabel);
 
         betaSlider.setMajorTickSpacing(10);

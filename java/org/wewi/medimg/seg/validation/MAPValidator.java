@@ -5,6 +5,8 @@
 package org.wewi.medimg.seg.validation;
 
 import org.jdom.Element;
+import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
+import org.wewi.medimg.util.param.Parameter;
 
 /**
  * @author Franz Wilhelmstötter
@@ -33,6 +35,9 @@ public class MAPValidator extends Validator {
 	 * @see org.wewi.medimg.seg.validation.Validator#validate()
 	 */
 	public void validate() {
+        Parameter k = (Parameter)parameterList.get(0);
+        Parameter beta;
+        MAPKMeansClusterer clusterer = new MAPKMeansClusterer(((Integer)k.getParameterObject()).intValue());
 	}
 
 }

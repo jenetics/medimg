@@ -26,6 +26,7 @@ final class Permutation {
         
         current = new int[length.length];
         Arrays.fill(current, 0);
+        current[0] = -1;
         
         l = 1;
         for (int i = 0; i < current.length; i++) {
@@ -35,7 +36,7 @@ final class Permutation {
 	}
     
     public boolean hasNext() {
-        return pos < l-1;    
+        return pos < l;    
     }
     
     
