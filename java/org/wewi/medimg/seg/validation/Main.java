@@ -41,14 +41,14 @@ public class Main {
         Image simg = new NullImage();
         
         ObservableSegmenter seg = null;
-        seg = new MLKMeansClusterer(10);
+        seg = new MLKMeansClusterer(5);
         //seg.addLoggerHandler(new ConsoleHandler());
         
         try {
             System.out.println("Lesen des Modells");
             ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(),
                                             new File("X:/images/nbrain.model.rid"));
-            reader.read();
+            //reader.read();
             mimg = reader.getImage();
             System.out.println("Lesen des Bildes");
             reader = new RawImageReader(ImageDataFactory.getInstance(),
@@ -76,7 +76,7 @@ public class Main {
         
         System.out.println("Validieren");
         Validator val = new Validator(simg, mimg);
-        val.validate();
+        //val.validate();
         
         System.out.println(val);
         
