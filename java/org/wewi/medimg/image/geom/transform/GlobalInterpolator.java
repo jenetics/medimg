@@ -7,6 +7,7 @@
 package org.wewi.medimg.image.geom.transform;
 import java.util.Arrays;
 
+import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.math.vec.VectorIterator;
 
 /**
@@ -14,35 +15,75 @@ import org.wewi.medimg.math.vec.VectorIterator;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class GlobalInterpolator implements DisplacementF.Interpolator {
+public class GlobalInterpolator extends DisplacementF.Interpolator {
     
-    public static interface WeightFunction {
+    public static interface WeightFunction extends Cloneable {
+        
         public double eval(double[] p, double[] q);
+        
+        public Object clone();
     }
     
     
-    private DisplacementF field;
-    private WeightFunction weight;
-    
-    
-    public GlobalInterpolator(DisplacementF field, WeightFunction weightFunction) {
-        weight = weightFunction;
-        this.field = field;
+    public final static class ExponentialWeightFunction implements WeightFunction {
+
+        private double b = 1;
+        
+        public ExponentialWeightFunction(double b) {
+            this.b = b;    
+        }
+        
+        
+		/**
+		 * @see org.wewi.medimg.image.geom.transform.GlobalInterpolator.WeightFunction#eval(double[], double[])
+		 */
+		public double eval(double[] p, double[] q) {
+            
+            double d = Math.sqrt(MathUtil.sqr(p[0] - q[0]) + 
+                                  MathUtil.sqr(p[1] - q[1]) +
+                                  MathUtil.sqr(p[2] - q[2]));
+			//return Math.exp(-d*b);
+            
+            if (d < 100) {
+                return 1/(d*d+1);
+            } else {
+                return 0;
+            }
+            //return 1000-d*d;
+		}
+        
+        
+		/**
+		 * @see org.wewi.medimg.image.geom.transform.GlobalInterpolator.WeightFunction#clone()
+		 */
+		public Object clone() {
+			return new ExponentialWeightFunction(this.b);
+		}
     }
     
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.DisplacementF.Interpolator#interpolateEndPoint(int[], int[])
-	 */
-	public void interpolateEndPoint(int[] startPoint, int[] endPoint) {
-        interpolateEndPoint(startPoint, endPoint);
-	}
+  
+    private WeightFunction weightFunction;
     
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.DisplacementF.Interpolator#interpolateEndPoint(float[], float[])
-	 */
-	public void interpolateEndPoint(float[] startPoint, float[] endPoint) {
-        interpolateEndPoint(startPoint, endPoint);
-	}
+    private GlobalInterpolator(GlobalInterpolator gi) {
+        this((WeightFunction)gi.weightFunction.clone());
+    }
+    
+    public GlobalInterpolator() {
+        this.weightFunction = new ExponentialWeightFunction(1);
+    }
+    
+    public GlobalInterpolator(WeightFunction weightFunction) {
+        this.weightFunction = weightFunction;
+    }
+    
+    public void setWeightFunction(WeightFunction weightFunction) {
+        this.weightFunction = (WeightFunction)weightFunction.clone();
+    }
+    
+    public WeightFunction getWeightFunction() {
+        return weightFunction;
+    }
+    
     
 	/**
 	 * @see org.wewi.medimg.image.geom.transform.DisplacementF.Interpolator#interpolateEndPoint(double[], double[])
@@ -55,41 +96,27 @@ public class GlobalInterpolator implements DisplacementF.Interpolator {
         Arrays.fill(vector, 0);
         
         double w = 1;
-        int count = 0;
-        for (VectorIterator it = field.getVectorIterator(); it.hasNext();) {
+        double wsum = 0;
+        for (VectorIterator it = getField().getVectorIterator(); it.hasNext();) {
             it.next(start, end);
 
-            w = weight.eval(start, startPoint);
+            w = weightFunction.eval(start, startPoint);
             
             vector[0] += (end[0] - start[0])*w;
             vector[1] += (end[1] - start[1])*w;
             vector[2] += (end[2] - start[2])*w;
             
-            count++;
+            wsum += w;
         }
         
-        vector[0] /= (double)count;
-        vector[1] /= (double)count;
-        vector[2] /= (double)count;
+        vector[0] /= wsum;
+        vector[1] /= wsum;
+        vector[2] /= wsum;
         
         endPoint[0] = startPoint[0] + vector[0];
         endPoint[1] = startPoint[1] + vector[1];
         endPoint[2] = startPoint[2] + vector[2];
         
-	}
-    
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.DisplacementF.Interpolator#interpolateStartPoint(int[], int[])
-	 */
-	public void interpolateStartPoint(int[] endPoint, int[] startPoint) {
-        interpolateStartPoint(endPoint, startPoint);
-	}
-    
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.DisplacementF.Interpolator#interpolateStartPoint(float[], float[])
-	 */
-	public void interpolateStartPoint(float[] endPoint, float[] startPoint) {
-        interpolateStartPoint(endPoint, startPoint);
 	}
     
 	/**
@@ -103,27 +130,37 @@ public class GlobalInterpolator implements DisplacementF.Interpolator {
         Arrays.fill(vector, 0);
         
         double w = 1;
-        int count = 0;
-        for (VectorIterator it = field.getVectorIterator(); it.hasNext();) {
+        double wsum = 0;
+        for (VectorIterator it = getField().getVectorIterator(); it.hasNext();) {
             it.next(start, end);
 
-            w = weight.eval(end, endPoint);
+            w = weightFunction.eval(end, endPoint);
+            //System.out.println(w); 
             
-            vector[0] += (start[0] - end[0])*w;
-            vector[1] += (start[1] - end[0])*w;
-            vector[2] += (start[2] - end[0])*w;
+            vector[0] += (end[0] - start[0])*w;
+            vector[1] += (end[1] - start[1])*w;
+            vector[2] += (end[2] - start[2])*w;
             
-            count++;
+            wsum += w;
         }
         
-        vector[0] /= (double)count;
-        vector[1] /= (double)count;
-        vector[2] /= (double)count;
+        //System.out.println("wsum: " + wsum);
         
-        endPoint[0] = startPoint[0] + vector[0];
-        endPoint[1] = startPoint[1] + vector[1];
-        endPoint[2] = startPoint[2] + vector[2];        
+        vector[0] /= wsum;
+        vector[1] /= wsum;
+        vector[2] /= wsum;
+        
+        
+        startPoint[0] = endPoint[0] - vector[0];
+        startPoint[1] = endPoint[1] - vector[1];
+        startPoint[2] = endPoint[2] - vector[2];        
 	}
+    
+    
+    
+    public Object clone() {
+        return new GlobalInterpolator(this);
+    }
 }
 
 

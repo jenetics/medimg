@@ -66,9 +66,9 @@ public abstract class AbstractGridVectorField implements GridVectorField {
     private final int SIZE;
     
     
-    public AbstractGridVectorField(AbstractGridVectorField field) {
+    protected AbstractGridVectorField(AbstractGridVectorField field) {
         this(field.origin, field.grid, field.stride);  
-        data.copy(field.data);  
+        field.data.copy(data);  
     }
 
 

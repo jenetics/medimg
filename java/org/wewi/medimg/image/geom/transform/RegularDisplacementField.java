@@ -11,8 +11,8 @@ import org.wewi.medimg.image.geom.Point3D;
 import org.wewi.medimg.math.vec.DoubleGridVectorField;
 import org.wewi.medimg.math.vec.GridVectorField;
 import org.wewi.medimg.math.vec.VectorIterator;
+import org.wewi.medimg.math.vec.ops.GridFieldLoop;
 import org.wewi.medimg.math.vec.ops.GridVectorFieldTransformer;
-import org.wewi.medimg.math.vec.ops.GridVectorFunction;
 import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
 
 /**
@@ -22,44 +22,30 @@ import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
 public class RegularDisplacementField extends DisplacementF 
                                        implements GridVectorField {
     
-    private static class NearestNeighborInterpolator implements Interpolator {
-        public void interpolateEndPoint(int[] startPoint, int[] endPoint) {
-        }
-        
-        public void interpolateEndPoint(float[] startPoint, float[] endPoint) {
-        }
+    private static class NearestNeighborInterpolator extends Interpolator {
         
 		public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
 		}
 
-		public void interpolateStartPoint(int[] endPoint, int[] startPoint) {
-		}
-
-		public void interpolateStartPoint(float[] endPoint, float[] startPoint) {
-		}
-
 		public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
 		}
+        
+        public Object clone() {
+            return null;
+        }
     }
     
-    private static class TrilinearInterpolator implements Interpolator {
-		public void interpolateEndPoint(int[] startPoint, int[] endPoint) {
-		}
-
-		public void interpolateEndPoint(float[] startPoint, float[] endPoint) {
-		}
+    private static class TrilinearInterpolator extends Interpolator {
 
 		public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
 		}
 
-		public void interpolateStartPoint(int[] endPoint, int[] startPoint) {
-		}
-
-		public void interpolateStartPoint(float[] endPoint, float[] startPoint) {
-		}
-
 		public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
 		}
+        
+        public Object clone() {
+            return null;
+        }
     }
     
     /**
@@ -118,6 +104,9 @@ public class RegularDisplacementField extends DisplacementF
         
         vectorField = new DoubleGridVectorField(origin, gridsXYZ, strideXYZ);
         
+        //Init the field to the identity transformation
+        FieldFactory.toIdentityField(this);
+        
         setInterpolator(NEAREST_NEIGHBOR);        
     }
 
@@ -149,28 +138,26 @@ public class RegularDisplacementField extends DisplacementF
 	public Transformation createInverse() {
         RegularDisplacementField field = new RegularDisplacementField(this);
         
-        GridVectorFieldTransformer t = new GridVectorFieldTransformer(field, new InverseTransform());
-        t.transform();
+        
+        GridFieldLoop loop = new GridFieldLoop(field, new GridFieldLoop.Task() {
+            private double[] start = new double[3];
+            private double[] end = new double[3];
+			public void execute(int gridX, int gridY, int gridZ) {
+//              The start point of the normal grid is the end point of the inverse grid.
+                vectorField.getGridStartPoint(gridX, gridY, gridZ, end);
+                
+//              Interpolating the start point from the inverse end point.
+                getInterpolator().interpolateStartPoint(end, start);
+                
+                getVectorField().setGridEndPoint(gridX, gridY, gridZ, start);
+			}
+        
+        });
+        loop.loop();
         
 		return field;
 	}
-    private final class InverseTransform implements GridVectorFunction {
-        private double[] startPoint = new double[3];
-        private double[] endPoint = new double[3];
-        
-		public void transform(int gridX, int gridY, int gridZ, double[] oldNewVector) {
-            //The start point of the normal grid is the end point of the inverse grid.
-            vectorField.getGridStartPoint(gridX, gridY, gridZ, endPoint);
-            
-            //Interpolating the start point from the inverse end point.
-            interpolator.interpolateStartPoint(endPoint, startPoint);
-            
-            //The new vector is the negative of endPoint - startPoint
-            oldNewVector[0] = startPoint[0] - endPoint[0];
-            oldNewVector[1] = startPoint[1] - endPoint[1];
-            oldNewVector[2] = startPoint[2] - endPoint[2];
-		}
-    }
+
     
     /***********Methods for the GridVectorField********************************/
     
