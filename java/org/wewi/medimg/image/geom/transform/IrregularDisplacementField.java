@@ -6,6 +6,7 @@
  */
 package org.wewi.medimg.image.geom.transform;
 
+
 import org.wewi.medimg.math.vec.DoubleVectorField;
 import org.wewi.medimg.math.vec.VectorField;
 import org.wewi.medimg.math.vec.VectorIterator;
@@ -17,61 +18,30 @@ import org.wewi.medimg.math.vec.VectorIterator;
 public class IrregularDisplacementField extends DisplacementF {
     private VectorField field;
 
-	/**
-	 * Constructor for IrregularDisplacementField.
-	 */
+
 	public IrregularDisplacementField() {
 		field = new DoubleVectorField();
 	}
 
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#scale(double)
-	 */
 	public Transformation scale(double alpha) {
 		return null;
 	}
 
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#concatenate(org.wewi.medimg.image.geom.transform.Transformation)
-	 */
 	public Transformation concatenate(Transformation trans) {
 		return null;
 	}
 
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#createInverse()
-	 */
 	public Transformation createInverse() {
 		return null;
 	}
 
-	/**
-	 * @see org.wewi.medimg.math.vec.VectorField#setVector(double, double)
-	 */
-	public void setVector(double[] startPoint, double[] endPoint) {
-        field.setVector(startPoint, endPoint);
+	public void addVector(double[] startPoint, double[] endPoint) {
+        field.addVector(startPoint, endPoint);
 	}
 
-	/**
-	 * @see org.wewi.medimg.math.vec.VectorField#getVectorIterator()
-	 */
 	public VectorIterator getVectorIterator() {
 		return field.getVectorIterator();
 	}
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(int[], int[])
-	 */
-	public void transformBackward(int[] target, int[] source) {
-	}
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(float[], float[])
-	 */
-	public void transformBackward(float[] target, float[] source) {
-	}
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#transformBackward(double[], double[])
-	 */
-	public void transformBackward(double[] target, double[] source) {
-	}
+
 
 }

@@ -23,7 +23,7 @@ public class DoubleVectorField implements VectorField {
 	/**
 	 * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
 	 */
-	public void setVector(double[] startPoint, double[] endPoint) {
+	public void addVector(double[] startPoint, double[] endPoint) {
         doubleVector.add(startPoint, endPoint);
 	}
     

@@ -6,6 +6,8 @@
  */
 package org.wewi.medimg.util;
 
+import java.util.Comparator;
+
 
 /**
  * @author Franz Wilhelmstötter
@@ -16,6 +18,19 @@ public final class Arrays {
 	private Arrays() {
 		super();
 	}
+    
+    
+    public static void copy(double[] src, int srcPos, float[] dest, int destPos, int length) {
+        for (int i = 0; i < length; i++) {
+            dest[i + destPos] = (float)src[i + srcPos];
+        }
+    }
+    
+    public static void copy(double[] src, int srcPos, int[] dest, int destPos, int length) {
+        for (int i = 0; i < length; i++) {
+            dest[i + destPos] = (int)Math.round(src[i + srcPos]);
+        }
+    }
     
     /**
      * Insertion sort algorithm. Instead of the <code>data</code> array, the
@@ -37,13 +52,38 @@ public final class Arrays {
             
             while (i >= 0 && data[pivot[i]] > key) {
                 pivot[i + 1] = pivot[i];
-                //data[i + 1] = data[i];
                 i = i - 1;
             }
             
-            //data[i + 1] = key;
             pivot[i + 1] = j;
         }
     }
+    
+    public static void sort(Object[] data, int[] pivot, Comparator comp) {
+        for (int i = 0, n = data.length; i < n; i++) {
+            pivot[i] = i;
+        }
+        
+        Object key = null;
+        int i = 0;
+        for (int j = 1, n = data.length; j < n; j++) {
+            key = data[pivot[j]];
+            i = j - 1;
+            
+            while (i >= 0 && comp.compare(data[pivot[i]], key) > 0) {
+                pivot[i + 1] = pivot[i];
+                i = i - 1;
+            }
+
+            pivot[i + 1] = j;
+        }        
+    }
  
 }
+
+
+
+
+
+
+

@@ -227,8 +227,8 @@ public class RegularDisplacementField extends DisplacementF
 	/**
 	 * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
 	 */
-	public void setVector(double[] startPoint, double[] endPoint) {
-        vectorField.setVector(startPoint, endPoint);
+	public void addVector(double[] startPoint, double[] endPoint) {
+        vectorField.addVector(startPoint, endPoint);
 	}
     
 	/**

@@ -67,7 +67,7 @@ public abstract class ImageTransformation implements Transformation {
             target[1] = y;
             target[2] = z;
             
-            getTransformation().transform(target, source);
+            getTransformation().transformBackward(target, source);
             
             int sx = (int)Math.round(source[0]);
             int sy = (int)Math.round(source[1]);
@@ -93,7 +93,7 @@ public abstract class ImageTransformation implements Transformation {
 	 * Constructor for ImageTransformation.
 	 */
 	public ImageTransformation(Interpolator interpolator) {
-        setInterpolator(interpolator);
+        setPixelInterpolator(interpolator);
 	}
     
     /**
@@ -106,12 +106,12 @@ public abstract class ImageTransformation implements Transformation {
         this(new NearestNeighborInterpolator());
     }
     
-    public void setInterpolator(Interpolator interpolator) {
+    public void setPixelInterpolator(Interpolator interpolator) {
         this.interpolator = interpolator;
         interpolator.setTransformation(this);
     }
     
-    public Interpolator getInterpolator() {
+    public Interpolator getPixelInterpolator() {
         return interpolator;
     }
 

@@ -15,7 +15,7 @@ import java.util.Stack;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class KDTree implements Collection {
+public class KDTree {
     
     public static interface Point {
        public Comparable getOrdinate(int dimension);
@@ -23,9 +23,155 @@ public class KDTree implements Collection {
        public int getDimensions();
     }
     
-    private final class Node {
+    public static final class DoublePoint implements Point, Immutable {
+        
+        private static final class ComparableDouble implements Comparable {
+            private double value = 0;
+            public ComparableDouble setValue(double v) {
+                value = v;
+                return this;
+            }
+			public int compareTo(Object o) {
+                ComparableDouble d = (ComparableDouble)o;
+                if (value < d.value) {
+                    return -1;
+                } else if (value > d.value) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+			}
+        }
+        
+        private double[] point;
+        private ComparableDouble cpoint;
+        
+        public DoublePoint(double[] p) {
+            point = new double[p.length];
+            System.arraycopy(p, 0, point, 0, p.length);
+            cpoint = new ComparableDouble();
+        }
+        
+		/**
+		 * @see org.wewi.medimg.util.KDTree.Point#getOrdinate(int)
+		 */
+		public Comparable getOrdinate(int dimension) {
+			return cpoint.setValue(point[dimension]);
+		}
+		/**
+		 * @see org.wewi.medimg.util.KDTree.Point#getDimensions()
+		 */
+		public int getDimensions() {
+			return point.length;
+		}
+        
+        public void getValue(double[] p) {
+            System.arraycopy(point, 0, p, 0, point.length);
+        }
+        
+        public boolean equals(Object obj) {
+            if (!(obj instanceof DoublePoint)) {
+                return false;
+            }
+            
+            DoublePoint p = (DoublePoint)obj;
+            for (int i = 0, n = point.length; i < n; i++){
+                if (Double.doubleToLongBits(p.point[i]) != Double.doubleToLongBits(point[i])) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        public String toString() {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("(");
+            for (int i = 0, n = point.length; i < n; i++) {
+                buffer.append(point[i]);
+                if (i < n-1) {
+                    buffer.append(" ; ");
+                }
+            }
+            buffer.append(")");
+            
+            return buffer.toString();
+        }
+    }
+    
+    
+    public static final class IntPoint implements Point, Immutable {
+        
+        private static final class ComparableInt implements Comparable {
+            private int value = 0;
+            public ComparableInt setValue(int v) {
+                value = v;
+                return this;
+            }
+            public int compareTo(Object o) {
+                ComparableInt d = (ComparableInt)o;
+                return value - d.value;
+            }
+        }
+        
+        private int[] point;
+        private ComparableInt cpoint;
+        
+        public IntPoint(int[] p) {
+            point = new int[p.length];
+            System.arraycopy(p, 0, point, 0, p.length);
+            cpoint = new ComparableInt();
+        }
+        
+        /**
+         * @see org.wewi.medimg.util.KDTree.Point#getOrdinate(int)
+         */
+        public Comparable getOrdinate(int dimension) {
+            return cpoint.setValue(point[dimension]);
+        }
+        /**
+         * @see org.wewi.medimg.util.KDTree.Point#getDimensions()
+         */
+        public int getDimensions() {
+            return point.length;
+        }
+        
+        public void getValue(int[] p) {
+            System.arraycopy(point, 0, p, 0, point.length);
+        }
+        
+        public boolean equals(Object obj) {
+            if (!(obj instanceof IntPoint)) {
+                return false;
+            }
+            
+            IntPoint p = (IntPoint)obj;
+            for (int i = 0, n = point.length; i < n; i++){
+                if (p.point[i] != point[i]) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }        
+        
+        public String toString() {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("(");
+            for (int i = 0, n = point.length; i < n; i++) {
+                buffer.append(point[i]);
+                if (i < n-1) {
+                    buffer.append(" ; ");
+                }
+            }
+            buffer.append(")");
+            
+            return buffer.toString();
+        }
+    }    
+    
+    private final static class Node {
         private int discriminate;
-        private int nsubtreenodes;
         private Point point;
         private Node left, right;
     
@@ -34,8 +180,6 @@ public class KDTree implements Collection {
             left  = null;
             right = null;
             this.discriminate = discriminate;
-        
-            nsubtreenodes = Integer.MIN_VALUE;
         }
     
         public int getNSubtreeNodes() {
@@ -48,7 +192,7 @@ public class KDTree implements Collection {
             if (right == null && left != null) {
                 return 1 + left.getNSubtreeNodes();
             }
-            return left.getNSubtreeNodes() + right.getNSubtreeNodes();
+            return 1 + left.getNSubtreeNodes() + right.getNSubtreeNodes();
         }
     
         public int getDiscriminate() {
@@ -90,10 +234,38 @@ public class KDTree implements Collection {
         }
     }    
     
+    private class NodeIterator implements Iterator {
+        private Stack stack = new Stack();
+        
+        public NodeIterator(Node root) {
+            if (root != null) {
+                stack.push(root);
+            }
+        }
+        
+		public boolean hasNext() {
+			return !stack.isEmpty();
+		}
+        
+		public Object next() {
+            Node node = (Node)stack.pop();
+            
+            if(node.getLeft() != null) {
+                stack.push(node.getLeft());
+            }
+            if(node.getRight() != null) {
+                stack.push(node.getRight());
+            }
+            
+			return node.getPoint();
+		}
+        
+		public void remove() {
+            throw new UnsupportedOperationException();
+		}
+    }
     
-    
-    
-    
+    /**************************************************************************/
     private Node root;
 
     public KDTree() { 
@@ -101,59 +273,12 @@ public class KDTree implements Collection {
     }
     
     /**
-     * Inserting
-     * 
-     * @param point einzufügender Punkt
-     */
-    public void insert(Point point) { 
-        if(root == null) {
-            root = new Node(point, 0);
-            return;
-        } 
-        
-        int discriminate, dimensions;
-        Node curNode, tmpNode;
-        Comparable ordinate1, ordinate2;
-        curNode = root;
-        
-        do {
-            tmpNode = curNode;
-            discriminate = tmpNode.getDiscriminate();
-            ordinate1 = point.getOrdinate(discriminate);
-            ordinate2 = tmpNode.getPoint().getOrdinate(discriminate);
-            
-            if(ordinate1.compareTo(ordinate2) > 0) {
-                curNode = tmpNode.getRight();
-            } else {
-                curNode = tmpNode.getLeft();
-            }
-        } while(curNode != null);
-        
-        dimensions = point.getDimensions();
-        
-        if(++discriminate >= dimensions) {
-            discriminate = 0;
-        }
-        
-        if(ordinate1.compareTo(ordinate2) > 0) {
-            tmpNode.setRight(new Node(point, discriminate));
-        } else {
-            tmpNode.setLeft(new Node(point, discriminate));
-        }
-        
-    }
-    
- 
-    
-    
-    /**
      * Determines if a point is contained within a given
      * k-dimensional bounding box.
      */
-    private static final boolean isContained(Point point, Point lower, Point upper) {
-        int dimensions;
+    private static final boolean contains(Point point, Point lower, Point upper) {
         Comparable ordinate1, ordinate2, ordinate3;
-        dimensions = point.getDimensions();
+        int dimensions = point.getDimensions();
         
         for(int i = 0; i < dimensions; ++i) {
             ordinate1 = point.getOrdinate(i);
@@ -169,12 +294,152 @@ public class KDTree implements Collection {
     }
     
     /**
-     * Searches the tree for all points contained within a
-     * given k-dimensional bounding box and stores them in a
-     * Collection.
+     * Inserting a new Point.
+     * 
+     * @param point to be insert.
      */
-    public void search(Collection results, Point lowerExtreme, Point upperExtreme) {
-        Node tmpNode;
+    public boolean add(Point point) { 
+        if(root == null) {
+            root = new Node(point, 0);
+            return true;
+        } 
+        
+        int discriminate, dimensions;
+        Node currentNode;
+        Node tempNode;
+        Comparable ordinate1, ordinate2;
+        currentNode = root;
+        
+        do {
+            tempNode = currentNode;
+            discriminate = tempNode.getDiscriminate();
+            ordinate1 = point.getOrdinate(discriminate);
+            ordinate2 = tempNode.getPoint().getOrdinate(discriminate);
+            
+            if(ordinate1.compareTo(ordinate2) > 0) {
+                currentNode = tempNode.getRight();
+            } else {
+                currentNode = tempNode.getLeft();
+            }
+        } while(currentNode != null);
+        
+        dimensions = point.getDimensions();
+        
+        if(++discriminate >= dimensions) {
+            discriminate = 0;
+        }
+        
+        if(ordinate1.compareTo(ordinate2) > 0) {
+            tempNode.setRight(new Node(point, discriminate));
+        } else {
+            tempNode.setLeft(new Node(point, discriminate));
+        }
+        
+        return true;
+    }
+    
+    private void add(Node node) {
+        Node n = null;
+        for (Iterator it = new NodeIterator(node); it.hasNext();) {
+            n = (Node)it.next();
+            add(n.getPoint());
+        }
+    }
+    
+
+    /**
+     * Removes the first occurence of the specified point from the kd-tree, 
+     * if it exists.
+     * Returns <code>true</code> if the point could be removed and
+     * <code>false</code> if the tree doesn't contain the point
+     * 
+     * @param point point to be removed.
+     * @return boolean <code>true</code> if the point could be removed
+     *                 successfully, <code>false</code> otherwise.
+     */
+    public boolean remove(Point point) {
+        Node node = root;
+        Node parent = null;
+        int dim; 
+        while (true) {
+            if (node == null) {
+                return false;
+            }
+            if (node.getPoint().equals(point)) {
+                Node right = node.getRight();
+                Node left = node.getLeft();
+                
+                if (parent.getRight() == node) {
+                    parent.setRight(null);
+                } else if (parent.getLeft() == node) {
+                    parent.setLeft(null);
+                }
+                
+                add(right);
+                add(left);
+                
+                return true;
+            }
+            
+            parent = node;
+            dim = node.getDiscriminate();
+            if (node.getPoint().getOrdinate(dim).compareTo(point.getOrdinate(dim)) > 0) {
+                node = node.getRight();   
+            } else {
+                node = node.getLeft();
+            }
+        }
+    }
+    
+    /**
+     * Tests, if the specified point is part of the kd-tree.
+     * 
+     * @param point Specific point to be test.
+     * @return boolean <code>true</code> if this kd-tree contains the
+     *                  specified point, <code>false</code> otherwise.
+     */
+    public boolean contains(Point point) {
+        Node node = root;
+        int dim = node.getDiscriminate();
+        while (true) {
+            if (node == null) {
+                return false;
+            }
+            if (node.getPoint().equals(point)) {
+                return true;
+            }
+            
+            if (node.getPoint().getOrdinate(dim).compareTo(point.getOrdinate(dim)) > 0) {
+                node = node.getRight();   
+            } else {
+                node = node.getLeft();
+            }
+        }
+    }
+    
+    /**
+     * Returns <code>true</code> if the range (k-dimensional bounding box), 
+     * specified by the <code>lower</code>- and <code>upper</code> bound, 
+     * contains any point.
+     * 
+     * @param lower lower bound of the k-dimensional bounding box.
+     * @param upper upper bound of the k-dimensional bounding box.
+     * @return boolean <code>true</code> if the range contains any point.
+     */
+    public boolean contains(Point lower, Point upper) {
+        return false;
+    }
+    
+    /**
+     * Searches the tree for all points contained within a given k-dimensional
+     * bounding box and stores them in a collection.
+     * 
+     * @param lower lower bound of the k-dimensional bounding box.
+     * @param upper upper bound of the k-dimensional bounding box.
+     * @param results collection with the points found in the bouning box.
+     */
+    public void getPoints(Point lower, Point upper, Collection results) {
+        Node node;
         Stack stack = new Stack();
         int discriminate;
         Comparable ordinate1, ordinate2;
@@ -186,124 +451,96 @@ public class KDTree implements Collection {
         stack.push(root);
         
         while(!stack.empty()) {
-            tmpNode =(Node)stack.pop();
-            discriminate = tmpNode.getDiscriminate();
-            ordinate1 = tmpNode.getPoint().getOrdinate(discriminate);
-            ordinate2 = lowerExtreme.getOrdinate(discriminate);
+            node =(Node)stack.pop();
+            discriminate = node.getDiscriminate();
+            ordinate1 = node.getPoint().getOrdinate(discriminate);
+            ordinate2 = lower.getOrdinate(discriminate);
             
-            if(ordinate1.compareTo(ordinate2) > 0 && tmpNode.getLeft() != null) {
-                stack.push(tmpNode.getLeft());
+            if(ordinate1.compareTo(ordinate2) > 0 && node.getLeft() != null) {
+                stack.push(node.getLeft());
             }
             
-            ordinate2 = upperExtreme.getOrdinate(discriminate);
+            ordinate2 = upper.getOrdinate(discriminate);
             
-            if(ordinate1.compareTo(ordinate2) < 0 && tmpNode.getRight() != null) {
-                stack.push(tmpNode.getRight());
+            if(ordinate1.compareTo(ordinate2) < 0 && node.getRight() != null) {
+                stack.push(node.getRight());
             }
             
-            if(isContained(tmpNode.getPoint(), lowerExtreme, upperExtreme)) {
-                results.add(tmpNode.getPoint());
+            if(contains(node.getPoint(), lower, upper)) {
+                results.add(node.getPoint());
             }
         }
+
     }
     
-    public Collection search(Point lowerExtreme, Point upperExtreme) {
+    /**
+     * Searches the tree for all points contained within a given k-dimensional
+     * bounding box and returns them in a collection.
+     * 
+     * @param lower lower bound of the k-dimensional bounding box.
+     * @param upper upper bound of the k-dimensional bounding box.
+     * @return Collection collection with the points found in the bouning box.
+     */
+    public Collection getPoints(Point lower, Point upper) {
         ArrayList result = new ArrayList();
-        
-        search(result, lowerExtreme, upperExtreme);
-        
+        getPoints(lower, upper, result);
         return result;
     }
     
-	/**
-	 * @see java.util.Collection#size()
-	 */
+    public Iterator rangeIterator(Point lower, Point upper) {
+        return getPoints(lower, upper).iterator();
+    }
+    
+    public void clear() {
+        root = null;
+    }
+
 	public int size() {
-		return 0;
+        if (root == null) {
+            return 0;
+        }
+        return root.getNSubtreeNodes();
 	}
     
-	/**
-	 * @see java.util.Collection#isEmpty()
-	 */
 	public boolean isEmpty() {
-		return false;
+		return (root == null);
 	}
-    
-	/**
-	 * @see java.util.Collection#contains(java.lang.Object)
-	 */
-	public boolean contains(Object o) {
-		return false;
-	}
-    
-	/**
-	 * @see java.util.Collection#iterator()
-	 */
+  
 	public Iterator iterator() {
-		return null;
+        return new NodeIterator(root);
 	}
     
-	/**
-	 * @see java.util.Collection#toArray()
-	 */
 	public Object[] toArray() {
-		return null;
+        Point[] result = new Point[size()];
+        
+        int count = 0;
+        for (Iterator it = iterator(); it.hasNext();) {
+            result[count++] = (Point)it.next();
+        }
+        
+		return result;
 	}
     
-	/**
-	 * @see java.util.Collection#toArray(java.lang.Object[])
-	 */
 	public Object[] toArray(Object[] a) {
-		return null;
+        if (a == null) {   
+		  return toArray();
+        }
+        
+        int count = 0;
+        for (Iterator it = iterator(); it.hasNext();) {
+            a[count++] = (Point)it.next();
+        }        
+        
+        return a;
 	}
     
-	/**
-	 * @see java.util.Collection#add(java.lang.Object)
-	 */
-	public boolean add(Object o) {
-		return false;
-	}
-    
-	/**
-	 * @see java.util.Collection#remove(java.lang.Object)
-	 */
-	public boolean remove(Object o) {
-		return false;
-	}
-    
-	/**
-	 * @see java.util.Collection#containsAll(java.util.Collection)
-	 */
-	public boolean containsAll(Collection c) {
-		return false;
-	}
-    
-	/**
-	 * @see java.util.Collection#addAll(java.util.Collection)
-	 */
-	public boolean addAll(Collection c) {
-		return false;
-	}
-    
-	/**
-	 * @see java.util.Collection#removeAll(java.util.Collection)
-	 */
-	public boolean removeAll(Collection c) {
-		return false;
-	}
-    
-	/**
-	 * @see java.util.Collection#retainAll(java.util.Collection)
-	 */
-	public boolean retainAll(Collection c) {
-		return false;
-	}
-    
-	/**
-	 * @see java.util.Collection#clear()
-	 */
-	public void clear() {
-	}
+    public String toString() {
+        if (root != null) {
+            return root.toString();
+        }
+        
+        return getClass().getName() + ": Empty tree.";
+    }
 }
 
 
