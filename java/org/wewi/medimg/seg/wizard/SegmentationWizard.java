@@ -27,7 +27,7 @@ import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
 import org.wewi.medimg.seg.ObservableSegmenter;
-import org.wewi.medimg.seg.SegmenterEnumeration;
+import org.wewi.medimg.seg.SegmenterEnum;
 import org.wewi.medimg.seg.SegmenterEvent;
 import org.wewi.medimg.seg.SegmenterListener;
 import org.wewi.medimg.seg.SegmenterThread;
@@ -271,15 +271,15 @@ public class SegmentationWizard extends Wizard {
         logHandlerPanel = new LogHandlerPanel();
         ws3CenterPanel.add(logHandlerPanel);
         
-        for (int i = 0; i < SegmenterEnumeration.ENUMERATION.length; i++) {
-            segEnumComboBox.addItem(SegmenterEnumeration.ENUMERATION[i]);
+        for (int i = 0; i < SegmenterEnum.ENUMERATION.length; i++) {
+            segEnumComboBox.addItem(SegmenterEnum.ENUMERATION[i]);
         }
         
-        SegmenterEnumeration enum = (SegmenterEnumeration)segEnumComboBox.getSelectedItem();
+        SegmenterEnum enum = (SegmenterEnum)segEnumComboBox.getSelectedItem();
         SegmenterArgumentPanel panel = null;
-        if (enum.equals(SegmenterEnumeration.ML_CLUSTERER)) {
+        if (enum.equals(SegmenterEnum.ML_CLUSTERER)) {
             panel = new MLKMeansClustererArgumentPanel();
-        } else if (enum.equals(SegmenterEnumeration.MAP_CLUSTERER)) {
+        } else if (enum.equals(SegmenterEnum.MAP_CLUSTERER)) {
             panel = new MAPKMeansClustererArgumentPanel();
         }
         setSegmenterArgumentPanel(panel);
@@ -554,10 +554,10 @@ public class SegmentationWizard extends Wizard {
     }//GEN-LAST:event_startButtonActionPerformed
     
     private void segEnumComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_segEnumComboBoxItemStateChanged
-        SegmenterEnumeration enum = (SegmenterEnumeration)segEnumComboBox.getSelectedItem();
-        if (enum.equals(SegmenterEnumeration.ML_CLUSTERER)) {
+        SegmenterEnum enum = (SegmenterEnum)segEnumComboBox.getSelectedItem();
+        if (enum.equals(SegmenterEnum.ML_CLUSTERER)) {
             setSegmenterArgumentPanel(new MLKMeansClustererArgumentPanel());
-        } else if (enum.equals(SegmenterEnumeration.MAP_CLUSTERER)) {
+        } else if (enum.equals(SegmenterEnum.MAP_CLUSTERER)) {
             setSegmenterArgumentPanel(new MAPKMeansClustererArgumentPanel());
         }
         

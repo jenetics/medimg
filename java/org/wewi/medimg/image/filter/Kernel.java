@@ -12,20 +12,13 @@ import org.wewi.medimg.util.Immutable;
  */
 public class Kernel implements Immutable {
     
-    private static final int[] BLUR_DATA = {1, 1, 1, 1, 1, 1, 1, 1, 1};                                  
+    private static final int[] BLUR_DATA = {1, 1, 1, 1, 1, 1, 1, 1, 1}; 
+    private static final int[] GAUSSIAN_DATA = {1,  4,  7,  4,  1, 4,  16, 26, 16, 4, 7,  26, 41, 26, 7, 4,  16, 26, 16, 4, 1,  4,  7,  4,  1};                                 
     private static final int[] SHARPEN_DATA = {0, -1, 0, -1, 5, -1, 0, -1, 0};                                         
     private static final int[] EDGE_DETECTION_DATA = {-1, -1, -1, -1, 8, -1, -1, -1, -1};                                            
     private static final int[] EMBOSS_DATA = {1, 1, 0,1, 0, -1, 0, -1, -1};                                 
-    private static final int[] PSYCHEDELIC_DISTILLATION_DATA = {0, -1, -2, -3, -4, 
-                                                                   0, -1,  3,  2,  1, 
-                                                                   0, -1, 10,  2,  1, 
-                                                                   0, -1,  3,  2,  1, 
-                                                                   0, -1, -2, -3, -4};                                            
-    private static final int[] LITHOGRAPH_DATA = {-1, -1, -1, -1, -1, 
-                                                     -1,-10,-10,-10, -1, 
-                                                     -1,-10, 98,-10, -1, 
-                                                     -1,-10,-10,-10, -1, 
-                                                     -1, -1, -1, -1, -1};  
+    private static final int[] PSYCHEDELIC_DISTILLATION_DATA = {0, -1, -2, -3, -4, 0, -1,  3,  2,  1, 0, -1, 10,  2,  1, 0, -1,  3,  2,  1, 0, -1, -2, -3, -4};                                            
+    private static final int[] LITHOGRAPH_DATA = {-1, -1, -1, -1, -1,  -1,-10,-10,-10, -1, -1,-10, 98,-10, -1, -1,-10,-10,-10, -1, -1, -1, -1, -1, -1};  
                                                                             
     private static final int[] HORIZONTAL_SOBEL_DATA = {-1, 0, 1, -2, 0, 2,-1, 0, 1};                       
     private static final int[] VERTICAL_SOBEL_DATA = {-1, -2, -1, 0, 0, 0, 1, 2, 1};
@@ -35,6 +28,7 @@ public class Kernel implements Immutable {
 
     
     public static final Kernel BLUR = new Kernel(BLUR_DATA, 3, 9, 0);
+    public static final Kernel GAUSSIAN = new Kernel(GAUSSIAN_DATA, 5, 273, 0);
     public static final Kernel SHARPEN = new Kernel(SHARPEN_DATA, 3, 1, 0);
     public static final Kernel EDGE_DETECTION = new Kernel(EDGE_DETECTION_DATA, 3, 1, 0);
     public static final Kernel EMBOSS = new Kernel(EMBOSS_DATA, 3, 1, 0);
@@ -50,11 +44,14 @@ public class Kernel implements Immutable {
     
     
     
-    private final int[] raw;
-    private final int dim;
-    private final int divisor;
-    private final int bias;
-    private final int margin;
+    private int[] raw;
+    private int dim;
+    private int divisor;
+    private int bias;
+    private int margin;
+    
+    protected Kernel() {
+    }
 
 	/**
 	 * Constructor for Kernel.

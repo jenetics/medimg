@@ -7,6 +7,7 @@
 package org.wewi.medimg.seg;
 
 /**
+ * An Estimator
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1

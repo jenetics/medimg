@@ -1,4 +1,4 @@
-/*
+/**
  * MLKMeansEstimator.java
  *
  * Created on 24. Juli 2002, 19:36
@@ -24,6 +24,7 @@ import org.wewi.medimg.seg.Segmenter;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class MLKMeansEstimator implements Estimator {
     private final static int MAX_ITERATION = 50;
