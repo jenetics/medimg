@@ -11,7 +11,7 @@ import org.wewi.medimg.image.Image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class DilationFilter extends MorphologicalOperation {
+public final class DilationFilter extends MorphologicalOperation {
 
     public DilationFilter(Image image) {
         super(image);    
