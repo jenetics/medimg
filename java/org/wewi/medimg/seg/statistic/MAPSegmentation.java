@@ -25,8 +25,8 @@ public class MAPSegmentation extends MLSegmentation {
     private int m1Iteration;
     private int nvoxels;
     private int oldPos = -1;
-    private int[] n6 = null;
-    private int[] n12 = null;
+    private int[] n6 = new int[6];
+    private int[] n12 = new int[12];
     
    
     public MAPSegmentation(Image image, int nf, int m1It) {
@@ -44,8 +44,8 @@ public class MAPSegmentation extends MLSegmentation {
         double V = 0.0;
 
         if (oldPos != pos) {
-            n6 = featureImage.getNeighbor3D6Positions(pos);
-            n12 = featureImage.getNeighbor3D12Positions(pos);
+            featureImage.getNeighbor3D6Positions(pos, n6);
+            featureImage.getNeighbor3D12Positions(pos, n12);
             oldPos = pos;
         }
         
