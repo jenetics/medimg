@@ -48,8 +48,8 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     private JPanel rootPanel;
     private ImagePanel imagePanel1;
     private ImagePanel imagePanel2;
-    private ColorConversion conversion1;
-    private ColorConversion conversion2;
+    private ColorConversion conversion1 = null;
+    private ColorConversion conversion2 = null;
     private int slice = 0;
     
     private JPopupMenu popUpMenu;
@@ -66,7 +66,18 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     
     /** Creates a new instance of TwinImageViewer */
     public TwinImageViewer(String frameName, Image image1, Image image2) {
-        super(frameName, true, false, true, true);
+        super(frameName, true, true, true, true);
+        this.image1 = image1;
+        this.image2 = image2;
+        
+        init();
+        setSlice(0);
+    }
+    
+    public TwinImageViewer(String frameName, Image image1, Image image2, ColorConversion cc1, ColorConversion cc2) {
+        super(frameName, true, true, true, true);
+        conversion1 = cc1;
+        conversion2 = cc2;
         this.image1 = image1;
         this.image2 = image2;
         
@@ -80,8 +91,19 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         
         imagePanel1 = new ImagePanel(image1);
         imagePanel2 = new ImagePanel(image2);
-        conversion1 = imagePanel1.getColorConversion();
-        conversion2 = imagePanel2.getColorConversion();
+        if (conversion1 != null) {
+            setColorConversion1(conversion1); 
+        } else {
+            conversion1 = imagePanel1.getColorConversion();
+        }
+            
+        if (conversion2 != null) {
+            setColorConversion2(conversion2); 
+        } else {
+            conversion2 = imagePanel1.getColorConversion();
+        }
+        
+
         imagePanel2.addMouseListener(new MouseAdapter() {
                                         public void mouseClicked(MouseEvent event) {
                                             imagePanel2MouseClicked(event);

@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @author  Franz Wilhelmstötter
  * @version 0.2
  */
-public final class ImageData implements Image {
+public final class ImageData implements Image { 
     
     private class ImageDataVoxelIterator implements VoxelIterator {
         private short[] data;

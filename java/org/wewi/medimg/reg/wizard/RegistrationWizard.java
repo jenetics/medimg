@@ -18,7 +18,6 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.FeatureImage;
 import org.wewi.medimg.image.ImageFormatTypes;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.TissueColorConversion;

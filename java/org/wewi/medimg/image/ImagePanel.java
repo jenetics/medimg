@@ -39,6 +39,7 @@ public class ImagePanel extends JPanel {
         sizeX = image.getMaxX() - image.getMinX() + 1;
         sizeY = image.getMaxY() - image.getMinY() + 1;
         qxy = (double)sizeX/(double)sizeY;
+        //conversion = new TissueColorConversion();
         conversion = new GreyRGBConversion();
         rawData = new int[sizeX*sizeY*3];      
         bufferedImage = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_3BYTE_BGR); 
