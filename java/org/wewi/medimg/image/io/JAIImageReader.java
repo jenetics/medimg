@@ -90,14 +90,17 @@ abstract class JAIImageReader extends ImageReader {
                 slices = new File[1];
                 slices[0] = source;
             } else {
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
                 return;
             }
         } else {
             slices = source.listFiles(fileFilter);
             if (slices == null) {
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
                 return;
             }
             if (slices.length <= 0) {
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
                 return;
             }            
         }
@@ -126,6 +129,11 @@ abstract class JAIImageReader extends ImageReader {
             throw new ImageIOException("Can't read JAI Image; Slice 0", e);
         }
         
+        //Lesen des ersten Bildes ist beendet und
+        //die ProgressListener werden übber den
+        //Fortschritt informiert.
+        notifyProgressListener(new ImageIOProgressEvent(this, (1.0/(double)maxSlice), false));
+        
         int sizeX = raster.getWidth();
         int sizeY = raster.getHeight();
         int sizeZ = maxSlice - minSlice + 1;
@@ -143,6 +151,7 @@ abstract class JAIImageReader extends ImageReader {
         }
 
         //Einlesen der restlichen Bilder
+        int count = 1;
         int stride = range.getStride();
         for (int k = minSlice+1; k <= maxSlice; k += stride) {
             try {
@@ -157,8 +166,13 @@ abstract class JAIImageReader extends ImageReader {
                     raster.getPixel(i, j, pixel);
                     image.setColor(i, j, k-minSlice, colorConversion.convert(pixel));
                 }
-            }            
-        }        
+            }  
+            //Informieren der Listener über den Fortschritt
+            count++;
+            notifyProgressListener(new ImageIOProgressEvent(this, ((double)count/(double)maxSlice), false));          
+        } 
+        
+        notifyProgressListener(new ImageIOProgressEvent(this, 1, true));       
     } 
     
 }

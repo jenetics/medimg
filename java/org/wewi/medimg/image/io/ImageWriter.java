@@ -7,6 +7,8 @@
 package org.wewi.medimg.image.io;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.Vector;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
@@ -21,17 +23,38 @@ public abstract class ImageWriter {
     protected File target;
     protected String imageExtention = "";
     
+    private Vector listeners;
+    
     ImageWriter() {
+        listeners = new Vector();
     }
     
     public ImageWriter(Image image, File target) {
         this.image = image;
         this.target = target;
+        listeners = new Vector();
     }
     
     File getTarget() {
         return target;
     }
+    
+    public synchronized void addProgressListener(ImageIOProgressListener l) {
+        listeners.add(l);
+    }
+    
+    public synchronized void removeProgressListener(ImageIOProgressListener l) {
+        listeners.remove(l);
+    }
+    
+    protected void notifyProgressListener(ImageIOProgressEvent event) {
+        Vector list = (Vector)listeners.clone();
+        ImageIOProgressListener l;
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            l = (ImageIOProgressListener)it.next();
+            l.progressChanged(event);
+        }
+    }    
     
     public void setColorConversion(ColorConversion cc) {
     }
