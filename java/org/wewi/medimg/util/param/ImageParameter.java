@@ -45,6 +45,8 @@ public class ImageParameter extends Parameter {
     }
 
 
+
+
 	/**
 	 * @see org.wewi.medimg.util.param.Parameter#createParameterElement()
 	 */

@@ -51,5 +51,9 @@ public class DoubleParameterIterator implements ParameterIterator {
 	public void remove() {
         throw new UnsupportedOperationException();
 	}
+    
+    public Object clone() {
+        return new DoubleParameterIterator(name, start, stop, stride);    
+    }
 
 }
