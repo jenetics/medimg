@@ -13,7 +13,7 @@ import org.wewi.medimg.math.MathUtil;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class NaiveDFT1D implements DFT1D {
+public final class NaiveDFT1D extends DFT implements DFT1D {
 
     /**
      * Constructor for NaiveDFT1D.
@@ -25,7 +25,7 @@ public final class NaiveDFT1D implements DFT1D {
     /**
      * @see org.wewi.medimg.math.fft.DFT1D#dft(Complex[])
      */
-    public void dft(Complex[] a) {
+    public void transform(Complex[] a) {
         final int N = a.length;
         final Complex Wn = MathUtil.exp(new Complex(0, 2*Math.PI/(double)N));
         
