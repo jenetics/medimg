@@ -1,4 +1,4 @@
-/*
+/**
  * VoxelIterator.java
  *
  * Created on 8. Mai 2002, 15:31
@@ -16,9 +16,9 @@ public interface VoxelIterator extends Cloneable {
     
     public int next();
     
-    public int next(int[] p);
+    public int next(int[] point);
     
-    public int next(double[] p);    
+    public int next(double[] point);    
     
     public int size() throws UnsupportedOperationException;
     

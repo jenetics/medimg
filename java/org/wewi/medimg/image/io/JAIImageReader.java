@@ -18,7 +18,7 @@ import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.NullImage;
-import org.wewi.medimg.image.RGBColorConversion;
+//import org.wewi.medimg.image.RGBColorConversion;
 
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
@@ -202,7 +202,7 @@ abstract class JAIImageReader extends ImageReader {
         }
         
         image = imageFactory.createImage(raster.getWidth(), raster.getHeight(), 1);
-image.setColorConversion(new RGBColorConversion());
+//image.setColorConversion(new RGBColorConversion());
         colorConversion = image.getColorConversion();         
         
         int[] pixel = new int[3];
