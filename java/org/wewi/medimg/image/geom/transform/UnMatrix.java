@@ -29,7 +29,7 @@ public final class Unmatrix {
 	 * Constructor for Unmatrix.
 	 */
 	public Unmatrix(Matrix4d matrix) {
-		unmatrix(matrix);
+		unmatrix((Matrix4d)matrix.clone());
 	}
     
     private void unmatrix(Matrix4d matrix) {
@@ -214,6 +214,10 @@ public final class Unmatrix {
         translation = new Matrix4d();
         Vector3d t = new Vector3d(tran[U_TRANSX], tran[U_TRANSY], tran[U_TRANSZ]);
         translation.setTranslation(t);
+        translation.setElement(0, 0, 1.0);
+        translation.setElement(1, 1, 1.0);
+        translation.setElement(2, 2, 1.0);
+        translation.setElement(3, 3, 1.0);
         
         //Creating the scale matrix
         scale = new Matrix4d();
@@ -243,21 +247,24 @@ public final class Unmatrix {
         perspective.setElement(2, 2, 1.0);
         
         //Creating the rotation matrix
+        double rx = tran[U_ROTATEX];
+        double ry = tran[U_ROTATEY];
+        double rz = tran[U_ROTATEZ];
         double[] m = new double[16];
-        Arrays.fill(m, 0);
-        m[0] = Math.cos(tran[U_ROTATEY])*Math.cos(tran[U_ROTATEZ]);
-        m[1] = -Math.cos(tran[U_ROTATEY])*Math.sin(tran[U_ROTATEZ]);
-        m[2] = Math.sin(tran[U_ROTATEY]);
-        m[4] = Math.cos(tran[U_ROTATEZ])*Math.sin(tran[U_ROTATEX])*Math.sin(tran[U_ROTATEY]) +
-               Math.cos(tran[U_ROTATEX])*Math.sin(tran[U_ROTATEZ]);
-        m[5] = -Math.sin(tran[U_ROTATEX])*Math.sin(tran[U_ROTATEY])*Math.sin(tran[U_ROTATEY]) +
-               Math.cos(tran[U_ROTATEX])*Math.cos(tran[U_ROTATEZ]);
-        m[6] = -Math.cos(tran[U_ROTATEY])*Math.sin(tran[U_ROTATEX]);
-        m[8] = -Math.cos(tran[U_ROTATEX])*Math.cos(tran[U_ROTATEZ])*Math.sin(tran[U_ROTATEY]) +
-               Math.sin(tran[U_ROTATEX])*Math.sin(tran[U_ROTATEZ]);
-        m[9] = Math.cos(tran[U_ROTATEX])*Math.sin(tran[U_ROTATEY])*Math.sin(tran[U_ROTATEZ]) +
-               Math.cos(tran[U_ROTATEZ])*Math.sin(tran[U_ROTATEX]);
-        m[10] = Math.cos(tran[U_ROTATEX])*Math.cos(tran[U_ROTATEY]);
+        Arrays.fill(m, 0); 
+        m[0] = Math.cos(ry)*Math.cos(rz);
+        m[1] = -Math.cos(ry)*Math.sin(rz);
+        m[2] = Math.sin(ry);
+        m[4] = Math.cos(rz)*Math.sin(rx)*Math.sin(ry) +
+               Math.cos(rx)*Math.sin(rz);
+        m[5] = -Math.sin(rx)*Math.sin(ry)*Math.sin(rz) +
+               Math.cos(rx)*Math.cos(rz);
+        m[6] = -Math.cos(ry)*Math.sin(rx);
+        m[8] = -Math.cos(rx)*Math.cos(rz)*Math.sin(ry) +
+               Math.sin(rx)*Math.sin(rz);
+        m[9] = Math.cos(rx)*Math.sin(ry)*Math.sin(rz) +
+               Math.cos(rz)*Math.sin(rx);
+        m[10] = Math.cos(rx)*Math.cos(ry);
         m[15] = 1.0;
         rotation = new Matrix4d(m);
         
