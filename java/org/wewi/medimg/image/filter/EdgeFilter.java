@@ -13,25 +13,25 @@ import org.wewi.medimg.image.MarginImage;
  * 
  * @todo Codedoubeling with ConvolutionFilter!
  */
-public class EdgeDetectionFilter extends ImageFilter {
+public class EdgeFilter extends ImageFilter {
     private Kernel horizontalKernel;
     private Kernel verticalKernel;
 
 	/**
-	 * Constructor for EdgeDetectionFilter.
+	 * Constructor for EdgeFilter.
 	 * @param image
 	 */
-	public EdgeDetectionFilter(Image image, Kernel horizontal, Kernel vertical) {
+	public EdgeFilter(Image image, Kernel horizontal, Kernel vertical) {
 		super(image);
         horizontalKernel = horizontal;
         verticalKernel = vertical;
 	}
 
 	/**
-	 * Constructor for EdgeDetectionFilter.
+	 * Constructor for EdgeFilter.
 	 * @param component
 	 */
-	public EdgeDetectionFilter(ImageFilter component, Kernel horizontal, Kernel vertical) {
+	public EdgeFilter(ImageFilter component, Kernel horizontal, Kernel vertical) {
 		super(component);
         horizontalKernel = horizontal;
         verticalKernel = vertical;        
