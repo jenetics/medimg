@@ -19,7 +19,6 @@ import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.TIFFReaderFactory;
 import org.wewi.medimg.image.io.BMPReaderFactory;
 import org.wewi.medimg.image.io.RawImageReaderFactory;
-import org.wewi.medimg.image.io.RawImageDataReaderFactory;
 import org.wewi.medimg.image.io.ReaderThreadListener;
 import org.wewi.medimg.image.io.WriterThreadListener;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
