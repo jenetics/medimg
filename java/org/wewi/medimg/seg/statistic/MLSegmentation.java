@@ -31,7 +31,7 @@ import java.io.File;
  */
 public class MLSegmentation extends ImageSegmentationStrategy {
     protected final static int MAX_ITER = 25;
-    protected final static double ERROR_LIMIT = 0.001;
+    protected final static double ERROR_LIMIT = 0.01;
     
     protected int m1m2Count = 0;
     
@@ -87,10 +87,9 @@ public class MLSegmentation extends ImageSegmentationStrategy {
 
             ////////////////////////////////////////////////////////////////////            
         }
+        
+        System.arraycopy(meanValues, 0, meanValuesOld, 0, meanValues.length);
 
-        for (int j = 0; j < nfeatures; j++) {
-            meanValuesOld[j] = meanValues[j];
-        }
         return ready;
     }
 
@@ -117,7 +116,6 @@ public class MLSegmentation extends ImageSegmentationStrategy {
                     nw = neighbourhoodWeight(i, f);   
                     minFeatureTemp = Math.abs((double)color-getMeanValue(i, f));
                     minFeatureTemp += nw;
-
                     if (minFeatureTemp < minFeature) {
                         minFeatureIndex = f;
                         minFeature = minFeatureTemp;
@@ -162,11 +160,15 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     }
     
     public void doSegmentation() {
-        System.out.println(image);
-        featureImage = new FeatureImage(image.getMaxX()+1, image.getMaxY()+1, image.getMaxZ()+1, nfeatures);
+        int sizeX = image.getMaxX() - image.getMinX() + 1;
+        int sizeY = image.getMaxY() - image.getMinY() + 1;
+        int sizeZ = image.getMaxZ() - image.getMinZ() + 1;
+        featureImage = new FeatureImage(sizeX, sizeY, sizeZ, nfeatures);
 
         initMeanValues();
         notifySegmentationStarted(new SegmentationEvent(this, m1m2Count, meanValues));
+        Timer timer = new Timer("Segmentierung");
+        timer.start();
         do {
             //Informieren der Observer; start einer neuen Iteration
             m1Step();
@@ -175,6 +177,8 @@ public class MLSegmentation extends ImageSegmentationStrategy {
             
             notifyIterationFinished(new SegmentationEvent(this, m1m2Count, meanValues));
         } while(!isM1M2Ready(m1m2Count));
+        timer.stop();
+        timer.print();
 
         ///Debugging////////////////////////////////////////////////////////////
         SegmentationEvent state = new SegmentationEvent(this, m1m2Count, meanValues);

@@ -18,6 +18,10 @@ import java.io.File;
 
 import java.util.Properties;
 
+import java.awt.Component;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JDialog;
@@ -40,9 +44,6 @@ public class Viewer extends JFrame implements Singleton,
     private Properties viewerStates; 
     private Dimension desktopDim;
     
-    //Angemeldete Wizard
-    SegmentationWizard segmentationWizard;
-    
     /** Creates new form Viewer */
     private Viewer() {
         viewerStates = new Properties();
@@ -52,8 +53,6 @@ public class Viewer extends JFrame implements Singleton,
     
     private void init() {
         toolBar.add(NavigationPanel.getInstance());
-        
-        segmentationWizard = SegmentationWizard.getInstance();
     }
     
     public static Viewer getInstance() {
@@ -79,6 +78,7 @@ public class Viewer extends JFrame implements Singleton,
     
     public void removeViewerDesktopFrame(ViewerDesktopFrame frame) {
         desktopPane.remove(frame);
+        frame.removeInternalFrameListener(this);
     }
     
     public void addWizard(Wizard wizard) {
@@ -168,6 +168,12 @@ public class Viewer extends JFrame implements Singleton,
         saveMenuItem.setText("Save");
         fileMenu.add(saveMenuItem);
         saveAsMenuItem.setText("Save As ...");
+        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsMenuItemActionPerformed(evt);
+            }
+        });
+
         fileMenu.add(saveAsMenuItem);
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -208,7 +214,6 @@ public class Viewer extends JFrame implements Singleton,
         menuBar.add(helpMenu);
         wizardMenu.setText("Wizard");
         segmentaionWizardMenuItem.setText("SegmentationWizard");
-        segmentaionWizardMenuItem.setToolTipText("null");
         segmentaionWizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 segmentaionWizardMenuItemActionPerformed(evt);
@@ -224,10 +229,51 @@ public class Viewer extends JFrame implements Singleton,
         setSize(new java.awt.Dimension(1024, 748));
         setLocation((screenSize.width-1024)/2,(screenSize.height-748)/2);
     }//GEN-END:initComponents
+
+    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
+        // Add your handling code here:
+        Object obj = desktopPane.getSelectedFrame();
+        if (obj == null) {
+            return;
+        }
+        Class[] interfaces = obj.getClass().getInterfaces();
+        ImageContainer imageContainer = null;
+        for (int i = 0; i < interfaces.length; i++) {
+            System.out.println(interfaces[i].toString());
+            if (interfaces[i].getName().endsWith("org.wewi.medimg.viewer.ImageContainer")) {
+                imageContainer = (ImageContainer)obj;
+            }
+        }
+        if (imageContainer == null) {
+            return;
+        }
+        
+        ImageFileChooser chooser = new ImageFileChooser();
+        chooser.setDialogTitle("Datensatz auswählen");
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
+        
+        int returnVal = chooser.showSaveDialog(this);
+        if(returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }        
+        
+        ImageWriter writer = chooser.getImageWriterFactory()
+                                         .createImageWriter(imageContainer.getImage(),
+                                                            chooser.getSelectedFile());
+        try {
+            writer.write();
+        } catch (Exception e) {
+            System.err.println("Viewer.openMenuItemActionPerformed: " + e);
+            JOptionPane.showMessageDialog(this, "Kann Datei: \n" + chooser.getSelectedFile().getAbsolutePath() + 
+                                                "\n nicht öffnen", "Fehler", JOptionPane.ERROR_MESSAGE);
+            return;
+        }        
+    }//GEN-LAST:event_saveAsMenuItemActionPerformed
     
     private void segmentaionWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_segmentaionWizardMenuItemActionPerformed
         // Add your handling code here:
-        addWizard(segmentationWizard);
+        addWizard(new SegmentationWizard());
     }//GEN-LAST:event_segmentaionWizardMenuItemActionPerformed
     
                                                   private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
@@ -253,7 +299,7 @@ public class Viewer extends JFrame implements Singleton,
         String fileName = chooser.getSelectedFile().getAbsolutePath();
         ImageReader reader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
                                                              new File(fileName));
-        //reader.setRange(new Range(101, 130));
+        //reader.setRange(new Range(101, 110));
         try {
             reader.read();
         } catch (Exception e) {
