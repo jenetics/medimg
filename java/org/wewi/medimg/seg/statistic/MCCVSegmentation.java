@@ -6,8 +6,6 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.QualityMeasure;
-
 import org.wewi.medimg.math.GaussianDistribution;
 
 import org.wewi.medimg.image.Image;
@@ -123,14 +121,6 @@ public class MCCVSegmentation extends ImageSegmentationStrategy {
     
     public ModelBasedSegmentation getModelBasedSegmentation() {
         return new NullModelBasedSegmentation();
-    }
-    
-    public QualityMeasure getQualityMeasure() {
-        return new QualityMeasure() {
-                        public double quality() {
-                            return 0;
-                        }
-                    };
     }
     
 }

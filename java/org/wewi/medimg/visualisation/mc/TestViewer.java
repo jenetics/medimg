@@ -131,7 +131,7 @@ public class TestViewer extends Applet {
         sd.decimate(graph);
         TriangleDecimator decimator = new CoplanarTriangleDecimator();
         for (int i = 0; i < 2; i++) {
-           decimator.decimate(graph);
+           //decimator.decimate(graph);
         }
         System.out.println("Vertices (nach dem Ausduennen): " + graph.getNoOfVertices());
         

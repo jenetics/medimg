@@ -6,8 +6,6 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.QualityMeasure;
-
 import org.wewi.medimg.math.geom.VoronoiDiagram1D;
 
 import org.wewi.medimg.image.VoxelIterator;
@@ -190,10 +188,6 @@ System.out.println(buffer.toString());
     
     public ModelBasedSegmentation getModelBasedSegmentation() {
         return new ModelBasedKMeansSegmentation(center);
-    }
-    
-    public QualityMeasure getQualityMeasure() {
-        return null;
     }
     
     public Image getSegmentedImage() {

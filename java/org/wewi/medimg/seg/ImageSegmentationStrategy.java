@@ -6,7 +6,6 @@
 
 package org.wewi.medimg.seg;
 
-import org.wewi.medimg.QualityMeasure;
 
 import org.wewi.medimg.seg.FeatureImage;
 
@@ -95,8 +94,6 @@ public abstract class ImageSegmentationStrategy implements SegmentationStrategy 
     }    
     
     public abstract ModelBasedSegmentation getModelBasedSegmentation();
-    
-    public abstract QualityMeasure getQualityMeasure();
     
     public abstract Image getSegmentedImage();
     

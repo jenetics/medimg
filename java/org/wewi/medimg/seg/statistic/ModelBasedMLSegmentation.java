@@ -6,8 +6,6 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.QualityMeasure;
-
 import org.wewi.medimg.math.GaussianDistribution;
 import org.wewi.medimg.math.geom.VoronoiDiagram1D;
 
@@ -20,7 +18,7 @@ import org.wewi.medimg.seg.ModelBasedSegmentation;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-final class ModelBasedMLSegmentation implements ModelBasedSegmentation, QualityMeasure {
+final class ModelBasedMLSegmentation implements ModelBasedSegmentation {
     private final VoronoiDiagram1D vd;
     
     /** Creates a new instance of MLSegmentationModel */
