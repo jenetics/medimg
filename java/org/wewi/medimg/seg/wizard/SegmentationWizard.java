@@ -32,7 +32,7 @@ import org.wewi.medimg.seg.SegmentationStrategyThread;
 import org.wewi.medimg.seg.Segmenter;
 import org.wewi.medimg.seg.SegmenterEnumeration;
 import org.wewi.medimg.seg.SegmenterEvent;
-import org.wewi.medimg.seg.SegmenterObserver;
+import org.wewi.medimg.seg.SegmenterListener;
 import org.wewi.medimg.seg.SegmenterThread;
 import org.wewi.medimg.seg.statistic.MAPSegmentation;
 import org.wewi.medimg.seg.statistic.MLSegmentation;
@@ -53,7 +53,7 @@ public class SegmentationWizard extends Wizard implements Observer,
                                                           	
                                                           	
     private class SegmenterWorker implements ReaderThreadListener,
-                                                SegmenterObserver {
+                                                SegmenterListener {
                                                 	
         private SegmentationWizard wizard;
         
