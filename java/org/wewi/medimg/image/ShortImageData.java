@@ -4,6 +4,8 @@
  */
 package org.wewi.medimg.image;
 
+import java.util.Arrays;
+
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -42,4 +44,12 @@ public final class ShortImageData extends ImageData {
         return data[pos];    
     }
     
+    public void resetColor(int color) {
+        Arrays.fill(data, (short)color);
+    }    
+    
+    
+    public Object clone() {
+        return new ShortImageData(this);
+    }    
 }

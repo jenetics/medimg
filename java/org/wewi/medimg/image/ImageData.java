@@ -116,6 +116,16 @@ public class ImageData implements Image, RandomAccess {
         init(minX, minY, minZ, maxX, maxY, maxZ);
     }
     
+    void init(Dimension dim, ImageDataHeader h) {
+        init(dim);
+        this.header = h;    
+    }
+    
+    void init(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, ImageDataHeader h) {
+        init(minX, minY, minZ, maxX, maxY, maxZ);
+        this.header = h;    
+    }
+    
     void init(Dimension dim) {
         init(dim.getMinX(), dim.getMinY(), dim.getMinZ(),
              dim.getMaxX(), dim.getMaxY(), dim.getMaxZ());    
@@ -177,10 +187,10 @@ public class ImageData implements Image, RandomAccess {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < size; i++) {
-            if (min > data[i]) {
-                min = data[i];
-            } else if (max < data[i]) {
-                max = data[i];
+            if (min > getData(i)) {
+                min = getData(i);
+            } else if (max < getData(i)) {
+                max = getData(i);
             }
         }
         minColor = min;

@@ -134,7 +134,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         contourEnergy = newContourEnergy;
         
         double energy = contourEnergy;
-        double newEnergy = -Double.MAX_VALUE;
+        double newEnergy = Double.MAX_VALUE;
         Point point = null;
         List l = contour.getBasePoints();
         Point[] points = new Point[l.size()];
@@ -149,7 +149,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
                 contour.replaceBasePoint(basePoint, newBasePoint);
                 
                 newEnergy = energy(contour);
-                if (newEnergy > energy) {
+                if (newEnergy < energy) {
                     energy = newEnergy;   
                 } else {
                     contour.replaceBasePoint(newBasePoint, basePoint);    

@@ -112,7 +112,7 @@ class ImageDataHeader implements ImageHeader {
                                       Integer.parseInt(dimension.getChildText("MaxY")),
                                       Integer.parseInt(dimension.getChildText("MinZ")),
                                       Integer.parseInt(dimension.getChildText("MaxZ")));
-        image.init(dim);
+        image.init(dim, this);
         
                                       
                                       
@@ -124,6 +124,8 @@ class ImageDataHeader implements ImageHeader {
         ObjectInputStream oin = new ObjectInputStream(sin);
         try {
 			cc = (ColorConversion)oin.readObject();
+            
+            System.out.println(cc.getClass().toString());
 		} catch (IOException e) {
             System.out.println("" + e);
             throw new IOException("" + e);
@@ -145,16 +147,17 @@ class ImageDataHeader implements ImageHeader {
         */
         image.setColorConversion(cc); 
         
-        //Einlesen der Properties
+        //Einlesen der ImageProperties
         Element prop = root.getChild("ImageProperties");
         if (prop == null) {
+             System.out.println("Keine ImageProperties");
             return;    
         }
         List list = prop.getChildren();
         Element element;
         for (Iterator it = list.iterator(); it.hasNext();) {
             element = (Element)it.next();
-            properties.put(element.getName(), element.getContent());
+            properties.setProperty(element.getName(), element.getText());
         }
          
     }
@@ -220,10 +223,20 @@ class ImageDataHeader implements ImageHeader {
 	 */
 	public void setImageProperties(Properties prop) {
         for (Enumeration enum = prop.keys(); enum.hasMoreElements();) {
-            Object key = enum.nextElement();
-            properties.put(key, prop.get(key)); 
+            String key = (String)enum.nextElement();
+            properties.setProperty(key, prop.getProperty(key)); 
         }
 	}
+    
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        for (Enumeration e = properties.propertyNames(); e.hasMoreElements();) {
+            String name = (String)e.nextElement();
+            buffer.append(name).append(":").append(properties.getProperty(name)).append("\n");
+        }            
+        return buffer.toString();
+    }
 
 }
 

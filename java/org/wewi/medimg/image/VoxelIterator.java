@@ -18,7 +18,7 @@ public interface VoxelIterator extends Cloneable {
     
     public int next(int[] p);
     
-    public int size();
+    public int size() throws UnsupportedOperationException;
     
     public Object clone();
 }

@@ -41,6 +41,7 @@ public class Protocol {
 	public Protocol(File file) {
 		super();
         this.file = file;
+        init();
 	}
     
     private void init() {
@@ -105,17 +106,20 @@ public class Protocol {
 			rows = fm.getAttribute("rows").getIntValue();
             cols = fm.getAttribute("cols").getIntValue();
 		} catch (DataConversionException e) {
-            rows = 0; cols = 0;
+            rows = -1; cols = -1;
 		}
         accu = new AccumulatorArray(rows, cols);
         int posx = 0, posy = 0;
         List rowList = fm.getChildren("Row");
         for (Iterator i = rowList.iterator(); i.hasNext();) {
+            posy = 0;
             List colList = ((Element)i.next()).getChildren("ColData");
             for (Iterator j = colList.iterator(); j.hasNext();) {
                 Element data = (Element)j.next();
-                accu.setValue(posx++, posy++, Integer.parseInt(data.getText()));        
-            }    
+                accu.setValue(posx, posy, Integer.parseInt(data.getText())); 
+                ++posy;      
+            }
+            ++posx;    
         }
         
         //Füllen der Fehler

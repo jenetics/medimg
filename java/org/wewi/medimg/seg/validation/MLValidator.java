@@ -84,6 +84,7 @@ public class MLValidator {
         param.addContent(Integer.toString(k));
         alg.addContent(param);
         param = new Element("Parameter");
+        param.setAttribute("name", "image");
         param.addContent(Util.transform(source));
         alg.addContent(param);
         //Ergebnisse des Algorithmus
@@ -99,6 +100,7 @@ public class MLValidator {
         Element mean = new Element("MeanValues");
         Element value;
         double[] mv = clusterer.getMeanValues();
+        mean.setAttribute("means", Integer.toString(mv.length));
         for (int i = 0; i < mv.length; i++) {
             value = new Element("Value");
             value.addContent(Double.toString(mv[i]));   
