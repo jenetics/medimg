@@ -2,7 +2,7 @@
  * Created on 21.11.2002 13:38:23
  *
  */
-package org.wewi.medimg.math.vec;
+package org.wewi.medimg.math.vec.ops;
 
 /**
  * @author Franz Wilhelmstötter

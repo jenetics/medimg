@@ -4,6 +4,9 @@
  */
 package org.wewi.medimg.math.vec;
 
+import org.wewi.medimg.math.vec.ops.*;
+import org.wewi.medimg.math.vec.ops.*;
+
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
