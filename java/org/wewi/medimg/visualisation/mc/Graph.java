@@ -6,12 +6,10 @@
 
 package org.wewi.medimg.visualisation.mc;
 
-import org.wewi.medimg.util.NullIterator;
-
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
 /** 
  * Diese Klasse enthält die, beim Marchin Cube

@@ -8,7 +8,6 @@ package org.wewi.medimg.reg.interpolation;
 
 import java.util.Vector;
 
-import org.wewi.medimg.image.geom.transform.TransformVector;
 import org.wewi.medimg.image.Tissue;
 
 

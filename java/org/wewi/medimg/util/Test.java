@@ -6,16 +6,21 @@
 
 package org.wewi.medimg.util;
 
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.geom.*;
-import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.seg.*;
-import org.wewi.medimg.seg.statistic.*;
-import org.wewi.medimg.math.*;
+import java.io.File;
 
-import java.util.Properties;
-import java.util.prefs.*;
-import java.io.*;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.geom.AffineTransform;
+import org.wewi.medimg.image.io.Range;
+import org.wewi.medimg.image.io.TIFFReader;
+import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.math.GaussianDistribution;
+import org.wewi.medimg.seg.ImageSegmentationStrategy;
+import org.wewi.medimg.seg.statistic.Histogram;
+import org.wewi.medimg.seg.statistic.KMeansSegmentation;
+import org.wewi.medimg.seg.statistic.MCCVSegmentation;
+import org.wewi.medimg.seg.statistic.MLSegmentation;
+import org.wewi.medimg.seg.statistic.MixtureModelDistribution;
 
 /**
  *

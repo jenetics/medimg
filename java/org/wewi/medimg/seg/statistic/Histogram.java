@@ -6,10 +6,9 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.image.Image;
-
-import java.util.Hashtable;
 import java.util.Arrays;
+
+import org.wewi.medimg.image.Image;
 
 /**
  *

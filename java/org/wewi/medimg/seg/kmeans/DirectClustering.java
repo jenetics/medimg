@@ -6,14 +6,9 @@
 
 package org.wewi.medimg.seg.kmeans;
 
-import org.wewi.medimg.seg.SegmentationStrategy;
-import org.wewi.medimg.seg.SegmentationListener;
-
-import java.util.Random;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.Arrays;
 
 /**
  *

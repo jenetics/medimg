@@ -6,9 +6,9 @@
 
 package org.wewi.medimg.visualisation.mc;
 
-import org.wewi.medimg.image.Image;
-
 import java.util.Iterator;
+
+import org.wewi.medimg.image.Image;
 
 /**
  *

@@ -6,21 +6,16 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.ImageData;
-
 import java.awt.image.BufferedImage;
-
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
+
+import org.wewi.medimg.image.Image;
 
 import com.sun.media.jai.codec.ImageEncodeParam;
-import com.sun.media.jai.codec.TIFFEncodeParam;
 import com.sun.media.jai.codec.ImageEncoder;
-import com.sun.media.jai.codec.ImageCodec;
 
 
 /**

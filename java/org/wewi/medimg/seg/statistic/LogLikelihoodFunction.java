@@ -6,10 +6,9 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.math.RealFunction;
-
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
+import org.wewi.medimg.math.RealFunction;
 
 /**
  *

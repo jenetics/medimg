@@ -7,7 +7,6 @@
 package org.wewi.medimg.image.io;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  *

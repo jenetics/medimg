@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.seg.kmeans;
 
-import org.wewi.medimg.util.KDTreePoint;
+
 
 /**
  *

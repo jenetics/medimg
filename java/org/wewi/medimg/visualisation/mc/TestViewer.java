@@ -6,27 +6,39 @@
 
 package org.wewi.medimg.visualisation.mc;
 
-import java.util.Iterator;
-
-import org.wewi.medimg.util.*;
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.seg.*;
-import org.wewi.medimg.seg.statistic.*;
-import java.io.*;
-
-
 import java.applet.Applet;
 import java.awt.BorderLayout;
-import java.awt.event.*;
 import java.awt.GraphicsConfiguration;
+import java.io.File;
+import java.util.Iterator;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.TriangleArray;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
+
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.ImageReader;
+import org.wewi.medimg.image.io.Range;
+import org.wewi.medimg.image.io.TIFFReader;
+import org.wewi.medimg.util.Timer;
+
 import com.sun.j3d.utils.applet.MainFrame;
-import com.sun.j3d.utils.geometry.ColorCube;
-import com.sun.j3d.utils.universe.*;
-import javax.media.j3d.*;
-import javax.vecmath.*;
-import com.sun.j3d.utils.picking.behaviors.*;
-import com.sun.j3d.utils.picking.*;
+import com.sun.j3d.utils.picking.PickTool;
+import com.sun.j3d.utils.picking.behaviors.PickRotateBehavior;
+import com.sun.j3d.utils.picking.behaviors.PickTranslateBehavior;
+import com.sun.j3d.utils.picking.behaviors.PickZoomBehavior;
+import com.sun.j3d.utils.universe.SimpleUniverse;
 
 /**
  *

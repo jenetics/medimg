@@ -6,11 +6,11 @@
 
 package org.wewi.medimg.image;
 
-import org.wewi.medimg.util.Nullable;
-
-import java.io.OutputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.wewi.medimg.util.Nullable;
 
 /**
  *

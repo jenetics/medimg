@@ -7,16 +7,13 @@
 package org.wewi.medimg.seg;
 
 
-import org.wewi.medimg.seg.FeatureImage;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.wewi.medimg.image.Image;
-
-import java.util.Vector;
-import java.util.Iterator;
-
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.logging.Handler;
 
 /**
  * Diese Klasse bildet die Basis für Segmentierungsklassen,

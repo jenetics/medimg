@@ -6,24 +6,22 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.NullImage;
-import org.wewi.medimg.image.ImageFactory;
-import org.wewi.medimg.image.RGBGreyColorConversion;
-
-import java.io.IOException;
-import java.io.File;
-import java.io.FileOutputStream;
-
-import java.awt.image.RenderedImage;
 import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
+
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageFactory;
+import org.wewi.medimg.image.NullImage;
+import org.wewi.medimg.image.RGBGreyColorConversion;
+
+import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
 import com.sun.media.jai.codec.SeekableStream;
-import com.sun.media.jai.codec.FileSeekableStream;
 
 /**
  *

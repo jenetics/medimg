@@ -6,10 +6,9 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-
 import java.io.File;
-import java.io.IOException;
+
+import org.wewi.medimg.image.Image;
 
 /**
  *

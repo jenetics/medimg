@@ -6,21 +6,16 @@
 
 package org.wewi.medimg.seg.ac.snakes;
 
-import org.wewi.medimg.seg.ac.Minimizer;
+import java.util.Iterator;
 
 import org.wewi.medimg.image.Image;
-
 import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.SobelFilter;
-
-import org.wewi.medimg.image.geom.Point;
-import org.wewi.medimg.image.geom.Point2D;
 import org.wewi.medimg.image.geom.Neighborhood;
 import org.wewi.medimg.image.geom.Neighborhood2D4;
-
+import org.wewi.medimg.image.geom.Point2D;
 import org.wewi.medimg.seg.ac.ActiveContour;
-
-import java.util.Iterator;
+import org.wewi.medimg.seg.ac.Minimizer;
 
 /**
  *

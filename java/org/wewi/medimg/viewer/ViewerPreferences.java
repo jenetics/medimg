@@ -6,12 +6,11 @@
 
 package org.wewi.medimg.viewer;
 
-import org.wewi.medimg.util.Singleton;
-
-import java.util.prefs.Preferences;
-
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.prefs.Preferences;
+
+import org.wewi.medimg.util.Singleton;
 
 
 /**

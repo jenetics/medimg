@@ -6,12 +6,11 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-
 import java.io.File;
 import java.io.OutputStream;
 
-import com.sun.media.jai.codec.ImageEncodeParam;
+import org.wewi.medimg.image.Image;
+
 import com.sun.media.jai.codec.BMPEncodeParam;
 import com.sun.media.jai.codec.ImageCodec;
 

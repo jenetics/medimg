@@ -6,33 +6,20 @@
 
 package org.wewi.medimg.seg.kmeans;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.*;
-import java.awt.Stroke;
-import java.awt.Color;
-import java.awt.BasicStroke;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import java.util.Collection;
-import java.util.Vector;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Enumeration;
-
-import java.util.Random;
-
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.DoubleFactory2D;
-import cern.colt.matrix.linalg.Algebra;
-import cern.colt.matrix.linalg.EigenvalueDecomposition;
-import cern.colt.matrix.linalg.LUDecomposition;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.DoubleMatrix2D;
 
 /**
  *

@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.math;
 
-import org.wewi.medimg.util.*;
+
 
 /**
  *

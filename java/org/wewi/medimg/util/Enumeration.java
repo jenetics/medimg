@@ -6,7 +6,6 @@
 
 package org.wewi.medimg.util;
 
-import java.util.Iterator;
 import java.util.Hashtable;
 
 /**

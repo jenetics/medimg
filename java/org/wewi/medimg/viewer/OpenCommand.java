@@ -6,16 +6,16 @@
 
 package org.wewi.medimg.viewer;
 
-import org.wewi.medimg.image.io.ImageReaderFactory;
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.io.ImageReader;
-
+import java.awt.Dimension;
 import java.io.File;
 
-import java.awt.Dimension;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.ImageReader;
+import org.wewi.medimg.image.io.ImageReaderFactory;
 
 /**
  *

@@ -6,12 +6,11 @@
 
 package org.wewi.medimg.visualisation.mc;
 
-import java.util.Iterator;
-
 import java.io.File;
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 /**
  *

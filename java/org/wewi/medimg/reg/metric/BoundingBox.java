@@ -6,9 +6,9 @@
 
 package org.wewi.medimg.reg.metric;
 
-import org.wewi.medimg.image.geom.transform.Transform;
-
 import java.util.Vector;
+
+import org.wewi.medimg.image.geom.transform.Transform;
 
 /**
  *

@@ -6,7 +6,6 @@
 
 package org.wewi.medimg.image;
 
-import org.wewi.medimg.image.Tissue;
 import org.wewi.medimg.util.Singleton;
 
 /**

@@ -7,7 +7,6 @@
 package org.wewi.medimg.seg.statistic;
 
 import java.text.DateFormat;
-
 import java.util.Date;
 
 /**

@@ -6,16 +6,15 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageFactory;
-import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.image.NullImage;
-
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.io.DataInputStream;
+import java.io.IOException;
+
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageFactory;
+import org.wewi.medimg.image.NullImage;
 
 /**
  *

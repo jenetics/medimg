@@ -6,19 +6,13 @@
 
 package org.wewi.medimg.seg.stat;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ColorRange;
-
-import org.wewi.medimg.seg.ObservableSegmenter;
-
 import java.util.Arrays;
 import java.util.Random;
 
-
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.seg.*;
-import java.io.*;
+import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.seg.Clusterer;
+import org.wewi.medimg.seg.ObservableSegmenter;
 
 /**
  *

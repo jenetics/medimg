@@ -6,13 +6,12 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageFactory;
+import java.io.File;
+
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.GreyRGBConversion;
-
-import java.io.File;
-import java.io.IOException;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageFactory;
 
 /**
  *

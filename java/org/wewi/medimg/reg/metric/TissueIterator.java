@@ -9,8 +9,8 @@ package org.wewi.medimg.reg.metric;
 
 import java.util.Iterator;
 
-import org.wewi.medimg.image.Tissue;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.Tissue;
 
 /**
  *

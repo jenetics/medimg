@@ -8,9 +8,6 @@ package org.wewi.medimg.reg.metric;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.Tissue;
-
-import org.wewi.medimg.reg.metric.BoundingBox;
-import org.wewi.medimg.reg.metric.TissueIterator;
 /**
  *
  * @author  werner weiser

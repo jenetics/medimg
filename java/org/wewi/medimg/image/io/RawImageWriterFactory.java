@@ -6,12 +6,9 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
-
-import org.wewi.medimg.util.Singleton;
-
 import java.io.File;
+
+import org.wewi.medimg.image.Image;
 
 /**
  *

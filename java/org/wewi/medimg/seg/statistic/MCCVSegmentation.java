@@ -6,19 +6,15 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.math.GaussianDistribution;
+import java.util.Arrays;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.VoxelIterator;
-
+import org.wewi.medimg.math.GaussianDistribution;
 import org.wewi.medimg.seg.ImageSegmentationStrategy;
 import org.wewi.medimg.seg.ModelBasedSegmentation;
 import org.wewi.medimg.seg.NullModelBasedSegmentation;
-
-import cern.jet.random.engine.RandomEngine;
-
-import java.util.Arrays;
 
 /**
  *
