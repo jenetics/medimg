@@ -23,9 +23,9 @@ final class NextCommad implements Command {
     
     public void execute() {
         int slice = viewer.getSlice();
-        int maxSlize = Math.min(viewer.getImage1().getMaxZ()-1,
-                                viewer.getImage2().getMaxZ()-1);
-        if (maxSlize > slice+1) {
+        int maxSlize = Math.min(viewer.getImage1().getMaxZ(),
+                                viewer.getImage2().getMaxZ());
+        if (maxSlize >= slice+1) {
             viewer.setSlice(slice+1);
         }        
     }

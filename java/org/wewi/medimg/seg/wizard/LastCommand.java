@@ -24,7 +24,7 @@ final class LastCommand implements Command {
     public void execute() {
         int maxSlice = Math.min(viewer.getImage1().getMaxZ(),
                                 viewer.getImage2().getMaxZ());
-        viewer.setSlice(maxSlice-1);
+        viewer.setSlice(maxSlice);
     }
     
 }

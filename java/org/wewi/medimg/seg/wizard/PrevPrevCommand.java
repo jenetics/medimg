@@ -27,7 +27,7 @@ final class PrevPrevCommand implements Command {
         int slice = viewer.getSlice();
         int minSlice = Math.max(viewer.getImage1().getMinZ(),
                                 viewer.getImage2().getMinZ());
-        if (minSlice < slice-stride) {
+        if (minSlice <= slice-stride) {
             viewer.setSlice(slice-stride);
         }
     }
