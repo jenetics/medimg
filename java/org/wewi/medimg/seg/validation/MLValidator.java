@@ -19,7 +19,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
-import org.wewi.medimg.util.*;
+import org.wewi.medimg.util.AccumulatorArray;
 
 
 /**
@@ -94,7 +94,7 @@ public class MLValidator {
         alg.addContent(param);
         param = new Element("Parameter");
         param.setAttribute("name", "image");
-        param.addContent(Util.transform(source));
+        param.addContent(XMLUtil.transform(source));
         alg.addContent(param);
         //Ergebnisse des Algorithmus
         Element algResult = new Element("Result");
@@ -121,9 +121,9 @@ public class MLValidator {
         
         //Ergebnis
         Element result = new Element("Result");
-        result.addContent(Util.transform(accu));
-        result.addContent(Util.transform(t3));
-        result.addContent(Util.transform(error));
+        result.addContent(XMLUtil.transform(accu));
+        result.addContent(XMLUtil.transform(t3));
+        result.addContent(XMLUtil.transform(error));
         protocol.addContent(result);
         
         Document doc = new Document(protocol);

@@ -19,9 +19,25 @@ public final class MathUtil {
     /** Creates a new instance of Math */
     private MathUtil() {
     }
+    
+    public static int gcd(int u, int v) {
+        int t = 0;
+        do {
+            if (u < v) {
+                t = u; u = v; v = t;
+            }
+            u = u % v;
+        } while (u != 0);
+        
+        return v;
+    }
 
     public static double sqr(double x) {
         return x * x;
+    }
+    
+    public static float sqr(float x) {
+        return x * x;    
     }
 
     public static int sqr(int x) {
@@ -317,9 +333,8 @@ public final class MathUtil {
     }
 
     public static Complex mult(Complex a, Complex b) {
-        return new Complex(
-            a.re * b.re - a.im * b.im,
-            a.re * b.im + a.im * b.re);
+        return new Complex(a.re * b.re - a.im * b.im,
+                            a.re * b.im + a.im * b.re);
     }
 
     public static Complex mult(double a, Complex b) {
@@ -669,26 +684,6 @@ public final class MathUtil {
      }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

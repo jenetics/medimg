@@ -37,7 +37,7 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
         /**
          * @see org.wewi.medimg.alg.AlgorithmIterator#hasNextIteration()
          */
-        public boolean hasNextIteration() {
+        public boolean hasNext() {
             System.out.println("" + lastEnergy + "-" + currentEnergy);
             return Math.abs(lastEnergy - currentEnergy) > ERROR_LIMIT;
         }
@@ -45,7 +45,7 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
         /**
          * @see org.wewi.medimg.alg.AlgorithmIterator#nextIteration()
          */
-        public void nextIteration() {
+        public void next() {
             ++iterationCount;
             iteration();
         }
@@ -177,8 +177,8 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
 	 * @see org.wewi.medimg.seg.ac.ContourMinimizer#minimize()
 	 */
 	public ActiveContour minimize() {
-        for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNextIteration();) {
-            it.nextIteration();    
+        for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNext();) {
+            it.next();    
         }
         
         return contour;

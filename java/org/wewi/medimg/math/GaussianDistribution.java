@@ -1,4 +1,4 @@
-/*
+/**
  * GaussianDistribution.java
  *
  * Created on 11. April 2002, 10:23
@@ -22,13 +22,10 @@ public final class GaussianDistribution implements DistributionFunction {
         this.variance = variance;
     }
     
-    private double sqr(double x) {
-        return x*x;
-    }
-    
+
     public double eval(double x) {
         return (1.0d/(Math.sqrt(2d*Math.PI*variance))*
-                Math.exp(-sqr(x-meanValue)/(2d*variance)));
+                Math.exp(-MathUtil.sqr(x-meanValue)/(2d*variance)));
     }
     
      

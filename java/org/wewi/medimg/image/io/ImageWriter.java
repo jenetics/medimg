@@ -9,6 +9,7 @@ package org.wewi.medimg.image.io;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.wewi.medimg.image.Image;
 
@@ -22,6 +23,8 @@ public abstract class ImageWriter {
     protected File target;
     
     private Vector listeners;
+    
+    protected static Logger logger = Logger.getLogger("org.wewi.medimg.image.io");
 
     
     public ImageWriter(Image image, String target) {

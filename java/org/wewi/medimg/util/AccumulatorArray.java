@@ -13,7 +13,6 @@ public class AccumulatorArray {
     private final int cols;
     private int[][] accu;
     
-    private long sum;
     
     public AccumulatorArray(int rows, int cols) {
         this(rows, cols, 0);    
@@ -53,7 +52,7 @@ public class AccumulatorArray {
     }
     
     public long getSum() {
-        sum = 0;
+        long sum = 0;
         
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {

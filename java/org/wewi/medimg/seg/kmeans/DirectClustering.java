@@ -31,11 +31,11 @@ public final class DirectClustering extends ObservableAlgorithm
             init();
         }       
           
-        public boolean hasNextIteration() {
+        public boolean hasNext() {
             return Math.abs(error0 - error) > ERROR_LIMIT;
         }
         
-        public void nextIteration() {  
+        public void next() {  
             ++iterationCount;         
             iteration();           
         }
@@ -126,8 +126,8 @@ public final class DirectClustering extends ObservableAlgorithm
     public Collection[] cluster() { 
        DirectClusteringIterator iterator = new DirectClusteringIterator();
         
-        while (iterator.hasNextIteration()) {
-            iterator.nextIteration();
+        while (iterator.hasNext()) {
+            iterator.next();
         }
         
         Clusterer clusterer = new Clusterer(clusterCenter);

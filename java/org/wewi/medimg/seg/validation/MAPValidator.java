@@ -7,6 +7,10 @@ package org.wewi.medimg.seg.validation;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.*;
+import java.text.*;
+
+import java.util.Properties;
 
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -17,7 +21,10 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
-import org.wewi.medimg.util.*;
+import org.wewi.medimg.util.AccumulatorArray;
+import org.wewi.medimg.image.io.*;
+import org.wewi.medimg.image.*;
+import org.wewi.medimg.image.statistic.*;
 
 /**
  * @author Franz Wilhelmstötter
@@ -25,10 +32,11 @@ import org.wewi.medimg.util.*;
  */
 public class MAPValidator {
     private MAPKMeansClusterer clusterer;
-    private Image source;
-    private Image target;
-    private Image anatomicalModel;
+    private Image sourceImage;
+    private Image targetImage;
+    private Image modelImage;
     
+    //Parameters
     private int k;
     private double beta;
     
@@ -45,11 +53,15 @@ public class MAPValidator {
     }     
     
     public void setSourceImage(Image source) {
-        this.source = source;    
+        this.sourceImage = source;    
     }
     
-    public void setAnatomicalModel(Image am) {
-        anatomicalModel = am;
+    public void setTargetImage(Image target) {
+        this.targetImage = target;
+    }
+    
+    public void setModelImage(Image am) {
+        modelImage = am;
     }
     
     public void setK(int k) {
@@ -63,25 +75,36 @@ public class MAPValidator {
     public void validate() {
         clusterer = new MAPKMeansClusterer(k ,beta); 
         
+        //Segmentationprocedure   
         startTime = System.currentTimeMillis();
-        target = clusterer.segment(source);
+        targetImage = clusterer.segment(sourceImage);
         stopTime = System.currentTimeMillis();
         
+        Properties imgProp = new Properties();
+        imgProp.setProperty("k", Integer.toString(k));
+        imgProp.setProperty("beta", Double.toString(beta));
+        //targetImage.getHeader().addImageProperties(imgProp);
+        
+        //ValidationMeasure
+        ValidationMeasure measure = /*new VarianceImageMeasure();//*/new SaveImageMeasure();//new ReverseMLMeasure();//new MIMeasure();
+        double err = measure.measure(modelImage, targetImage);
+        
+        /*
         ColorRangeOperator op = new ColorRangeOperator();
-        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(anatomicalModel, op);
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(modelImage, op);
         analyzer.analyze(); 
         ColorRange cr = new ColorRange(op.getMinimum(), op.getMaximum());       
         
         AccumulatorArray accu = new AccumulatorArray(cr.getNColors(), k);
-        for (int i = 0, n = source.getNVoxels(); i < n; i++) {
-            accu.inc(anatomicalModel.getColor(i), target.getColor(i));   
+        for (int i = 0, n = sourceImage.getNVoxels(); i < n; i++) {
+            accu.inc(modelImage.getColor(i), targetImage.getColor(i));   
         }
         
 
         T3 t3 = new T3(accu);
-        ErrorMeasure error = new ErrorMeasure(anatomicalModel,target, t3);
+        ErrorMeasure error = new ErrorMeasure(modelImage,targetImage, t3);
         error.measure();
-          
+        */  
           
         Element protocol = new Element("Protocol");
         
@@ -100,7 +123,7 @@ public class MAPValidator {
         alg.addContent(param);
         param = new Element("Parameter");
         param.setAttribute("name", "image");
-        param.addContent(Util.transform(source));
+        param.addContent(XMLUtil.transform(targetImage));
         alg.addContent(param);
         //Ergebnisse des Algorithmus
         Element algResult = new Element("Result");
@@ -123,18 +146,21 @@ public class MAPValidator {
         }
         algResult.addContent(mean);
         alg.addContent(algResult);
-        protocol.addContent(alg);
+        protocol.addContent(alg); 
         
         //Ergebnis
         Element result = new Element("Result");
-        result.addContent(Util.transform(accu));
-        result.addContent(Util.transform(t3));
-        result.addContent(Util.transform(error));
+        //result.addContent(XMLUtil.transform(accu));
+        //result.addContent(XMLUtil.transform(t3));
+        //result.addContent(XMLUtil.transform(error));
+        result.addContent((new Element("MutualInformation")).addContent(Double.toString(err)));
         protocol.addContent(result);
         
         Document doc = new Document(protocol);
         
         XMLOutputter out = new XMLOutputter("    ", true);
+        
+        /*
         try {
             out.output(doc, new FileOutputStream(protocolFile));
         } catch (FileNotFoundException e) {
@@ -142,6 +168,64 @@ public class MAPValidator {
         } catch (IOException e) {
             System.err.println("MAPValidator: " + e);
         }
+        */
+        
+    }
+    
+    
+    
+    
+    public static void main(String[] args) {
+        NumberFormat format = NumberFormat.getIntegerInstance();
+        format.setMaximumFractionDigits(3);
+        format.setMinimumFractionDigits(3);
+        format.setMinimumIntegerDigits(1);
+        
+        try {
+        
+            String imagePath = "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/segimg/t1.n9.rf20";
+            File[] files = (new File(imagePath)).listFiles();
+            File modelFile = new File("/home/fwilhelm/Workspace/Projekte/Diplom/code/data/nhead/seg.model");
+        
+            ImageReader tiffReader = new TIFFReader(ImageDataFactory.getInstance(), modelFile);
+            tiffReader.read();
+            Image modelImage = tiffReader.getImage();
+            SecondOrder so = new SecondOrder(modelImage);
+            modelImage = so.varianceImage();
+            
+            for (int i = 0; i < files.length; i++) {
+                System.out.println("" + (i+1) + "-" + files.length + ": " + files[i].toString());
+                ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(), files[i]);
+                reader.read();
+                
+                Image image = reader.getImage();
+                //System.out.println(image);
+                ImageHeader header = image.getHeader();
+                
+                Properties prop = header.getImageProperties();
+                int k = Integer.parseInt(prop.getProperty("k"));
+                double beta = Double.parseDouble(prop.getProperty("BEAT"));
+                
+                so = new SecondOrder(image);
+                image = so.varianceImage();
+                
+                MAPValidator validator = new MAPValidator();
+                validator.setK(k);
+                validator.setBeta(beta);
+                validator.setTargetImage(image);
+                validator.setModelImage(modelImage);
+                validator.setProtocolFile(
+                "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/validation/map/protocols/" +
+                format.format(k) + ":" + format.format(beta) + ":" + System.currentTimeMillis() + ".xml");
+                
+                validator.validate();
+                
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         
     }
    

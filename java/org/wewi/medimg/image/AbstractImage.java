@@ -7,6 +7,8 @@ package org.wewi.medimg.image;
 import java.util.RandomAccess;
 
 /**
+ * Abstract implementation of the <code>Image</code>-interface.
+ * 
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
@@ -14,10 +16,9 @@ public abstract class AbstractImage extends RowMajorImageGeometry
                                       implements Image, RandomAccess {
 
     private final class AbstractImageVoxelIterator implements VoxelIterator {
-        private int pos;
+        private int pos = 0;
         
         public AbstractImageVoxelIterator() {
-            pos = 0;
         }
         
         public boolean hasNext() {

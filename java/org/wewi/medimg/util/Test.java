@@ -7,8 +7,16 @@
 package org.wewi.medimg.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -16,8 +24,11 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.wewi.medimg.image.ColorConversion;
+import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.ComplexAmplitudeImage;
 import org.wewi.medimg.image.ComplexImage;
+import org.wewi.medimg.image.ComplexIndexImage;
+import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
@@ -41,6 +52,7 @@ import org.wewi.medimg.image.io.PNGReader;
 import org.wewi.medimg.image.io.PNGWriter;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.image.ops.AnalyzerUtils;
 import org.wewi.medimg.image.ops.BinaryPointTransformer;
 import org.wewi.medimg.image.ops.LinearNormalizeFunction;
 import org.wewi.medimg.image.ops.MinMaxFunction;
@@ -59,8 +71,11 @@ import org.wewi.medimg.math.VectorFieldImageCanvasAdapter;
 import org.wewi.medimg.math.fft.ImageDFT;
 import org.wewi.medimg.math.fft.NaiveDFT1D;
 import org.wewi.medimg.math.fft.RecursiveFFT1D;
+import org.wewi.medimg.math.geom.Dimension2D;
 import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
+import org.wewi.medimg.image.statistic.*;
+import org.wewi.medimg.image.filter.*;
 
 
 /**
@@ -443,13 +458,180 @@ public class Test {
         }    
     }
     
+    
+    private static class FileExtentionFilter implements FilenameFilter {
+        private String extention;
+        
+        public FileExtentionFilter(String extention) {
+            this.extention = extention.toLowerCase();    
+        }
+        
+        public boolean accept(File dir, String name) {
+            if (dir.isDirectory()) {
+                return true;    
+            }
+            return name.toLowerCase().endsWith(extention);
+        }
+
+    }
+    private static List fileList(File dir) {
+        List list = new ArrayList();
+        
+        File[] files = dir.listFiles(new Test.FileExtentionFilter(".jpg"));
+        
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isDirectory()) {
+                list.addAll(fileList(files[i]));    
+            } else {
+                list.add(files[i]);    
+            }    
+        }
+        
+        return list;    
+    }
+    
+    private static void copy(File from, File to) throws Exception {
+        FileInputStream in = new FileInputStream(from);
+        FileOutputStream out = new FileOutputStream(to);
+        
+        byte[] buffer = new byte[1024];
+        int size = 0;
+        while((size = in.read(buffer)) != -1) {
+            out.write(buffer, 0, size);
+        }
+        
+        in.close();
+        out.close();
+    }
+    
+    public static void test15() {
+        String dir = "X:/x"; 
+        NumberFormat format = NumberFormat.getInstance();
+        format.setMinimumIntegerDigits(4);      
+        
+        List list = fileList(new File(dir));
+        
+        int count = 0;
+        try {
+            for (Iterator it = list.iterator(); it.hasNext();) {
+                File file = (File)it.next();
+                copy(file, new File(dir + "/" + "image." + format.format(count) + ".jpg"));
+                //System.out.println(file);
+                count++;   
+            }
+        } catch (Exception e) {
+            e.printStackTrace();    
+        } 
+    }
+    
+    
+    public static void test16() {
+        try {
+            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), 
+                                    "C:/Workspace/fwilhelm/Projekte/Diplom/code/data/nhead/seg.model");
+            reader.read();
+            Image img = reader.getImage();
+            
+            ImageDFT dft = new ImageDFT();
+            ComplexImage cimg = dft.transform(img);
+            
+            ComplexIndexImage ciimg = new ComplexIndexImage(cimg,new Dimension2D(7, 10, -2.8, 2.8)); 
+            
+            LinearNormalizeFilter filter = new LinearNormalizeFilter(ciimg, 0, 255);
+            filter.filter();
+            
+            ImageWriter writer = new TIFFWriter(ciimg, "X:/cimg");
+            writer.write();
+            
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }
+    }
+    
+    public static void test17() {
+        FeatureColorConversion cc = new FeatureColorConversion();
+        System.out.println(cc);   
+    }
+    
+    public static void test18() {
+        try {
+            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+                                                 "X:/medimages/nhead/seg.model");
+            reader.read();
+            
+            Image model = reader.getImage();
+            
+            ColorRange cr = AnalyzerUtils.getColorRange(model);
+            
+            int[] count = new int[cr.getNColors()];
+            Arrays.fill(count, 0);
+            for (int i = 0, n = model.getNVoxels(); i < n; i++) {
+                count[model.getColor(i)]++;       
+            }
+            
+            
+            ColorConversion cc = model.getColorConversion();
+            int[] color = new int[3];
+            for (int i = 0; i < count.length; i++) {
+                cc.convert(i, color);
+                System.out.println("" + i + ": " + count[i] +  "color: " + color[0] + "," + color[1] + "," + color[2]);    
+            }
+            
+            
+        } catch (Exception e) {
+            e.printStackTrace();    
+        }    
+    }
+    
+    public static void test19() {
+        Timer timer = new Timer();
+        Image image = new ImageData(250, 250, 250);
+        
+        timer.start();
+        for (int i = 0, n = image.getNVoxels(); i < n; i++) {
+            image.getColor(i);
+            image.setColor(i, i);    
+        }
+        timer.stop();
+        timer.print();
+            
+    }
+    
+    public static void test20() {
+        for (int i = 1; i <= 27; i++) {
+            int var = (27-i)*MathUtil.sqr(i) + i*MathUtil.sqr((27-i));
+            int gcd = MathUtil.gcd(var, 729);
+            System.out.println("i: " + i + ", gcd: " + gcd + " , var: " + (var/gcd) + "/" + (729/gcd));
+        }
+    }
+    
+    public static void test21() {
+        try {
+            String modelPath = "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/nhead/seg.model";
+            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), modelPath);
+            reader.read();
+            
+            Image model = reader.getImage();
+            
+            SecondOrder second = new SecondOrder(model);
+            model = second.varianceImage();
+            ImageFilter filter = new LinearNormalizeFilter(model, 0, 255);
+            filter.filter();
+            
+            ImageWriter writer = new TIFFWriter(filter.getImage(), "/home/fwilhelm/asdf");
+            writer.write();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test14();
+        test20();
     }
     
 }

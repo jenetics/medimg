@@ -18,8 +18,7 @@ import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
-import org.wewi.medimg.image.ops.ColorRangeOperator;
-import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
+import org.wewi.medimg.image.ops.AnalyzerUtils;
 import org.wewi.medimg.seg.Estimator;
 import org.wewi.medimg.seg.Segmenter;
 
@@ -71,12 +70,8 @@ public class MLKMeansEstimator implements Estimator {
     
     public void estimate() {
         int iterationCount = 0;
-        
-        ColorRangeOperator op = new ColorRangeOperator();
-        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(mrt, op);
-        analyzer.analyze();      
-        
-        initMeans(new ColorRange(op.getMinimum(), op.getMaximum()));
+
+        initMeans(AnalyzerUtils.getColorRange(mrt));
         
         do { 
             m1Step(mrt);

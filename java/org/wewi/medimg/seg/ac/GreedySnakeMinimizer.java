@@ -41,7 +41,7 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
 		/**
 		 * @see org.wewi.medimg.alg.AlgorithmIterator#hasNextIteration()
 		 */
-		public boolean hasNextIteration() {
+		public boolean hasNext() {
             System.out.println("" + contourEnergy + "-" + newContourEnergy);
 			return Math.abs(contourEnergy - newContourEnergy) > ERROR_LIMIT;
 		}
@@ -49,7 +49,7 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
 		/**
 		 * @see org.wewi.medimg.alg.AlgorithmIterator#nextIteration()
 		 */
-		public void nextIteration() {
+		public void next() {
             ++iterationCount;
             iteration();
 		}
@@ -180,8 +180,8 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
 
 
 	public ActiveContour minimize() {
-        for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNextIteration();) {
-            it.nextIteration();    
+        for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNext();) {
+            it.next();    
         }
         
         return contour;              

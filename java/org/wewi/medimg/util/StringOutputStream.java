@@ -11,8 +11,6 @@ import java.io.OutputStream;
  * @author Franz Wilhelmstötter
  * @version 0.1
  * 
- * Diese Klasse entspricht zu 95%  dem Code von <code>ByteArrayOutputStream</code> 
- * von Sun.
  */
 public final class StringOutputStream extends OutputStream {
 	private byte buf[];
@@ -82,9 +80,7 @@ public final class StringOutputStream extends OutputStream {
 	}
 
 	public void close() throws IOException {
-        byte[] data = new byte[size()];
-        System.arraycopy(buf, 0, data, 0, count);
-        string = Base64.encode(data);
+        string = Base64.encode(buf, 0, size());
 	}
 
 	public String getOutputString() {

@@ -12,12 +12,16 @@ package org.wewi.medimg.math.geom;
  * @version 0.1
  */
 public class VoronoiDiagram1D {
-    private final double[] voronoiPoints;
-    private final int ninterval;
-    private final double[][] interval;
+    private double[] voronoiPoints;
+    private int ninterval;
+    private double[][] interval;
     
     /** Creates a new instance of VoronoiDiagram1D */
     public VoronoiDiagram1D(double[] voronoiPoints) {
+        init(voronoiPoints);  
+    }
+    
+    private void init(double[] voronoiPoints) {
         this.voronoiPoints = new double[voronoiPoints.length];
         System.arraycopy(voronoiPoints, 0, this.voronoiPoints, 0, voronoiPoints.length);
         

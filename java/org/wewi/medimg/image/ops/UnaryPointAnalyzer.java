@@ -6,12 +6,13 @@ package org.wewi.medimg.image.ops;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
+import org.wewi.medimg.image.ROI;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class UnaryPointAnalyzer {
+public final class UnaryPointAnalyzer {
     private Image image;
     private UnaryOperator operator;
 
@@ -28,6 +29,11 @@ public class UnaryPointAnalyzer {
         for (VoxelIterator it = image.getVoxelIterator(); it.hasNext();) {
             operator.process(it.next());       
         }    
+    }
+    
+    public void analyze(ROI roi) {
+        ImageLoop loop = new ImageLoop(image, new UnaryOperatorTaskAdapter(operator));
+        loop.loop(roi);
     }
     
     public Image getImage() {

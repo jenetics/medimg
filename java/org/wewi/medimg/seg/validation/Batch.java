@@ -110,7 +110,7 @@ public class Batch {
         for (Iterator it = parameter.iterator(); it.hasNext();) {
             Element param = (Element)it.next();
             String name = param.getAttribute("name").getValue();
-            if ("b".equals(name)) {
+            if ("beta".equals(name)) {
                 beta = Double.parseDouble(param.getText());   
             } else if ("source_image".equals(name)) {
                 sourceName = param.getText();    
@@ -160,7 +160,7 @@ public class Batch {
                                        id + "." + i  + ".xml");                                                            
             validator.setK(6);
             validator.setBeta(beta);
-            validator.setAnatomicalModel(currentModelImage);
+            validator.setModelImage(currentModelImage);
             validator.setSourceImage(currentSourceImage);
             validator.validate(); 
             

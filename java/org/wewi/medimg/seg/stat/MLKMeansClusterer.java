@@ -8,14 +8,15 @@ package org.wewi.medimg.seg.stat;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
 
 import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ops.AnalyzerUtils;
 import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.Clusterer;
@@ -33,8 +34,8 @@ public class MLKMeansClusterer extends ObservableSegmenter
         
     public static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
     
-    protected int MAX_ITERATION = 200;
-    protected double ERROR_LIMIT = 0.1;
+    protected int MAX_ITERATION = 125;
+    protected double ERROR_LIMIT = 0.15;
     
     protected ColorRange colorRange;
     
@@ -96,7 +97,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
      * Private formating method.
      */
     private String formatMeanValues() {
-        NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+        NumberFormat format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(4);
         format.setMinimumFractionDigits(4);
         
@@ -128,6 +129,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
 	 */
     public Image segment(Image mrt) {
         Image segimg = (Image)mrt.clone();
+        segimg.setColorConversion(new FeatureColorConversion());
         segimg.resetColor(0);
         segment(mrt, segimg);
         return segimg;
@@ -138,13 +140,9 @@ public class MLKMeansClusterer extends ObservableSegmenter
         
         iterationCount = 0;
         
-        createSegimgOld(segimg);
+        createSegimgOld(segimg);   
         
-        ColorRangeOperator op = new ColorRangeOperator();
-        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(mrt, op);
-        analyzer.analyze();      
-        
-        initMeans(new ColorRange(op.getMinimum(), op.getMaximum()));
+        initMeans(colorRange);
         
         do {
             if (cancelled) {
@@ -174,10 +172,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
 	 */
     public void segment(Image mrt, Image segimg) {
         //Feststellen des Farbbereiches
-        ColorRangeOperator op = new ColorRangeOperator();
-        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(mrt, op);
-        analyzer.analyze();
-        colorRange = new ColorRange(op.getMinimum(), op.getMaximum());
+        colorRange =AnalyzerUtils.getColorRange(mrt);
         
         iterate(mrt, segimg);
         
