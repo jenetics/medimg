@@ -24,7 +24,7 @@ public class RawImageWriter extends ImageWriter {
         super(image, target);
     }
     
-    public void write() {
+    public void write() throws ImageIOException {
         DataOutputStream out = null;
         FileOutputStream fout = null;
         int size = image.getNVoxels();
@@ -38,8 +38,9 @@ public class RawImageWriter extends ImageWriter {
             }
             out.close();
         } catch (IOException ioe) {
-            System.out.println("RawImageDataWriter.write: " + ioe);
-            //Löschen der bereits geschriebenen Datei
+            System.err.println("RawImageDataWriter.write: " + ioe);
+            target.delete();
+            throw new ImageIOException("" + ioe);
         }
     }
     
