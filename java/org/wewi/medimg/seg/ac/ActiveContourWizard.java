@@ -119,6 +119,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         southPanel = new javax.swing.JPanel();
         fileLoadButton = new javax.swing.JButton();
         centerPanel = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
         parameterPanel = new javax.swing.JPanel();
         alphaLabel = new javax.swing.JLabel();
         alphaSlider = new javax.swing.JSlider();
@@ -163,8 +164,10 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
 
         getContentPane().add(southPanel, java.awt.BorderLayout.NORTH);
 
-        centerPanel.setLayout(new java.awt.GridLayout(2, 0));
+        centerPanel.setLayout(new java.awt.GridLayout());
 
+        jSplitPane1.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 1, 1, 1)));
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         parameterPanel.setLayout(new java.awt.GridLayout(3, 2));
 
         parameterPanel.setBorder(new javax.swing.border.TitledBorder(null, "Parameter des Greedy-Algorithmus", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
@@ -216,11 +219,13 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
 
         parameterPanel.add(outerEnergySlider);
 
-        centerPanel.add(parameterPanel);
+        jSplitPane1.setLeftComponent(parameterPanel);
 
         loggerPanel.setLayout(new java.awt.GridLayout(1, 0));
 
-        centerPanel.add(loggerPanel);
+        jSplitPane1.setRightComponent(loggerPanel);
+
+        centerPanel.add(jSplitPane1);
 
         getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
 
@@ -331,8 +336,8 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         
         while (ait.hasNextIteration()) {
             ait.nextIteration();
-            imageViewer.repaintImage();
         }
+        imageViewer.repaintImage();
     }//GEN-LAST:event_doAllButtonActionPerformed
 
     private void newContourButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newContourButtonActionPerformed
@@ -422,6 +427,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
     private javax.swing.JButton resetContourButton;
     private javax.swing.JLabel betaLabel;
     private javax.swing.JPanel southPanel;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel outerEnergyWeigthLabel;
     private javax.swing.JLabel alphaLabel;
     private javax.swing.JPanel centerPanel;
