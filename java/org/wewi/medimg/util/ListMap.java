@@ -185,7 +185,7 @@ public class ListMap implements Map {
         return set;
 	}
     
-    public List entryCollection() {
+    public List entryList() {
         return (List)entries.clone();
     }
 
