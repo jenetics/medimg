@@ -15,8 +15,6 @@ import javax.swing.JFileChooser;
 import org.wewi.medimg.alg.AlgorithmIterator;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.VoxelSelectorEvent;
-import org.wewi.medimg.image.VoxelSelectorListener;
 import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
@@ -25,12 +23,14 @@ import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
 import org.wewi.medimg.viewer.ImageFileChooser;
-import org.wewi.medimg.viewer.ImageViewer;
 import org.wewi.medimg.viewer.ImageViewerEvent;
 import org.wewi.medimg.viewer.ImageViewerListener;
 import org.wewi.medimg.viewer.LogHandlerPanel;
 import org.wewi.medimg.viewer.ProgressFrame;
 import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.image.ImageViewer;
+import org.wewi.medimg.viewer.image.VoxelSelectorEvent;
+import org.wewi.medimg.viewer.image.VoxelSelectorListener;
 import org.wewi.medimg.viewer.wizard.Wizard;
 
 /**
@@ -292,7 +292,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
                 imageViewer.setImageCanvas(new ActivePolygonCanvasAdapter((ActivePolygon)contour));
             }            
             
-            ait = minimizer.getAlgorithmIterator();
+            ait = minimizer.iterator();
             imageViewer.repaintImage();
         }
     }//GEN-LAST:event_resetContourButtonActionPerformed
@@ -348,7 +348,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         minimizer.setALPHA(minimizerAlpha);
         minimizer.setBETA(minimizerBeta);
         minimizer.setGAMMA(minimizerOuterEnergyWeight);
-        ait = minimizer.getAlgorithmIterator();
+        ait = minimizer.iterator();
 
         if (imageViewer != null) {
             imageViewer.setImageCanvas(new ActivePolygonCanvasAdapter((ActivePolygon)contour));

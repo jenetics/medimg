@@ -32,7 +32,6 @@ import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.RGBColorConversion;
 import org.wewi.medimg.image.filter.DilationFilter;
 import org.wewi.medimg.image.filter.EdgeFilter;
@@ -70,6 +69,7 @@ import org.wewi.medimg.math.fft.NaiveDFT1D;
 import org.wewi.medimg.math.geom.Dimension2D;
 import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
+import org.wewi.medimg.viewer.image.ImagePanel;
 
 
 /**

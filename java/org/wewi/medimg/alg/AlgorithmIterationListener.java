@@ -8,7 +8,7 @@ import java.util.EventListener;
 
 
 /**
- * Interface for an Algorithm
+ * Interface for an AlgorithmIterationListener.
  * 
  * @author Franz Wilhelmstötter
  * @version 0.1

@@ -22,7 +22,6 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.viewer.Command;
 import org.wewi.medimg.viewer.ImageContainer;
 import org.wewi.medimg.viewer.NavigationPanel;
@@ -30,6 +29,7 @@ import org.wewi.medimg.viewer.NullCommand;
 import org.wewi.medimg.viewer.SaveCommand;
 import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.ViewerDesktopFrame;
+import org.wewi.medimg.viewer.image.ImagePanel;
 import org.wewi.medimg.viewer.wizard.WizardEvent;
 import org.wewi.medimg.viewer.wizard.WizardListener;
 

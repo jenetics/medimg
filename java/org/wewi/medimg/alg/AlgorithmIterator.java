@@ -8,13 +8,14 @@ package org.wewi.medimg.alg;
  * Interface for an iterateable Algorithm. If an Algorithm
  * implements this interface, it is possible "stop" at
  * every iteration and get an interim result. Running such an
- * algorithm class can be done as follow:
+ * algorithm class can be done as follows:
  * 
  * <pre>
- *      Object result;
- *      for (AlgorithmIterator it = IterateableAlgorithm.getAlgorithmIterator(); it.hasNext();) {
- *          it.next();
- *          result = it.getInterimResult();
+ *      IterateableAlgorithm alg = new IterateableAlgorithmImpl();
+ *      Object result = null;
+ *      for (AlgorithmIterator it = alg.iterator(); it. hasNext();) {          
+ *          it.next(); 
+ *          result = it. getInterimResult();
  *          
  *          //Print the interim result to the standard out.
  *          System.out.println(result);

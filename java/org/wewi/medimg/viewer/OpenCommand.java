@@ -20,7 +20,7 @@ import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
-import org.wewi.medimg.viewer.image.*;
+import org.wewi.medimg.viewer.image.ImageViewer;
 
 /**
  *
