@@ -4,6 +4,8 @@
  */
 package org.wewi.medimg.seg.ac;
 
+import org.wewi.medimg.image.geom.RegularVectorField;
+
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
@@ -16,5 +18,11 @@ public class GradientVectorFlow {
 	public GradientVectorFlow() {
 		super();
 	}
+    
+    
+    public RegularVectorField getVectorField() {
+    
+        return null;    
+    }
 
 }
