@@ -8,6 +8,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -92,6 +93,9 @@ public class MoverLayeredPane extends JLayeredPane {
      */ 
     private Component pocusComponent;
     
+    private MovableComponentBorder selectionBorder;
+    private MovableComponentBorder mouseOverBorder;
+    
     /**
      * The offsetFromTopLeftCorner is used to adjust the location of
      * the component being MOVED (not resized).  We compute this offset
@@ -120,12 +124,16 @@ public class MoverLayeredPane extends JLayeredPane {
 	public MoverLayeredPane() {
 		super();
 		setLayout(new MLPLayout());
+        
 		contentPanel = new MoverPanel();
 		borderPanel = new BorderPanel();
+        
 		add(contentPanel, BOTTOM_LAYER);
 		add(borderPanel, BORDER_LAYER);
+        
 		contentPanel.setVisible(true);
 		setCursorState(CursorState.OBJECT_SELECTION);
+        setSelectionBorder(new DefaultMovableObjectBorder());
 	}
 
     /**
@@ -141,26 +149,34 @@ public class MoverLayeredPane extends JLayeredPane {
 		return borderPanel;
 	}
 
+    public MovableComponentBorder getSelectionBorder() {
+        return selectionBorder;
+    }
+    
+    public void setSelectionBorder(MovableComponentBorder border) {
+        selectionBorder = border;
+    }
+    
+    public MovableComponentBorder getMouseOverBorder() {
+        return mouseOverBorder;
+    }
+    
+    public void setMouseOverBorder(MovableComponentBorder border) {
+        mouseOverBorder = border;
+    }
+
 	private void setCursorState(int newState) {
 		cursorState = newState;
 		switch (cursorState) {
 			case CursorState.OBJECT_CREATION :
 				setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-				//!PA - redundant?
-				contentPanel.setCursor(
-					Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 				break;
 			case CursorState.OBJECT_SELECTION :
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				//!PA - redundant?
-				contentPanel.setCursor(
-					Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				break;
 			default :
 				}
 	}
-
-
 	//other local vars from glass pane code
 	private Point dragOffset;
 	private Point dragStart;
@@ -172,14 +188,12 @@ public class MoverLayeredPane extends JLayeredPane {
 
 
 
-
-
 	/** 
 	 * A custom layout manager that is responsible for the layout of 
 	 * JPanels inside the MoverLayeredPane--basically, all it does is
 	 * ensure that they are the size of the MoverLayeredPane.
 	 */
-	private class MLPLayout implements LayoutManager {
+	private final class MLPLayout implements LayoutManager {
 		/**
 		 * Returns the amount of space the layout would like to have.
 		 *
@@ -189,6 +203,7 @@ public class MoverLayeredPane extends JLayeredPane {
 		public Dimension preferredLayoutSize(Container parent) {
 			return parent.getSize();
 		}
+        
 		/**
 		 * Returns the minimum amount of space the layout needs.
 		 *
@@ -198,6 +213,7 @@ public class MoverLayeredPane extends JLayeredPane {
 		public Dimension minimumLayoutSize(Container parent) {
 			return parent.getSize();
 		}
+        
 		/**
 		 * Returns the maximum amount of space the layout can use.
 		 *
@@ -207,6 +223,7 @@ public class MoverLayeredPane extends JLayeredPane {
 		public Dimension maximumLayoutSize(Container target) {
 			return target.getSize();
 		}
+        
 		/**
 		 * Instructs the layout manager to perform the layout for the specified
 		 * container.
@@ -219,8 +236,10 @@ public class MoverLayeredPane extends JLayeredPane {
 			borderPanel.setSize(parent.getSize());
 			borderPanel.setLocation(0, 0);
 		}
+        
 		public void addLayoutComponent(String name, Component comp) {
 		}
+        
 		public void removeLayoutComponent(Component comp) {
 		}
 	}
@@ -232,10 +251,6 @@ public class MoverLayeredPane extends JLayeredPane {
         private BorderComponent borderComponent;
         
 		public BorderPanel() {
-			this(Color.blue);
-		}
-        
-		public BorderPanel(Color color) {
 			super(new BorderLayout());
 			setOpaque(false);
 			borderComponent = new BorderComponent();
@@ -261,148 +276,122 @@ public class MoverLayeredPane extends JLayeredPane {
 		 *    BorderComponent will draw the new border!
 		 */
 		private class BorderComponent extends JComponent {
-            private MovableObjectBorder mob;
-            private int currentCursor;
+            private Cursor currentCursor;
             private int repaintExtra = 20;
-            
+             
 			public BorderComponent() {
-				this(Color.blue);
-			}
-            
-			public BorderComponent(Color color) {
-				mob = new DefaultMovableObjectBorder(color, 7, 7, 5, Color.YELLOW, 8, 6);
 				enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 			}
 
 			public void paint(Graphics g) {
-				mob.paintBorder(pocusComponent, g);
+				selectionBorder.paintBorder(pocusComponent, (Graphics2D)g);
 			}
 
 			public boolean contains(int x, int y) {
-				return mob.isPointOverTheBorder(pocusComponent, new Point(x, y));
+				return selectionBorder.isPointOverTheBorder(pocusComponent, new Point(x, y));
 			}
 
 			protected void processMouseEvent(MouseEvent e) {
-
 				if (e.isPopupTrigger()) {
-					//theToolBarPopupMenu.show(e.getComponent(), e.getXlen(), e.getYlen());
-				} else {
-					switch (e.getID()) {
-						case MouseEvent.MOUSE_CLICKED :
-							break;
-						case MouseEvent.MOUSE_ENTERED :
-							break;
-						case MouseEvent.MOUSE_EXITED :
-							break;
-						case MouseEvent.MOUSE_PRESSED :
-							if (getCursor() != null) {
-								switch (getCursor().getType()) {
-									case Cursor.MOVE_CURSOR :
-										Point topLeftCorner =
-											pocusComponent.getLocation();
-										offsetFromTopLeftCorner =
-											new Point(
-												(e.getPoint().x
-													- topLeftCorner.x),
-												(e.getPoint().y
-													- topLeftCorner.y));
-										break;
-									case Cursor.E_RESIZE_CURSOR :
-									case Cursor.W_RESIZE_CURSOR :
-									case Cursor.N_RESIZE_CURSOR :
-									case Cursor.S_RESIZE_CURSOR :
-									case Cursor.NE_RESIZE_CURSOR :
-									case Cursor.NW_RESIZE_CURSOR :
-									case Cursor.SE_RESIZE_CURSOR :
-									case Cursor.SW_RESIZE_CURSOR :
-										initialSize =
-											pocusComponent.getBounds();
-										break;
-									case Cursor.CROSSHAIR_CURSOR :
-										dragStart = e.getPoint();
-										break;
-									default :
-										break;
-								}
-							} else {
+                    return;
+				}
+				switch (e.getID()) {
+					case MouseEvent.MOUSE_CLICKED :
+						break;
+					case MouseEvent.MOUSE_ENTERED :
+						break;
+					case MouseEvent.MOUSE_EXITED :
+						break;
+					case MouseEvent.MOUSE_PRESSED :
+						if (getCursor() != null) {
+							switch (getCursor().getType()) {
+								case Cursor.MOVE_CURSOR :
+									Point topLeftCorner = pocusComponent.getLocation();
+									offsetFromTopLeftCorner = new Point((e.getPoint().x - topLeftCorner.x),
+											                            (e.getPoint().y - topLeftCorner.y));
+									break;
+								case Cursor.E_RESIZE_CURSOR :
+								case Cursor.W_RESIZE_CURSOR :
+								case Cursor.N_RESIZE_CURSOR :
+								case Cursor.S_RESIZE_CURSOR :
+								case Cursor.NE_RESIZE_CURSOR :
+								case Cursor.NW_RESIZE_CURSOR :
+								case Cursor.SE_RESIZE_CURSOR :
+								case Cursor.SW_RESIZE_CURSOR :
+									initialSize = pocusComponent.getBounds();
+									break;
+								case Cursor.CROSSHAIR_CURSOR :
+									dragStart = e.getPoint();
+									break;
+								default :
+									break;
 							}
-							break;
-						case MouseEvent.MOUSE_RELEASED :
-							repaint();
-							if (getCursor() != null) {
-								if (getCursor().getType()
-									== Cursor.MOVE_CURSOR) {
-									moveSelectedComponent(e.getPoint());
-									//moveWithParent = false;//!PA - figure out how to set this in object
-
-								} else {
-									pocusComponent = null;
-								}
-							} else {
-								pocusComponent = null;
+						}
+						break;
+					case MouseEvent.MOUSE_RELEASED :
+						repaint();
+						if (getCursor() != null) {
+							if (getCursor().getType() == Cursor.MOVE_CURSOR) {
+								moveSelectedComponent(e.getPoint());
 							}
-							break;
-						default :
-							break;
-					}
+						}
+						break;
+					default :
+						break;
 				}
 			}
             
 			protected void processMouseMotionEvent(MouseEvent e) {
 				switch (e.getID()) {
 					case MouseEvent.MOUSE_MOVED :
-						int newCursor =
-							mob.getCursor(pocusComponent, e.getPoint());
-						if (newCursor != currentCursor) {
-							setCursor(Cursor.getPredefinedCursor(newCursor));
+						Cursor newCursor = selectionBorder.getCursor(pocusComponent, e.getPoint());
+						if (!newCursor.equals(currentCursor)) {
+							setCursor(newCursor);
 							currentCursor = newCursor;
 						}
 						break;
 					case MouseEvent.MOUSE_DRAGGED :
-						Rectangle r = mob.getRepaintRegion(pocusComponent);
-						repaint(
-							r.x - repaintExtra,
-							r.y - repaintExtra,
-							r.width + repaintExtra * 2,
-							r.height + repaintExtra * 2);
+						Rectangle r = selectionBorder.getRepaintRegion(pocusComponent);
+						repaint(r.x - repaintExtra, r.y - repaintExtra, 
+                                r.width + repaintExtra * 2, r.height + repaintExtra * 2);
 						if (getCursor().getType() == Cursor.MOVE_CURSOR) {
 							moveSelectedComponent(e.getPoint());
-						} else {
-							switch (getCursor().getType()) {
-								case Cursor.N_RESIZE_CURSOR :
-									resizeVertical(e.getPoint(), true);
-									break;
-								case Cursor.E_RESIZE_CURSOR :
-									resizeHorizontal(e.getPoint(), false);
-									break;
-								case Cursor.S_RESIZE_CURSOR :
-									resizeVertical(e.getPoint(), false);
-									break;
-								case Cursor.W_RESIZE_CURSOR :
-									resizeHorizontal(e.getPoint(), true);
-									break;
-								case Cursor.NE_RESIZE_CURSOR :
-									resizeVertical(e.getPoint(), true);
-									resizeHorizontal(e.getPoint(), false);
-									break;
-								case Cursor.NW_RESIZE_CURSOR :
-									resizeVertical(e.getPoint(), true);
-									resizeHorizontal(e.getPoint(), true);
-									break;
-								case Cursor.SE_RESIZE_CURSOR :
-									resizeVertical(e.getPoint(), false);
-									resizeHorizontal(e.getPoint(), false);
-									break;
-								case Cursor.SW_RESIZE_CURSOR :
-									resizeVertical(e.getPoint(), false);
-									resizeHorizontal(e.getPoint(), true);
-									break;
-								default :
-									return;
-							}
-							//				moveWithParent = false;//!PA - replace with new version of this
-							validate();
+                            break;
 						}
+						switch (getCursor().getType()) {
+							case Cursor.N_RESIZE_CURSOR :
+								resizeVertical(e.getPoint(), true);
+								break;
+							case Cursor.E_RESIZE_CURSOR :
+								resizeHorizontal(e.getPoint(), false);
+								break;
+							case Cursor.S_RESIZE_CURSOR :
+								resizeVertical(e.getPoint(), false);
+								break;
+							case Cursor.W_RESIZE_CURSOR :
+								resizeHorizontal(e.getPoint(), true);
+								break;
+							case Cursor.NE_RESIZE_CURSOR :
+								resizeVertical(e.getPoint(), true);
+								resizeHorizontal(e.getPoint(), false);
+								break;
+							case Cursor.NW_RESIZE_CURSOR :
+								resizeVertical(e.getPoint(), true);
+								resizeHorizontal(e.getPoint(), true);
+								break;
+							case Cursor.SE_RESIZE_CURSOR :
+								resizeVertical(e.getPoint(), false);
+								resizeHorizontal(e.getPoint(), false);
+								break;
+							case Cursor.SW_RESIZE_CURSOR :
+								resizeVertical(e.getPoint(), false);
+								resizeHorizontal(e.getPoint(), true);
+								break;
+							default :
+								return;
+						}
+						validate();
+						
 						break;
 					default :
 						break;
@@ -464,9 +453,7 @@ public class MoverLayeredPane extends JLayeredPane {
 			 * Resize either north or south.  If and when Java gets a parameterized
 			 * type mechanism this method should be combined with resizeHorizontal().
 			 */
-			private void resizeVertical(
-				Point currentPoint,
-				boolean isNorthHandle) {
+			private void resizeVertical(Point currentPoint, boolean isNorthHandle) {
 				Point currentWindowPoint = mapToPointInWindow(currentPoint);
 				Point initialWindowPoint = new Point(initialSize.x, initialSize.y);
 				Rectangle b = pocusComponent.getBounds();
@@ -495,9 +482,7 @@ public class MoverLayeredPane extends JLayeredPane {
 			 * Resize either east or west.  If and when Java gets a parameterized
 			 * type mechanism this method should be combined with resizeVertical().
 			 */
-			private void resizeHorizontal(
-				Point currentPoint,
-				boolean isWestHandle) {
+			private void resizeHorizontal(Point currentPoint, boolean isWestHandle) {
 				Point currentWindowPoint = mapToPointInWindow(currentPoint);
 				Point initialWindowPoint = new Point(initialSize.x, initialSize.y);
 				Rectangle b = pocusComponent.getBounds();
@@ -538,7 +523,7 @@ public class MoverLayeredPane extends JLayeredPane {
          */
         private SmartContainerListener smartcl;
         
-		private MoverPanel() {
+		public MoverPanel() {
 			super(null); //initialize with no layout manager
 			enableEvents(AWTEvent.CONTAINER_EVENT_MASK | 
                          AWTEvent.MOUSE_EVENT_MASK     | 
@@ -551,8 +536,7 @@ public class MoverLayeredPane extends JLayeredPane {
 
 		private Component findChildThatContainsPoint(MouseEvent e) {
 			Component[] children = getComponents();
-			Component temp = null;
-			for (int i = 0; i < children.length; i++) {
+			for (int i = 0, n = children.length; i < n; i++) {
 				if (children[i].contains(e.getX() - children[i].getLocation().x,
 						                 e.getY() - children[i].getLocation().y)) {
 					return children[i];
@@ -591,36 +575,31 @@ public class MoverLayeredPane extends JLayeredPane {
 
 		protected void processMouseEvent(MouseEvent e) {
 			if (e.isPopupTrigger()) {
-				//theToolBarPopupMenu.show(e.getComponent(), e.getXlen(), e.getYlen());
                 return;
 			}
             
-			Component childThatContainsPoint = findChildThatContainsPoint(e);
+			Component child = findChildThatContainsPoint(e);
 			switch (e.getID()) {
 				case MouseEvent.MOUSE_PRESSED :
 					switch (cursorState) {
 						case CursorState.OBJECT_CREATION :
-							//theMLPObjectFactory.mousePressed(e, this);
 							break;
 						case CursorState.OBJECT_SELECTION :
-							if (childThatContainsPoint != null) {
-								childThatContainsPoint.dispatchEvent(
-									SwingUtilities.convertMouseEvent(e.getComponent(), e,
-										                             childThatContainsPoint));
+							if (child != null) {
+								child.dispatchEvent(SwingUtilities.convertMouseEvent(e.getComponent(), e, child));
 							}
 							break;
 						default :
-							}
+					}
 					break;
 				case MouseEvent.MOUSE_CLICKED :
 				case MouseEvent.MOUSE_RELEASED :
 					switch (cursorState) {
 						case CursorState.OBJECT_CREATION :
-							//theMLPObjectFactory.mouseReleased(e, this);
 							break;
 						case CursorState.OBJECT_SELECTION :
-							if (childThatContainsPoint != null) {
-								childThatContainsPoint.requestFocus();
+							if (child != null) {
+								child.requestFocus();
 							} else {
 								pocusComponent = null;
 								requestFocus();
@@ -645,7 +624,7 @@ public class MoverLayeredPane extends JLayeredPane {
 					case CursorState.OBJECT_SELECTION :
 						break;
 					default :
-						}
+				}
 			}
 		} //processMouseMotionEvent
 
@@ -704,7 +683,7 @@ public class MoverLayeredPane extends JLayeredPane {
      * Testing-Method
 	 * @return
 	 */
-	public static MoverLayeredPane getSampleLayeredPane() {
+	private static MoverLayeredPane getSampleLayeredPane() {
 		MoverLayeredPane mlp = new MoverLayeredPane();
 
 		//Now create a bunch of objects (incl. nested objects) to add to the
@@ -762,8 +741,8 @@ public class MoverLayeredPane extends JLayeredPane {
 
 		//Now add these objects to the contentPanel
 		mlp.getContentPanel().add(lab2);
-		mlp.getContentPanel().add(p1);
-		mlp.getContentPanel().add(b1);
+		mlp.getContentPanel().add(new MovableComponent(b1));
+		//mlp.getContentPanel().add(b1);
 		mlp.getContentPanel().add(b2);
 		mlp.getContentPanel().add(b3);
 		mlp.getContentPanel().add(jtf);

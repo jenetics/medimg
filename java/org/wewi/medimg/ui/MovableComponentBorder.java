@@ -1,15 +1,16 @@
 package org.wewi.medimg.ui;
 
 import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.Cursor;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-interface MovableObjectBorder {
+public interface MovableComponentBorder {
     
-	public int getCursor(Component c, final Point p);
+	public Cursor getCursor(Component c, final Point p);
     
-	public void paintBorder(Component c, Graphics g);
+	public void paintBorder(Component c, Graphics2D g);
     
 	public boolean isPointOverTheBorder(Component c, final Point p);
     
