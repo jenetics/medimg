@@ -9,7 +9,7 @@ package org.wewi.medimg.image.io;
 import java.io.File;
 
 import org.wewi.medimg.image.ColorConversion;
-import org.wewi.medimg.image.GreyRGBConversion;
+import org.wewi.medimg.image.GreyColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageFactory;
 
@@ -26,13 +26,13 @@ public abstract class ImageReader {
     protected ColorConversion colorConversion;
     
     ImageReader() {
-        colorConversion = new GreyRGBConversion();
+        colorConversion = new GreyColorConversion();
     }
     
     public ImageReader(ImageFactory imageFactory, File source) {
         this.imageFactory = imageFactory;
         this.source = source;
-        colorConversion = new GreyRGBConversion();
+        colorConversion = new GreyColorConversion();
         range = new Range(0, Integer.MAX_VALUE);
     }
     

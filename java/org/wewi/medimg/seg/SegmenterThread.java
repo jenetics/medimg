@@ -34,7 +34,9 @@ public class SegmenterThread extends Thread {
 	public SegmenterThread(Segmenter segmenter) {
 		this.segmenter = segmenter;
 		mrtImage = new NullImage();
-		segImage = new NullImage();	
+		segImage = new NullImage();
+        
+        observer = new Vector();	
 	}
 	
     public void addSegmenterListener(SegmenterListener o) {
@@ -66,12 +68,14 @@ public class SegmenterThread extends Thread {
 
 	public void run() {
         notifySegmenterStarted(new SegmenterEvent(this));
-		segImage = segmenter.segment(mrtImage);
+		segmenter.segment(mrtImage, segImage);
         notifySegmenterFinished(new SegmenterEvent(this));
 	}
 	
 	public void setImage(Image mrtImage) {
 		this.mrtImage = mrtImage;	
+        segImage = (Image)mrtImage.clone();
+        segImage.resetColor(0);
 	}
 	
 	public Image getSegmentedImage() {

@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.seg.wizard;
 
-import org.wewi.medimg.seg.Segmenter;
+import org.wewi.medimg.seg.ObservableSegmenter;
 
 /**
  *
@@ -18,6 +18,6 @@ public abstract class SegmenterArgumentPanel extends javax.swing.JPanel {
     public SegmenterArgumentPanel() { 
     }
     
-    public abstract Segmenter getSegmenter();
+    public abstract ObservableSegmenter getSegmenter();
     
 }

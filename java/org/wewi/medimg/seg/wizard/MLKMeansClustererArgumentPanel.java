@@ -6,12 +6,13 @@
 
 package org.wewi.medimg.seg.wizard;
 
-import org.wewi.medimg.seg.Segmenter;
+import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
     private int nfeatures = 4;
@@ -21,7 +22,7 @@ public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
         initComponents();
     }
     
-    public Segmenter getSegmenter() {
+    public ObservableSegmenter getSegmenter() {
         return new MLKMeansClusterer(nfeatures);
     }     
     

@@ -39,9 +39,9 @@ public class FeatureColorConversion implements ColorConversion {
     }
 
     public void convert(int grey, int[] rgb) {
-        rgb[0] = cc[grey][0];
-        rgb[1] = cc[grey][1];
-        rgb[2] = cc[grey][2];
+        rgb[0] = cc[grey%colors][0];
+        rgb[1] = cc[grey%colors][1];
+        rgb[2] = cc[grey%colors][2];
     }
     
     public int convert(int[] rgb) {

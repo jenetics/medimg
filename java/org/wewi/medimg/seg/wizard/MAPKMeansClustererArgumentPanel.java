@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.seg.wizard;
 
-import org.wewi.medimg.seg.Segmenter;
+import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
 
 /**
@@ -22,7 +22,7 @@ public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
         initComponents();
     }
     
-    public Segmenter getSegmenter() {
+    public ObservableSegmenter getSegmenter() {
         return new MAPKMeansClusterer(nfeatures);
     }    
     

@@ -41,11 +41,12 @@ public class ImagePanel extends JPanel {
         bufferedImage = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_3BYTE_BGR); 
         
         setBackground(Color.WHITE);
+        conversion = image.getColorConversion();
     }
       
     
     public void setColorConversion(ColorConversion c) {
-        conversion = c;
+        //conversion = c;
     }
     
     public ColorConversion getColorConversion() {
