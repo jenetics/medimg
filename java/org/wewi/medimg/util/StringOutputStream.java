@@ -1,73 +1,90 @@
 /**
  * Created on 12.09.2002
  *
- * To change this generated comment edit the template variable "filecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of file comments go to
- * Window>Preferences>Java>Code Generation.
  */
 package org.wewi.medimg.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 
 /**
- * @author Franz WilhelmstÃ¶tter
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
+ * @author Franz Wilhelmstötter
+ * @version 0.1
+ * 
+ * Diese Klasse entspricht zu 95%  dem Code von <code>ByteArrayOutputStream</code> 
+ * von Sun.
  */
-public class StringOutputStream extends OutputStream {
-	private ByteBuffer buffer;
-	private String string;
+public final class StringOutputStream extends OutputStream {
+	private byte buf[];
+	private int count;
 
-	/**
-	 * Constructor for StringOutputStream.
-	 */
+    private String string;
+
 	public StringOutputStream() {
-		super();
-		buffer = ByteBuffer.allocate(100);
-	} 
+		this(32);
+	}
 
-	/**
-	 * @see java.io.OutputStream#close()
-	 */
+	public StringOutputStream(int size) {
+		if (size < 0) {
+			throw new IllegalArgumentException(
+				"Negative initial size: " + size);
+		}
+		buf = new byte[size];
+	}
+
+	public synchronized void write(int b) {
+		int newcount = count + 1;
+		if (newcount > buf.length) {
+			byte newbuf[] = new byte[Math.max(buf.length << 1, newcount)];
+			System.arraycopy(buf, 0, newbuf, 0, count);
+			buf = newbuf;
+		}
+		buf[count] = (byte) b;
+		count = newcount;
+	}
+
+	public synchronized void write(byte b[], int off, int len) {
+		if ((off < 0)
+			|| (off > b.length)
+			|| (len < 0)
+			|| ((off + len) > b.length)
+			|| ((off + len) < 0)) {
+			throw new IndexOutOfBoundsException();
+		} else if (len == 0) {
+			return;
+		}
+		int newcount = count + len;
+		if (newcount > buf.length) {
+			byte newbuf[] = new byte[Math.max(buf.length << 1, newcount)];
+			System.arraycopy(buf, 0, newbuf, 0, count);
+			buf = newbuf;
+		}
+		System.arraycopy(b, off, buf, count, len);
+		count = newcount;
+	}
+
+	public synchronized void writeTo(OutputStream out) throws IOException {
+		out.write(buf, 0, count);
+	}
+
+	public synchronized void reset() {
+		count = 0;
+	}
+
+	private synchronized byte[] toByteArray() { 
+        byte newbuf[] = new byte[count];
+		System.arraycopy(buf, 0, newbuf, 0, count);
+		return newbuf;
+	}
+
+	public int size() {
+		return count;
+	}
+
 	public void close() throws IOException {
-		byte[] raw = buffer.array();
-		string = Base64.encode(raw);
-
-		buffer = null;
-	}
-
-	/**
-	 * @see java.io.OutputStream#flush()
-	 */
-	public void flush() throws IOException {
-		super.flush();
-	}
-
-	/**
-	 * @see java.io.OutputStream#write(byte[], int, int)
-	 */
-	public void write(byte[] b, int offset, int length) throws IOException {
-		buffer.put(b, offset, length);
-	}
-
-	/**
-	 * @see java.io.OutputStream#write(byte[])
-	 */
-	public void write(byte[] b) throws IOException {
-		buffer.put(b);
-	}
-
-	/**
-	 * @see java.io.OutputStream#write(int)
-	 */
-	public void write(int b) throws IOException {
-		buffer.put((byte) b);
+        byte[] data = new byte[size()];
+        System.arraycopy(buf, 0, data, 0, count);
+        string = Base64.encode(data);
 	}
 
 	public String getOutputString() {
