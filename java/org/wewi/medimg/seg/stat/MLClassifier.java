@@ -14,6 +14,7 @@ import org.wewi.medimg.seg.ObservableSegmenter;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class MLClassifier extends ObservableSegmenter implements Classifier {
     private double[] mean;

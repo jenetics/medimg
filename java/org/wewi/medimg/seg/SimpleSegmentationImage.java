@@ -8,7 +8,9 @@ package org.wewi.medimg.seg;
 
 import java.util.Arrays;
 
+import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageHeader;
 import org.wewi.medimg.image.VoxelIterator;
@@ -54,6 +56,7 @@ public final class SimpleSegmentationImage implements Image {
     private ColorRange colorRange = null;
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
+    private Dimension dimension;
     private int size, sizeX, sizeY, sizeZ, sizeXY; 
 
     public SimpleSegmentationImage(int sizeX, int sizeY, int sizeZ) {
@@ -72,6 +75,7 @@ public final class SimpleSegmentationImage implements Image {
         sizeZ = maxZ-minZ+1;
         sizeXY = sizeX*sizeY;
         size = sizeX*sizeY*sizeZ;
+        dimension = new Dimension(minX, maxX, minY, maxY, minZ, maxZ);
         
         data = new byte[size];
         Arrays.fill(data, (byte)0);
@@ -137,6 +141,13 @@ public final class SimpleSegmentationImage implements Image {
         return new org.wewi.medimg.image.NullImageHeader();
     }
     
+    public ColorConversion getColorConversion() {
+    	return null;	
+    }
+    
+    public void setColorConversion(ColorConversion cc) {	
+    }
+    
     public int getMaxX() {
         return maxX;
     }
@@ -159,6 +170,10 @@ public final class SimpleSegmentationImage implements Image {
     
     public int getMinZ() {
         return minZ;
+    }
+    
+    public Dimension getDimension() {
+    	return dimension;	
     }
     
     public int getNVoxels() {

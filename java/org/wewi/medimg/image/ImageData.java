@@ -16,11 +16,11 @@ import java.util.Arrays;
 public final class ImageData implements Image { 
     
     private class ImageDataVoxelIterator implements VoxelIterator {
-        private short[] data;
+        private int[] data;
         private int size;
         private int pos;
         
-        public ImageDataVoxelIterator(short[] data) {
+        public ImageDataVoxelIterator(int[] data) {
             this.data = data;
             size = data.length;
             pos = 0;
@@ -50,12 +50,15 @@ public final class ImageData implements Image {
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int sizeX, sizeY, sizeZ;
+    private Dimension dimension;
     private int sizeXY, size;
-    private short[] data;
+    private int[] data;
     
     private ImageDataHeader header;
+    private ColorConversion colorConversion;
     
     ImageData() {
+    	colorConversion = new GreyColorConversion();
     }
     
     ImageData(ImageData id) {
@@ -70,15 +73,17 @@ public final class ImageData implements Image {
         this.maxX = maxX;
         this.maxY = maxY;
         this.maxZ = maxZ;
+        dimension = new Dimension(minX, maxX, minY, maxY, minZ, maxZ);
         sizeX = maxX - minX + 1;
         sizeY = maxY - minY + 1;
         sizeZ = maxZ - minZ + 1;
         size = sizeX*sizeY*sizeZ;
         sizeXY = sizeX*sizeY;
-        data = new short[size]; 
-        Arrays.fill(data, (short)0);
+        data = new int[size]; 
+        Arrays.fill(data, 0);
         
         header = new ImageDataHeader(minX, minY, minZ, maxX, maxY, maxZ, this);
+        colorConversion = new GreyColorConversion();
     }
     
     public ImageData(int sizeX, int sizeY, int sizeZ) {
@@ -109,7 +114,7 @@ public final class ImageData implements Image {
         Arrays.fill(data, (short)color);
     }  
     
-    private void findColorRange() {
+    public void updateColorRange() {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < size; i++) {
@@ -126,7 +131,7 @@ public final class ImageData implements Image {
     
     public ColorRange getColorRange() {
         if (colorRange == null) {
-            findColorRange();
+            updateColorRange();
         }
         return colorRange;
     }
@@ -161,7 +166,11 @@ public final class ImageData implements Image {
     
     public int getMinZ() {
         return minZ;
-    }    
+    }   
+    
+    public Dimension getDimension() {
+    	return dimension;	
+    } 
     
     public int getNVoxels() {
         return size;
@@ -267,6 +276,14 @@ public final class ImageData implements Image {
     public ImageHeader getHeader() {
         return header;
     }   
+    
+    public ColorConversion getColorConversion() {
+    	return colorConversion;	
+    }
+    
+    public void setColorConversion(ColorConversion cc) {
+    	colorConversion = cc;	
+    }
 
     public VoxelIterator getVoxelIterator() {
         return new ImageDataVoxelIterator(data);

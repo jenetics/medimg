@@ -14,18 +14,18 @@ import java.awt.Color;
  * @version 0.1
  */
 public class FeatureColorConversion implements ColorConversion {
-    private static final Color[] c = {Color.white,
-                                          Color.red,
-                                          Color.green,
-                                          Color.blue,
-                                          Color.orange,
-                                          Color.pink,
-                                          Color.yellow,
-                                          Color.cyan,
-                                          Color.lightGray,
-                                          Color.gray,
-                                          Color.darkGray,
-                                          Color.black};
+    private static final Color[] c = {Color.WHITE,
+                                        Color.RED,
+                                        Color.GREEN,
+                                        Color.BLUE,
+                                        Color.ORANGE,
+                                        Color.PINK,
+                                        Color.YELLOW,
+                                        Color.CYAN,
+                                        Color.LIGHT_GRAY,
+                                        Color.GRAY,
+                                        Color.DARK_GRAY,
+                                        Color.BLACK};
     private static final int colors = c.length;
     private static int[][] cc;
 
@@ -46,6 +46,10 @@ public class FeatureColorConversion implements ColorConversion {
     
     public int convert(int[] rgb) {
         return 1;
+    }
+    
+    public Object clone() {
+    	return new FeatureColorConversion();	
     }
     
 }

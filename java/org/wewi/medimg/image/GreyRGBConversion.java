@@ -24,7 +24,11 @@ public class GreyRGBConversion implements ColorConversion {
     }
     
     public int convert(int[] rgb) {
-        return rgb[0];
+        return (rgb[0]*rgb[1]*rgb[2]);
+    }
+    
+    public Object clone() {
+    	return new GreyRGBConversion();	
     }
     
 }

@@ -42,7 +42,7 @@ public class Test {
         //File source2 = new File("E:/Daten/Dicoms/source/Dicoms/daten/bud/raw/batch7/");
         TIFFReader reader1 = new TIFFReader(ImageDataFactory.getInstance(), source1);
         TIFFReader reader2 = new TIFFReader(ImageDataFactory.getInstance(), source2);    
-        TissueColorConversion tcc = TissueColorConversion.getInstance();
+        TissueColorConversion tcc = new TissueColorConversion();
         reader1.setColorConversion(tcc);
         reader2.setColorConversion(tcc);
         try {

@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.image;
 
-import org.wewi.medimg.image.geom.IdentityTransform;
+import org.wewi.medimg.image.geom.IdentityTransformation;
 import org.wewi.medimg.image.geom.Transformation;
 
 /**
@@ -25,7 +25,7 @@ public class TransformableImage implements Image {
     
     public TransformableImage(Image image) {
         this.image = image;
-        transform = new IdentityTransform();
+        transform = new IdentityTransformation();
         init();
     }
     
@@ -96,7 +96,11 @@ public class TransformableImage implements Image {
     
     public int getMinZ() {
         return 0;
-    }    
+    } 
+    
+    public Dimension getDimension() {
+    	return new Dimension(0, 0, 0, 0, 0, 0);	
+    }   
     
     public int getNVoxels() {
         return image.getNVoxels();
@@ -122,6 +126,13 @@ public class TransformableImage implements Image {
     
     public ImageHeader getHeader() {
         return header;
+    }
+    
+    public ColorConversion getColorConversion() {
+    	return null;	
+    }
+    
+    public void setColorConversion(ColorConversion cc) {
     }
     
     public boolean isNull() {

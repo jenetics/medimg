@@ -19,7 +19,7 @@ import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.ImagePanel;
-import org.wewi.medimg.image.geom.Transform;
+import org.wewi.medimg.image.geom.Transformation;
 import org.wewi.medimg.image.io.TIFFReader;
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -108,7 +108,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         return slice;
     }
     
-    public void setImageTransform(Transform trans) {
+    public void setImageTransform(Transformation trans) {
         //image.setTransform(trans);
         ColorConversion cc = imagePanel.getColorConversion();
         imagePanel = new ImagePanel(image);

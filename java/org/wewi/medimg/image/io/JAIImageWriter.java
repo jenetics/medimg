@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 
 import com.sun.media.jai.codec.ImageEncodeParam;
@@ -41,6 +42,8 @@ abstract class JAIImageWriter extends ImageWriter {
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
         BufferedImage bufferedImage = new BufferedImage(maxX+1, maxY+1, BufferedImage.TYPE_3BYTE_BGR);
+        //BufferedImage bufferedImage = new BufferedImage(maxX+1, maxY+1, BufferedImage.TYPE_USHORT_GRAY);
+        ColorConversion colorConversion = image.getColorConversion();
         
         int[] pixel = new int[3];
         for (int i = 0; i <= maxX; i++) {
@@ -52,6 +55,7 @@ abstract class JAIImageWriter extends ImageWriter {
                 pixel[2] = 0x00FF & pixel[2];        
                 // put this pixel in the java image
                 bufferedImage.setRGB(i, j, (int)((0x00 << 24) | (pixel[0] << 16) | (pixel[1] << 8) | pixel[2]));
+               // bufferedImage.setRGB(i, j, image.getColor(i, j, slice));
             }
         }
         

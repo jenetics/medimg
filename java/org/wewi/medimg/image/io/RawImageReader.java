@@ -54,18 +54,4 @@ public class RawImageReader extends ImageReader {
         }
     }
     
-    
-    
-    
-    /*
-    public static void main(String[] args) {
-        RawImageReader reader = new RawImageReader(new File("C:/Temp/viewer/3dhead"), 256, 256, 109);
-        reader.read();
-        ImageData image = (ImageData)reader.getImage();
-        
-        TIFFWriter writer = new TIFFWriter(image, new File("C:/temp/3dhead"));
-        writer.write();
-        
-    }
-    */
 }

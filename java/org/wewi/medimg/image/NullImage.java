@@ -32,6 +32,22 @@ public final class NullImage implements Image, Nullable {
         }
     }
     
+    private class NullColorConversion implements ColorConversion {
+    	public NullColorConversion() {
+    	}
+		public int convert(int[] rgb) {
+			return 0;	
+		}
+		public void convert(int grey, int[] rgb) {
+			rgb[0] = 0;
+			rgb[1] = 0;
+			rgb[2] = 0;	
+		}
+		public Object clone() {
+			return new NullColorConversion();	
+		}
+    }
+    
     
     private NullImageHeader header;
 
@@ -77,6 +93,10 @@ public final class NullImage implements Image, Nullable {
         return 0;
     }    
     
+    public Dimension getDimension() {
+    	return new Dimension(0, 0, 0, 0, 0, 0);	
+    }
+    
     public int getNVoxels() {
         return 0;
     }
@@ -91,6 +111,13 @@ public final class NullImage implements Image, Nullable {
     
     public ImageHeader getHeader() {
         return header;
+    }
+    
+    public ColorConversion getColorConversion() {
+    	return new NullColorConversion();	
+    }
+    
+    public void setColorConversion(ColorConversion cc) {
     }
     
     public int getPosition(int x, int y, int z) {

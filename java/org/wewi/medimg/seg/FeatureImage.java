@@ -8,7 +8,10 @@ package org.wewi.medimg.seg;
 
 import java.util.Arrays;
 
+import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.Dimension;
+import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageHeader;
 import org.wewi.medimg.image.VoxelIterator;
@@ -56,10 +59,12 @@ public final class FeatureImage implements Image {
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int size, sizeX, sizeY, sizeZ, sizeXY;
+    private Dimension dimension;
     private int nfeatures;
     private double[] meanValues;
     
     private FeatureImageHeader header;
+    private ColorConversion colorConversion = new FeatureColorConversion();
 
     public FeatureImage(int sizeX, int sizeY, int sizeZ, int nf) {
         init(sizeX, sizeY, sizeZ, nf);
@@ -88,6 +93,7 @@ public final class FeatureImage implements Image {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
+        dimension = new Dimension(sizeX, sizeY, sizeZ);
         maxX = sizeX - 1; 
         maxY = sizeY - 1; 
         maxZ = sizeZ - 1;
@@ -268,7 +274,11 @@ public final class FeatureImage implements Image {
     
     public int getMinZ() {
         return minZ;
-    }    
+    }  
+    
+    public Dimension getDimension() {
+    	return dimension;	
+    }  
     
     public int getColor(int x, int y, int z) {
         return getFeature(x, y, z);
@@ -313,6 +323,14 @@ public final class FeatureImage implements Image {
     
     public ImageHeader getHeader() {
         return header;
+    }
+    
+    public ColorConversion getColorConversion() {
+    	return colorConversion;	
+    }
+    
+    public void setColorConversion(ColorConversion cc) {
+    	colorConversion = cc;	
     }
     
     public int getPosition(int x, int y, int z) {
