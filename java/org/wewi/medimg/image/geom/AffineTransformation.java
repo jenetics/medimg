@@ -16,26 +16,27 @@ import cern.colt.matrix.linalg.Algebra;
 
 /**
  *
- * @author  Werner Weiser
+ * @author Werner Weiser
  * @author Franz Wilhelmstötter
  *
  * @version 0.1
  */
-public class AffineTransform implements Transform {
-    public double[] matrix = new double[12];
-    public double[] inverseMatrix = new double[12];
+public class AffineTransformation implements Transformation {
+    public double[] matrix;
+    public double[] inverseMatrix;
     
-    private AffineTransform(double[] matrix, double[] inverseMatrix) {
+    private AffineTransformation(double[] matrix, double[] inverseMatrix) {
         System.arraycopy(matrix, 0, this.matrix, 0, 12);
         System.arraycopy(inverseMatrix, 0, this.inverseMatrix, 0, 12);
     }
     
-    public AffineTransform(AffineTransform transform) {
+    public AffineTransformation(AffineTransformation transform) {
         System.arraycopy(transform.matrix, 0, matrix, 0, 12);
         System.arraycopy(transform.inverseMatrix, 0, inverseMatrix, 0, 12);
     }
      
-    public AffineTransform(double[] matrix) {
+    public AffineTransformation(double[] matrix) {
+    	matrix = new double[12];
         System.arraycopy(matrix, 0, this.matrix, 0, 12);
         inverseMatrix = invert(matrix);
         
@@ -47,7 +48,7 @@ public class AffineTransform implements Transform {
         return m;
     }
 
-    public Transform scale(double alpha) {
+    public Transformation scale(double alpha) {
         matrix[0] *= alpha;
         matrix[5] *= alpha;
         matrix[10] *= alpha;
@@ -56,7 +57,7 @@ public class AffineTransform implements Transform {
         return this;
     }
 
-    public Transform concatenate(Transform transform) {
+    public Transformation concatenate(Transformation transform) {
         //transform*this
         DoubleMatrix2D A = new DenseDoubleMatrix2D(4, 4);
         DoubleMatrix2D B = new DenseDoubleMatrix2D(4, 4);
@@ -66,7 +67,7 @@ public class AffineTransform implements Transform {
         B.setQuick(3, 3, 1);
         int pos = 0;
         
-        AffineTransform t = (AffineTransform)transform;
+        AffineTransformation t = (AffineTransformation)transform;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
                 A.setQuick(i, j, matrix[pos]);
@@ -113,8 +114,8 @@ public class AffineTransform implements Transform {
         return inverse;
     }
     
-    public Transform createInverse() {
-        return new AffineTransform(inverseMatrix, matrix);
+    public Transformation createInverse() {
+        return new AffineTransformation(inverseMatrix, matrix);
     }
     
     public void transform(Image source, Image target) {
@@ -282,7 +283,7 @@ public class AffineTransform implements Transform {
 
     private String format(double number, int length) {
         String string = Double.toString(number);
-        string += "00000000000000000000";
+        string += "000000000000000000000000000";
         if (string.length() >= length) {
             string = string.substring(0, length-1);
         }
@@ -311,15 +312,4 @@ public class AffineTransform implements Transform {
         return buffer.toString();
     }    
     
-    /*
-    public static void main(String[] args) {
-        double[] m = new double[12];
-        Arrays.fill(m, 0);
-        m[0] = 1;
-        m[5] = 1;
-        m[10] = 1;
-        AffineTransform t = new AffineTransform(m);
-        System.out.println(t);
-    }
-    */
 }

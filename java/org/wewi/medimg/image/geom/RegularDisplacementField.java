@@ -14,7 +14,7 @@ import org.wewi.medimg.image.Image;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class RegularDisplacementField implements Transform {
+public class RegularDisplacementField implements Transformation {
     private int strideX;
     private int strideY;
     private int strideZ;
@@ -25,15 +25,15 @@ public class RegularDisplacementField implements Transform {
         this.strideZ = strideZ;
     }
     
-    public Transform concatenate(Transform trans) {
+    public Transformation concatenate(Transformation trans) {
         return null;
     }
     
-    public Transform createInverse() {
+    public Transformation createInverse() {
         return null;
     }
     
-    public Transform scale(double alpha) {
+    public Transformation scale(double alpha) {
         return null;
     }
     

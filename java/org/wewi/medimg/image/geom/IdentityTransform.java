@@ -13,7 +13,7 @@ import org.wewi.medimg.image.Image;
  * @author  Franz Wilehlmstötter
  * @version 0.1
  */
-public final class IdentityTransform implements Transform {
+public final class IdentityTransform implements Transformation {
     
     /** Creates a new instance of IdentityTransform */
     public IdentityTransform() {
@@ -47,15 +47,15 @@ public final class IdentityTransform implements Transform {
         return source;
     }    
     
-    public Transform scale(double alpha) {
+    public Transformation scale(double alpha) {
         return null;
     }       
     
-    public Transform concatenate(Transform trans) {
+    public Transformation concatenate(Transformation trans) {
         return this;
     }
     
-    public Transform createInverse() {
+    public Transformation createInverse() {
         return new IdentityTransform();
     }
     

@@ -22,14 +22,4 @@ public final class TIFFReader extends JAIImageReader {
         fileFilter = new FileExtentionFilter(".tif");
     }
     
-    /*
-    public static void main(String[] args) {
-        //TIFFReader reader = new TIFFReader("C:/cygwin/home/fwilhelm/diplom/algorithms/data/head.in.001");
-        File file = new File("C:/Workspace/fwilhelm/Projekte/SRS/pic/seg/heads/001");
-        TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(), file);
-        reader.read();
-        ImageData data = (ImageData)reader.getImage();
-        System.out.println(data);
-    }    
-    */
 }

@@ -7,7 +7,7 @@
 package org.wewi.medimg.image;
 
 import org.wewi.medimg.image.geom.IdentityTransform;
-import org.wewi.medimg.image.geom.Transform;
+import org.wewi.medimg.image.geom.Transformation;
 
 /**
  *
@@ -17,7 +17,7 @@ import org.wewi.medimg.image.geom.Transform;
 public class TransformableImage implements Image {
     private Image image;
     private ImageDataHeader header;
-    private Transform transform;
+    private Transformation transform;
     
     private int maxX, maxY, maxZ;
     private float[] tempPoint1 = new float[3];
@@ -65,7 +65,7 @@ public class TransformableImage implements Image {
         //header = new ImageDataHeader(maxX, maxY,maxZ, image);
     }
     
-    public void setTransform(Transform at) {
+    public void setTransform(Transformation at) {
         transform = at;
         init();
     }
