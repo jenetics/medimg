@@ -223,4 +223,101 @@ public abstract class ImageAdapter implements Image {
         return image.isNull();
     }
 
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, byte)
+     */
+    public void setColor(int pos, byte color) {
+        image.setColor(pos, color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, short)
+     */
+    public void setColor(int pos, short color) {
+        image.setColor(pos, color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, long)
+     */
+    public void setColor(int pos, long color) {
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#setColor(int, float)
+     */
+    public void setColor(int pos, float color) {
+        image.setColor(pos, color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getByteColor(int)
+     */
+    public byte getByteColor(int pos) {
+        return image.getByteColor(pos);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getShortColor(int)
+     */
+    public short getShortColor(int pos) {
+        return image.getShortColor(pos);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getLongColor(int)
+     */
+    public long getLongColor(int pos) {
+        return image.getLongColor(pos);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getFloatColor(int)
+     */
+    public float getFloatColor(int pos) {
+        return image.getFloatColor(pos);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(byte)
+     */
+    public void fill(byte color) {
+        image.fill(color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(short)
+     */
+    public void fill(short color) {
+        image.fill(color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(int)
+     */
+    public void fill(int color) {
+        image.fill(color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(long)
+     */
+    public void fill(long color) {
+        image.fill(color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(float)
+     */
+    public void fill(float color) {
+        image.fill(color);
+    }
+
+    /**
+     * @see org.wewi.medimg.image.Image#fill(double)
+     */
+    public void fill(double color) {
+        image.fill(color);
+    }
+
 }

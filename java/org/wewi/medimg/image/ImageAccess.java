@@ -15,6 +15,7 @@ public interface ImageAccess {
      * @param color color to be set
      */
     public void setColor(int x, int y, int z, int color);
+    
     public void setColor(int x, int y, int z, double color);
       
     /**

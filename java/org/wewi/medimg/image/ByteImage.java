@@ -38,7 +38,7 @@ public final class ByteImage extends AbstractImage {
     /**
      * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
      */
-    protected DiscreteData createDiscreteData(int size) {
+    protected ImageData createImageData(int size) {
         return new ByteData(size);
     }          
     
