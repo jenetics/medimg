@@ -5,8 +5,6 @@ package org.wewi.medimg.viewer.image;
  * Span is an interval on the integers.  In C-style arrays,
  * "min" is included; "max" is not included.
  * 
- * @author Franz Wilhelmstötter
- * @version 0.1
  */
 final class Span {
     private int min = Integer.MAX_VALUE;

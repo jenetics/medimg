@@ -77,29 +77,32 @@ final class SliceViewerPanelImpl extends JPanel {
         public void draw(Graphics g) {
             //Erase the background if needed
             g.setColor(Color.BLACK);
-            if (eraseBackground)
+            if (eraseBackground) {
                 g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+            }
             //Set up a new graphics clipped to the indicator's bounds
-            Graphics newGraf =
-                g.create(0, 0, bounds.x + bounds.width, bounds.y + bounds.height);
+            Graphics newGraf = g.create(0, 0, bounds.x + bounds.width, bounds.y + bounds.height);
             newGraf.clipRect(bounds.x, bounds.y, bounds.width, bounds.height);
             //Call descendants' draw routine
             drawPriv(newGraf);
             //Draw the indicator
-            if (eraseBackground)
+            if (eraseBackground) {
                 drawIndicator(newGraf, bounds.x, getIndicatorPos());
+            }
         }
 
         abstract void drawPriv(Graphics g);
 
         abstract int getIndicatorPos();
+        
         //External entry to set the position of the indicator (e.g. on mouse down)
         public abstract void setIndicatorPos(int y);
+        
         //private routine: display a little white triangle at x,y
         void drawIndicator(Graphics g, int x, int y) {
-            g.setColor(Color.white);
-            int xPoints[] = { x + 5, x + 20, x + 5 },
-                yPoints[] = { y - 5, y, y + 5 };
+            g.setColor(Color.WHITE);
+            int xPoints[] = { x + 5, x + 20, x + 5 };
+            int yPoints[] = { y - 5, y, y + 5 };
             g.fillPolygon(xPoints, yPoints, 3);
         }
     }
@@ -126,12 +129,11 @@ final class SliceViewerPanelImpl extends JPanel {
                 if (dist % 10 == 0) {
                     //A centimeter marking-- draw larger, with a caption
                     g.drawLine(bounds.x + 10, yPos, endX, yPos);
-                    g.drawString(
-                        Integer.toString(dist / 10) + "cm",
-                        bounds.x,
-                        yPos - 2);
-                } else //Just a millimeter marking-- draw smaller
+                    g.drawString(Integer.toString(dist / 10) + "cm", bounds.x, yPos - 2);
+                } else {
+                    //Just a millimeter marking-- draw smaller
                     g.drawLine(endX - 10, yPos, endX, yPos);
+                }
             }
         }
     }    
@@ -316,7 +318,7 @@ final class SliceViewerPanelImpl extends JPanel {
      * @param w
      * @param h
      */
-    protected void fillBackBuffer(Graphics g, Graphics win_g, int w, int h) {
+    protected void fillBackBuffer(Graphics g, Graphics winG, int w, int h) {
         Vector blockCenter = dataBlock.size.scaleBy(0.5);
         
         double scale = sliceState.screenScale * sliceState.magnification;
@@ -330,7 +332,7 @@ final class SliceViewerPanelImpl extends JPanel {
         txMatrix = txMatrix.postMultBy(
                             Matrix3D.translationMatrix(-blockCenter.getX(),
                                                        -blockCenter.getY(),
-                                                        -blockCenter.getZ()));
+                                                       -blockCenter.getZ()));
                                                         
          //rotate about x
         txMatrix = txMatrix.postMultBy(Matrix3D.rotationXMatrix(sliceState.rotAngX));
@@ -358,20 +360,20 @@ final class SliceViewerPanelImpl extends JPanel {
 
 
     /*Redraw sets up the offscreen buffer and calls fillBackBuffer (above).*/
-    Graphics img_g = null;
+    Graphics imgG = null;
     java.awt.Image img = null;
-    int cached_w = -1, cached_h = -1;
+    int cachedW = -1, cachedH = -1;
 
     void redraw(Graphics g) {
         int w = getSize().width;
         int h = getSize().height;
-        if (img == null || cached_w != w || cached_h != h) {
-            cached_w = w;
-            cached_h = h;
+        if (img == null || cachedW != w || cachedH != h) {
+            cachedW = w;
+            cachedH = h;
             img = createImage(w, h);
-            img_g = img.getGraphics();
+            imgG = img.getGraphics();
         }
-        fillBackBuffer(img_g, g, w, h); //See above
+        fillBackBuffer(imgG, g, w, h); //See above
         g.drawImage(img, 0, 0, this);
 
     }
