@@ -98,9 +98,6 @@ class ImageDataHeader implements ImageHeader {
         
         XMLOutputter outputter = new XMLOutputter("    ", true);
         outputter.output(doc, out);
-        
-        //"Aufblasen" des Image auf die richtige Größe.
-        image.init(dim, this);
     }
     
     /**
@@ -136,7 +133,6 @@ class ImageDataHeader implements ImageHeader {
         ObjectInputStream oin = new ObjectInputStream(sin);
         try {
 			cc = (ColorConversion)oin.readObject();
-            logger.log(Level.WARNING, "Can't read ColorConversion");
 		} catch (IOException e) {
             logger.log(Level.WARNING, "Can't read ColorConversion");
             throw new IOException("" + e);
@@ -144,8 +140,7 @@ class ImageDataHeader implements ImageHeader {
             logger.log(Level.WARNING, "Can't read ColorConversion");
             throw new IOException("" + e);
 		}
-
-        image.setColorConversion(cc); 
+ 
         
         //Einlesen der ImageProperties
         Element prop = root.getChild("ImageProperties");
@@ -158,7 +153,11 @@ class ImageDataHeader implements ImageHeader {
             element = (Element)it.next();
             properties.setProperty(element.getName(), element.getText());
         }
-         
+        
+        
+        //"Aufblasen" des Image auf die richtige Größe.
+        image.init(dim, this); 
+        image.setColorConversion(cc);
     }
     
     

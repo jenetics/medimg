@@ -28,8 +28,10 @@ final class Util {
         Element td, tr;
         for (int i = 0, n = accu.getRows(); i < n; i++) {
             tr = new Element("Row");
+            tr.setAttribute("no", Integer.toString(i));
             for (int j = 0, m = accu.getCols(); j < m; j++) {
                 td = new Element("ColData");
+                td.setAttribute("no", Integer.toString(j));
                 td.addContent(Integer.toString(accu.getValue(i, j)));
                 tr.addContent(td);   
             }
@@ -74,7 +76,7 @@ final class Util {
     }
     
     static Element transform(Image image) {
-        Element imageMetaData = new Element("Image"); 
+        Element imageMetaData = new Element("ImageHeader"); 
         Properties prop = image.getHeader().getImageProperties();
         
         for (Enumeration e = prop.propertyNames(); e.hasMoreElements();) {

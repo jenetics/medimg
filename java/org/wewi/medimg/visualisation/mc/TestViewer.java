@@ -29,7 +29,6 @@ import javax.vecmath.Vector3d;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.ImageReader;
-import org.wewi.medimg.image.io.Range;
 import org.wewi.medimg.image.io.RawImageReader;
 import org.wewi.medimg.util.Timer;
 
@@ -121,7 +120,6 @@ public class TestViewer extends Applet {
         ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(), new File(file));
         
         try {
-            reader.setRange(new Range(0, 120));
             reader.read();
         } catch (Exception ioe) {
             System.out.println("Fehler: " + ioe);

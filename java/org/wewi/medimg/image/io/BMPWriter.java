@@ -35,7 +35,7 @@ public final class BMPWriter extends JAIImageWriter {
     
     private void init() {
         BMPEncodeParam param = new BMPEncodeParam();
-        param.setVersion(BMPEncodeParam.VERSION_2);
+        param.setVersion(BMPEncodeParam.VERSION_3);
         encodeParameter = param;
         imageExtention = ".bmp";        
     }

@@ -1,4 +1,4 @@
-/*
+/**
  * AffinityMetric.java
  *
  * Created on 26. März 2002, 10:04
@@ -9,8 +9,8 @@ package org.wewi.medimg.reg.metric;
 import org.wewi.medimg.image.geom.transform.Transformation;
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public interface AffinityMetric {
     

@@ -16,7 +16,6 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.Range;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.seg.Estimator;
@@ -160,7 +159,6 @@ public class MLKMeansEstimator implements Estimator {
         try {
             ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
                                                 new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
-            reader.setRange(new Range(50,100));
             reader.read();
             Image mrt = reader.getImage();
             

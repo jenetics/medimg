@@ -4,7 +4,7 @@
  * Created on 25. Februar 2002, 13:43
  */
 
-package org.wewi.medimg.image.statistic;
+package org.wewi.medimg.seg.validation;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ColorRange;

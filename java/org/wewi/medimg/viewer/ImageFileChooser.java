@@ -1,4 +1,4 @@
-/*
+/**
  * ImageFileChooser.java
  *
  * Created on 8. April 2002, 17:11
@@ -13,9 +13,9 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
-import org.wewi.medimg.image.ImageFormatTypes;
 import org.wewi.medimg.image.io.BMPReaderFactory;
 import org.wewi.medimg.image.io.BMPWriterFactory;
+import org.wewi.medimg.image.io.ImageFormatTypes;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageWriterFactory;
 import org.wewi.medimg.image.io.Range;
@@ -75,7 +75,7 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
         addActionListener(this);
         
         rangePanel = new RangePanel(this);
-        setAccessory(rangePanel);
+        //setAccessory(rangePanel);
     }
     
     public Range getRange() {

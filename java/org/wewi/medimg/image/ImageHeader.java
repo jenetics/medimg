@@ -20,6 +20,16 @@ import org.wewi.medimg.util.Nullable;
  */
 public interface ImageHeader extends Nullable {
     
+    /**
+     * Die Implementierung dieser Methode muß den
+     * Header vom InputStream lesen UND das zugehörige
+     * Image mit der richtigen Größe neu initialisieren.
+     * 
+     * @param in InputStream aus dem der ImageHeader
+     *             erzeugt wird.
+     * 
+     * @throws IOException wenn der Header nicht gelesen werden kann.
+     */
     public void read(InputStream in) throws IOException;
 
     public void write(OutputStream out) throws IOException;

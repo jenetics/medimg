@@ -16,7 +16,6 @@ import javax.media.jai.JAI;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Dimension;
-import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.NullImage;
 
@@ -31,29 +30,32 @@ import com.sun.media.jai.codec.SeekableStream;
  * @version 0.2
  */
 abstract class JAIImageReader extends ImageReader {
-    private Image image = new NullImage();
     private File[] slices = null;
     
     protected FileExtentionFilter fileFilter;
     
     public JAIImageReader(ImageFactory imageFactory, String source) {
-        super(imageFactory, source);    
+        super(imageFactory, source);   
+        init(); 
     }
 
     public JAIImageReader(ImageFactory imageFactory, File source) {
         super(imageFactory, source);
+        init();
     }
     
     public JAIImageReader(ImageFactory imageFactory, File source, Range range) {
-        super(imageFactory, source, range);    
+        super(imageFactory, source, range);  
+        init();  
     }
     
     public JAIImageReader(ImageFactory imageFactory, String source, Range range) {
         super(imageFactory, source, range);    
+        init();
     }
     
-    public Image getImage() {
-        return image;
+    private void init() {
+        image = new NullImage();    
     }
     
     
@@ -209,6 +211,9 @@ abstract class JAIImageReader extends ImageReader {
                     raster = rimage.getData();
                 } catch (Exception e) {
                     image = new NullImage();
+                    //Das Einlesen ist hier abgeschlossen -> Listener
+                    //müssen informiert werden.
+                    notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
                     throw new ImageIOException("Can't read JAI Image; Slice " + k, e);
                 }
                 for (int i = 0; i < dim.getSizeX(); i++) {

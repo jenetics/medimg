@@ -4,7 +4,7 @@
  * Created on 1. August 2002, 15:27
  */
 
-package org.wewi.medimg.image.statistic;
+package org.wewi.medimg.seg.validation;
 
 import java.io.File;
 
