@@ -12,7 +12,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
-import org.wewi.medimg.math.MathUtil;
+//import org.wewi.medimg.math.MathUtil;
 
 
 /**
@@ -36,6 +36,8 @@ public final class SobelFilter extends ImageFilter {
     }
     
     public void filter() {
+        super.filter();
+        
         Image tempImage = (Image)image.clone();
         for (int i = image.getMinX()+1, n = image.getMaxX(); i < n; i++) {
             for (int j = image.getMinY()+1, m = image.getMaxY(); j < m; j++) {
@@ -45,7 +47,6 @@ public final class SobelFilter extends ImageFilter {
 
         tempImage = null;        
         
-        super.filter();
     }
     
     private int enhance(int x, int y, Image img) {
@@ -83,7 +84,7 @@ public final class SobelFilter extends ImageFilter {
         //colorY += img.getColor(x,   y-1, 0)*0;
         colorY += img.getColor(x+1, y-1, 0)*1;                        
 
-        return Math.min(Math.abs(colorX) + Math.abs(colorY), 2550);
+        return Math.abs(colorX) + Math.abs(colorY);
         //return (int)Math.min(Math.sqrt(MathUtil.sqr(colorX)+MathUtil.sqr(colorY)), 255);
     }
     
