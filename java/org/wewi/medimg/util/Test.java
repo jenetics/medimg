@@ -15,9 +15,11 @@ import org.wewi.medimg.image.VoxelIterator;
 //import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
+import org.wewi.medimg.image.io.JPEGWriter;
 import org.wewi.medimg.image.io.RawImageWriter;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+
 
 /**
  *
@@ -113,7 +115,7 @@ public class Test {
     
     public static void test6() {
         ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-                                             new File("C:/temp/nbrain.t1.n3.rf20.256c"));
+                                             new File("X:/t1.n3.rf20"));
         
         try {
             reader.read();
@@ -124,7 +126,7 @@ public class Test {
         
         Image image = reader.getImage();
         
-        ImageWriter writer = new RawImageWriter(image, new File("X:/image.rid"));
+        ImageWriter writer = new JPEGWriter(image, new File("X:/t1.n3.rf20.jpg"));
         
         try {
             writer.write();
@@ -135,14 +137,14 @@ public class Test {
         
     }
     
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-  
+        test6();
     }
     
 }

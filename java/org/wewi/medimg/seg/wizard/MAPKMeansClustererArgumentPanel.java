@@ -6,6 +6,8 @@
 
 package org.wewi.medimg.seg.wizard;
 
+import java.text.NumberFormat;
+
 import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
 
@@ -17,13 +19,27 @@ import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
 public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
     private int nfeatures = 1;
     
+    private final static double BETA_DIVISOR = 100d;
+    private int beta = 30;
+    
+    private NumberFormat format;
+    
+    
     /** Creates new form MAPKMeansClustererArgumentPanel */
     public MAPKMeansClustererArgumentPanel() {
         initComponents();
+        
+        format = NumberFormat.getInstance();
+        format.setMaximumFractionDigits(2);
+        format.setMinimumFractionDigits(2);
+        format.setMaximumIntegerDigits(1);
+        format.setMinimumIntegerDigits(1);
     }
     
     public ObservableSegmenter getSegmenter() {
-        return new MAPKMeansClusterer(nfeatures);
+        MAPKMeansClusterer clusterer = new MAPKMeansClusterer(nfeatures);
+        clusterer.setBETA((double)beta/BETA_DIVISOR);
+        return clusterer;
     }    
     
     /** This method is called from within the constructor to
@@ -34,21 +50,24 @@ public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
     private void initComponents() {//GEN-BEGIN:initComponents
         propertyLabel = new javax.swing.JLabel();
         nfeaturesSlider = new javax.swing.JSlider();
+        betaLabel = new javax.swing.JLabel();
+        betaSlider = new javax.swing.JSlider();
 
-        setLayout(new java.awt.GridLayout(1, 0));
+        setLayout(new java.awt.GridLayout(2, 2));
 
         setBorder(new javax.swing.border.TitledBorder(null, "MAP-Segmentierer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
         propertyLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        propertyLabel.setText("Anzahl der Merkmale:    1");
+        propertyLabel.setText("  Anzahl der Merkmale:    2");
+        propertyLabel.setAlignmentX(0.5F);
         add(propertyLabel);
 
-        nfeaturesSlider.setMajorTickSpacing(15);
-        nfeaturesSlider.setMaximum(15);
-        nfeaturesSlider.setMinimum(1);
+        nfeaturesSlider.setMajorTickSpacing(5);
+        nfeaturesSlider.setMaximum(20);
+        nfeaturesSlider.setMinimum(2);
         nfeaturesSlider.setMinorTickSpacing(1);
         nfeaturesSlider.setPaintTicks(true);
         nfeaturesSlider.setSnapToTicks(true);
-        nfeaturesSlider.setValue(1);
+        nfeaturesSlider.setValue(2);
         nfeaturesSlider.setDoubleBuffered(true);
         nfeaturesSlider.setValueIsAdjusting(true);
         nfeaturesSlider.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -59,17 +78,41 @@ public class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
 
         add(nfeaturesSlider);
 
+        betaLabel.setFont(new java.awt.Font("Dialog", 0, 12));
+        betaLabel.setText("  Beta (Gibbspotential):    0.30");
+        add(betaLabel);
+
+        betaSlider.setMajorTickSpacing(10);
+        betaSlider.setMaximum(200);
+        betaSlider.setMinorTickSpacing(5);
+        betaSlider.setPaintTicks(true);
+        betaSlider.setValue(30);
+        betaSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                betaSliderStateChanged(evt);
+            }
+        });
+
+        add(betaSlider);
+
     }//GEN-END:initComponents
+
+    private void betaSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_betaSliderStateChanged
+        beta = betaSlider.getValue();
+        betaLabel.setText("  Beta (Gibbspotential):    " + format.format((double)beta/BETA_DIVISOR));
+    }//GEN-LAST:event_betaSliderStateChanged
 
     private void nfeaturesSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nfeaturesSliderStateChanged
         nfeatures = nfeaturesSlider.getValue();
-        propertyLabel.setText("Anzahl der Merkmale:    " + nfeatures);
+        propertyLabel.setText("  Anzahl der Merkmale:    " + nfeatures);
     }//GEN-LAST:event_nfeaturesSliderStateChanged
        
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSlider nfeaturesSlider;
     private javax.swing.JLabel propertyLabel;
+    private javax.swing.JLabel betaLabel;
+    private javax.swing.JSlider betaSlider;
+    private javax.swing.JSlider nfeaturesSlider;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -18,6 +18,8 @@ import org.wewi.medimg.image.io.BMPWriterFactory;
 import org.wewi.medimg.image.io.ImageFormatTypes;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageWriterFactory;
+import org.wewi.medimg.image.io.JPEGReaderFactory;
+import org.wewi.medimg.image.io.JPEGWriterFactory;
 import org.wewi.medimg.image.io.Range;
 import org.wewi.medimg.image.io.RawImageReaderFactory;
 import org.wewi.medimg.image.io.RawImageWriterFactory;
@@ -29,13 +31,12 @@ import org.wewi.medimg.image.io.TIFFWriterFactory;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class ImageFileChooser extends JFileChooser implements ActionListener {
+public final class ImageFileChooser extends JFileChooser implements ActionListener {
     private ImageReaderFactory imageReaderFactory;
     private ImageWriterFactory imageWriterFactory;
     private RangePanel rangePanel;
     private Range range;
     
-    /** Creates a new instance of ImageFileChooser */
     public ImageFileChooser() {
         super();
         init();
@@ -67,15 +68,18 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
     }   
     
     private void init() {
-        addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.RAW_IMAGE));
-        addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.BMP_IMAGES));
-        addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.TIFF_IMAGES));
+        for (int i = 0; i < ImageFormatTypes.TYPES.length; i++) {
+            addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.TYPES[i]));    
+        }
         setCurrentDirectory(new File(ViewerPreferences.getInstance().getMostRecentFile()));
         
         addActionListener(this);
         
         rangePanel = new RangePanel(this);
         //setAccessory(rangePanel);
+        
+        setFileView(new ImageFileView(this));
+        setDoubleBuffered(true);
     }
     
     public Range getRange() {
@@ -93,8 +97,10 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
     public ImageWriterFactory getImageWriterFactory() {
         return imageWriterFactory;
     }
+
     
-    public void actionPerformed(ActionEvent actionEvent) {
+    public void actionPerformed(ActionEvent actionEvent) {       
+        
         ImageFormatTypes type = ((ImageFileFilter)getFileFilter()).getImageFormatType();
         if (getDialogType() == OPEN_DIALOG) {
             if (ImageFormatTypes.TIFF_IMAGES.equals(type)) {
@@ -103,6 +109,8 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
                 imageReaderFactory = new BMPReaderFactory();
             } else if (ImageFormatTypes.RAW_IMAGE.equals(type)) {
                 imageReaderFactory = new RawImageReaderFactory();
+            } else if (ImageFormatTypes.JPEG_IMAGES.equals(type)) {
+                imageReaderFactory = new JPEGReaderFactory();
             }
             imageReaderFactory.setRange(rangePanel.getRange());
         } else {
@@ -110,6 +118,8 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
                 imageWriterFactory = new TIFFWriterFactory();
             } else if (ImageFormatTypes.BMP_IMAGES.equals(type)) {
                 imageWriterFactory = new BMPWriterFactory();
+            } else if (ImageFormatTypes.JPEG_IMAGES.equals(type)) {
+                imageWriterFactory = new JPEGWriterFactory();
             } else if (ImageFormatTypes.RAW_IMAGE.equals(type)) {
                 imageWriterFactory = new RawImageWriterFactory();
             }

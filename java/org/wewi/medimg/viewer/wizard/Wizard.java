@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JInternalFrame;
 
+import org.wewi.medimg.viewer.Viewer;
+
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -56,7 +58,11 @@ public abstract class Wizard extends JInternalFrame {
     }
     
     private void init() {
-        logger = Logger.getLogger(getClass().getPackage().getName());    
+        logger = Logger.getLogger(Viewer.class.getName());    
+    }
+    
+    protected Logger getLogger() {
+        return logger;
     }
     
     public void addLoggerHandler(Handler handler) {

@@ -16,10 +16,11 @@ import org.wewi.medimg.util.Enumeration;
 public final class ImageFormatTypes extends Enumeration {
     public static final ImageFormatTypes TIFF_IMAGES = new ImageFormatTypes("TIFF Images");
     public static final ImageFormatTypes BMP_IMAGES = new ImageFormatTypes("BMP Images");
+    public static final ImageFormatTypes JPEG_IMAGES = new ImageFormatTypes("JPEG Images");
     public static final ImageFormatTypes RAW_IMAGE = new ImageFormatTypes("RAW Images");
     
     public static final ImageFormatTypes[] TYPES = {TIFF_IMAGES, BMP_IMAGES,
-                                                      RAW_IMAGE};
+                                                      JPEG_IMAGES, RAW_IMAGE};
     
     private final String name;
     

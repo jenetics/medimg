@@ -1,4 +1,4 @@
-/*
+/**
  * ImageFileFilter.java
  *
  * Created on 8. April 2002, 18:27
@@ -28,6 +28,8 @@ public class ImageFileFilter extends FileFilter {
             if (type.equals(ImageFormatTypes.TIFF_IMAGES)) {
                 return file.isDirectory();
             } else if (type.equals(ImageFormatTypes.BMP_IMAGES)) {
+                return file.isDirectory();
+            } else if (type.equals(ImageFormatTypes.JPEG_IMAGES)) {
                 return file.isDirectory();
             } else if (type.equals(ImageFormatTypes.RAW_IMAGE)) {
                 if (file.isDirectory()) {

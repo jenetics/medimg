@@ -26,10 +26,18 @@ public abstract class ObservableSegmenter extends ObservableAlgorithm
     
     public ObservableSegmenter() {
         segmenterListener = new Vector();
-        logger = Logger.getLogger(getClass().getPackage().getName());        
+        logger = Logger.getLogger(ObservableSegmenter.class.getName());        
     }
     
     public synchronized void addLoggerHandler(Handler handler) {
+        //Es soll kein Handler doppelt eingefügt werden.
+        Handler[] handlers = logger.getHandlers();
+        for (int i = 0; i < handlers.length; i++) {
+            if (handlers[i] == handler) {
+                return;
+            }
+        }
+        
         logger.addHandler(handler);
     }
     

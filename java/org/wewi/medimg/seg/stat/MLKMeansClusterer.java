@@ -1,4 +1,4 @@
-/*
+/**
  * MLKMeansClusterer.java
  *
  * Created on 24. Juli 2002, 20:08
@@ -29,16 +29,16 @@ import org.wewi.medimg.seg.SegmenterEvent;
 public class MLKMeansClusterer extends ObservableSegmenter 
                                 implements Clusterer, InterruptableAlgorithm {
         
-    private static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
+    public static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
     
-    protected final static int MAX_ITERATION = 150;
-    protected final static double ERROR_LIMIT = 0.1;
+    protected int MAX_ITERATION = 150;
+    protected double ERROR_LIMIT = 0.1;
     
     protected final int k;
     protected double[] mean;
     protected double[] meanOld;
     
-    private int iterationCount = 0;
+    protected int iterationCount = 0;
     private boolean interrupted = false;
     private boolean cancelled = false;
     
@@ -170,15 +170,19 @@ public class MLKMeansClusterer extends ObservableSegmenter
     public void segment(Image mrt, Image segimg) {
         iterate(mrt, segimg);
         
+        setImageProperties(segimg);
+    }
+    
+    protected void setImageProperties(Image segimg) {
         Properties segProp = new Properties();
-        segProp.put("Segmentiermethode", getClass().getName());
-        segProp.put("k", Integer.toString(k));
-        segProp.put("Iterationen", Integer.toString(iterationCount));
+        segProp.setProperty("Segmentiermethode", getClass().getName());
+        segProp.setProperty("k", Integer.toString(k));
+        segProp.setProperty("Iterationen", Integer.toString(iterationCount));
         for (int i = 0; i < k; i++) {
-            segProp.put("mean." + i, Double.toString(mean[i]));    
+            segProp.setProperty("mean." + i, Double.toString(mean[i]));    
         }
         
-        segimg.getHeader().setImageProperties(segProp);
+        segimg.getHeader().setImageProperties(segProp);        
     }
     
 	/**
@@ -197,7 +201,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
 
         for (int i = 0; i < size; i++) {
             color = mrt.getColor(i);
-            minDistance = Integer.MAX_VALUE;
+            minDistance = Double.MAX_VALUE;
             minDistanceFeature = 0;
             
             //Suchen jenes Merkmals mit geringstem 
@@ -260,7 +264,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
     protected double error() {
         double err = 0;
         for (int i = 0; i < k; i++) {
-            err += Math.abs(mean[i] - meanOld[i]);
+            err = Math.max(Math.abs(mean[i] - meanOld[i]), err);
         }
         return err;
     }

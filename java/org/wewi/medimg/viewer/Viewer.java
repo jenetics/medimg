@@ -1,4 +1,4 @@
-/*
+/**
  * Viewer.java
  *
  * Created on 28. März 2002, 16:55
@@ -8,6 +8,8 @@ package org.wewi.medimg.viewer;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -21,6 +23,10 @@ import java.util.logging.StreamHandler;
 
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.InternalFrameListener;
 
 import org.wewi.medimg.image.Image;
@@ -123,14 +129,20 @@ public class Viewer extends JFrame implements Singleton,
     private Command saveCommand = new NullCommand();
     private Command saveAsCommand = new NullCommand();
     
+    private JMenuItem[] lnfMenuItems;
+    
     /** 
      * Privater Konstruktor für Singleton-Pattern
      */
     private Viewer() {
         super();
+        initLogger();
+        
         viewerPrefs = ViewerPreferences.getInstance();
+        
         initComponents();
         init();
+        initLookAndFeelMenu();
     }
     
     /**
@@ -144,24 +156,15 @@ public class Viewer extends JFrame implements Singleton,
             singleton = new Viewer();
         }
         return singleton;
-    }    
+    } 
     
-    /**
-     * Eigene Initialisierungsmethod, die nach der
-     * automatischen Komponenteninitialisierung
-     * aufgerufen wird.
-     */
-    private void init() {
-        toolBar.add(NavigationPanel.getInstance());
-        openCommand = new OpenCommand(this);
-        scrollPanelHelper = new ScrollPanelHelper(this);
-        
-        setSize(viewerPrefs.getViewerDimension());
-        setLocation(viewerPrefs.getViewerLocation());
-        
-        
-        logger = Logger.getLogger(getClass().getPackage().getName());
+    private void initLogger() {
+        logger = Logger.getLogger(Viewer.class.getName());
         OutputStream logOutput = null;
+        File dir = new File("./log");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
         File logFile = new File("./log/viewer.log");
         try {
             if (logFile.exists()) {
@@ -174,9 +177,93 @@ public class Viewer extends JFrame implements Singleton,
         }
         logger.addHandler(new StreamHandler(logOutput, new SimpleFormatter()));
         
-        logger.info("Gestartet");
+        logger.info("Gestartet");        
+    }   
+    
+    /**
+     * Eigene Initialisierungsmethod, die nach der
+     * automatischen Komponenteninitialisierung
+     * aufgerufen wird.
+     */
+    private void init() {
+        toolBar.add(NavigationPanel.getInstance());
+        openCommand = new OpenCommand(this);
+        scrollPanelHelper = new ScrollPanelHelper(this);
         
+        setLookAndFeel(viewerPrefs.getLookAndFeelClassName(), this);
+        
+        setSize(viewerPrefs.getViewerDimension());
+        setLocation(viewerPrefs.getViewerLocation());                
     }
+    
+    
+    private class LookAndFeelActionListener implements ActionListener {
+        private String className;
+        private JFrame frame;
+        
+        public LookAndFeelActionListener(String className, JFrame frame) {
+            this.className = className;  
+            this.frame = frame;  
+        }
+		public void actionPerformed(ActionEvent arg0) {            
+            setLookAndFeel(className, frame); 
+            viewerPrefs.setLookAndFeelClassName(className);                 
+		}
+
+    }
+    
+    private void setLookAndFeel(String className, JFrame frame) {
+        try {
+            UIManager.setLookAndFeel(className);
+        } catch (ClassNotFoundException e) {
+            logger.throwing(LookAndFeelActionListener.class.getName(),
+                            "actionPerformed()", e);
+        } catch (InstantiationException e) {
+            logger.throwing(LookAndFeelActionListener.class.getName(),
+                            "actionPerformed()", e);                
+        } catch (IllegalAccessException e) {
+            logger.throwing(LookAndFeelActionListener.class.getName(),
+                            "actionPerformed()", e);                
+        } catch (UnsupportedLookAndFeelException e) {
+            logger.throwing(LookAndFeelActionListener.class.getName(),
+                            "actionPerformed()", e);                
+        }
+        SwingUtilities.updateComponentTreeUI(frame);             
+        
+        Dimension dim = frame.getSize();
+        Point point = frame.getLocation();
+        
+        frame.pack();             
+        frame.setSize(dim);
+        frame.setLocation(point);        
+        frame.validate();        
+    }
+    
+    private void initLookAndFeelMenu() {
+        UIManager.LookAndFeelInfo[] lnfi = UIManager.getInstalledLookAndFeels();
+        if (lnfi == null) {
+            return;    
+        }
+        if (lnfi.length <= 0) {
+            return;    
+        }
+        
+        lnfMenuItems = new JMenuItem[lnfi.length];
+        for (int i = 0; i < lnfi.length; i++) {
+            lnfMenuItems[i] = new JMenuItem();
+            lnfMenuItems[i].setFont(new java.awt.Font("Dialog", 0, 12));
+            lnfMenuItems[i].setText(lnfi[i].getName());
+            
+            lnfMenuItems[i].addActionListener(new LookAndFeelActionListener(lnfi[i].getClassName(),
+                                                                             this));            
+        }
+        
+        for (int i = 0; i < lnfi.length; i++) {
+            lnfMenu.add(lnfMenuItems[i]);    
+        }
+     
+    }
+    
     
     /**
      * Diese Methode soll beim Beenden des
@@ -373,8 +460,8 @@ public class Viewer extends JFrame implements Singleton,
         activeContourwizardMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
+        lnfMenu = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Segmentierungs- und Registrierungsviewer");
         setFont(new java.awt.Font("Dialog", 0, 12));
         setForeground(java.awt.Color.white);
@@ -418,6 +505,7 @@ public class Viewer extends JFrame implements Singleton,
         openMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         openMenuItem.setMnemonic('f');
         openMenuItem.setText("\u00d6ffnen");
+        openMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/open16.gif")));
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openMenuItemActionPerformed(evt);
@@ -430,6 +518,7 @@ public class Viewer extends JFrame implements Singleton,
         saveMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         saveMenuItem.setMnemonic('S');
         saveMenuItem.setText("Speichern");
+        saveMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/Save16.gif")));
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuItemActionPerformed(evt);
@@ -441,6 +530,7 @@ public class Viewer extends JFrame implements Singleton,
         exitMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         exitMenuItem.setMnemonic('e');
         exitMenuItem.setText("Beenden");
+        exitMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/stop16.gif")));
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
@@ -490,6 +580,7 @@ public class Viewer extends JFrame implements Singleton,
 
         activeContourwizardMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         activeContourwizardMenuItem.setText("Aktive Konturen...");
+        activeContourwizardMenuItem.setEnabled(false);
         activeContourwizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 activeContourwizardMenuItemActionPerformed(evt);
@@ -520,6 +611,16 @@ public class Viewer extends JFrame implements Singleton,
 
         helpMenu.add(aboutMenuItem);
 
+        lnfMenu.setText("Look and Feel");
+        lnfMenu.setFont(new java.awt.Font("Dialog", 0, 12));
+        lnfMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lnfMenuActionPerformed(evt);
+            }
+        });
+
+        helpMenu.add(lnfMenu);
+
         menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
@@ -529,6 +630,10 @@ public class Viewer extends JFrame implements Singleton,
         setSize(new java.awt.Dimension(396, 353));
         setLocation((screenSize.width-396)/2,(screenSize.height-353)/2);
     }//GEN-END:initComponents
+
+    private void lnfMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lnfMenuActionPerformed
+        // Add your handling code here:
+    }//GEN-LAST:event_lnfMenuActionPerformed
 
     private void activeContourwizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activeContourwizardMenuItemActionPerformed
         addWizard(new ActiveContourWizard());
@@ -644,7 +749,7 @@ public class Viewer extends JFrame implements Singleton,
         Viewer viewer = Viewer.getInstance();
         viewer.show();
         
-        viewer.command(args);
+        viewer.command(args);       
     }
     
     
@@ -677,23 +782,24 @@ public class Viewer extends JFrame implements Singleton,
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenuItem segmentaionWizardMenuItem;
-    private javax.swing.JMenuItem registrationWizardMenuItem;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JPanel statePanel;
-    private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JMenu wizardMenu;
-    private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JToolBar toolBar;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JMenuItem activeContourwizardMenuItem;
-    private javax.swing.JMenuItem marchingCubeWizardMenuItem;
+    private javax.swing.JDesktopPane desktopPane;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel statePanel;
     private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JPanel rightSplitPanel;
+    private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JToolBar toolBar;
+    private javax.swing.JMenu lnfMenu;
+    private javax.swing.JMenu wizardMenu;
+    private javax.swing.JMenuItem registrationWizardMenuItem;
+    private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem marchingCubeWizardMenuItem;
+    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem segmentaionWizardMenuItem;
+    private javax.swing.JPanel rightSplitPanel;
     // End of variables declaration//GEN-END:variables
     
     

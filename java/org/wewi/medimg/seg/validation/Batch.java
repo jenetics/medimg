@@ -28,7 +28,7 @@ import org.wewi.medimg.image.io.TIFFReader;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class Batch {
+public class Batch { 
     private String batchFile;
     private Document doc = null; 
     
