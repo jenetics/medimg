@@ -144,7 +144,7 @@ public class GradientVectorFlow extends ObservableAlgorithm
 	/**
 	 * @see org.wewi.medimg.alg.IterateableAlgorithm#getAlgorithmIterator()
 	 */
-	public AlgorithmIterator getAlgorithmIterator() {
+	public AlgorithmIterator iterator() {
 		return null;
 	}
 

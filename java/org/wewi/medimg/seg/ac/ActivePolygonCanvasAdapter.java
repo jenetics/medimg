@@ -4,16 +4,9 @@
  */
 package org.wewi.medimg.seg.ac;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.Iterator;
-import java.util.List;
 
-import org.wewi.medimg.image.ImagePanel;
-import org.wewi.medimg.image.geom.Point;
-import org.wewi.medimg.image.geom.Point3D;
+import org.wewi.medimg.viewer.image.ImagePanel;
 
 /**
  * @author Franz Wilhelmstötter
@@ -33,6 +26,7 @@ public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas 
 	 * @see org.wewi.medimg.image.ImagePanel.ImageCanvas#draw(Graphics, ImagePanel)
 	 */
 	public void draw(Graphics g, ImagePanel panel) {
+       /*
         List contourPoints = null;
         
         Graphics2D graph = (Graphics2D)g;
@@ -48,7 +42,7 @@ public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas 
         }
         for (Iterator it = basePoints.iterator(); it.hasNext();) {
             Point pp = (Point)it.next();
-            java.awt.Point pg3 = pc.convert(new Point3D(pp.getOrdinate(0),
+            Point pg3 = pc.convert(new Point3D(pp.getOrdinate(0),
                                                          pp.getOrdinate(1),0));
             graph.drawOval((int)pg3.getX()-3, (int)pg3.getY()-3, 6, 6);                 
         }           
@@ -80,7 +74,7 @@ public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas 
                                                      f.getOrdinate(1),0));                                                             
         graph.drawLine((int)pg1.getX(), (int)pg1.getY(), 
                        (int)pg2.getX(), (int)pg2.getY()); 
-
+*/
    
     }
 

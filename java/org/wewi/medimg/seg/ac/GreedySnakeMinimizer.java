@@ -180,7 +180,7 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
 
 
 	public ActiveContour minimize() {
-        for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNext();) {
+        for (AlgorithmIterator it = iterator(); it.hasNext();) {
             it.next();    
         }
         
@@ -204,7 +204,7 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         return iterationCount;    
     }
     
-    public AlgorithmIterator getAlgorithmIterator() {
+    public AlgorithmIterator iterator() {
         return new GreedyMinimizerIterator();    
     }
     

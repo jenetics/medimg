@@ -32,10 +32,10 @@ import org.wewi.medimg.seg.SegmenterEvent;
 import org.wewi.medimg.seg.SegmenterListener;
 import org.wewi.medimg.seg.SegmenterThread;
 import org.wewi.medimg.viewer.ImageFileChooser;
-import org.wewi.medimg.viewer.ImageViewer;
 import org.wewi.medimg.viewer.ImageViewerSynchronizer;
 import org.wewi.medimg.viewer.LogHandlerPanel;
 import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.image.ImageViewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
 
   

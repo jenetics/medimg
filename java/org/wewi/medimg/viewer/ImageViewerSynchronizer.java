@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.wewi.medimg.viewer.image.*;
+import org.wewi.medimg.viewer.image.ImageViewer;
 
 
 /**

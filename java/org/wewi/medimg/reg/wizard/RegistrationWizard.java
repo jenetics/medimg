@@ -32,9 +32,9 @@ import org.wewi.medimg.reg.WeightPointTransformationImportance;
 import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
 import org.wewi.medimg.reg.pca.RigidPCARegistration;
 import org.wewi.medimg.viewer.ImageFileChooser;
-import org.wewi.medimg.viewer.ImageViewer;
 import org.wewi.medimg.viewer.ImageViewerSynchronizer;
 import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.image.ImageViewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
 
 

@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import org.wewi.medimg.image.ImagePanel;
+import org.wewi.medimg.viewer.image.ImagePanel;
 
 /**
  * @author Franz Wilhelmstötter
@@ -42,8 +42,8 @@ public class VectorFieldImageCanvasAdapter implements ImagePanel.ImageCanvas {
         for (VectorIterator it = field.getVectorIterator(); it.hasNext();) {
             it.next(start, end);
             
-            converter.imagePointToPanelPoint(start, p1);
-            converter.imagePointToPanelPoint(end, p2);
+            //converter.imagePointToPanelPoint(start, p1);
+            //converter.imagePointToPanelPoint(end, p2);
             
             
             graph.drawLine((int)Math.round(p1[0]), (int)Math.round(p1[1]), 

@@ -185,7 +185,7 @@ public final class DirectClustering extends ObservableAlgorithm
         }
     }    
     
-    public AlgorithmIterator getAlgorithmIterator() {
+    public AlgorithmIterator iterator() {
         return new DirectClusteringIterator();
     }
     
