@@ -102,7 +102,7 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
         double relationshipWeight;
         for (int i = 1; i < weight.length; i++) {
             relationshipWeight = ((weight[i]) / (weight[i - 1] + weight[i]));
-            trans = (InterpolateableTransformation)trans.interpolate(transformation[i], relationshipWeight);
+            trans = trans.interpolate(transformation[i], relationshipWeight);
         }
         return trans;    
     }

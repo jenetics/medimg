@@ -542,7 +542,7 @@ public class AffineTransformation implements InterpolateableTransformation,
     /**
      * @see org.wewi.medimg.image.geom.transform.Interpolateable#interpolate(Transformation, double)
      */
-    public Transformation interpolate(Transformation trans2, double w) throws IllegalArgumentException {
+    public InterpolateableTransformation interpolate(InterpolateableTransformation trans2, double w) throws IllegalArgumentException {
         if (!(trans2 instanceof AffineTransformation)) {
             throw new IllegalArgumentException("trans2 not an AffineTransformation: " + 
                                                 getClass().getName() + ".interpolate()");   
@@ -588,7 +588,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         AffineTransformation At = new AffineTransformation(m); 
         
                  
-        return At.concatenate(Ar.concatenate(As));
+        return (AffineTransformation)At.concatenate(Ar.concatenate(As));
     }    
 
     private void transformBackward(double[] source, double[] target) {
