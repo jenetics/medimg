@@ -168,9 +168,9 @@ public class MLKMeansEstimator implements Estimator {
             estimator.estimate();
             Segmenter classifier = estimator.getSegmenter();
             Image segimg = classifier.segment(mrt);
+            segimg.setColorConversion(new FeatureColorConversion());            
             
             ImageWriter writer = new TIFFWriter(segimg, new File("C:/Temp/outhead"));
-            writer.setColorConversion(new FeatureColorConversion());
             writer.write();
             
             

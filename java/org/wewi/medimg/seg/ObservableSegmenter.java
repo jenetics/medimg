@@ -95,11 +95,11 @@ public abstract class ObservableSegmenter implements Segmenter {
         }
     } 
     
-    public abstract void interrupt() throws UnsupportedOperationException;
+    public abstract void interruptSegmenter() throws UnsupportedOperationException;
     
-    public abstract void resume() throws UnsupportedOperationException;
+    public abstract void resumeSegmenter() throws UnsupportedOperationException;
     
-    public abstract void cancel() throws UnsupportedOperationException;   
+    public abstract void cancelSegmenter() throws UnsupportedOperationException;   
     
     public abstract String getSegmenterName();  
     

@@ -62,9 +62,10 @@ public final class ImageReaderThread extends Thread {
             event.setException(new ImageIOException(ioe));
             
             if (component != null) {
-                JOptionPane.showMessageDialog(component, "Kann Datei: \n" + 
+                JOptionPane.showMessageDialog(component, "Kann Datei: \"" + 
                                            imageReader.getSource().toString() + 
-                                                         "\n nicht öffnen", 
+                                                         "\" nicht öffnen\n" +
+                                                         ioe.toString(), 
                                                  "Fehler", JOptionPane.ERROR_MESSAGE);                
             }
             

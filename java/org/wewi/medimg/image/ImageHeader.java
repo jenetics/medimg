@@ -6,9 +6,10 @@
 
 package org.wewi.medimg.image;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
 import org.wewi.medimg.util.Nullable;
 
@@ -19,10 +20,13 @@ import org.wewi.medimg.util.Nullable;
  */
 public interface ImageHeader extends Nullable {
     
-    public void read(DataInputStream in) throws IOException;
+    public void read(InputStream in) throws IOException;
 
-    public void write(DataOutputStream out) throws IOException;
+    public void write(OutputStream out) throws IOException;
     
-    public Dimension readDimension(DataInputStream in) throws IOException;
+    public Dimension readDimension(InputStream in) throws IOException;
     
+    public void setImageProperties(Properties prop);
+   
+    public Properties getImageProperties();
 }

@@ -83,9 +83,6 @@ public class SegmentationWizard extends Wizard {
             wizard.mrtImage = reader.getImage();
             
             wizard.startSegmentation();
-            
-            wizard.cancelButton.setEnabled(true);
-            //wizard.interruptToggleButton.setEnabled(true);
         }         
     }
     
@@ -124,19 +121,21 @@ public class SegmentationWizard extends Wizard {
             Viewer.getInstance().addViewerDesktopFrame(twinImageViewer);
         }
         
-        public void interrupt() {
-            segmenter.interrupt();    
+        public void interruptSegmenter() {
+            segmenter.interruptSegmenter();    
         }
         
-        public void resume() {
-            segmenter.resume();    
+        public void resumeSegmenter() {
+            segmenter.resumeSegmenter();    
         }
         
-        public void cancel() {
-            segmenter.cancel();    
+        public void cancelSegmenter() {
+            segmenter.cancelSegmenter();    
         }
         
         public void iterationStarted(IterationEvent event) {
+            wizard.cancelButton.setEnabled(true);
+            wizard.interruptToggleButton.setEnabled(true);            
         }
         
         public void iterationFinished(IterationEvent event) {
@@ -156,6 +155,8 @@ public class SegmentationWizard extends Wizard {
             wizard.closeButton.setEnabled(true);
             wizard.startButton.setEnabled(true); 
             wizard.cancelButton.setEnabled(false);
+            wizard.cancelButton.setEnabled(false);
+            wizard.interruptToggleButton.setEnabled(false);
             
             /**************************************************************/
             wizard.getLogger().info("Segmentiervorgang beendet");
@@ -229,6 +230,9 @@ public class SegmentationWizard extends Wizard {
         setSegmenterArgumentPanel(panel);
         
         addLoggerHandler(logHandlerPanel.getHandler());
+        
+        interruptToggleButton.setEnabled(false);
+        cancelButton.setEnabled(false);
     }    
     
 	/**
@@ -340,8 +344,8 @@ public class SegmentationWizard extends Wizard {
         jPanel30 = new javax.swing.JPanel();
         closeButton = new javax.swing.JButton();
 
-        setToolTipText("null");
-        setFont(new java.awt.Font("Dialog", 0, 14));
+        setForeground(java.awt.Color.white);
+        setFont(new java.awt.Font("Dialog", 0, 12));
         setPreferredSize(new java.awt.Dimension(500, 300));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
@@ -361,6 +365,7 @@ public class SegmentationWizard extends Wizard {
             }
         });
 
+        getAccessibleContext().setAccessibleDescription("null");
         getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
 
         centerPanel.setLayout(new java.awt.GridLayout(1, 0));
@@ -386,7 +391,6 @@ public class SegmentationWizard extends Wizard {
         imageDataSearchButton.setFont(new java.awt.Font("Dialog", 0, 12));
         imageDataSearchButton.setMnemonic('w');
         imageDataSearchButton.setText("Datensatz ausw\u00e4hlen...");
-        imageDataSearchButton.setToolTipText("null");
         imageDataSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imageDataSearchButtonActionPerformed(evt);
@@ -429,7 +433,6 @@ public class SegmentationWizard extends Wizard {
         startButton.setFont(new java.awt.Font("Dialog", 0, 12));
         startButton.setMnemonic('S');
         startButton.setText("Start");
-        startButton.setToolTipText("null");
         startButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startButtonActionPerformed(evt);
@@ -441,7 +444,6 @@ public class SegmentationWizard extends Wizard {
         interruptToggleButton.setFont(new java.awt.Font("Dialog", 0, 12));
         interruptToggleButton.setMnemonic('U');
         interruptToggleButton.setText("Unterbrechen");
-        interruptToggleButton.setEnabled(false);
         interruptToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 interruptToggleButtonActionPerformed(evt);
@@ -459,8 +461,6 @@ public class SegmentationWizard extends Wizard {
         cancelButton.setFont(new java.awt.Font("Dialog", 0, 12));
         cancelButton.setMnemonic('A');
         cancelButton.setText("Abbrechen");
-        cancelButton.setToolTipText("null");
-        cancelButton.setEnabled(false);
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -488,7 +488,6 @@ public class SegmentationWizard extends Wizard {
         closeButton.setFont(new java.awt.Font("Dialog", 0, 12));
         closeButton.setMnemonic('c');
         closeButton.setText("Schlie\u00dfen");
-        closeButton.setToolTipText("null");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeButtonActionPerformed(evt);
@@ -509,14 +508,15 @@ public class SegmentationWizard extends Wizard {
 
     private void interruptToggleButtonStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_interruptToggleButtonStateChanged
         if (segmenterWorker == null) {
+            interruptToggleButton.setSelected(false);
             return;    
         }
         
-        if (interruptToggleButton.isSelected()) {
-            segmenterWorker.resume();
+        if (!interruptToggleButton.isSelected()) {
+            segmenterWorker.resumeSegmenter();
             interruptToggleButton.setText("Unterbrechen");    
         } else {
-            segmenterWorker.interrupt();
+            segmenterWorker.interruptSegmenter();
             interruptToggleButton.setText("Fortsetzen");
         }
     }//GEN-LAST:event_interruptToggleButtonStateChanged
@@ -526,7 +526,7 @@ public class SegmentationWizard extends Wizard {
             return;    
         }
         
-        segmenterWorker.cancel();
+        segmenterWorker.cancelSegmenter();
         
         setClosable(true);        
     }//GEN-LAST:event_cancelButtonActionPerformed

@@ -99,6 +99,11 @@ public final class ImageData implements Image, RandomAccess {
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
+    void init(Dimension dim) {
+        init(dim.getMinX(), dim.getMinY(), dim.getMinZ(),
+             dim.getMaxX(), dim.getMaxY(), dim.getMaxZ());    
+    }
+    
     void init(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         this.minX = minX;
         this.minY = minY;
@@ -115,7 +120,7 @@ public final class ImageData implements Image, RandomAccess {
         data = new int[size]; 
         Arrays.fill(data, 0);
         
-        header = new ImageDataHeader(minX, minY, minZ, maxX, maxY, maxZ, this);
+        header = new ImageDataHeader(this);
         colorConversion = new GreyColorConversion();
     }
     

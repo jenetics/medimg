@@ -9,6 +9,7 @@ package org.wewi.medimg.seg.stat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.Random;
 
 import org.wewi.medimg.image.ColorRange;
@@ -25,6 +26,86 @@ import org.wewi.medimg.seg.SegmenterEvent;
  * @version 0.1
  */
 public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer {
+    
+    private class IterationThread extends Thread {
+        private MLKMeansClusterer parent;
+        private Image mrt;
+        private Image segimg;
+        
+        private boolean cancelled = false;
+        private boolean interrupted = false;
+        
+        public IterationThread(MLKMeansClusterer parent, Image mrt, Image segimg) {
+            super();
+            this.parent = parent;
+            this.mrt = mrt;
+            this.segimg = segimg;
+        } 
+        
+        public void run() {
+            parent.notifySegmenterStarted(new SegmenterEvent(this));
+            
+            int iterationCount = 0;
+            
+            parent.createSegimgOld(segimg);
+            parent.initMeans(mrt.getColorRange());
+            
+            synchronized (this) { 
+            
+            do {
+                
+                if (interrupted) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        interrupted = false;
+                        continue;
+                    }    
+                }
+                
+                if (cancelled) {
+                    break;
+                }
+                
+                parent.notifyIterationStarted(new IterationEvent(this));
+                
+                parent.m1Step(mrt, segimg);
+                parent.m2Step(mrt, segimg);
+                iterationCount++;
+                
+                parent.notifyIterationFinished(new IterationEvent(this));
+                
+                /**************************************************************/
+                parent.logger.info("" + iterationCount + ": " + formatMeanValues());
+                /**************************************************************/
+            } while(parent.ERROR_LIMIT < parent.error() &&
+                     parent.MAX_ITERATION >= iterationCount); 
+                     
+            }
+                     
+            parent.notifySegmenterFinished(new SegmenterEvent(this));  
+            parent.notifyAll();          
+        } 
+        
+        public synchronized void resumeIterator() {
+            interrupted = false;
+            notifyAll();    
+        } 
+        
+        public void interruptIterator() {
+            interrupted = true;
+        }
+        
+        public void cancelInterator() {
+            cancelled = false;
+        }     
+            
+    }
+    
+    
+    
+    
+    
     private static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
     
     protected final static int MAX_ITERATION = 50;
@@ -34,8 +115,9 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
     protected double[] mean;
     protected double[] meanOld;
     
-    protected boolean interrupted = false;
-    protected boolean cancelled = false;
+    private int iterationCount = 0;
+    
+    protected IterationThread iterationThread = null;
     
 
 	/**
@@ -116,35 +198,15 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         return segimg;
     }
     
-	/**
-     * 
-     * 
-	 * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
-	 */
-    public synchronized void segment(Image mrt, Image segimg) {
+    private void iterate(Image mrt, Image segimg) {
         notifySegmenterStarted(new SegmenterEvent(this));
         
-        int iterationCount = 0;
+        iterationCount = 0;
         
         createSegimgOld(segimg);
         initMeans(mrt.getColorRange());
         
         do {
-            /*
-            if (interrupted) {
-                try {
-					wait();
-				} catch (InterruptedException e) {
-                    interrupted = false;
-                    continue;
-				}    
-            }
-            */
-            if (cancelled) {
-                segimg.resetColor(0);
-                break;
-            }
-            
             notifyIterationStarted(new IterationEvent(this));
             
             m1Step(mrt, segimg);
@@ -158,9 +220,37 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
             /**************************************************************/
         } while(ERROR_LIMIT < error() &&
                 MAX_ITERATION >= iterationCount); 
+        notifySegmenterFinished(new SegmenterEvent(this));         
+    }
     
-                
-        notifySegmenterFinished(new SegmenterEvent(this));       
+	/**
+     * 
+     * 
+	 * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
+	 */
+    public void segment(Image mrt, Image segimg) {
+        iterate(mrt, segimg);
+        
+        Properties segProp = new Properties();
+        segProp.put("Segmentiermethode", getClass().getName());
+        segProp.put("k", Integer.toString(k));
+        segProp.put("Iterationen", Integer.toString(iterationCount));
+        for (int i = 0; i < k; i++) {
+            segProp.put("mean." + i, Double.toString(mean[i]));    
+        }
+        
+        segimg.getHeader().setImageProperties(segProp);
+        
+        
+        /*
+        iterationThread = new IterationThread(this, mrt, segimg);
+        iterationThread.start();
+        try {
+			wait();
+		} catch (InterruptedException e) {
+            logger.throwing("","",e);
+		}
+        */
     }
     
 	/**
@@ -272,17 +362,22 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         return 0;
     }
     
-    public void interrupt() {
-        interrupted = true;
+    public void interruptSegmenter() {
+        if (iterationThread == null) {
+            return;    
+        }
     }
     
-    public void resume() {
-        interrupted = false;
-        //notifyAll();
+    public void resumeSegmenter() {
+        if (iterationThread == null) {
+            return;    
+        }        
     }
     
-    public void cancel() {
-        cancelled = true;
+    public void cancelSegmenter() {
+        if (iterationThread == null) {
+            return;    
+        }        
     }
     
     public String getSegmenterName() {

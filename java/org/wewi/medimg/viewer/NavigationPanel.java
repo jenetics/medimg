@@ -147,7 +147,7 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
         rotateLeftButton = new javax.swing.JButton();
         rotateRightButton = new javax.swing.JButton();
 
-        setLayout(new java.awt.GridLayout(1, 0));
+        setLayout(new java.awt.GridLayout(1, 11));
 
         firstButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/first.gif")));
         firstButton.setToolTipText("erste Schicht");
@@ -212,7 +212,6 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
         add(jLabel1);
 
         zoomInButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/zoom_in.gif")));
-        zoomInButton.setToolTipText("null");
         zoomInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zoomInButtonActionPerformed(evt);
