@@ -189,7 +189,7 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
     }    
 
 	/**
-	 * Returns the alpha.
+	 * Returns the a.
 	 * @return double
 	 */
 	public double getAlpha() {
@@ -197,7 +197,7 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
 	}
 
 	/**
-	 * Returns the beta.
+	 * Returns the b.
 	 * @return double
 	 */
 	public double getBeta() {
@@ -213,16 +213,16 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
 	}
 
 	/**
-	 * Sets the alpha.
-	 * @param alpha The alpha to set
+	 * Sets the a.
+	 * @param a The a to set
 	 */
 	public void setAlpha(double alpha) {
 		this.alpha = alpha;
 	}
 
 	/**
-	 * Sets the beta.
-	 * @param beta The beta to set
+	 * Sets the b.
+	 * @param b The b to set
 	 */
 	public void setBeta(double beta) {
 		this.beta = beta;
