@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public class T3 {
     private AccumulatorArray accu;
-    int[] f;
+    private int[] f;
     
     
     public T3(AccumulatorArray accu) {
@@ -55,6 +55,10 @@ public class T3 {
         }
         
         return maxIndex;
+    }
+    
+    public int getAbstractFeatures() {
+        return accu.getCols();    
     }
     
     
