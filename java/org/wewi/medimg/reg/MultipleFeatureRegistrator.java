@@ -10,6 +10,7 @@ import java.util.Vector;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
+import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
 import org.wewi.medimg.image.geom.transform.Transformation;
 
@@ -52,9 +53,9 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
         ColorRange tcr = target.getColorRange();
         int minFeature = Math.max(scr.getMinColor(), tcr.getMinColor());
         //Ignorieren des Hintergrundes
-        /*if (minFeature < 1) {
+        if (minFeature < 1) {
         	minFeature = 1;
-        }*/
+        }
         int maxFeature = Math.min(scr.getMaxColor(), tcr.getMaxColor());
         VoxelIteratorFactory f = new VoxelIteratorFactory(source, target);
         for (int i = minFeature; i <= maxFeature; i++) {
@@ -69,6 +70,8 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
             //Berechnen der Transformation
             Transformation trans = getTransformation((FeatureIterator)sit.clone(), 
                                                      (FeatureIterator)tit.clone());
+                                                     
+            System.out.println("MultipleF...: " + ((AffineTransformation)trans).getRotationTransformation());                                         
             //Bestimmen der Qualität der berechneten Transformation
             similarity = 1.0;
             double temp;
@@ -124,7 +127,11 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
         double weightSum = weight[0];
         for (int i = 1; i < weight.length; i++) {
             weightSum += weight[i];
-            relationshipWeight = ((weight[i]) / weightSum);
+            if (weightSum == 0) {
+                relationshipWeight = 1.0;
+            } else {
+                relationshipWeight = ((weight[i]) / weightSum);
+            }
             trans = trans.interpolate(transformation[i], relationshipWeight);
         }
         System.out.println("********************************");

@@ -10,10 +10,13 @@ import java.io.File;
 
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.reg.pca.PCARegistration;
 import org.wewi.medimg.util.Timer;
 
@@ -32,12 +35,13 @@ public class Test {
     * @param args the command line arguments
     */
     public static void main (String args[]) {
+        String path = "C:/Workspace/fwilhelm/Projekte/Diplom/code/data/reg.test.img/";
         Timer timer1 = new Timer("Test: Gesamt");
         timer1.start();       
         Timer timer3 = new Timer("Test: Image lesen");
-        timer3.start();         
-        File source1 = new File("E:/temp/img/aa001.tif");
-        File source2 = new File("E:/temp/img/bb001.tif");                
+        timer3.start();     
+        File source1 = new File(path + "try16.tif");
+        File source2 = new File(path + "try17.tif");                
         //File source1 = new File("D:/temp/circle004.tif");
         //File source2 = new File("D:/temp/circle005.tif");   
         //File source1 = new File("E:/temp/img/erg/erg01/");
@@ -47,8 +51,8 @@ public class Test {
         TIFFReader reader1 = new TIFFReader(ImageDataFactory.getInstance(), source1);
         TIFFReader reader2 = new TIFFReader(ImageDataFactory.getInstance(), source2);    
         FeatureColorConversion tcc = new FeatureColorConversion();
-        //reader1.setColorConversion(tcc);
-        //reader2.setColorConversion(tcc);
+        reader1.setColorConversion(tcc);
+        reader2.setColorConversion(tcc);
         try {
             reader1.read();
         } catch (Exception e) {
@@ -71,22 +75,25 @@ public class Test {
         //Datencontainer für die benötigten Transformationsparameter;
         //System.out.println("Mist111");
         //Erzeugen des Registrierers
-        WeightPointTransformationImportance myStrategy = new WeightPointTransformationImportance();
-        //ImportanceStrategy myStrategy = new ImportanceStrategy();
-        //FittnessStrategy myStrategy = new FittnessStrategy();
+        //WeightPointTransformationImportance myStrategy = new WeightPointTransformationImportance();
+        //ImportanceStrategy myImportance = new ImportanceStrategy();
+        FittnessTransformationImportance myImportance = new FittnessTransformationImportance();
+        //ManualTransformationImportance myImportance = new ManualTransformationImportance();
         BBAffinityMetric myMetric = new BBAffinityMetric();
         //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
-        myStrategy.setErrorLimit(0.2);
-            /*myStrategy.setImportance(Tissue.VENTRICLE, 0.0);
-            myStrategy.setImportance(Tissue.BONE, 0.0);
-            myStrategy.setImportance(Tissue.FAT, 0.0);
-            myStrategy.setImportance(Tissue.DEEP_TISSUE, 0.0);
-            myStrategy.setImportance(Tissue.GREY_MATTER, 1.0);
-            myStrategy.setImportance(Tissue.WHITE_MATTER, 0.0);
-            myStrategy.setImportance(Tissue.SOFT_TISSUE, 0.0);
-            myStrategy.setImportance(Tissue.ANGULAR_GYRUS, 0.0);*/
+        myImportance.setErrorLimit(0.2);
+            /*myImportance.setImportance(0, 0.0);
+            myImportance.setImportance(1, 0.0);
+            myImportance.setImportance(4, 1.0);
+            myImportance.setImportance(5, 0.0);
+            myImportance.setImportance(6, 0.0);
+            myImportance.setImportance(8, 0.0);
+            myImportance.setImportance(9, 0.0);
+            myImportance.setImportance(10, 0.0);
+            myImportance.setImportance(11, 0.0); */           
         PCARegistration strategy = new PCARegistration();
         strategy.setAffinityMetric(myMetric);
+        strategy.setTransformationImportance(myImportance);
         
         //Registrate reg = new Registrate(strategy, param);
         //System.out.println("Mist222222");
@@ -97,9 +104,23 @@ public class Test {
             transformation = (AffineTransformation)strategy.registrate(data1, data2);
 	        timer2.stop();
 	        timer2.print();
-	        Image show = (Image)transformation.transform(data1);
-	        show.setColorConversion(tcc);
-	        TIFFWriter rwriter = new TIFFWriter(show, new File("E:/temp/img/erg2"));   
+            Image show = new ImageData(0, 500, 0, 500, 0, 0);
+
+            
+	        transformation.transform(data1, show);
+            /*MinMaxOperator minMax2 = new MinMaxOperator();
+            UnaryPointAnalyzer analyzer2 = new UnaryPointAnalyzer(show, minMax2);
+            analyzer2.analyze();
+            System.out.println(minMax2);*/ 
+            //System.out.println(((AffineTransformation)transformation.createInverse()).createInverse());
+            /*double[] erg = new double[3]; 
+            transformation.transform(new double[]{0, 0, 0}, erg);       
+            System.out.println("Punkt: 0 -0 - 0: " +  erg[0] + ", " + erg[1] + ", " + erg[2]);
+            transformation.transform(new double[]{500, 500, 0}, erg);
+            System.out.println("Punkt: 500 -500 - 0: " +  erg[0] + ", " + erg[1] + ", " + erg[2]);*/
+            
+            System.out.println((AffineTransformation)transformation.getScaleTransformation());
+	        TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg/"));   
 	        rwriter.write();         
         } catch (Exception re) {
             System.out.println("Mist");
