@@ -1,4 +1,4 @@
-/*
+/**
  * FeatureColorConversion.java
  *
  * Created on 21. Februar 2002, 15:55
@@ -11,24 +11,25 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class FeatureColorConversion implements ColorConversion {
+public class FeatureColorConversion implements ColorConversion{
     private static Color[] c = {Color.WHITE,
-                                        Color.RED,
-                                        Color.GREEN,
-                                        Color.BLUE,
-                                        Color.BLACK,
-                                        Color.PINK,
-                                        Color.YELLOW,
-                                        Color.CYAN,
-                                        Color.LIGHT_GRAY,
-                                        Color.GRAY,
-                                        Color.DARK_GRAY,
-                                        Color.ORANGE};
+                                  Color.RED,
+                                  Color.GREEN,
+                                  Color.BLUE,
+                                  Color.BLACK,
+                                  Color.PINK,
+                                  Color.YELLOW,
+                                  Color.CYAN,
+                                  Color.LIGHT_GRAY,
+                                  Color.GRAY,
+                                  Color.DARK_GRAY,
+                                  Color.ORANGE};
     private static int colors = c.length;
     private static int[][] cc;
 
@@ -48,7 +49,23 @@ public class FeatureColorConversion implements ColorConversion {
     }
     
     public int convert(int[] rgb) {
-        return 1;
+        for (int i = 0; i < colors; i++) {
+            if (c[i].getRed() != rgb[0]) {
+                continue;    
+            } else {
+                if (c[i].getGreen() != rgb[1]) {
+                    continue;    
+                } else {
+                    if (c[i].getBlue() != rgb[2]) {
+                        continue;    
+                    } else {
+                        return i;    
+                    }
+                }    
+            }    
+        }
+        
+        return 0;
     }
     
     public Object clone() {
@@ -85,7 +102,7 @@ public class FeatureColorConversion implements ColorConversion {
             stream.writeInt(c[i].getBlue());
         }
                
-    }    
+    }   
     
 }
 
