@@ -1,4 +1,4 @@
-/*
+/**
  * PseudoColorConversion.java
  *
  * Created on 7. August 2002, 16:38
@@ -9,6 +9,7 @@ package org.wewi.medimg.image;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class PseudoColorConversion implements ColorConversion {
     

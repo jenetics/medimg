@@ -1,4 +1,4 @@
-/*
+/**
  * SobelFilter.java
  *
  * Created on 21. Februar 2002, 17:11
@@ -12,6 +12,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.math.MathUtil;
 
 
 /**
@@ -20,7 +21,6 @@ import org.wewi.medimg.image.io.TIFFWriter;
  * @version 0.1
  */
 public final class SobelFilter extends ImageFilter {
-    public Image gradImage;
     
     private class Mask {
         //public short get
@@ -36,46 +36,59 @@ public final class SobelFilter extends ImageFilter {
     }
     
     public void filter() {
-        gradImage = (Image)image.clone();
-        int maxX = image.getMaxX();
-        int maxY = image.getMaxY();
-        for (int i = 1; i < maxX-1; i++) {
-            for (int j = 1; j < maxY-1; j++) {
-                gradImage.setColor(i, j, 0, enhance(i, j, image));
+        Image tempImage = (Image)image.clone();
+        for (int i = image.getMinX()+1, n = image.getMaxX(); i < n; i++) {
+            for (int j = image.getMinY()+1, m = image.getMaxY(); j < m; j++) {
+                image.setColor(i, j, 0, enhance(i, j, tempImage));
             }
         }
+
+        tempImage = null;        
         
         super.filter();
     }
     
-    public Image getImage() {
-        return gradImage;    
+    private int enhance(int x, int y, Image img) {
+        int colorX = 0;
+        int colorY = 0;
+        
+        //Erste Zeile
+        colorX += img.getColor(x-1, y+1, 0)*-1;
+        colorX += img.getColor(x,   y+1, 0)*-2;
+        colorX += img.getColor(x+1, y+1, 0)*-1;
+        
+        //Zweite Zeile
+        //colorX += img.getColor(x-1, y, 0)* 0;
+        //colorX += img.getColor(x,   y, 0)* 0;
+        //colorX += img.getColor(x+1, y, 0)* 0;
+                
+        //Dritte Zeile
+        colorX += img.getColor(x-1, y-1, 0)* 1;
+        colorX += img.getColor(x,   y-1, 0)* 2;
+        colorX += img.getColor(x+1, y-1, 0)* 1;
+                        
+                        
+        //Erste Zeile
+        colorY += img.getColor(x-1, y+1, 0)*-1;
+        //colorY += img.getColor(x,   y+1, 0)*0;
+        colorY += img.getColor(x+1, y+1, 0)*1;
+        
+        //Zweite Zeile
+        colorY += img.getColor(x-1, y, 0)* -2;
+        //colorY += img.getColor(x,   y, 0)* 0;
+        colorY += img.getColor(x+1, y, 0)* 2;
+                
+        //Dritte Zeile
+        colorY += img.getColor(x-1, y-1, 0)*-1;
+        //colorY += img.getColor(x,   y-1, 0)*0;
+        colorY += img.getColor(x+1, y-1, 0)*1;                        
+
+        return Math.min(Math.abs(colorX) + Math.abs(colorY), 2550);
+        //return (int)Math.min(Math.sqrt(MathUtil.sqr(colorX)+MathUtil.sqr(colorY)), 255);
     }
     
-    
-    private short enhance(int x, int y, Image image) {
-        double colorX = 0;
-        double colorY = 0;
-        colorX += image.getColor(x-1, y+1, 0)*-1;
-        colorX += image.getColor(x,   y+1, 0)*-2;
-        colorX += image.getColor(x+1, y+1, 0)*-1;
-        colorX += image.getColor(x+1, y,   0)* 0;
-        colorX += image.getColor(x+1, y-1, 0)* 1;
-        colorX += image.getColor(x,   y-1, 0)* 2;
-        colorX += image.getColor(x-1, y-1, 0)* 1;
-        colorX += image.getColor(x-1, y,   0)* 0;
-
-        colorY += image.getColor(x-1, y+1, 0)*-1;
-        colorY += image.getColor(x,   y+1, 0)* 0;
-        colorY += image.getColor(x+1, y+1, 0)* 1;
-        colorY += image.getColor(x+1, y,   0)* 2;
-        colorY += image.getColor(x+1, y-1, 0)* 1;
-        colorY += image.getColor(x,   y-1, 0)* 0;
-        colorY += image.getColor(x-1, y-1, 0)*-1;
-        colorY += image.getColor(x-1, y,   0)*-2;
-
-        
-        return (short)((colorX/8.0)+(colorY/8.0));
+    public String toString() {
+        return getClass().getName();    
     }
     
     

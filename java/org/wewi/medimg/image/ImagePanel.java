@@ -221,6 +221,9 @@ public class ImagePanel extends JPanel {
     }
     
     public void setImageCanvas(ImageCanvas imageCanvas) {
+        if (imageCanvas == null) {
+            return;    
+        }
         this.imageCanvas = imageCanvas;    
     }
     

@@ -14,9 +14,9 @@ import org.wewi.medimg.image.geom.Point3D;
  * @version 0.1
  */
 public class VoxelSelectorEvent extends EventObject {
-    private Image image;
-    private Point3D imagePoint;
-    private Point mousePoint;
+    private final Image image;
+    private final Point3D imagePoint;
+    private final Point mousePoint;
     
     public VoxelSelectorEvent(Object source, Point mousePoint, Image image, Point3D imagePoint) {
         super(source);

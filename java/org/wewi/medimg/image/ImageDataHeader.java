@@ -35,14 +35,14 @@ import org.wewi.medimg.util.StringOutputStream;
  * @version 0.2
  */
 class ImageDataHeader implements ImageHeader {
-    private ImageData image;
+    private AbstractImage image;
     
     private Dimension dim;
     private Properties properties;
     
     private Logger logger;
 
-    public ImageDataHeader(ImageData image) {
+    public ImageDataHeader(AbstractImage image) {
         this.image = image;
         properties = new Properties();
         

@@ -6,15 +6,13 @@
 
 package org.wewi.medimg.image;
 
-import java.util.Arrays;
-
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ByteImageData extends ImageData {
+public final class ByteImageData extends AbstractImage {
     private byte[] data;   
      
     ByteImageData() {
@@ -22,8 +20,7 @@ public final class ByteImageData extends ImageData {
     }     
      
     ByteImageData(ByteImageData id) {
-        super(id.sizeX, id.sizeY, id.sizeZ);
-        System.arraycopy(id.data, 0, data, 0, size);
+        super(id);
     }
     
     public ByteImageData(Dimension dim) {
@@ -36,27 +33,17 @@ public final class ByteImageData extends ImageData {
     
     public ByteImageData(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         super(minX, maxX, minY, maxY, minZ, maxZ);
-    }    
-     
-
-    protected void initData() {
-        data = new byte[size];    
-    }
+    } 
     
-    protected void setData(int pos, int color) {
-        data[pos] = (byte)color;    
-    }
-    
-    protected int getData(int pos) {
-        return data[pos];    
-    }
-    
-    public void resetColor(int color) {
-        Arrays.fill(data, (byte)color);
-    }    
+    /**
+     * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
+     */
+    protected DiscreteData createDiscreteData(int size) {
+        return new ByteData(size);
+    }          
     
     public Object clone() {
         return new ByteImageData(this);
     }    
-    
+
 }
