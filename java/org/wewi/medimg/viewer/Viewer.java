@@ -32,6 +32,7 @@ import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.RawImageReaderFactory;
 import org.wewi.medimg.reg.wizard.RegistrationWizard;
+import org.wewi.medimg.seg.ac.ActiveContourWizard;
 import org.wewi.medimg.seg.wizard.SegmentationWizard;
 import org.wewi.medimg.util.Singleton;
 import org.wewi.medimg.viewer.wizard.Wizard;
@@ -369,6 +370,7 @@ public class Viewer extends JFrame implements Singleton,
         segmentaionWizardMenuItem = new javax.swing.JMenuItem();
         registrationWizardMenuItem = new javax.swing.JMenuItem();
         marchingCubeWizardMenuItem = new javax.swing.JMenuItem();
+        activeContourwizardMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -486,6 +488,16 @@ public class Viewer extends JFrame implements Singleton,
 
         wizardMenu.add(marchingCubeWizardMenuItem);
 
+        activeContourwizardMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        activeContourwizardMenuItem.setText("Aktive Konturen...");
+        activeContourwizardMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activeContourwizardMenuItemActionPerformed(evt);
+            }
+        });
+
+        wizardMenu.add(activeContourwizardMenuItem);
+
         menuBar.add(wizardMenu);
 
         helpMenu.setMnemonic('H');
@@ -517,6 +529,10 @@ public class Viewer extends JFrame implements Singleton,
         setSize(new java.awt.Dimension(396, 353));
         setLocation((screenSize.width-396)/2,(screenSize.height-353)/2);
     }//GEN-END:initComponents
+
+    private void activeContourwizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activeContourwizardMenuItemActionPerformed
+        addWizard(new ActiveContourWizard());
+    }//GEN-LAST:event_activeContourwizardMenuItemActionPerformed
 
     private void marchingCubeWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marchingCubeWizardMenuItemActionPerformed
         addWizard(new MarchingCubeWizard());
@@ -673,6 +689,7 @@ public class Viewer extends JFrame implements Singleton,
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JMenuItem activeContourwizardMenuItem;
     private javax.swing.JMenuItem marchingCubeWizardMenuItem;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JPanel rightSplitPanel;

@@ -9,7 +9,6 @@ package org.wewi.medimg.image;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -29,9 +28,51 @@ import org.wewi.medimg.image.geom.Point3D;
 public class ImagePanel extends JPanel {
     
     public interface ImageCanvas {
-        public void draw(Graphics graph);
+        public void draw(Graphics graph, ImagePanel panel);
     }
     
+    /**
+     * Diese Klasse nimmt eine Konvertierung zwischen
+     * den Bild-Koordinaten und den Panel-Koordinaten durch.
+     */
+    public final class PointConverter {
+        
+        private PointConverter() {
+        }
+        
+        /**
+         * Konvertierung eines Bildpunktes in einen java.awt.Point
+         * in Panel-Koordinaten.
+         */
+        public java.awt.Point convert(Point3D p) {
+            int px = (int)Math.rint((double)p.getX()*(((double)getWidth()-2d*ox)/
+                                                    (double)sizeX)+(double)ox);
+            int py = (int)Math.rint((double)p.getY()*(((double)getHeight()-2d*oy)/
+                                                    (double)sizeY)+(double)oy);                                                    
+            
+            return new java.awt.Point(px, py);    
+        } 
+        
+        /**
+         * Konvertierung eines java.awt.Point Panel-Punktes
+         * in einen entsprechenden Bildpunkt.
+         */
+        public Point3D convert(java.awt.Point p) {
+            int imageX = (int)Math.rint((p.getX()-ox)*((double)sizeX/
+                                         ((double)getWidth()-2*ox)));
+            int imageY = (int)Math.rint((p.getY()-oy)*((double)sizeY/
+                                         ((double)getHeight()-2*oy)));
+            
+            Point3D point = null;
+            if (imageX >= image.getMinX() && imageX <= image.getMaxX() &&
+                imageY >= image.getMinY() && imageY <= image.getMaxY()) {
+                    point = new Point3D(imageX, imageY, slice);
+            }
+            
+            return point;  
+        }   
+    }
+    /**************************************************************************/
     
     private Vector listener;
 	
@@ -46,6 +87,7 @@ public class ImagePanel extends JPanel {
     private double qxy;
     
     private ImageCanvas imageCanvas;
+    private PointConverter pointConverter;
 
     public ImagePanel(org.wewi.medimg.image.Image image) {
         this.image = image;
@@ -54,7 +96,8 @@ public class ImagePanel extends JPanel {
         qxy = (double)sizeX/(double)sizeY;
         conversion = image.getColorConversion();
         rawData = new int[sizeX*sizeY*3];      
-        bufferedImage = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_3BYTE_BGR); 
+        bufferedImage = new BufferedImage(sizeX, sizeY, 
+                                          BufferedImage.TYPE_3BYTE_BGR); 
         
         setBackground(Color.WHITE);
         
@@ -66,27 +109,20 @@ public class ImagePanel extends JPanel {
                         
         listener = new Vector();
         imageCanvas = new ImageCanvas() {
-                            public void draw(Graphics graph) {
+                            public void draw(Graphics graph, ImagePanel panel) {
                             }
                         };
+                        
+        pointConverter = new PointConverter();
     }
     
-    private Point3D getImagePoint(Point p) {
-        int imageX = (int)Math.rint((p.getX()-ox)*((double)sizeX/((double)getWidth()-2*ox)));
-        int imageY = (int)Math.rint((p.getY()-oy)*((double)sizeY/((double)getHeight()-2*oy)));
-        
-        Point3D point = null;
-        if (imageX >= image.getMinX() && imageX <= image.getMaxX() &&
-            imageY >= image.getMinY() && imageY <= image.getMaxY()) {
-                point = new Point3D(imageX, imageY, slice);
-        }
-        
-        return point;     
+    public PointConverter getPointConverter() {
+        return pointConverter;    
     }
     
     private void pointChoosed(MouseEvent event) {
         notifyListener(new VoxelSelectorEvent(this, event.getPoint(), image, 
-                                              getImagePoint(event.getPoint())));                                            
+                                              pointConverter.convert(event.getPoint())));                                            
     }
     
     public void addVoxelSelectorListener(VoxelSelectorListener l) {
@@ -127,7 +163,9 @@ public class ImagePanel extends JPanel {
         graph.drawImage(bufferedImage, ox, oy, x, y, this);
         
         //Dies bietet die Möglichkeit eine "Skizze" über das Bild zu legen
-        imageCanvas.draw(graph);
+        if (imageCanvas != null) {
+            imageCanvas.draw(graph, this);
+        }
         
         setVisible(true);
     }    
@@ -165,6 +203,13 @@ public class ImagePanel extends JPanel {
     
     public void setImageCanvas(ImageCanvas imageCanvas) {
         this.imageCanvas = imageCanvas;    
+    }
+    
+    public void removeImageCanvas() {
+        imageCanvas = new ImageCanvas() {
+                           public void draw(Graphics g, ImagePanel panel) {
+                           }
+                      };    
     }
     
     public ImageCanvas getImageCanvas() {

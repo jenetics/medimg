@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 import org.wewi.medimg.alg.InterruptableAlgorithm;
-import org.wewi.medimg.alg.IterationEvent;
-import org.wewi.medimg.alg.IterationListener;
+import org.wewi.medimg.alg.AlgorithmIterationEvent;
+import org.wewi.medimg.alg.AlgorithmIterationListener;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
@@ -93,7 +93,7 @@ public class SegmentationWizard extends Wizard {
      * arbeitet eng mit dem SegmentationWizard zusammen.
      */
     private class SegmenterWorker implements SegmenterListener,
-                                                IterationListener {
+                                                AlgorithmIterationListener {
         private SegmentationWizard wizard;
         private ObservableSegmenter segmenter;
         private TwinImageViewer twinImageViewer;
@@ -169,11 +169,11 @@ public class SegmentationWizard extends Wizard {
             }    
         }
         
-        public void iterationStarted(IterationEvent event) {
+        public void iterationStarted(AlgorithmIterationEvent event) {
             wizard.cancelButton.setEnabled(true);          
         }
         
-        public void iterationFinished(IterationEvent event) {
+        public void iterationFinished(AlgorithmIterationEvent event) {
             if (twinImageViewer != null) {
                 twinImageViewer.redrawImages();    
             }

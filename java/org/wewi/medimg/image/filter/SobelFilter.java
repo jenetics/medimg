@@ -20,6 +20,7 @@ import org.wewi.medimg.image.io.TIFFWriter;
  * @version 0.1
  */
 public final class SobelFilter extends ImageFilter {
+    public Image gradImage;
     
     private class Mask {
         //public short get
@@ -35,16 +36,20 @@ public final class SobelFilter extends ImageFilter {
     }
     
     public void filter() {
-        Image tempImage = (Image)image.clone();
+        gradImage = (Image)image.clone();
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
         for (int i = 1; i < maxX-1; i++) {
             for (int j = 1; j < maxY-1; j++) {
-                image.setColor(i, j, 0, enhance(i, j, tempImage));
+                gradImage.setColor(i, j, 0, enhance(i, j, image));
             }
         }
         
         super.filter();
+    }
+    
+    public Image getImage() {
+        return gradImage;    
     }
     
     

@@ -13,7 +13,7 @@ import java.util.Properties;
 import java.util.Random;
 
 import org.wewi.medimg.alg.InterruptableAlgorithm;
-import org.wewi.medimg.alg.IterationEvent;
+import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.seg.Clusterer;
@@ -123,6 +123,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
     
     private void iterate(Image mrt, Image segimg) {
         notifySegmenterStarted(new SegmenterEvent(this));
+        notifyIterationStarted(new AlgorithmIterationEvent(this));
         
         iterationCount = 0;
         
@@ -133,13 +134,13 @@ public class MLKMeansClusterer extends ObservableSegmenter
             if (cancelled) {
                 break;    
             }
-            notifyIterationStarted(new IterationEvent(this));
+            notifyIterationStarted(new AlgorithmIterationEvent(this));
             
             m1Step(mrt, segimg);
             m2Step(mrt, segimg);
             iterationCount++;
             
-            notifyIterationFinished(new IterationEvent(this));
+            notifyIterationFinished(new AlgorithmIterationEvent(this));
             
             /**************************************************************/
             logger.info("" + iterationCount + ": " + formatMeanValues());
@@ -147,7 +148,8 @@ public class MLKMeansClusterer extends ObservableSegmenter
         } while(ERROR_LIMIT < error() &&
                 MAX_ITERATION >= iterationCount); 
                 
-        notifySegmenterFinished(new SegmenterEvent(this));         
+        notifySegmenterFinished(new SegmenterEvent(this)); 
+        notifyIterationFinished(new AlgorithmIterationEvent(this));        
     }
     
 	/**
