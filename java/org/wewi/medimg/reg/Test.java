@@ -30,7 +30,6 @@ import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.IntImageFactory;
-import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
@@ -41,8 +40,6 @@ import org.wewi.medimg.image.ops.DirectComparisonOperator;
 import org.wewi.medimg.image.ops.MutualInformationOperator;
 import org.wewi.medimg.image.ops.NormalizedMutualInformationOperator;
 import org.wewi.medimg.math.vec.VectorField;
-import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
-import org.wewi.medimg.reg.pca.RigidPCARegistration;
 import org.wewi.medimg.util.Timer;
 import org.wewi.medimg.viewer.VectorFieldPanel;
 

@@ -16,7 +16,7 @@
 
 /**
  * Created on 22.11.2002 22:49:21
- *
+ * RowMajorImageGeometry.java
  */
 package org.wewi.medimg.image;
 
@@ -90,6 +90,10 @@ public abstract class RowMajorImageGeometry implements ImageGeometry {
     
     public int getPosition(int x, int y, int z) {
         return (sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX));
+    }
+    
+    public int getPosition(int[] coordinate) {
+        return getPosition(coordinate[0], coordinate[1], coordinate[2]);
     }
     
     public int[] getCoordinates(int pos) {

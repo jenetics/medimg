@@ -84,5 +84,6 @@ public interface ImageAccess {
      * @todo Rename to getPixelVoxelIterator. Also rename the class
      *       <code>VoxelIterator</code> to <code>PixelIterator</code>.
      */
-    public VoxelIterator getVoxelIterator();    
+    public VoxelIterator getVoxelIterator();  
+      
 }

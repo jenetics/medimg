@@ -29,8 +29,8 @@ import java.util.StringTokenizer;
 
 import org.wewi.medimg.image.GreyColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.IntImage;
 import org.wewi.medimg.image.ImageProperties;
+import org.wewi.medimg.image.IntImage;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.RawImageWriter;
 

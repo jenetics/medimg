@@ -126,6 +126,10 @@ public abstract class ImageAdapter implements Image {
     public int getPosition(int x, int y, int z) {
         return image.getPosition(x, y, z);
     }
+    
+    public int getPosition(int[] coordinate) {
+        return image.getPosition(coordinate);
+    }
 
     /**
      * @see org.wewi.medimg.image.ImageGeometry#getCoordinates(int)
@@ -230,6 +234,10 @@ public abstract class ImageAdapter implements Image {
      */
     public VoxelIterator getVoxelIterator() {
         return image.getVoxelIterator();
+    }
+    
+    public PixelIterator iterator() {
+        return image.iterator();
     }
 
     /**

@@ -325,5 +325,21 @@ public final class NullImage implements Image, Nullable {
      */
     public void fill(double color) {
     }
+
+	/**
+	 * @see org.wewi.medimg.image.ImageGeometry#getPosition(int[])
+	 */
+	public int getPosition(int[] corodinate) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.wewi.medimg.image.Image#iterator()
+	 */
+	public PixelIterator iterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }
