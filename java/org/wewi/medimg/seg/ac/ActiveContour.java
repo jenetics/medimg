@@ -9,6 +9,7 @@ package org.wewi.medimg.seg.ac;
 import java.util.List;
 
 import org.wewi.medimg.image.geom.Point;
+import org.wewi.medimg.util.Mutable;
 
 
 /**
@@ -16,7 +17,7 @@ import org.wewi.medimg.image.geom.Point;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public interface ActiveContour extends Cloneable {
+public interface ActiveContour extends Cloneable, Mutable {
     
     //public ImagePanel.ImageCanvas getImageCanvas();
     
