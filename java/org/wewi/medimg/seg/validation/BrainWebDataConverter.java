@@ -32,12 +32,12 @@ public final class BrainWebDataConverter {
     private static final int MAX_Z = 90;
     
 
-	/**
-	 * Constructor for BrainWebDataConverter.
-	 */
-	public BrainWebDataConverter() {
-		super();
-	}
+    /**
+     * Constructor for BrainWebDataConverter.
+     */
+    public BrainWebDataConverter() {
+        super();
+    }
     
     private static abstract class Reader {
         protected DataInputStream stream;
@@ -59,9 +59,9 @@ public final class BrainWebDataConverter {
         public UnsignedByteReader(File file) {
             super(file);
         }
-		public int read() throws IOException {
-			return stream.readUnsignedByte();
-		}
+        public int read() throws IOException {
+            return stream.readUnsignedByte();
+        }
         
         public String toString() {
             return "ByteFile: " + fileName;
@@ -175,7 +175,7 @@ public final class BrainWebDataConverter {
     
    
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         readBrain(args[0], args[1]);
-	}
+    }
 }

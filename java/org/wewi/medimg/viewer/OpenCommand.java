@@ -74,15 +74,15 @@ public final class OpenCommand implements Command, ImageIOProgressListener {
         readerThread.start();      
     }
     
-	/**
+    /**
      * Das Laden des Bilder erfolgt asynchron. Diese
      * Methode wird aufgerufen, wenn sich der Lesefortschritt
      * des Bildes geändert hat. Im Besonderen wird das Ende
      * des Einlesen des Bildes angezeigt.
      * 
-	 * @see org.wewi.medimg.image.io.ImageIOProgressListener#progressChanged(ProgressEvent)
-	 */
-	public void progressChanged(ImageIOProgressEvent event) {
+     * @see org.wewi.medimg.image.io.ImageIOProgressListener#progressChanged(ProgressEvent)
+     */
+    public void progressChanged(ImageIOProgressEvent event) {
         if (!event.isFinished()) {
             progressFrame.setProgress(event.getProgress());
             return;    
@@ -103,7 +103,7 @@ public final class OpenCommand implements Command, ImageIOProgressListener {
         iv.pack();
         viewer.addViewerDesktopFrame(iv, pos, size);  
               
-	}
+    }
 
 }
 

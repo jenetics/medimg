@@ -20,18 +20,18 @@ import org.wewi.medimg.viewer.image.ImagePanel;
 public class VectorFieldImageCanvasAdapter implements ImageCanvas {
     private VectorField field;
 
-	/**
-	 * Constructor for VectorFieldImageCanvasAdapter.
-	 */
-	public VectorFieldImageCanvasAdapter(VectorField field) {
-		super();
+    /**
+     * Constructor for VectorFieldImageCanvasAdapter.
+     */
+    public VectorFieldImageCanvasAdapter(VectorField field) {
+        super();
         this.field = field;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImagePanel.ImageCanvas#draw(Graphics, ImagePanel)
-	 */
-	public void draw(Graphics g, ImagePanel panel) {
+    /**
+     * @see org.wewi.medimg.image.ImagePanel.ImageCanvas#draw(Graphics, ImagePanel)
+     */
+    public void draw(Graphics g, ImagePanel panel) {
         double[] start = new double[3];
         double[] end = new double[3];
         double[] p1 = new double[2];
@@ -59,7 +59,7 @@ public class VectorFieldImageCanvasAdapter implements ImageCanvas {
             
             graph.fillOval((int)Math.round(p2[0])-2, (int)Math.round(p2[1])-2, 4, 4);
         }
-	}
+    }
     
 
 }

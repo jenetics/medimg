@@ -16,17 +16,17 @@ import org.wewi.medimg.viewer.image.ImagePanel;
 public final class ActivePolygonCanvasAdapter implements ImageCanvas {
     private ActivePolygon polygon;
 
-	/**
-	 * Constructor for ActivePolygonCanvas.
-	 */
-	public ActivePolygonCanvasAdapter(ActivePolygon polygon) {
-		this.polygon = polygon;
-	}
+    /**
+     * Constructor for ActivePolygonCanvas.
+     */
+    public ActivePolygonCanvasAdapter(ActivePolygon polygon) {
+        this.polygon = polygon;
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImagePanel.ImageCanvas#draw(Graphics, ImagePanel)
-	 */
-	public void draw(Graphics g, ImagePanel panel) {
+    /**
+     * @see org.wewi.medimg.image.ImagePanel.ImageCanvas#draw(Graphics, ImagePanel)
+     */
+    public void draw(Graphics g, ImagePanel panel) {
        /*
         List contourPoints = null;
         

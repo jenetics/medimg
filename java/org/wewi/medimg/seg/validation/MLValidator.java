@@ -130,12 +130,12 @@ public class MLValidator {
         
         XMLOutputter out = new XMLOutputter("    ", true);
         try {
-			out.output(doc, new FileOutputStream(protocolFile));
-		} catch (FileNotFoundException e) {
+            out.output(doc, new FileOutputStream(protocolFile));
+        } catch (FileNotFoundException e) {
             System.err.println("MLValidator: " + e);
-		} catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("MLValidator: " + e);
-		}
+        }
         
     }
     

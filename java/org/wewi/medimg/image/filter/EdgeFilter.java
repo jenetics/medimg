@@ -17,25 +17,25 @@ public class EdgeFilter extends ImageFilter {
     private Kernel horizontalKernel;
     private Kernel verticalKernel;
 
-	/**
-	 * Constructor for EdgeFilter.
-	 * @param image
-	 */
-	public EdgeFilter(Image image, Kernel horizontal, Kernel vertical) {
-		super(image);
+    /**
+     * Constructor for EdgeFilter.
+     * @param image
+     */
+    public EdgeFilter(Image image, Kernel horizontal, Kernel vertical) {
+        super(image);
         horizontalKernel = horizontal;
         verticalKernel = vertical;
-	}
+    }
 
-	/**
-	 * Constructor for EdgeFilter.
-	 * @param component
-	 */
-	public EdgeFilter(ImageFilter component, Kernel horizontal, Kernel vertical) {
-		super(component);
+    /**
+     * Constructor for EdgeFilter.
+     * @param component
+     */
+    public EdgeFilter(ImageFilter component, Kernel horizontal, Kernel vertical) {
+        super(component);
         horizontalKernel = horizontal;
         verticalKernel = vertical;        
-	}
+    }
     
     
     protected void componentFilter() {

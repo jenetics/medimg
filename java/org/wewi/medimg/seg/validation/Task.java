@@ -23,16 +23,16 @@ public final class Task {
     private Validator validator;
     private List parameterList;
 
-	/**
-	 * Constructor for Task.
-	 */
-	public Task() {
-		super();
+    /**
+     * Constructor for Task.
+     */
+    public Task() {
+        super();
         id = 0;
         iterations = 1;
         iterationsDone = 0;
         parameterList = new ArrayList();
-	}
+    }
     
     public void setId(int id) {
         this.id = id;    
@@ -69,28 +69,28 @@ public final class Task {
     
     public void initTask(Element task) {
         try {
-			id = task.getAttribute("id").getIntValue();
+            id = task.getAttribute("id").getIntValue();
             iterations = task.getAttribute("iterations").getIntValue();
             iterationsDone = task.getAttribute("iterations.done").getIntValue();
-		} catch (DataConversionException e) {
+        } catch (DataConversionException e) {
             System.err.println("Task.initTask(): " + e);
             return;
-		}    
+        }    
         
         Element validatorElement = task.getChild("Validator");
         String validatorName = validatorElement.getAttribute("class").getValue();
         try {
-			validator  = (Validator)Class.forName(validatorName).newInstance();
-		} catch (InstantiationException e) {
+            validator  = (Validator)Class.forName(validatorName).newInstance();
+        } catch (InstantiationException e) {
             System.err.println("Task.initTask(): " + e);
             return;            
-		} catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             System.err.println("Task.initTask(): " + e);
             return;            
-		} catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             System.err.println("Task.initTask(): " + e);
             return;            
-		}
+        }
         
         List param = task.getChildren("Parameter");
         for (Iterator it = param.iterator(); it.hasNext();) {
@@ -98,17 +98,17 @@ public final class Task {
             String paramName = paramElement.getAttribute("class").getValue();
             Parameter p = null;
             try {
-				p = (Parameter)Class.forName(paramName).newInstance();
-			} catch (InstantiationException e) {
+                p = (Parameter)Class.forName(paramName).newInstance();
+            } catch (InstantiationException e) {
                 System.err.println("Task.initTask(): " + e);
                 return;                 
-			} catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 System.err.println("Task.initTask(): " + e);
                 return;       
-			} catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 System.err.println("Task.initTask(): " + e);
                 return;                       
-			}
+            }
             
             p.initParameter(paramElement);
             parameterList.add(p);   

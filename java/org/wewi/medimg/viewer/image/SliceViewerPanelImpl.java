@@ -259,11 +259,11 @@ final class SliceViewerPanelImpl extends JPanel {
     private SliceViewerToolPanel toolPanel;
     private JPanel graphicPanel;
 
-	/**
-	 * Constructor for SliceViewerPanelImpl.
-	 */
-	public SliceViewerPanelImpl(Image image) {
-		this.image = image;
+    /**
+     * Constructor for SliceViewerPanelImpl.
+     */
+    public SliceViewerPanelImpl(Image image) {
+        this.image = image;
         dataBlock = new DataBlock(image);
         
         sliceState = new SliceState(this);
@@ -271,7 +271,7 @@ final class SliceViewerPanelImpl extends JPanel {
         ruler.init(false, 0);
         
         initComponents();
-	}
+    }
     
     private void initComponents() {
         //Adding the mouse (motion) listener.

@@ -37,7 +37,7 @@ public class Evaluate {
     
     private class KMeanVarComparator implements Comparator {
         
-		public int compare(Object obj1, Object obj2) {
+        public int compare(Object obj1, Object obj2) {
             if (!(obj1 instanceof KMeanVar) ||
                 !(obj2 instanceof KMeanVar)) {
                 return 0;        
@@ -45,8 +45,8 @@ public class Evaluate {
             KMeanVar kmv1 = (KMeanVar)obj1;
             KMeanVar kmv2 = (KMeanVar)obj2;
             
-			return kmv1.k - kmv2.k;
-		}
+            return kmv1.k - kmv2.k;
+        }
 
     }
     
@@ -80,13 +80,13 @@ public class Evaluate {
     private File[] files;
 
     private int test = 0;
-	/**
-	 * Constructor for Evaluate.
-	 */
-	public Evaluate(File dir) {
+    /**
+     * Constructor for Evaluate.
+     */
+    public Evaluate(File dir) {
         this.dir = dir;
         init();
-	}
+    }
     
     private void init() {
         files = dir.listFiles(new FileFilter() {

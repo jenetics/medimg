@@ -60,7 +60,7 @@ public final class SaveCommand implements Command, ImageIOProgressListener {
                 
     }
     
-	public void progressChanged(ImageIOProgressEvent event) {
+    public void progressChanged(ImageIOProgressEvent event) {
         Viewer viewer = Viewer.getInstance();
         if (event.isFinished()) {
             progressFrame.setVisible(false);
@@ -68,6 +68,6 @@ public final class SaveCommand implements Command, ImageIOProgressListener {
         } else {
             progressFrame.setProgress(event.getProgress());
         }        
-	}
+    }
 
 }

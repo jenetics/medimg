@@ -24,21 +24,21 @@ import cern.colt.matrix.linalg.LUDecomposition;
  * @version 0.1
  */
 public abstract class PCARegistration extends MultipleFeatureRegistrator {
-	
-	private static final double epsilon = 0.05;
-	
+    
+    private static final double epsilon = 0.05;
+    
 
-	/**
-	 * Constructor for PCARegistration.
-	 */
-	public PCARegistration() {
-		super();
-	}
+    /**
+     * Constructor for PCARegistration.
+     */
+    public PCARegistration() {
+        super();
+    }
 
-	/**
-	 * @see org.wewi.medimg.reg.MultipleFeatureRegistrator#getTransformation(VoxelIterator, VoxelIterator)
-	 */
-	protected InterpolateableTransformation getTransformation(VoxelIterator source, VoxelIterator target) {
+    /**
+     * @see org.wewi.medimg.reg.MultipleFeatureRegistrator#getTransformation(VoxelIterator, VoxelIterator)
+     */
+    protected InterpolateableTransformation getTransformation(VoxelIterator source, VoxelIterator target) {
         double[] temp = new double[3];
         Algebra alg = new Algebra();
         
@@ -66,7 +66,7 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
         calculateScaling(scalingFactors, eigenValues1, eigenValues2);
         DoubleMatrix2D As = DoubleFactory2D.dense.make(4, 4);
         for(int i = 0; i < 3; i++) {
-        	As.setQuick(i, i, scalingFactors[i]);
+            As.setQuick(i, i, scalingFactors[i]);
         } 
         As.setQuick(3, 3, 1.0);
         
@@ -90,7 +90,7 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
         System.out.println("******************************111");
         System.out.println(A2);
         return new AffineTransformation(A2.toArray());
-	}
+    }
     
     protected abstract void calculateScaling(double[] scalingFactors, double[] eigenValues1, double[] eigenValues2);      
 
@@ -119,7 +119,7 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
         }
         int count = 0;
         while (data.hasNext()) {
-        	count++;
+            count++;
             data.next(point);
             for (int i = 0; i < 3; i++) {
                 point[i] -= cog[i];
@@ -150,7 +150,7 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
         for (int i = 0; i < 3; i++) {
             eigenValues[i] = sortMatrix.getQuick((2 - i), 3);
         }        
-		
+        
         DoubleMatrix2D A = DoubleFactory2D.dense.make(4, 4);
         A.assign(0); A.setQuick(3, 3, 1);
         A.viewPart(0, 0, 3, 3).assign(eigenVectors);
@@ -168,18 +168,18 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
         
         A = A.zMult(At, null);  
         
-		//Korrektur der Hauptachsen
-		double[] median = new double[3];
-		getMedian(vit, A, median);
-		//Bestimmen der richtigen Ausrichtung der Hauptachse,
-		//durch Vorzeichenvergleich der Komponenten des Medians
-		for (int i = 0; i < 3; i++) {
-			if (median[i] < -epsilon) {
-				for (int j = 0; j < 4; j++) {
-					A.setQuick(i, j, -A.getQuick(i, j));
-				}
-			}
-		}               
+        //Korrektur der Hauptachsen
+        double[] median = new double[3];
+        getMedian(vit, A, median);
+        //Bestimmen der richtigen Ausrichtung der Hauptachse,
+        //durch Vorzeichenvergleich der Komponenten des Medians
+        for (int i = 0; i < 3; i++) {
+            if (median[i] < -epsilon) {
+                for (int j = 0; j < 4; j++) {
+                    A.setQuick(i, j, -A.getQuick(i, j));
+                }
+            }
+        }               
 
         return A.toArray();
     }    
@@ -209,60 +209,60 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
 
     }
     
-	/**
-	 * Berechnung des Medians der Punkte in der Matrix data, nach
-	 * der Transformation durch die Matrix transform. Die Transformation
-	 * ist eine 4*4 Matrix. Die Datenpunkte in data sind Zeilenweise angeordnet, mit 3 Spalten für die 3 Dimensionen
-	 * @param data Datenmatrix, aus dem der Median berechnet werden soll (n * 3)
-	 * @param transform Mit dieser Transformation werden die Datenpunkte vor
-	 * der Berechnung des Medians transformiert. transform ist eine 4*4 Matrix. Bei transform == 0 wird keine
-	 * Transformation durchgeführt.
-	 * @return der Median der Transformierten Datenmatrix.
-	 */
-	private void getMedian(VoxelIterator data, DoubleMatrix2D transform, double[] median) {
-		int rows = data.size();
-		Algebra alg = new Algebra();
-		double[] point = new double[4];
-		DoubleMatrix2D tempMatrix = DoubleFactory2D.dense.make(rows, 3);
-		DoubleMatrix1D row;
-		DoubleMatrix1D transRow;
-		int count = 0;
+    /**
+     * Berechnung des Medians der Punkte in der Matrix data, nach
+     * der Transformation durch die Matrix transform. Die Transformation
+     * ist eine 4*4 Matrix. Die Datenpunkte in data sind Zeilenweise angeordnet, mit 3 Spalten für die 3 Dimensionen
+     * @param data Datenmatrix, aus dem der Median berechnet werden soll (n * 3)
+     * @param transform Mit dieser Transformation werden die Datenpunkte vor
+     * der Berechnung des Medians transformiert. transform ist eine 4*4 Matrix. Bei transform == 0 wird keine
+     * Transformation durchgeführt.
+     * @return der Median der Transformierten Datenmatrix.
+     */
+    private void getMedian(VoxelIterator data, DoubleMatrix2D transform, double[] median) {
+        int rows = data.size();
+        Algebra alg = new Algebra();
+        double[] point = new double[4];
+        DoubleMatrix2D tempMatrix = DoubleFactory2D.dense.make(rows, 3);
+        DoubleMatrix1D row;
+        DoubleMatrix1D transRow;
+        int count = 0;
 
-		//Transformation der Datenpunkte, falls Transformationsmatrix
-		//vorhanden
-		if (transform != null) {
-			while (data.hasNext()) {
-				data.next(point);
-				point[3] = 1.0;
-				row = new DenseDoubleMatrix1D(point);
-				transRow = alg.mult(transform, row);
-				for (int i = 0; i < 3; i++) {
-					tempMatrix.setQuick(count, i, transRow.getQuick(i));
-				}
-				count++;
-			}
-		} else {
-			while (data.hasNext()) {
-				data.next(point);
-				for (int i = 0; i < 3; i++) {
-					tempMatrix.setQuick(count, i, point[i]);
-				}
-				count++;
-			}			
-		}
-		double erg;
-		for (int i = 0; i < 3; i++) {
-			DoubleMatrix1D sortVec = tempMatrix.viewColumn(i);
-			DoubleMatrix1D sortVec1 = sortVec.viewSorted();
-			if (rows % 2 == 0) {
-				erg = sortVec1.getQuick((rows / 2) - 1)
-					  + sortVec1.getQuick((rows / 2)) / 2.0;
-			} else {
-				erg = sortVec1.getQuick((rows / 2));
-			}
-			median[i] = erg;		}
-	} 
-	
+        //Transformation der Datenpunkte, falls Transformationsmatrix
+        //vorhanden
+        if (transform != null) {
+            while (data.hasNext()) {
+                data.next(point);
+                point[3] = 1.0;
+                row = new DenseDoubleMatrix1D(point);
+                transRow = alg.mult(transform, row);
+                for (int i = 0; i < 3; i++) {
+                    tempMatrix.setQuick(count, i, transRow.getQuick(i));
+                }
+                count++;
+            }
+        } else {
+            while (data.hasNext()) {
+                data.next(point);
+                for (int i = 0; i < 3; i++) {
+                    tempMatrix.setQuick(count, i, point[i]);
+                }
+                count++;
+            }            
+        }
+        double erg;
+        for (int i = 0; i < 3; i++) {
+            DoubleMatrix1D sortVec = tempMatrix.viewColumn(i);
+            DoubleMatrix1D sortVec1 = sortVec.viewSorted();
+            if (rows % 2 == 0) {
+                erg = sortVec1.getQuick((rows / 2) - 1)
+                      + sortVec1.getQuick((rows / 2)) / 2.0;
+            } else {
+                erg = sortVec1.getQuick((rows / 2));
+            }
+            median[i] = erg;        }
+    } 
+    
  
         
 

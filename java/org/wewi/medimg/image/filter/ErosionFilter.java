@@ -17,27 +17,27 @@ public class ErosionFilter extends MorphologicalOperation {
         super(image);    
     }
 
-	/**
-	 * Constructor for ErosionFilter.
-	 * @param image
-	 * @param b
-	 */
-	public ErosionFilter(Image image, Image b) {
-		super(image, b);
-	}
+    /**
+     * Constructor for ErosionFilter.
+     * @param image
+     * @param b
+     */
+    public ErosionFilter(Image image, Image b) {
+        super(image, b);
+    }
     
     public ErosionFilter(ImageFilter component) {
         super(component);    
     }
 
-	/**
-	 * Constructor for ErosionFilter.
-	 * @param component
-	 * @param b
-	 */
-	public ErosionFilter(ImageFilter component, Image b) {
-		super(component, b);
-	}
+    /**
+     * Constructor for ErosionFilter.
+     * @param component
+     * @param b
+     */
+    public ErosionFilter(ImageFilter component, Image b) {
+        super(component, b);
+    }
 
     protected int operation(int i, int j) {
         int result = Integer.MAX_VALUE;

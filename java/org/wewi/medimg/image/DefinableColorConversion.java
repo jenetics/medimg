@@ -21,15 +21,15 @@ public class DefinableColorConversion implements ColorConversion {
     private Hashtable reverseTable;
     private Color defaultColor;
 
-	/**
-	 * Constructor for DefinableColorConversion.
-	 */
-	public DefinableColorConversion() {
-		super();
+    /**
+     * Constructor for DefinableColorConversion.
+     */
+    public DefinableColorConversion() {
+        super();
         table = new Hashtable();
         reverseTable = new Hashtable();
         defaultColor = Color.BLACK; 
-	}
+    }
     
     public void addColor(int grey, Color color) {
         Integer i = new Integer(grey);
@@ -48,10 +48,10 @@ public class DefinableColorConversion implements ColorConversion {
         defaultColor = c;    
     }
 
-	/**
-	 * @see org.wewi.medimg.image.ColorConversion#convert(int, int[])
-	 */
-	public void convert(int grey, int[] rgb) {
+    /**
+     * @see org.wewi.medimg.image.ColorConversion#convert(int, int[])
+     */
+    public void convert(int grey, int[] rgb) {
         Integer i = new Integer(grey);
         Color c = (Color)table.get(i);
         if (c != null) {
@@ -63,30 +63,30 @@ public class DefinableColorConversion implements ColorConversion {
             rgb[1] = defaultColor.getGreen();
             rgb[2] = defaultColor.getBlue();                
         }
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ColorConversion#convert(int[])
-	 */
-	public int convert(int[] rgb) {
+    /**
+     * @see org.wewi.medimg.image.ColorConversion#convert(int[])
+     */
+    public int convert(int[] rgb) {
         Color c = new Color(rgb[0], rgb[1], rgb[2]);
         Integer i = (Integer)reverseTable.get(c);
         if (i != null) {
             return i.intValue();    
         }
-		return 0;
-	}
+        return 0;
+    }
 
-	/**
-	 * @see java.lang.Object#clone()
-	 */
-	public Object clone() {
+    /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
         DefinableColorConversion cc = new DefinableColorConversion();
         cc.table = (Hashtable)table.clone();
         cc.reverseTable = (Hashtable)reverseTable.clone();
         cc.defaultColor = new Color(defaultColor.getRed(), defaultColor.getGreen(), defaultColor.getBlue());
-		return new DefinableColorConversion();
-	}
+        return new DefinableColorConversion();
+    }
     
     
     //Serializing

@@ -13,25 +13,25 @@ package org.wewi.medimg.math.vec;
 public class DoubleVectorField implements VectorField {
     private DoubleVectorVector doubleVector;
 
-	/**
-	 * Constructor for DoubleVectorField.
-	 */
-	public DoubleVectorField() {
-		doubleVector = new DoubleVectorVector(10);
-	}
+    /**
+     * Constructor for DoubleVectorField.
+     */
+    public DoubleVectorField() {
+        doubleVector = new DoubleVectorVector(10);
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
-	 */
-	public void addVector(double[] startPoint, double[] endPoint) {
+    /**
+     * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
+     */
+    public void addVector(double[] startPoint, double[] endPoint) {
         doubleVector.add(startPoint, endPoint);
-	}
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.VectorField#getVectorIterator()
-	 */
-	public VectorIterator getVectorIterator() {
-		return doubleVector.iterator();
-	}
+    /**
+     * @see org.wewi.medimg.math.vec.VectorField#getVectorIterator()
+     */
+    public VectorIterator getVectorIterator() {
+        return doubleVector.iterator();
+    }
 
 }

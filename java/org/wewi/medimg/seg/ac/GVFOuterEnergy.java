@@ -18,14 +18,14 @@ public class GVFOuterEnergy extends OuterEnergyFunction {
     private GridVectorField gvf;
     private Image img;
 
-	/**
-	 * Constructor for GVFOuterEnergy.
-	 * @param image
-	 */
-	public GVFOuterEnergy(Image image) {
-		super(image);
+    /**
+     * Constructor for GVFOuterEnergy.
+     * @param image
+     */
+    public GVFOuterEnergy(Image image) {
+        super(image);
         init();
-	}
+    }
     
     private void init() {
         GradientVectorFlow flow = new GradientVectorFlow(image);
@@ -39,10 +39,10 @@ public class GVFOuterEnergy extends OuterEnergyFunction {
         normal.filter();        
     }
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.OuterEnergyFunction#energy(Point[])
-	 */
-	public double energy(Point[] ac) {
+    /**
+     * @see org.wewi.medimg.seg.ac.OuterEnergyFunction#energy(Point[])
+     */
+    public double energy(Point[] ac) {
         double[] p = new double[3];
         double e = 0;
         
@@ -53,7 +53,7 @@ public class GVFOuterEnergy extends OuterEnergyFunction {
         }
         
         
-		return -e;
-	}
+        return -e;
+    }
 
 }

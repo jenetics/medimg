@@ -16,34 +16,34 @@ public final class TresholdFilter extends ImageFilter {
     private int upperBound;
     private int lowerBound;
 
-	/**
-	 * Constructor for TresholdFilter.
-	 * @param image
-	 */
-	public TresholdFilter(Image image, int lowerBound, int upperBound) {
-		super(image);
+    /**
+     * Constructor for TresholdFilter.
+     * @param image
+     */
+    public TresholdFilter(Image image, int lowerBound, int upperBound) {
+        super(image);
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
-	}
+    }
 
-	/**
-	 * Constructor for TresholdFilter.
-	 * @param component
-	 */
-	public TresholdFilter(ImageFilter component, int lowerBound, int upperBound) {
-		super(component);
+    /**
+     * Constructor for TresholdFilter.
+     * @param component
+     */
+    public TresholdFilter(ImageFilter component, int lowerBound, int upperBound) {
+        super(component);
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.filter.ImageFilter#filter()
-	 */
-	protected void componentFilter() {
+    /**
+     * @see org.wewi.medimg.image.filter.ImageFilter#filter()
+     */
+    protected void componentFilter() {
         
         UnaryPointTransformer t = new UnaryPointTransformer(image, 
                                   new TresholdFunction(lowerBound, upperBound));
         t.transform();
-	}
+    }
 
 }

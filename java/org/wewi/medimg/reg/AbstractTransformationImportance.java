@@ -13,21 +13,21 @@ public abstract class AbstractTransformationImportance implements Transformation
 
     protected double errorLimit = 0.5;
     
-	/**
-	 * @see org.wewi.medimg.reg.TransformationImportance#transformationWeights(int[], double[], int[])
-	 */
-	public double[] transformationWeights(int[] features, double[] similarity,
-										    int[] featureNPoints) {
-		return null;
-	}
-	
-	
+    /**
+     * @see org.wewi.medimg.reg.TransformationImportance#transformationWeights(int[], double[], int[])
+     */
+    public double[] transformationWeights(int[] features, double[] similarity,
+                                            int[] featureNPoints) {
+        return null;
+    }
+    
+    
     public void setErrorLimit(double limit) {
         errorLimit = limit;
     }
     
     public double getErrorLimit() {
         return errorLimit;
-    }	
+    }    
 
 }

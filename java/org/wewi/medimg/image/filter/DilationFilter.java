@@ -17,29 +17,29 @@ public final class DilationFilter extends MorphologicalOperation {
         super(image);    
     }
 
-	/**
-	 * Constructor for DilationFilter.
-	 * @param image
-	 * @param b
-	 */
-	public DilationFilter(Image image, Image b) {
-		super(image, b);
-	}
+    /**
+     * Constructor for DilationFilter.
+     * @param image
+     * @param b
+     */
+    public DilationFilter(Image image, Image b) {
+        super(image, b);
+    }
     
     public DilationFilter(ImageFilter component) {
         super(component);    
     }
 
-	/**
-	 * Constructor for DilationFilter.
-	 * @param component
-	 * @param b
-	 */
-	public DilationFilter(ImageFilter component, Image b) {
-		super(component, b);
-	}
+    /**
+     * Constructor for DilationFilter.
+     * @param component
+     * @param b
+     */
+    public DilationFilter(ImageFilter component, Image b) {
+        super(component, b);
+    }
 
-	protected int operation(int i, int j) {
+    protected int operation(int i, int j) {
         int result = 0;
         
         
@@ -59,6 +59,6 @@ public final class DilationFilter extends MorphologicalOperation {
         }
         
         return result;   
-	}
+    }
 
 }

@@ -15,23 +15,23 @@ import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
 public final class UnaryPointTransformerFilter extends ImageFilter {
     private UnaryPointTransformerFactory factory;
 
-	/**
-	 * Constructor for UnaryPointTransformerFilter.
-	 * @param image
-	 */
-	public UnaryPointTransformerFilter(Image image, UnaryPointTransformerFactory factory) {
-		super(image);
+    /**
+     * Constructor for UnaryPointTransformerFilter.
+     * @param image
+     */
+    public UnaryPointTransformerFilter(Image image, UnaryPointTransformerFactory factory) {
+        super(image);
         this.factory = factory;
-	}
+    }
 
-	/**
-	 * Constructor for UnaryPointTransformerFilter.
-	 * @param component
-	 */
-	public UnaryPointTransformerFilter(ImageFilter component, UnaryPointTransformerFactory factory) {
-		super(component);
+    /**
+     * Constructor for UnaryPointTransformerFilter.
+     * @param component
+     */
+    public UnaryPointTransformerFilter(ImageFilter component, UnaryPointTransformerFactory factory) {
+        super(component);
         this.factory = factory;
-	}
+    }
     
     protected void componentFilter() {   
         UnaryPointTransformer t = factory.createTransformer(image);

@@ -19,18 +19,18 @@ import org.wewi.medimg.viewer.image.ImageViewer;
 public class PrintCommand implements Command {
     private ImageViewer imageViewer;
 
-	/**
-	 * Constructor for PrintCommand.
-	 */
-	public PrintCommand(ImageViewer imageViewer) {
-		super();
+    /**
+     * Constructor for PrintCommand.
+     */
+    public PrintCommand(ImageViewer imageViewer) {
+        super();
         this.imageViewer = imageViewer;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.viewer.Command#execute()
-	 */
-	public void execute() {
+    /**
+     * @see org.wewi.medimg.viewer.Command#execute()
+     */
+    public void execute() {
         PrinterJob job = PrinterJob.getPrinterJob();
         PageFormat pf = job.defaultPage();
         pf = job.pageDialog(pf);
@@ -43,6 +43,6 @@ public class PrintCommand implements Command {
                 JOptionPane.showMessageDialog(Viewer.getInstance(), e);
             }
         }        
-	}
+    }
 
 }

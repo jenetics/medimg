@@ -16,21 +16,21 @@ import org.wewi.medimg.image.NullImage;
  *
  */
 public class SegmenterThread extends Thread {
-	private Vector observer;
-	
-	private Image mrtImage;
-	private Image segImage;
-	private Segmenter segmenter;
-	
-	
-	public SegmenterThread(Segmenter segmenter) {
-		this.segmenter = segmenter;
-		mrtImage = new NullImage();
-		segImage = new NullImage();
+    private Vector observer;
+    
+    private Image mrtImage;
+    private Image segImage;
+    private Segmenter segmenter;
+    
+    
+    public SegmenterThread(Segmenter segmenter) {
+        this.segmenter = segmenter;
+        mrtImage = new NullImage();
+        segImage = new NullImage();
         
-        observer = new Vector();	
-	}
-	
+        observer = new Vector();    
+    }
+    
     public void addSegmenterListener(SegmenterListener o) {
         observer.add(o);
     }
@@ -55,23 +55,23 @@ public class SegmenterThread extends Thread {
             so = (SegmenterListener)it.next();
             so.segmenterStarted(event);
         }
-    }   	
-	
+    }       
+    
 
-	public void run() {
+    public void run() {
         notifySegmenterStarted(new SegmenterEvent(this));
-		segmenter.segment(mrtImage, segImage);
+        segmenter.segment(mrtImage, segImage);
         notifySegmenterFinished(new SegmenterEvent(this));
-	}
-	
-	public void setImage(Image mrtImage) {
-		this.mrtImage = mrtImage;	
+    }
+    
+    public void setImage(Image mrtImage) {
+        this.mrtImage = mrtImage;    
         segImage = (Image)mrtImage.clone();
         segImage.resetColor(0);
-	}
-	
-	public Image getSegmentedImage() {
-		return segImage;	
-	}
+    }
+    
+    public Image getSegmentedImage() {
+        return segImage;    
+    }
 
 }

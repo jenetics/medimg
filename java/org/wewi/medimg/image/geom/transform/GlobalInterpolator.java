@@ -33,12 +33,12 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
             this.b = b;    
         }
         
-		public double eval(double[] p, double[] q) {
+        public double eval(double[] p, double[] q) {
             
             double d = Math.sqrt(MathUtil.sqr(p[0] - q[0]) + 
                                   MathUtil.sqr(p[1] - q[1]) +
                                   MathUtil.sqr(p[2] - q[2]));
-			//return Math.exp(-d*b);
+            //return Math.exp(-d*b);
             
             //if (d < 100) {
                 return 1/(d+1);
@@ -46,11 +46,11 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
             //    return 0;
             //}
             //return 1000-d*d;
-		}
+        }
         
-		public Object clone() {
-			return new ExponentialWeightFunction(this.b);
-		}
+        public Object clone() {
+            return new ExponentialWeightFunction(this.b);
+        }
     }
     
   
@@ -77,7 +77,7 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
     }
     
     
-	public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
+    public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
         double[] start = new double[3];
         double[] end = new double[3];
         double[] vector = new double[3];
@@ -111,9 +111,9 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
         endPoint[1] = startPoint[1] + vector[1];
         endPoint[2] = startPoint[2] + vector[2];
         
-	}
+    }
     
-	public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
+    public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
         double[] start = new double[3];
         double[] end = new double[3];
         double[] vector = new double[3];
@@ -149,7 +149,7 @@ public class GlobalInterpolator extends DisplacementF.Interpolator {
         startPoint[0] = endPoint[0] - vector[0];
         startPoint[1] = endPoint[1] - vector[1];
         startPoint[2] = endPoint[2] - vector[2];        
-	}
+    }
     
     
     

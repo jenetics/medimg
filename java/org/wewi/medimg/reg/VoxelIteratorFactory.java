@@ -17,22 +17,22 @@ final class VoxelIteratorFactory {
     private Image source;
     private Image target;
 
-	/**
-	 * Constructor for VoxelIteratorFactory.
-	 */
-	public VoxelIteratorFactory(Image source, Image target) {
-		this.source = source;
+    /**
+     * Constructor for VoxelIteratorFactory.
+     */
+    public VoxelIteratorFactory(Image source, Image target) {
+        this.source = source;
         this.target = target;
-	}
+    }
     
     public boolean hasJointVoxelIterator(int feature) {
 
-	    VoxelIterator sit = new FeatureIterator(source, feature);    
-	    VoxelIterator tit = new FeatureIterator(target, feature);    
-	    
-	    if (!(sit.hasNext()) || !(tit.hasNext())) {
-	    	return false;    
-	    }
+        VoxelIterator sit = new FeatureIterator(source, feature);    
+        VoxelIterator tit = new FeatureIterator(target, feature);    
+        
+        if (!(sit.hasNext()) || !(tit.hasNext())) {
+            return false;    
+        }
         return true;    
     }
     

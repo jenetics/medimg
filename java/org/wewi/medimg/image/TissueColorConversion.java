@@ -100,6 +100,6 @@ public class TissueColorConversion implements ColorConversion {
     }
     
     public Object clone() {
-    	return new TissueColorConversion();	
+        return new TissueColorConversion();    
     }
 }

@@ -22,8 +22,8 @@ public class FittnessTransformationImportance extends AbstractTransformationImpo
     public FittnessTransformationImportance() {
     }
     
-	public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints) {
-		
+    public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints) {
+        
         double sumFittness = 0;
         double alpha = 0.0;
         double[] erg = new double[features.length];
@@ -40,9 +40,9 @@ public class FittnessTransformationImportance extends AbstractTransformationImpo
                 alpha = 0.0;
             }
             erg[i] = alpha;
-        }		
+        }        
         return erg;
-	}    
+    }    
     
 
 }

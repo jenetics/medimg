@@ -32,21 +32,21 @@ public class LogHandlerPanel extends javax.swing.JPanel {
         }
         
         /**
-		 * @see java.util.logging.Handler#close()
-		 */
-		public void close() throws SecurityException {
-		}
+         * @see java.util.logging.Handler#close()
+         */
+        public void close() throws SecurityException {
+        }
 
-		/**
-		 * @see java.util.logging.Handler#flush()
-		 */
-		public void flush() {
-		}
+        /**
+         * @see java.util.logging.Handler#flush()
+         */
+        public void flush() {
+        }
 
-		/**
-		 * @see java.util.logging.Handler#publish(LogRecord)
-		 */
-		public void publish(LogRecord record) {
+        /**
+         * @see java.util.logging.Handler#publish(LogRecord)
+         */
+        public void publish(LogRecord record) {
             String msg;
             try {
                 msg = getFormatter().format(record);
@@ -58,7 +58,7 @@ public class LogHandlerPanel extends javax.swing.JPanel {
             }
         
             panel.appendText(msg);
-		}
+        }
 
     }
     

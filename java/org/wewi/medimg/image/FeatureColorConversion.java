@@ -49,7 +49,7 @@ public class FeatureColorConversion implements ColorConversion{
     public FeatureColorConversion() {
         cc = new int[colors][3];
         for (int i = 0; i < colors; i++) {
-        	cc[i][0] = c[i].getRed();
+            cc[i][0] = c[i].getRed();
             cc[i][1] = c[i].getGreen();
             cc[i][2] = c[i].getBlue();
         }
@@ -82,7 +82,7 @@ public class FeatureColorConversion implements ColorConversion{
     }
     
     public Object clone() {
-    	return new FeatureColorConversion();	
+        return new FeatureColorConversion();    
     }
     
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {

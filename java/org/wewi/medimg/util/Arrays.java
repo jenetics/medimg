@@ -15,9 +15,9 @@ import java.util.Comparator;
  */
 public final class Arrays {
 
-	private Arrays() {
-		super();
-	}
+    private Arrays() {
+        super();
+    }
     
     
     public static void copy(double[] src, int srcPos, float[] dest, int destPos, int length) {

@@ -31,7 +31,7 @@ public class KDTree {
                 value = v;
                 return this;
             }
-			public int compareTo(Object o) {
+            public int compareTo(Object o) {
                 ComparableDouble d = (ComparableDouble)o;
                 if (value < d.value) {
                     return -1;
@@ -40,7 +40,7 @@ public class KDTree {
                 } else {
                     return 0;
                 }
-			}
+            }
         }
         
         private double[] point;
@@ -52,18 +52,18 @@ public class KDTree {
             cpoint = new ComparableDouble();
         }
         
-		/**
-		 * @see org.wewi.medimg.util.KDTree.Point#getOrdinate(int)
-		 */
-		public Comparable getOrdinate(int dimension) {
-			return cpoint.setValue(point[dimension]);
-		}
-		/**
-		 * @see org.wewi.medimg.util.KDTree.Point#getDimensions()
-		 */
-		public int getDimensions() {
-			return point.length;
-		}
+        /**
+         * @see org.wewi.medimg.util.KDTree.Point#getOrdinate(int)
+         */
+        public Comparable getOrdinate(int dimension) {
+            return cpoint.setValue(point[dimension]);
+        }
+        /**
+         * @see org.wewi.medimg.util.KDTree.Point#getDimensions()
+         */
+        public int getDimensions() {
+            return point.length;
+        }
         
         public void getValue(double[] p) {
             System.arraycopy(point, 0, p, 0, point.length);
@@ -243,11 +243,11 @@ public class KDTree {
             }
         }
         
-		public boolean hasNext() {
-			return !stack.isEmpty();
-		}
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
         
-		public Object next() {
+        public Object next() {
             Node node = (Node)stack.pop();
             
             if(node.getLeft() != null) {
@@ -257,12 +257,12 @@ public class KDTree {
                 stack.push(node.getRight());
             }
             
-			return node.getPoint();
-		}
+            return node.getPoint();
+        }
         
-		public void remove() {
+        public void remove() {
             throw new UnsupportedOperationException();
-		}
+        }
     }
     
     /**************************************************************************/
@@ -495,22 +495,22 @@ public class KDTree {
         root = null;
     }
 
-	public int size() {
+    public int size() {
         if (root == null) {
             return 0;
         }
         return root.getNSubtreeNodes();
-	}
+    }
     
-	public boolean isEmpty() {
-		return (root == null);
-	}
+    public boolean isEmpty() {
+        return (root == null);
+    }
   
-	public Iterator iterator() {
+    public Iterator iterator() {
         return new NodeIterator(root);
-	}
+    }
     
-	public Object[] toArray() {
+    public Object[] toArray() {
         Point[] result = new Point[size()];
         
         int count = 0;
@@ -518,12 +518,12 @@ public class KDTree {
             result[count++] = (Point)it.next();
         }
         
-		return result;
-	}
+        return result;
+    }
     
-	public Object[] toArray(Object[] a) {
+    public Object[] toArray(Object[] a) {
         if (a == null) {   
-		  return toArray();
+          return toArray();
         }
         
         int count = 0;
@@ -532,7 +532,7 @@ public class KDTree {
         }        
         
         return a;
-	}
+    }
     
     public String toString() {
         if (root != null) {

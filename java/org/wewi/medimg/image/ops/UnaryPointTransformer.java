@@ -14,14 +14,14 @@ public class UnaryPointTransformer {
     private Image image;
     private UnaryFunction functor;
 
-	/**
-	 * Constructor for UnaryPointTransformer.
-	 */
-	public UnaryPointTransformer(Image image, UnaryFunction functor) {
-		super();
+    /**
+     * Constructor for UnaryPointTransformer.
+     */
+    public UnaryPointTransformer(Image image, UnaryFunction functor) {
+        super();
         this.image = image;
         this.functor = functor;
-	}
+    }
     
     public void transform() {
         for (int i = 0, n = image.getNVoxels(); i < n; i++) {

@@ -16,12 +16,12 @@ public class JPEGWriterFactory implements ImageWriterFactory {
     }    
 
 
-	public ImageWriter createImageWriter(Image image, File file) {
-		return new JPEGWriter(image, file);
-	}
+    public ImageWriter createImageWriter(Image image, File file) {
+        return new JPEGWriter(image, file);
+    }
 
-	public void setRange(Range range) {
+    public void setRange(Range range) {
         this.range = range;
-	}
+    }
 
 }

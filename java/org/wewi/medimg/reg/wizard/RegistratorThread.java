@@ -21,17 +21,17 @@ import org.wewi.medimg.reg.Registrator;
  */
 public class RegistratorThread extends Thread {
     private Registrator reg;
-	private Image sourceImage;
-	private Image targetImage;  
-	private Transformation transformation;  
-	private Vector observer;
+    private Image sourceImage;
+    private Image targetImage;  
+    private Transformation transformation;  
+    private Vector observer;
     
     /** Creates a new instance of RegistrateThread */
     public RegistratorThread(Registrator reg) {
         this.reg = reg;
         sourceImage = new NullImage();
-		targetImage = new NullImage();
-		observer = new Vector();
+        targetImage = new NullImage();
+        observer = new Vector();
     }
 
     public void addRegistratorListener(RegistratorListener o) {
@@ -65,18 +65,18 @@ public class RegistratorThread extends Thread {
     }
     
     public void run() {
-    	notifyRegistratorStarted(new RegistratorEvent(this));
+        notifyRegistratorStarted(new RegistratorEvent(this));
         transformation = (Transformation)reg.registrate(sourceImage, targetImage);
         notifyRegistratorFinished(new RegistratorEvent(this));
     }
     
-	public void setImage(Image sourceImage, Image targetImage) {
-		this.sourceImage = sourceImage;
-		this.targetImage = targetImage;				
-	}
-	
-	public Transformation getTransformation() {
-		return transformation;	
-	}	    
+    public void setImage(Image sourceImage, Image targetImage) {
+        this.sourceImage = sourceImage;
+        this.targetImage = targetImage;                
+    }
+    
+    public Transformation getTransformation() {
+        return transformation;    
+    }        
     
 }

@@ -16,47 +16,47 @@ import org.wewi.medimg.image.IntData;
 public class ImageVectorField extends AbstractImage {
     private int[] temp = new int[3];
 
-	/**
-	 * Constructor for ImageVectorField.
-	 * @param id
-	 */
-	public ImageVectorField(AbstractImage id) {
-		super(id);
-	}
+    /**
+     * Constructor for ImageVectorField.
+     * @param id
+     */
+    public ImageVectorField(AbstractImage id) {
+        super(id);
+    }
 
-	/**
-	 * Constructor for ImageVectorField.
-	 * @param dim
-	 */
-	public ImageVectorField(Dimension dim) {
-		super(dim);
+    /**
+     * Constructor for ImageVectorField.
+     * @param dim
+     */
+    public ImageVectorField(Dimension dim) {
+        super(dim);
         initVectorField();
-	}
+    }
 
-	/**
-	 * Constructor for ImageVectorField.
-	 * @param minX
-	 * @param maxX
-	 * @param minY
-	 * @param maxY
-	 * @param minZ
-	 * @param maxZ
-	 */
-	public ImageVectorField(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-		super(minX, maxX, minY, maxY, minZ, maxZ);
+    /**
+     * Constructor for ImageVectorField.
+     * @param minX
+     * @param maxX
+     * @param minY
+     * @param maxY
+     * @param minZ
+     * @param maxZ
+     */
+    public ImageVectorField(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+        super(minX, maxX, minY, maxY, minZ, maxZ);
         initVectorField();
-	}
+    }
 
-	/**
-	 * Constructor for ImageVectorField.
-	 * @param sizeX
-	 * @param sizeY
-	 * @param sizeZ
-	 */
-	public ImageVectorField(int sizeX, int sizeY, int sizeZ) {
-		super(sizeX, sizeY, sizeZ);
+    /**
+     * Constructor for ImageVectorField.
+     * @param sizeX
+     * @param sizeY
+     * @param sizeZ
+     */
+    public ImageVectorField(int sizeX, int sizeY, int sizeZ) {
+        super(sizeX, sizeY, sizeZ);
         initVectorField();
-	}
+    }
     
     private void initVectorField() {
         for (int i = 0, n = getNVoxels(); i < n; i++) {
@@ -64,12 +64,12 @@ public class ImageVectorField extends AbstractImage {
         }    
     }
 
-	/**
-	 * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
-	 */
-	protected DiscreteData createDiscreteData(int size) {
-		return new IntData(size);
-	}
+    /**
+     * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
+     */
+    protected DiscreteData createDiscreteData(int size) {
+        return new IntData(size);
+    }
     
     public void getVector(int pos, int[] vector) {
         getCoordinates(getColor(pos), vector);    
@@ -111,12 +111,12 @@ public class ImageVectorField extends AbstractImage {
         setColor(x, y, z, getPosition((int)v[0], (int)v[1], (int)v[2]));    
     }
 
-	/**
-	 * @see java.lang.Object#clone()
-	 */
-	public Object clone() {
-		return new ImageVectorField(this);
-	}
+    /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+        return new ImageVectorField(this);
+    }
 
 }
 

@@ -16,17 +16,17 @@ public class ColorRangeOperator implements UnaryOperator {
     private int min, max;
     private int calls = 0;
 
-	/**
-	 * Constructor for ColorRangeOperator.
-	 */
-	public ColorRangeOperator() {
-		super();
-	}
+    /**
+     * Constructor for ColorRangeOperator.
+     */
+    public ColorRangeOperator() {
+        super();
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ops.UnaryFunction#process(int)
-	 */
-	public void process(int color) {
+    /**
+     * @see org.wewi.medimg.image.ops.UnaryFunction#process(int)
+     */
+    public void process(int color) {
         ++calls;
         if (firstCall) {
             min = max = color; 
@@ -38,7 +38,7 @@ public class ColorRangeOperator implements UnaryOperator {
         } else if (max < color) {
             max = color;    
         }
-	}
+    }
     
     public int getMinimum() {
         return min;    

@@ -14,15 +14,15 @@ public class ImageIOProgressEvent extends EventObject {
     private double progress;
     private boolean finished;
     
-	/**
-	 * Constructor for ProgressEvent.
-	 * @param arg0
-	 */
-	public ImageIOProgressEvent(Object source, double progress, boolean finished) {
-		super(source);
+    /**
+     * Constructor for ProgressEvent.
+     * @param arg0
+     */
+    public ImageIOProgressEvent(Object source, double progress, boolean finished) {
+        super(source);
         this.progress = progress;
         this.finished = finished;
-	}
+    }
     
     public double getProgress() {
         return progress;

@@ -41,19 +41,19 @@ public final class NullImage implements Image, Nullable {
     }
     
     private class NullColorConversion implements ColorConversion {
-    	public NullColorConversion() {
-    	}
-		public int convert(int[] rgb) {
-			return 0;	
-		}
-		public void convert(int grey, int[] rgb) {
-			rgb[0] = 0;
-			rgb[1] = 0;
-			rgb[2] = 0;	
-		}
-		public Object clone() {
-			return new NullColorConversion();	
-		}
+        public NullColorConversion() {
+        }
+        public int convert(int[] rgb) {
+            return 0;    
+        }
+        public void convert(int grey, int[] rgb) {
+            rgb[0] = 0;
+            rgb[1] = 0;
+            rgb[2] = 0;    
+        }
+        public Object clone() {
+            return new NullColorConversion();    
+        }
     }
     
     public static final NullImage INSTANCE = new NullImage();
@@ -103,7 +103,7 @@ public final class NullImage implements Image, Nullable {
     }    
     
     public Dimension getDimension() {
-    	return new Dimension(0, 0, 0, 0, 0, 0);	
+        return new Dimension(0, 0, 0, 0, 0, 0);    
     }
     
     public int getNVoxels() {
@@ -123,7 +123,7 @@ public final class NullImage implements Image, Nullable {
     }
     
     public ColorConversion getColorConversion() {
-    	return new NullColorConversion();	
+        return new NullColorConversion();    
     }
     
     public void setColorConversion(ColorConversion cc) {
@@ -176,50 +176,50 @@ public final class NullImage implements Image, Nullable {
         return true;  
     }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageAccess#setColor(int, int, int, double)
-	 */
-	public void setColor(int x, int y, int z, double color) {
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageAccess#setColor(int, int, int, double)
+     */
+    public void setColor(int x, int y, int z, double color) {
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageAccess#setColor(int, double)
-	 */
-	public void setColor(int pos, double color) {
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageAccess#setColor(int, double)
+     */
+    public void setColor(int pos, double color) {
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageAccess#resetColor(double)
-	 */
-	public void resetColor(double color) {
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageAccess#resetColor(double)
+     */
+    public void resetColor(double color) {
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageAccess#getIntColor(int)
-	 */
-	public int getIntColor(int pos) {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageAccess#getIntColor(int)
+     */
+    public int getIntColor(int pos) {
+        return 0;
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int)
-	 */
-	public double getDoubleColor(int pos) {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int)
+     */
+    public double getDoubleColor(int pos) {
+        return 0;
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageAccess#getIntColor(int, int, int)
-	 */
-	public int getIntColor(int x, int y, int z) {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageAccess#getIntColor(int, int, int)
+     */
+    public int getIntColor(int x, int y, int z) {
+        return 0;
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int, int, int)
-	 */
-	public double getDoubleColor(int x, int y, int z) {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int, int, int)
+     */
+    public double getDoubleColor(int x, int y, int z) {
+        return 0;
+    }
     
 }

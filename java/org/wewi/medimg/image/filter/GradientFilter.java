@@ -24,26 +24,26 @@ public class GradientFilter extends ImageFilter {
     private double maxVectorLength = 10;
     private double scaleFactor;
 
-	/**
-	 * Constructor for GradientFilter.
-	 * @param image
-	 */
-	public GradientFilter(Image image) {
-		this(image, new DoubleGridVectorFieldFactory());
-	}
+    /**
+     * Constructor for GradientFilter.
+     * @param image
+     */
+    public GradientFilter(Image image) {
+        this(image, new DoubleGridVectorFieldFactory());
+    }
     
     public GradientFilter(Image image, GridVectorFieldFactory gvff) {
         super(image);
         this.gvff = gvff;    
     }
 
-	/**
-	 * Constructor for GradientFilter.
-	 * @param component
-	 */
-	public GradientFilter(ImageFilter component) {
-		this(component, new DoubleGridVectorFieldFactory());        
-	}
+    /**
+     * Constructor for GradientFilter.
+     * @param component
+     */
+    public GradientFilter(ImageFilter component) {
+        this(component, new DoubleGridVectorFieldFactory());        
+    }
     
     public GradientFilter(ImageFilter component, GridVectorFieldFactory gvff) {
         super(component);

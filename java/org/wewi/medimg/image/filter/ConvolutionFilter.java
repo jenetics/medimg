@@ -16,23 +16,23 @@ import org.wewi.medimg.image.ops.ImageLoop;
 public class ConvolutionFilter extends ImageFilter {
     protected Kernel kernel;
 
-	/**
-	 * Constructor for ConvolutionFilter.
-	 * @param image
-	 */
-	public ConvolutionFilter(Image image, Kernel kernel) {
-		super(image);
+    /**
+     * Constructor for ConvolutionFilter.
+     * @param image
+     */
+    public ConvolutionFilter(Image image, Kernel kernel) {
+        super(image);
         this.kernel = kernel;
-	}
+    }
 
-	/**
-	 * Constructor for ConvolutionFilter.
-	 * @param component
-	 */
-	public ConvolutionFilter(ImageFilter component, Kernel kernel) {
-		super(component);
+    /**
+     * Constructor for ConvolutionFilter.
+     * @param component
+     */
+    public ConvolutionFilter(ImageFilter component, Kernel kernel) {
+        super(component);
         this.kernel = kernel;
-	}
+    }
     
     protected void componentFilter() {
         
@@ -66,11 +66,11 @@ public class ConvolutionFilter extends ImageFilter {
             this.sourceImage = sourceImage;
         }
         
-		/**
-		 * @see org.wewi.medimg.image.ops.ImageLoop.Task#execute(int, int, int)
-		 */
-		public void execute(int x, int y, int z) {
-		}
+        /**
+         * @see org.wewi.medimg.image.ops.ImageLoop.Task#execute(int, int, int)
+         */
+        public void execute(int x, int y, int z) {
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- *	@(#)GullCG.java 1.7 01/01/11 07:37:29
+ *    @(#)GullCG.java 1.7 01/01/11 07:37:29
  *
  * Copyright (c) 1996-2001 Sun Microsystems, Inc. All Rights Reserved.
  *
@@ -35,7 +35,7 @@ import javax.media.j3d.CompressedGeometryHeader;
 class GullCG extends CompressedGeometry {
 
     GullCG() {
-	super(cgHeader, cgData) ;
+    super(cgHeader, cgData) ;
     }
 
     private static final byte cgData[] = {
@@ -551,13 +551,13 @@ class GullCG extends CompressedGeometry {
     private static final CompressedGeometryHeader cgHeader ;
       
     static {
-	cgHeader = new CompressedGeometryHeader() ;
-	cgHeader.majorVersionNumber = 1 ;
-	cgHeader.minorVersionNumber = 0 ;
-	cgHeader.minorMinorVersionNumber = 1 ;
-	cgHeader.bufferType = CompressedGeometryHeader.TRIANGLE_BUFFER ;
-	cgHeader.bufferDataPresent = CompressedGeometryHeader.NORMAL_IN_BUFFER ;
-	cgHeader.start = 0 ;
-	cgHeader.size = cgData.length ;
+    cgHeader = new CompressedGeometryHeader() ;
+    cgHeader.majorVersionNumber = 1 ;
+    cgHeader.minorVersionNumber = 0 ;
+    cgHeader.minorMinorVersionNumber = 1 ;
+    cgHeader.bufferType = CompressedGeometryHeader.TRIANGLE_BUFFER ;
+    cgHeader.bufferDataPresent = CompressedGeometryHeader.NORMAL_IN_BUFFER ;
+    cgHeader.start = 0 ;
+    cgHeader.size = cgData.length ;
     }
 }

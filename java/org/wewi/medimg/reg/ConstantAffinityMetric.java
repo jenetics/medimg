@@ -16,19 +16,19 @@ import org.wewi.medimg.image.geom.transform.Transformation;
  * @version 0.1
  */
 public final class ConstantAffinityMetric implements AffinityMetric {
-	
+    
     public static final ConstantAffinityMetric INSTANCE = new ConstantAffinityMetric();
     
     public ConstantAffinityMetric() {
     }
 
     
-	/**
-	 * @see org.wewi.medimg.reg.AffinityMetric#similarity(VoxelIterator, VoxelIterator, Transformation)
-	 */
-	public double similarity(VoxelIterator source, VoxelIterator target, Transformation trans) {
-		return 1;
-	}
+    /**
+     * @see org.wewi.medimg.reg.AffinityMetric#similarity(VoxelIterator, VoxelIterator, Transformation)
+     */
+    public double similarity(VoxelIterator source, VoxelIterator target, Transformation trans) {
+        return 1;
+    }
     
     public boolean equals(Object o) {
         if (this == o) {

@@ -18,8 +18,8 @@ public class ParallelImageLoop extends ImageLoop {
     /**
      * Factory for the <code>ImageLoop.Task</code> class.
      * 
-	 * @author Franz Wilhelmstötter
-	 * @version 0.1
+     * @author Franz Wilhelmstötter
+     * @version 0.1
      */
     public static interface TaskFactory {
         
@@ -46,10 +46,10 @@ public class ParallelImageLoop extends ImageLoop {
             this.strideZ = strideZ;
         }
 
-		public void run() {
+        public void run() {
             loop.loop(roi, strideX, strideY, strideZ);
             ready();
-		}
+        }
     }
     
     
@@ -109,10 +109,10 @@ public class ParallelImageLoop extends ImageLoop {
         //Waiting, until all Loop Threads are ready.
         while (threadsReady < threads) {
             try {
-				wait();
-			} catch (InterruptedException e) {
+                wait();
+            } catch (InterruptedException e) {
                 System.err.println(e);
-			}
+            }
         }
     }     
 

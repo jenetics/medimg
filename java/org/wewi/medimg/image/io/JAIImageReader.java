@@ -192,15 +192,15 @@ abstract class JAIImageReader extends ImageReader {
         Raster raster = null;
         
         try {
-			rimage = readRenderedImage(slices[0].toString());
+            rimage = readRenderedImage(slices[0].toString());
             raster = rimage.getData();
             notifyProgressListener(new ImageIOProgressEvent(this, 0.5, false));
-		} catch (IOException e) {
+        } catch (IOException e) {
             image = new NullImage();
             //Das Einlesen ist hier abgeschlossen -> Listener
             //müssen informiert werden.
             notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-            throw new ImageIOException("Can't read JAI Image: ", e);		
+            throw new ImageIOException("Can't read JAI Image: ", e);        
         }
         
         image = imageFactory.createImage(raster.getWidth(), raster.getHeight(), 1);

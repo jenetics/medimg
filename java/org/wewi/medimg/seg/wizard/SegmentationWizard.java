@@ -290,11 +290,11 @@ public class SegmentationWizard extends Wizard {
     } 
      
     
-	/**
+    /**
      * Liefert den Namen des Wizards.
      * 
-	 * @see org.wewi.medimg.viewer.wizard.Wizard#getMenuName()
-	 */
+     * @see org.wewi.medimg.viewer.wizard.Wizard#getMenuName()
+     */
     public String getMenuName() {
         return MENU_NAME;
     }

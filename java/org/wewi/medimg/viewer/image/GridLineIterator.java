@@ -19,27 +19,27 @@ public class GridLineIterator implements LineIterator {
     private int gridsX;
     private int gridsY;
 
-	/**
-	 * Constructor for GridLineIterator.
-	 */
-	public GridLineIterator(Point origin, Dimension dim, int gridsX, int gridsY) {
-		this.origin = origin;
+    /**
+     * Constructor for GridLineIterator.
+     */
+    public GridLineIterator(Point origin, Dimension dim, int gridsX, int gridsY) {
+        this.origin = origin;
         this.dim = dim;
         this.gridsX = gridsX;
         this.gridsY = gridsY;                         
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.viewer.image.LineIterator#hasNext()
-	 */
-	public boolean hasNext() {
-		return false;
-	}
+    /**
+     * @see org.wewi.medimg.viewer.image.LineIterator#hasNext()
+     */
+    public boolean hasNext() {
+        return false;
+    }
 
-	/**
-	 * @see org.wewi.medimg.viewer.image.LineIterator#next(int, int)
-	 */
-	public void next(int[] begin, int[] end) {
-	}
+    /**
+     * @see org.wewi.medimg.viewer.image.LineIterator#next(int, int)
+     */
+    public void next(int[] begin, int[] end) {
+    }
 
 }

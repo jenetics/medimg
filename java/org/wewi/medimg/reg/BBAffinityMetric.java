@@ -29,15 +29,15 @@ public class BBAffinityMetric implements AffinityMetric {
 
 
     public double similarity(VoxelIterator source, VoxelIterator target, Transformation trans) {
-	  FeatureIterator fis = (FeatureIterator) source;
-	  FeatureIterator fit = (FeatureIterator) target;
-	  double erg = 0.0;
-		  if (fis.hasNext()) {
-			  if (fit.hasNext()) {
-			      erg = getFitness(fis, fit, trans);
-			  }
-		  }
-	  return erg;
+      FeatureIterator fis = (FeatureIterator) source;
+      FeatureIterator fit = (FeatureIterator) target;
+      double erg = 0.0;
+          if (fis.hasNext()) {
+              if (fit.hasNext()) {
+                  erg = getFitness(fis, fit, trans);
+              }
+          }
+      return erg;
 
     }
 

@@ -11,19 +11,19 @@ package org.wewi.medimg.image.ops;
 public class MinMaxFunction implements UnaryFunction {
     private int min, max;
 
-	/**
-	 * Constructor for MinMaxFunction.
-	 */
-	public MinMaxFunction(int min, int max) {
-		super();
+    /**
+     * Constructor for MinMaxFunction.
+     */
+    public MinMaxFunction(int min, int max) {
+        super();
         this.min = min;
         this.max = max;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ops.UnaryFunction#process(int)
-	 */
-	public int process(int color) {
+    /**
+     * @see org.wewi.medimg.image.ops.UnaryFunction#process(int)
+     */
+    public int process(int color) {
         if (color > max) {
             return max;    
         } else if (color < min) {
@@ -31,6 +31,6 @@ public class MinMaxFunction implements UnaryFunction {
         }
         
         return color;
-	}
+    }
 
 }

@@ -71,29 +71,29 @@ final class Vector {
         return new Vector(y*b.z - z*b.y, z*b.x - x*b.z, x*b.y - y*b.x);
     }
 
-	void setX(double x) {
-		this.x = x;
-	}
+    void setX(double x) {
+        this.x = x;
+    }
 
-	double getX() {
-		return x;
-	}
+    double getX() {
+        return x;
+    }
 
-	public void setY(double y) {
-		this.y = y;
-	}
+    public void setY(double y) {
+        this.y = y;
+    }
 
-	public double getY() {
-		return y;
-	}
+    public double getY() {
+        return y;
+    }
 
-	public void setZ(double z) {
-		this.z = z;
-	}
+    public void setZ(double z) {
+        this.z = z;
+    }
 
-	public double getZ() {
-		return z;
-	}
+    public double getZ() {
+        return z;
+    }
 }
 
 ;

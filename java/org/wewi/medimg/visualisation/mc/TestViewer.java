@@ -91,11 +91,11 @@ public class TestViewer extends Applet {
         //shape = new ColorCube(0.4);
         shape = new Shape3D(geom);
         shape.setAppearance(app);
-	shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-	shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-	shape.setCapability(Shape3D.ENABLE_PICK_REPORTING);
-	PickTool.setCapabilities(shape, PickTool.INTERSECT_FULL);
-	spinTg.addChild(shape);
+    shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+    shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+    shape.setCapability(Shape3D.ENABLE_PICK_REPORTING);
+    PickTool.setCapabilities(shape, PickTool.INTERSECT_FULL);
+    spinTg.addChild(shape);
         objTrans.addChild(spinTg);
         
         BoundingSphere bounds =
@@ -191,22 +191,22 @@ public class TestViewer extends Applet {
             counter += 3;
         }      
         
-	setLayout(new BorderLayout());
+    setLayout(new BorderLayout());
         GraphicsConfiguration config =
            SimpleUniverse.getPreferredConfiguration();
 
-	Canvas3D c = new Canvas3D(config);
-	add("Center", c);
+    Canvas3D c = new Canvas3D(config);
+    add("Center", c);
 
-	// Create a simple scene and attach it to the virtual universe
-	BranchGroup scene = createSceneGraph(triangleArray, c);
-	u = new SimpleUniverse(c);
+    // Create a simple scene and attach it to the virtual universe
+    BranchGroup scene = createSceneGraph(triangleArray, c);
+    u = new SimpleUniverse(c);
 
         // This will move the ViewPlatform back a bit so the
         // objects in the scene can be viewed.
         u.getViewingPlatform().setNominalViewingTransform();
 
-	u.addBranchGraph(scene);
+    u.addBranchGraph(scene);
     }    
     
     public static void main(String[] args) {

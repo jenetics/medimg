@@ -59,10 +59,10 @@ public abstract class ImageTransformation implements Transformation {
         private double[] source = new double[3];
         private double[] target = new double[3];
         
-		/**
-		 * @see org.wewi.medimg.image.geom.transform.ImageTransformation.Interpolator#interpolate(int, int, int)
-		 */
-		public int interpolate(int x, int y, int z) {
+        /**
+         * @see org.wewi.medimg.image.geom.transform.ImageTransformation.Interpolator#interpolate(int, int, int)
+         */
+        public int interpolate(int x, int y, int z) {
             target[0] = x;
             target[1] = y;
             target[2] = z;
@@ -81,20 +81,20 @@ public abstract class ImageTransformation implements Transformation {
                 return 0;
             }
             
-			return getSourceImage().getColor(sx, sy, sz);
-		}
+            return getSourceImage().getColor(sx, sy, sz);
+        }
     }
 
     private static Logger logger = Logger.getLogger("org.wewi.medimg.image.geom.transform");
 
     private Interpolator interpolator;
 
-	/**
-	 * Constructor for ImageTransformation.
-	 */
-	public ImageTransformation(Interpolator interpolator) {
+    /**
+     * Constructor for ImageTransformation.
+     */
+    public ImageTransformation(Interpolator interpolator) {
         setPixelInterpolator(interpolator);
-	}
+    }
     
     /**
      * Constructs a ImageTransformation with the NearestNeighborInterpolator
@@ -156,9 +156,9 @@ public abstract class ImageTransformation implements Transformation {
         interpolator.setSourceImage(source);
         
         ImageLoop loop = new ImageLoop(target, new ImageLoop.Task() {
-			public void execute(int x, int y, int z) {
+            public void execute(int x, int y, int z) {
                 getImage().setColor(x, y, z, interpolator.interpolate(x, y, z));
-			}
+            }
         });
         loop.loop();
     }

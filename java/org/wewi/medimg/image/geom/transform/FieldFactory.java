@@ -28,11 +28,11 @@ public final class FieldFactory {
         GridFieldLoop loop = new GridFieldLoop(field, new GridFieldLoop.Task() {
             double[] start = new double[3];
             double[] end = new double[3];
-			public void execute(int gridX, int gridY, int gridZ) {
+            public void execute(int gridX, int gridY, int gridZ) {
                 getVectorField().getGridStartPoint(gridX, gridY, gridZ, start);
                 trans.transform(start, end);
                 getVectorField().setGridEndPoint(gridX, gridY, gridZ, end);
-			}
+            }
         });
         loop.loop();        
         

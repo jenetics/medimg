@@ -36,51 +36,51 @@ public class FeatureIterator implements VoxelIterator {
     
     public boolean hasNext() {
         if (end != true) {
-        	    int temp = nextPosition();
-    		if ( temp <= image.getNVoxels()) {
-	    		pos = temp;
-	    		return true;
-	    	} else {
-	    		end = true;
-	    		return false;
-	    	}
+                int temp = nextPosition();
+            if ( temp <= image.getNVoxels()) {
+                pos = temp;
+                return true;
+            } else {
+                end = true;
+                return false;
+            }
         }
         return false;
     }
     
     public int next() {
-    	int c = 0;
-    	if (end != true) {
-		    c = image.getColor(pos);
-	        return c;
-    	}
-    	// there is no such element exception
-    	return c;
+        int c = 0;
+        if (end != true) {
+            c = image.getColor(pos);
+            return c;
+        }
+        // there is no such element exception
+        return c;
     }
 
     public int next(int[] p) {
-    	int c = 0;
-    	if (end != true) {
-		    c = image.getColor(pos);
-	        image.getCoordinates(pos, p);
-	        return c;
-    	}
-    	// there is no such element exception
-    	return c;
+        int c = 0;
+        if (end != true) {
+            c = image.getColor(pos);
+            image.getCoordinates(pos, p);
+            return c;
+        }
+        // there is no such element exception
+        return c;
     }
     
     public int next(double[] p) {
-    	int c = 0;
-    	if (end != true) {
+        int c = 0;
+        if (end != true) {
             int[] coordinates = image.getCoordinates(pos);
             p[0] = coordinates[0];    
             p[1] = coordinates[1]; 
-            p[2] = coordinates[2];        		
-		    c = image.getColor(pos);
-		    return c;
-    	}
-    	// there is no such element exception
-    	return c;
+            p[2] = coordinates[2];                
+            c = image.getColor(pos);
+            return c;
+        }
+        // there is no such element exception
+        return c;
     }    
     
 
@@ -131,7 +131,7 @@ public class FeatureIterator implements VoxelIterator {
         } 
         end = true;
         return 0;
-          	
+              
     }
 
 }

@@ -16,14 +16,14 @@ public final class UnaryPointAnalyzer {
     private Image image;
     private UnaryOperator operator;
 
-	/**
-	 * Constructor for UnaryPointAnalyzer.
-	 */
-	public UnaryPointAnalyzer(Image image, UnaryOperator operator) {
-		super();
+    /**
+     * Constructor for UnaryPointAnalyzer.
+     */
+    public UnaryPointAnalyzer(Image image, UnaryOperator operator) {
+        super();
         this.image = image;
         this.operator = operator;
-	}
+    }
     
     public void analyze() {
         for (VoxelIterator it = image.getVoxelIterator(); it.hasNext();) {

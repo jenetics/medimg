@@ -16,15 +16,15 @@ final class KernelMaskSum {
     private int slice;
     
 
-	/**
-	 * Constructor for KernelMaskSum.
-	 */
-	public KernelMaskSum(Image image, int slice, Kernel kernel) {
-		super();
+    /**
+     * Constructor for KernelMaskSum.
+     */
+    public KernelMaskSum(Image image, int slice, Kernel kernel) {
+        super();
         this.image = image;
         this.kernel = kernel;
         this.slice = slice;
-	}
+    }
     
     public double getKernelMaskSum(int i, int j) {
         double kernelSum = 0;

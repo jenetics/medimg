@@ -19,9 +19,9 @@ public class Blackboard extends MoverLayeredPane {
     private Vector items = new Vector();
 
 
-	public Blackboard() {
-		super();
-	}
+    public Blackboard() {
+        super();
+    }
 
     public void addItem(Item item) {
         item.setBlackboard(this);

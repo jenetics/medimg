@@ -31,22 +31,22 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
     
     private Transformation transformation;
 
-	private double[] weights;
+    private double[] weights;
 
-	/**
-	 * Constructor for MultipleFeatureRegistrator.
-	 */
-	public MultipleFeatureRegistrator() {
-		super();
+    /**
+     * Constructor for MultipleFeatureRegistrator.
+     */
+    public MultipleFeatureRegistrator() {
+        super();
         affinityMetric = ConstantAffinityMetric.INSTANCE;
         transformationImportance = ConstantTransformationImportance.INSTANCE;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.reg.Registrator#registrate(Image, Image)
-	 */
-	public Transformation registrate(Image source, Image target) {
-		notifyRegistratorStarted(new RegistratorEvent(this));
+    /**
+     * @see org.wewi.medimg.reg.Registrator#registrate(Image, Image)
+     */
+    public Transformation registrate(Image source, Image target) {
+        notifyRegistratorStarted(new RegistratorEvent(this));
         List transformationList = new Vector();
         List similarityList = new Vector();
         List featureList = new Vector();
@@ -68,7 +68,7 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
         int minFeature = Math.max(scr.getMinColor(), tcr.getMinColor());
         //Ignorieren des Hintergrundes
         if (minFeature < 1) {
-        	minFeature = 1;
+            minFeature = 1;
         }
         int maxFeature = Math.min(scr.getMaxColor(), tcr.getMaxColor());
         VoxelIteratorFactory f = new VoxelIteratorFactory(source, target);
@@ -90,17 +90,17 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
             similarity = 1.0;
             double temp;
             for (int j = minFeature; j <= maxFeature; j++) {
-            	if (f.hasJointVoxelIterator(j)) {
-		            VoxelIterator sittemp = f.getSourceVoxelIterator(j);
-		            VoxelIterator tittemp = f.getTargetVoxelIterator(j);
-			        temp = affinityMetric.similarity((FeatureIterator)sittemp.clone(),
-	                                                           (FeatureIterator)tittemp.clone(), 
-	                                                            trans); 
-	                if (temp < similarity) {
-	                	similarity = temp;
-	                }                                            
-            	}  
-	        } 
+                if (f.hasJointVoxelIterator(j)) {
+                    VoxelIterator sittemp = f.getSourceVoxelIterator(j);
+                    VoxelIterator tittemp = f.getTargetVoxelIterator(j);
+                    temp = affinityMetric.similarity((FeatureIterator)sittemp.clone(),
+                                                               (FeatureIterator)tittemp.clone(), 
+                                                                trans); 
+                    if (temp < similarity) {
+                        similarity = temp;
+                    }                                            
+                }  
+            } 
         
             
                                                             
@@ -123,18 +123,18 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
         
         double[] weights = transformationImportance.transformationWeights(features, similarities, featureNPoints);   
         for (int i = 0; i < weights.length; i++) {
-			System.out.println("Feature: " + features[i]);
-			System.out.println("similarities: " + similarities[i]);
-			System.out.println("featureNPoints: " + featureNPoints[i]);
-			System.out.println("weights: " + weights[i]);
+            System.out.println("Feature: " + features[i]);
+            System.out.println("similarities: " + similarities[i]);
+            System.out.println("featureNPoints: " + featureNPoints[i]);
+            System.out.println("weights: " + weights[i]);
         }
         //Rückgabe der berechnenten Interpolation der Transformationen.
         InterpolateableTransformation[] trans = new InterpolateableTransformation[size];
         transformationList.toArray(trans);
         transformation = interpolate(trans, weights);
-		notifyRegistratorFinished(new RegistratorEvent(this));
-		return transformation;
-	}
+        notifyRegistratorFinished(new RegistratorEvent(this));
+        return transformation;
+    }
     
     
     private Transformation interpolate(InterpolateableTransformation[] transformation, double[] weight) {
@@ -170,37 +170,37 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
     protected abstract InterpolateableTransformation getTransformation(VoxelIterator source, 
                                                                          VoxelIterator target);
 
-	/**
-	 * Returns the affinityMetric.
-	 * @return AffinityMetric
-	 */
-	public AffinityMetric getAffinityMetric() {
-		return affinityMetric;
-	}
+    /**
+     * Returns the affinityMetric.
+     * @return AffinityMetric
+     */
+    public AffinityMetric getAffinityMetric() {
+        return affinityMetric;
+    }
 
-	/**
-	 * Sets the affinityMetric.
-	 * @param affinityMetric The affinityMetric to set
-	 */
-	public void setAffinityMetric(AffinityMetric affinityMetric) {
-		this.affinityMetric = affinityMetric;
-	}
+    /**
+     * Sets the affinityMetric.
+     * @param affinityMetric The affinityMetric to set
+     */
+    public void setAffinityMetric(AffinityMetric affinityMetric) {
+        this.affinityMetric = affinityMetric;
+    }
 
-	/**
-	 * Returns the transformationImportance.
-	 * @return TransformationImportance
-	 */
-	public TransformationImportance getTransformationImportance() {
-		return transformationImportance;
-	}
+    /**
+     * Returns the transformationImportance.
+     * @return TransformationImportance
+     */
+    public TransformationImportance getTransformationImportance() {
+        return transformationImportance;
+    }
 
-	/**
-	 * Sets the transformationImportance.
-	 * @param transformationImportance The transformationImportance to set
-	 */
-	public void setTransformationImportance(TransformationImportance transformationImportance) {
-		this.transformationImportance = transformationImportance;
-	}
+    /**
+     * Sets the transformationImportance.
+     * @param transformationImportance The transformationImportance to set
+     */
+    public void setTransformationImportance(TransformationImportance transformationImportance) {
+        this.transformationImportance = transformationImportance;
+    }
 
 }
 

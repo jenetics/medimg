@@ -8,14 +8,14 @@ import java.util.Arrays;
  * @version 0.1
  */
 public class NonRigidPCARegistration extends PCARegistration{
-	
-		/**
-	 * Constructor for RigidPCARegistration.
-	 */
-	public NonRigidPCARegistration() {
-		super();
-	}
-	
+    
+        /**
+     * Constructor for RigidPCARegistration.
+     */
+    public NonRigidPCARegistration() {
+        super();
+    }
+    
     protected void calculateScaling(double[] scalingFactors, double[] eigenValues1, double[] eigenValues2) {
         //Bei der Transformation A2 wird die Skalierung in
         //Richtung der Hauptachsen berechnet und in die Transformation eingefügt.
@@ -57,12 +57,12 @@ public class NonRigidPCARegistration extends PCARegistration{
         buffer.append("Non-Rigides PCA-Verfahren: ");
         buffer.append("Ergebnis : Transformationsmatrix: ");
         //buffer.append(transformation);
-        return buffer.toString();    	
+        return buffer.toString();        
      }
     
     public String getRegistratorName() {
-    	return "Non-Rigides PCA-Verfahren";
+        return "Non-Rigides PCA-Verfahren";
     
-    }    	
+    }        
 
 }

@@ -42,21 +42,21 @@ public class ImagePanel extends JPanel {
     }
     
     private final class PointConverterImpl extends PointConverter {
-		/**
-		 * @see org.wewi.medimg.viewer.ImagePanel.PointConverter#convert(org.wewi.medimg.image.geom.Point3D)
-		 */
-		public Point2D convert(Point3D p) {
+        /**
+         * @see org.wewi.medimg.viewer.ImagePanel.PointConverter#convert(org.wewi.medimg.image.geom.Point3D)
+         */
+        public Point2D convert(Point3D p) {
             int px = (int)Math.rint((double)p.getX()*(((double)getWidth()-2d*ox)/
                                                     (double)sizeX)+(double)ox);
             int py = (int)Math.rint((double)p.getY()*(((double)getHeight()-2d*oy)/
                                                     (double)sizeY)+(double)oy);        
         
             return new Point2D(px, py);
-		}
-		/**
-		 * @see org.wewi.medimg.viewer.ImagePanel.PointConverter#convert(org.wewi.medimg.image.geom.Point2D)
-		 */
-		public Point3D convert(Point2D p) {
+        }
+        /**
+         * @see org.wewi.medimg.viewer.ImagePanel.PointConverter#convert(org.wewi.medimg.image.geom.Point2D)
+         */
+        public Point3D convert(Point2D p) {
             int imageX = (int)Math.rint((p.getX()-ox)*((double)sizeX/
                                          ((double)getWidth()-2*ox)));
             int imageY = (int)Math.rint((p.getY()-oy)*((double)sizeY/
@@ -69,13 +69,13 @@ public class ImagePanel extends JPanel {
             }
             
             return point;
-		}
+        }
     }
     
     
     
     private Vector listener;
-	
+    
     private Image image;
     private ColorConversion colorConversion;
     

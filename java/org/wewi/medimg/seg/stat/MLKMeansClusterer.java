@@ -46,10 +46,10 @@ public class MLKMeansClusterer extends ObservableSegmenter
     private boolean cancelled = false;
     
 
-	/**
-	 *
-	 * @param k number of features.
-	 */
+    /**
+     *
+     * @param k number of features.
+     */
     public MLKMeansClusterer(int k) {
         super();
         this.k = k;
@@ -69,11 +69,11 @@ public class MLKMeansClusterer extends ObservableSegmenter
         return iterationCount;    
     }
     
-	/**
-	 * Initializing the feature means randomly.
+    /**
+     * Initializing the feature means randomly.
      * 
-	 * @param cr ColorRange of the current image
-	 */
+     * @param cr ColorRange of the current image
+     */
     protected void initMeans(ColorRange cr) {
         Random random = new Random(System.currentTimeMillis());
         
@@ -109,22 +109,22 @@ public class MLKMeansClusterer extends ObservableSegmenter
         return buffer.toString();  
     }
     
-	/**
-	 * Method createSegimgOld.
-	 * Diese Methode wird von der Klasse
-	 * MAPKMeansClusterer überschrieben. Dies 
-	 * ermöglicht der Klasse, vor Begin des 
-	 * Segmentiervorgangs eine Kopie des segmentierten
-	 * Bildes zu erzeugen.
-	 * 
-	 * @param segimg Image das kopiert wird.
-	 */
+    /**
+     * Method createSegimgOld.
+     * Diese Methode wird von der Klasse
+     * MAPKMeansClusterer überschrieben. Dies 
+     * ermöglicht der Klasse, vor Begin des 
+     * Segmentiervorgangs eine Kopie des segmentierten
+     * Bildes zu erzeugen.
+     * 
+     * @param segimg Image das kopiert wird.
+     */
     protected void createSegimgOld(Image segimg) {
     }
     
-	/**
-	 * @see org.wewi.medimg.seg.Segmenter#segment(Image)
-	 */
+    /**
+     * @see org.wewi.medimg.seg.Segmenter#segment(Image)
+     */
     public Image segment(Image mrt) {
         Image segimg = (Image)mrt.clone();
         segimg.setColorConversion(new FeatureColorConversion());
@@ -163,11 +163,11 @@ public class MLKMeansClusterer extends ObservableSegmenter
         notifySegmenterFinished(new SegmenterEvent(this));        
     }
     
-	/**
+    /**
      * 
      * 
-	 * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
-	 */
+     * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
+     */
     public void segment(Image mrt, Image segimg) {
         //Feststellen des Farbbereiches
         colorRange =AnalyzerUtils.getColorRange(mrt);
@@ -189,14 +189,14 @@ public class MLKMeansClusterer extends ObservableSegmenter
         segimg.getHeader().setImageProperties(segProp);        
     }
     
-	/**
-	 * Method m1Step, wie im Algorithmus berschrieben.
+    /**
+     * Method m1Step, wie im Algorithmus berschrieben.
      * Zuordnung der Bildpunkte zu jenem Bereich,
      * mit dem geringstem Abstand zum Bereichsmittelwert.
-	 * 
-	 * @param mrt
-	 * @param segimg
-	 */
+     * 
+     * @param mrt
+     * @param segimg
+     */
     private void m1Step(Image mrt, Image segimg) {
         int size = mrt.getNVoxels();
         int minDistanceFeature;
@@ -226,13 +226,13 @@ public class MLKMeansClusterer extends ObservableSegmenter
         }            
     }
     
-	/**
-	 * Method m2Step, wie im Algorithmus beschrieben.
+    /**
+     * Method m2Step, wie im Algorithmus beschrieben.
      * Neuberechnen der Mittelwerte.
      * 
-	 * @param mrt das zu segmentierende Bild
-	 * @param segimg das segmentierte Bild
-	 */
+     * @param mrt das zu segmentierende Bild
+     * @param segimg das segmentierte Bild
+     */
     private void m2Step(Image mrt, Image segimg) {
         long[] meanSum = new long[k];
         int[] meanNo = new int[k];
@@ -259,12 +259,12 @@ public class MLKMeansClusterer extends ObservableSegmenter
         Arrays.sort(mean);  
     }    
     
-	/**
-	 * Methode error. Berechnet den Fehler zwischen zwei Iterationen.
+    /**
+     * Methode error. Berechnet den Fehler zwischen zwei Iterationen.
      * Dies dient als Abbruchkriterium.
      * 
-	 * @return double
-	 */
+     * @return double
+     */
     protected double error() {
         double err = 0;
         for (int i = 0; i < k; i++) {
@@ -273,27 +273,27 @@ public class MLKMeansClusterer extends ObservableSegmenter
         return err;
     }
     
-	/**
-	 * Method saveOldFeatureColor.
-	 * Diese Methode wird von der Klasse MAPKMeansClusterer
-	 * überschrieben, da bei diesem Algorithmus notwendig ist,
-	 * sich das Merkmalsbild der vorigen Iteration zu merken.
-	 * 
-	 * @param position
-	 * @param color
-	 */
+    /**
+     * Method saveOldFeatureColor.
+     * Diese Methode wird von der Klasse MAPKMeansClusterer
+     * überschrieben, da bei diesem Algorithmus notwendig ist,
+     * sich das Merkmalsbild der vorigen Iteration zu merken.
+     * 
+     * @param position
+     * @param color
+     */
     protected void saveOldFeatureColor(int pos, int color) {
     }
     
-	/**
-	 * Method getCliquesPotential.
-	 * Diese Methode liefert in dieser Klasse null zurück.
-	 * Wird von der Klasse MAPKMeansClusterer überschrieben.
-	 * 
-	 * @param position Position des Bildpunktes
-	 * @param f Numer des Merkmals
-	 * @return double das berechnete Cliquenpotential Vc.
-	 */
+    /**
+     * Method getCliquesPotential.
+     * Diese Methode liefert in dieser Klasse null zurück.
+     * Wird von der Klasse MAPKMeansClusterer überschrieben.
+     * 
+     * @param position Position des Bildpunktes
+     * @param f Numer des Merkmals
+     * @return double das berechnete Cliquenpotential Vc.
+     */
     protected double getCliquesPotential(int pos, int f) {
         return 0;
     }

@@ -13,7 +13,7 @@ package org.wewi.medimg.image.filter;
 public final class GaussianKernel extends Kernel {
     private double stddev;
 
-	public GaussianKernel(int dim, double stddev) {
+    public GaussianKernel(int dim, double stddev) {
         super();
         this.dim = dim;
         margin = dim/2;
@@ -31,7 +31,7 @@ public final class GaussianKernel extends Kernel {
                 setValue(i, j, value);        
             }    
         }
-	}
+    }
     
     private double gaussian(int x, int y, double stddev) {
         return 1/(2*Math.PI*stddev*stddev) *

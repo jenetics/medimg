@@ -56,9 +56,9 @@ final class SliceViewerToolPanel extends JPanel {
             
             //Adding the listener
             slider.addChangeListener(new ChangeListener() {
-				public void stateChanged(ChangeEvent e) {
+                public void stateChanged(ChangeEvent e) {
                     zoomChanged();   
-				}
+                }
             });
         }
         

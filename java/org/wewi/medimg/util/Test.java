@@ -117,16 +117,16 @@ public class Test {
     }
     
     public static void test5() {
-    	Image img = new ImageData(181, 218, 181);
-    	Timer timer = new Timer("SetTest");
-    	
+        Image img = new ImageData(181, 218, 181);
+        Timer timer = new Timer("SetTest");
+        
         timer.start();
         for (int i = 0; i < 150; i++) {
             for (int j = 0; j < 150; j++) {
                 for (int k = 0; k < 150; k++) {
-                    img.setColor(i, j, k, i);			
-                }	
-        	}	
+                    img.setColor(i, j, k, i);            
+                }    
+            }    
         }
         timer.stop();
         timer.print();  
@@ -169,7 +169,7 @@ public class Test {
 
         
          
-    	
+        
     }
     
     public static void test6() {
@@ -200,13 +200,13 @@ public class Test {
     public static void test7() {
         SAXBuilder builder = new SAXBuilder();
         try {
-			Document doc = builder.build(new URL("http://www.entwickler.com/"));
+            Document doc = builder.build(new URL("http://www.entwickler.com/"));
             System.out.println(doc);
-		} catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             System.out.println("Fehler: " + e);
-		} catch (JDOMException e) {
+        } catch (JDOMException e) {
             System.out.println("Fehler: " + e);
-		}
+        }
            
     }
     

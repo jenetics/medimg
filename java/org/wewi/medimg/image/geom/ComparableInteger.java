@@ -24,32 +24,32 @@ final class ComparableInteger extends Number implements Comparable {
         return (value - integer.value);
     }
     
-	/**
-	 * @see java.lang.Number#doubleValue()
-	 */
-	public double doubleValue() {
-		return (double)value;
-	}
+    /**
+     * @see java.lang.Number#doubleValue()
+     */
+    public double doubleValue() {
+        return (double)value;
+    }
 
-	/**
-	 * @see java.lang.Number#floatValue()
-	 */
-	public float floatValue() {
-		return (float)value;
-	}
+    /**
+     * @see java.lang.Number#floatValue()
+     */
+    public float floatValue() {
+        return (float)value;
+    }
 
-	/**
-	 * @see java.lang.Number#intValue()
-	 */
-	public int intValue() {
-		return value;
-	}
+    /**
+     * @see java.lang.Number#intValue()
+     */
+    public int intValue() {
+        return value;
+    }
 
-	/**
-	 * @see java.lang.Number#longValue()
-	 */
-	public long longValue() {
-		return (long)value;
-	}
+    /**
+     * @see java.lang.Number#longValue()
+     */
+    public long longValue() {
+        return (long)value;
+    }
 
 }

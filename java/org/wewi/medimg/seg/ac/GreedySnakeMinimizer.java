@@ -32,27 +32,27 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         }
         
         /**
-		 * @see org.wewi.medimg.alg.AlgorithmIterator#getInterimResult()
-		 */
-		public Object getInterimResult() throws UnsupportedOperationException {
-			return contour;
-		}
+         * @see org.wewi.medimg.alg.AlgorithmIterator#getInterimResult()
+         */
+        public Object getInterimResult() throws UnsupportedOperationException {
+            return contour;
+        }
 
-		/**
-		 * @see org.wewi.medimg.alg.AlgorithmIterator#hasNextIteration()
-		 */
-		public boolean hasNext() {
+        /**
+         * @see org.wewi.medimg.alg.AlgorithmIterator#hasNextIteration()
+         */
+        public boolean hasNext() {
             System.out.println("" + contourEnergy + "-" + newContourEnergy);
-			return Math.abs(contourEnergy - newContourEnergy) > ERROR_LIMIT;
-		}
+            return Math.abs(contourEnergy - newContourEnergy) > ERROR_LIMIT;
+        }
 
-		/**
-		 * @see org.wewi.medimg.alg.AlgorithmIterator#nextIteration()
-		 */
-		public void next() {
+        /**
+         * @see org.wewi.medimg.alg.AlgorithmIterator#nextIteration()
+         */
+        public void next() {
             ++iterationCount;
             iteration();
-		}
+        }
 
     } 
     /**************************************************************************/
@@ -73,13 +73,13 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
     
     private int iterationCount = 0;
 
-	/**
-	 * Constructor for GreedySnakeMinimizer.
-	 */
-	public GreedySnakeMinimizer(Image image, ActiveContour contour) {
+    /**
+     * Constructor for GreedySnakeMinimizer.
+     */
+    public GreedySnakeMinimizer(Image image, ActiveContour contour) {
         //this(image, contour, new EdgeOuterEnergy(image));
         this(image, contour, new GVFOuterEnergy(image));
-	}
+    }
     
     public GreedySnakeMinimizer(Image image, ActiveContour contour, OuterEnergyFunction function) {
         super();
@@ -179,13 +179,13 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
     }
 
 
-	public ActiveContour minimize() {
+    public ActiveContour minimize() {
         for (AlgorithmIterator it = iterator(); it.hasNext();) {
             it.next();    
         }
         
         return contour;              
-	}
+    }
     
     /**
      * Sets the outerEnergyFunction.
@@ -196,9 +196,9 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
     }    
 
 
-	public ActiveContour getActiveContour() {
-		return contour;
-	}
+    public ActiveContour getActiveContour() {
+        return contour;
+    }
     
     public int getIterations() {
         return iterationCount;    

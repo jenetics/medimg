@@ -16,8 +16,8 @@ public class SegmenterEnum extends Enumeration {
     public static final SegmenterEnum MAP_CLUSTERER = 
                       new SegmenterEnum("Maximum a posteriori Clusterer");
 
-	public static final SegmenterEnum[] ENUMERATION = 
-	                          {ML_CLUSTERER, MAP_CLUSTERER};
+    public static final SegmenterEnum[] ENUMERATION = 
+                              {ML_CLUSTERER, MAP_CLUSTERER};
     
     private String name;
     private static int refCount = 0;  
@@ -27,6 +27,6 @@ public class SegmenterEnum extends Enumeration {
     }
     
     public String toString() {
-    	return name;	
+        return name;    
     }
 }

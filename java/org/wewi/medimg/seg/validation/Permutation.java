@@ -17,11 +17,11 @@ final class Permutation {
     private long pos;
     private long l;
 
-	/**
-	 * Constructor for Permutation.
-	 */
-	public Permutation(int[] length) {
-		super();
+    /**
+     * Constructor for Permutation.
+     */
+    public Permutation(int[] length) {
+        super();
         this.length = length;
         
         current = new int[length.length];
@@ -33,7 +33,7 @@ final class Permutation {
             l *= length[i];    
         }
 
-	}
+    }
     
     public boolean hasNext() {
         return pos < l;    

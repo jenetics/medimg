@@ -12,12 +12,12 @@ import org.wewi.medimg.image.geom.Point2D;
  */
 public final class ActivePolygonFactory {
 
-	/**
-	 * Constructor for ActivePolygonFactory.
-	 */
-	private ActivePolygonFactory() {
-		super();
-	}
+    /**
+     * Constructor for ActivePolygonFactory.
+     */
+    private ActivePolygonFactory() {
+        super();
+    }
 
 
     public static ActiveContour createCircle(Point2D center, int rad, int nodes) {

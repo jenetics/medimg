@@ -118,14 +118,14 @@ class AbstractImageHeader implements ImageHeader {
         
         StringOutputStream sout = new StringOutputStream();
         ObjectOutputStream oout;
-		try {
-			oout = new ObjectOutputStream(sout);
+        try {
+            oout = new ObjectOutputStream(sout);
             oout.writeObject(cc);
             oout.close(); 
             element.addContent(wordWrap(sout.getOutputString()));
-		} catch (IOException e) {
+        } catch (IOException e) {
             //do nothing here
-		}      
+        }      
         
         return element;
     }
@@ -142,20 +142,20 @@ class AbstractImageHeader implements ImageHeader {
         }
         
         ColorConversion cc = new GreyColorConversion();
-		try {
+        try {
             StringInputStream sin = new StringInputStream(removeNewLine(element.getTextTrim()));          
             ObjectInputStream oin = new ObjectInputStream(sin);
             cc = (ColorConversion)oin.readObject();
-		} catch (Exception e) {
+        } catch (Exception e) {
             //Plan B
             logger.info("Plan B (ColorConversion): " + e);
             System.out.println(e);
             String clazz = element.getAttributeValue("class");
             try {
-    			cc = (ColorConversion)Class.forName(clazz).newInstance();
-    		} catch (Exception ce){
+                cc = (ColorConversion)Class.forName(clazz).newInstance();
+            } catch (Exception ce){
             }
-		}
+        }
         
         
         return cc;
@@ -235,7 +235,7 @@ class AbstractImageHeader implements ImageHeader {
     }
     
     /**
-     * Writing the Header in XML format.	
+     * Writing the Header in XML format.    
      */
     private void writeXML(OutputStream out) throws IOException {
         Element root = new Element("ImageHeader");
@@ -266,10 +266,10 @@ class AbstractImageHeader implements ImageHeader {
         SAXBuilder builder = new SAXBuilder();
         Document doc = null;
         try {
-			doc = builder.build(in);
-		} catch (JDOMException e) {
+            doc = builder.build(in);
+        } catch (JDOMException e) {
             throw new IOException("AbstractImageHeader: " + e.toString()); 
-		}
+        }
         
         Element root = doc.getRootElement();
         
@@ -288,34 +288,34 @@ class AbstractImageHeader implements ImageHeader {
     }
     
     
-	/**
-	 * @see org.wewi.medimg.image.ImageHeader#read(InputStream)
-	 */
-	public void read(InputStream in) throws IOException {
+    /**
+     * @see org.wewi.medimg.image.ImageHeader#read(InputStream)
+     */
+    public void read(InputStream in) throws IOException {
         readXML(in);
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageHeader#write(OutputStream)
-	 */
-	public void write(OutputStream out) throws IOException {
+    /**
+     * @see org.wewi.medimg.image.ImageHeader#write(OutputStream)
+     */
+    public void write(OutputStream out) throws IOException {
         writeXML(out);
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.util.Nullable#isNull()
-	 */
-	public boolean isNull() {
-		return false;
-	}
+    /**
+     * @see org.wewi.medimg.util.Nullable#isNull()
+     */
+    public boolean isNull() {
+        return false;
+    }
 
 
-	/**
-	 * @see org.wewi.medimg.image.ImageHeader#getImageProperties()
-	 */
-	public ImageProperties getImageProperties() {
-		return properties;
-	}
+    /**
+     * @see org.wewi.medimg.image.ImageHeader#getImageProperties()
+     */
+    public ImageProperties getImageProperties() {
+        return properties;
+    }
     
     public void setImageProperties(ImageProperties properties){
         this.properties = properties;

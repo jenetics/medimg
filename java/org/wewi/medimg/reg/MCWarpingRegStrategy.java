@@ -243,12 +243,12 @@ public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
     }
     
     public String toString() {
-    	return "MC-Warping";
+        return "MC-Warping";
     
     }
     
     public String getRegistratorName() {
-    	return "MC-Warping";
+        return "MC-Warping";
     
     }    
 }

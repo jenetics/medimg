@@ -10,12 +10,12 @@ package org.wewi.medimg.image;
  */
 public class RGBAColorConversion implements ColorConversion {
 
-	/**
-	 * Constructor for RGBAColorConversion.
-	 */
-	public RGBAColorConversion() {
-		super();
-	}
+    /**
+     * Constructor for RGBAColorConversion.
+     */
+    public RGBAColorConversion() {
+        super();
+    }
 
     /**
      * @see org.wewi.medimg.image.ColorConversion#convert(int[])

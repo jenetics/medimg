@@ -10,18 +10,18 @@ package org.wewi.medimg.image.ops;
  */
 public class AddFunction implements BinaryFunction {
 
-	/**
-	 * Constructor for AddFunction.
-	 */
-	public AddFunction() {
-		super();
-	}
+    /**
+     * Constructor for AddFunction.
+     */
+    public AddFunction() {
+        super();
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ops.BinaryFunction#process(int, int)
-	 */
-	public int process(int value1, int value2) {
-		return value1 + value2;
-	}
+    /**
+     * @see org.wewi.medimg.image.ops.BinaryFunction#process(int, int)
+     */
+    public int process(int value1, int value2) {
+        return value1 + value2;
+    }
 
 }

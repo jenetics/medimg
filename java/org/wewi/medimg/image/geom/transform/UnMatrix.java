@@ -54,12 +54,12 @@ public final class UnMatrix {
     private double[] tran = new double[16];
         
 
-	/**
-	 * Constructor for UnMatrix.
-	 */
-	public UnMatrix(Matrix4d matrix) {
-		unmatrix(new Matrix4d(matrix));
-	}
+    /**
+     * Constructor for UnMatrix.
+     */
+    public UnMatrix(Matrix4d matrix) {
+        unmatrix(new Matrix4d(matrix));
+    }
     
     public UnMatrix(double[] matrix) {
         unmatrix(new Matrix4d(matrix));
