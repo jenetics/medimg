@@ -2,16 +2,15 @@
  * Created on 21.11.2002 13:34:15
  *
  */
-package org.wewi.medimg.math.vec;
+package org.wewi.medimg.math.vec.ops;
 
-import org.wewi.medimg.math.vec.ops.*;
-import org.wewi.medimg.math.vec.ops.*;
+import org.wewi.medimg.math.vec.GridVectorField;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class GridVectorFieldTransformer {
+public final class GridVectorFieldTransformer {
     private GridVectorField field;
     private VectorFunction transformer;
 

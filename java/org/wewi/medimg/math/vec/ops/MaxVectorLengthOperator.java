@@ -2,10 +2,9 @@
  * Created on 21.11.2002 13:50:00
  *
  */
-package org.wewi.medimg.math;
+package org.wewi.medimg.math.vec.ops;
 
-import org.wewi.medimg.math.vec.*;
-import org.wewi.medimg.math.vec.*;
+import org.wewi.medimg.math.MathUtil;
 
 /**
  * @author Franz Wilhelmstötter

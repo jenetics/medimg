@@ -10,7 +10,7 @@ package org.wewi.medimg.math.vec;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-final class DoubleDataArray implements RealDataArray {
+public final class DoubleDataArray implements RealDataArray {
     private double[][][][] data;
     
     private int sizeX;
