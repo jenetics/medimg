@@ -90,7 +90,7 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
             for (int f = 0; f < k; f++) {
                 distance = mean[f] - (double)color;
                 distance *= distance;
-                cp = getCliquenPotential(i, f); 
+                cp = getCliquesPotential(i, f); 
                 distance += cp;
                 if (distance < minDistance) {
                     minDistanceFeature = f;
@@ -140,36 +140,8 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
     protected void saveOldFeatureColor(int pos, int color) {
     }
     
-    protected double getCliquenPotential(int pos, int f) {
+    protected double getCliquesPotential(int pos, int f) {
         return 0;
-    }
-    
-    
-    
-    
-    
-    public static void main(String[] args) {
-        try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-                                                new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
-            reader.setRange(new Range(50,100));
-            reader.read();
-            Image mrt = reader.getImage();
-            
-            //Clusterer clusterer = new MLKMeansClusterer(4);
-            Clusterer clusterer = new MAPKMeansClusterer(4);
-            Image segimg = clusterer.segment(mrt);
-            
-            ImageWriter writer = new TIFFWriter(segimg, new File("C:/Temp/outhead"));
-            writer.setColorConversion(new FeatureColorConversion());
-            writer.write();
-            
-            
-        } catch (Exception e) {
-            System.out.println("TESTFEHLER: " + e);
-            e.printStackTrace();
-        }
-        
     }
     
 }

@@ -14,8 +14,8 @@ import org.wewi.medimg.image.Image;
  * @author  Franz Wilhelmstötter
  */
 public class MAPKMeansClusterer extends MLKMeansClusterer {
-    private final static double BETA = 0.35;
-    private final static double BETA_SQRT2 = Math.sqrt(BETA);  
+    private static double BETA = 0.35;
+    private static double BETA_SQRT2 = Math.sqrt(BETA);  
     
     private Image segimgOld;
     private int size;
@@ -37,7 +37,7 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
         segimgOld.setColor(pos, color);
     }
     
-    protected double getCliquenPotential(int pos, int f) {
+    protected double getCliquesPotential(int pos, int f) {
         double Vc = 0.0;
 
         if (oldPos != pos) {
@@ -62,6 +62,15 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
         }
         
         return Vc;
+    }
+    
+    public void setBeta(double b) {
+        BETA = b;
+        BETA_SQRT2 = Math.sqrt(BETA);
+    }
+    
+    public double getBeta() {
+        return BETA;
     }
     
 }

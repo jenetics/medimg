@@ -6,8 +6,6 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.QualityMeasure;
-
 import org.wewi.medimg.seg.ImageSegmentationStrategy;
 import org.wewi.medimg.seg.SegmentationEvent;
 import org.wewi.medimg.seg.ModelBasedSegmentation;
@@ -225,14 +223,6 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         //return new ModelBasedMLSegmentation();
         return null;
     }
-    
-    public QualityMeasure getQualityMeasure() {
-        return new QualityMeasure() {
-                        public double quality() {
-                            return 0;
-                        }
-                    };
-    } 
     
     public GaussianDistribution[] getFeatureDistrubution() {
         return featureDistribution;
