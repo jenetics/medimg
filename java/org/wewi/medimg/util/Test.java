@@ -41,7 +41,6 @@ import org.wewi.medimg.image.filter.ErosionFilter;
 import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.Kernel;
 import org.wewi.medimg.image.filter.LinearNormalizeFilter;
-import org.wewi.medimg.image.filter.TresholdFilter;
 import org.wewi.medimg.image.filter.UnaryPointTransformerFilter;
 import org.wewi.medimg.image.io.ImageIOException;
 import org.wewi.medimg.image.io.ImageReader;
@@ -54,13 +53,12 @@ import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.image.ops.AnalyzerUtils;
 import org.wewi.medimg.image.ops.BinaryPointTransformer;
-import org.wewi.medimg.image.ops.LinearNormalizeFunction;
 import org.wewi.medimg.image.ops.MinMaxFunction;
 import org.wewi.medimg.image.ops.RandomFunction;
 import org.wewi.medimg.image.ops.SubFunction;
-import org.wewi.medimg.image.ops.UnaryFunction;
 import org.wewi.medimg.image.ops.UnaryPointTransformer;
 import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
+import org.wewi.medimg.image.statistic.SecondOrder;
 import org.wewi.medimg.math.GridVectorField;
 import org.wewi.medimg.math.GridVectorFieldTransformer;
 import org.wewi.medimg.math.MathUtil;
@@ -70,12 +68,9 @@ import org.wewi.medimg.math.VectorFieldAnalyzer;
 import org.wewi.medimg.math.VectorFieldImageCanvasAdapter;
 import org.wewi.medimg.math.fft.ImageDFT;
 import org.wewi.medimg.math.fft.NaiveDFT1D;
-import org.wewi.medimg.math.fft.RecursiveFFT1D;
 import org.wewi.medimg.math.geom.Dimension2D;
 import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
-import org.wewi.medimg.image.statistic.*;
-import org.wewi.medimg.image.filter.*;
 
 
 /**
@@ -128,7 +123,7 @@ public class Test {
         }
         timer.stop();
         timer.print();  
-        
+        /*
         timer.start();
         for (int i = img.getMinX(); i <= img.getMaxX(); i++) {
             for (int j = img.getMinY(); j <= img.getMaxY(); j++) {
@@ -163,7 +158,7 @@ public class Test {
         }
         timer.stop();
         timer.print();
-        
+        */
 
         
          
@@ -607,7 +602,7 @@ public class Test {
     
     public static void test21() {
         try {
-            String modelPath = "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/nhead/seg.model";
+            String modelPath = "Z:/Workspace/Projekte/Diplom/code/data/nhead/seg.ml.t1.n9.rf20";
             ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(), modelPath);
             reader.read();
             
@@ -618,7 +613,7 @@ public class Test {
             ImageFilter filter = new LinearNormalizeFilter(model, 0, 255);
             filter.filter();
             
-            ImageWriter writer = new TIFFWriter(filter.getImage(), "/home/fwilhelm/asdf");
+            ImageWriter writer = new TIFFWriter(filter.getImage(), "c:/seg.ml.var.t1.n9.rf20");
             writer.write();
         } catch (Exception e) {
             e.printStackTrace();
@@ -631,7 +626,7 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test20();
+        test5();
     }
     
 }

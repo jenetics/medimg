@@ -6,10 +6,12 @@
 
 package org.wewi.medimg.seg.validation;
 
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.ops.*;
-import org.wewi.medimg.image.filter.*;
-import org.wewi.medimg.image.statistic.*;
+import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ROI;
+import org.wewi.medimg.image.ops.AnalyzerUtils;
+import org.wewi.medimg.image.ops.BinaryPointAnalyzer;
+import org.wewi.medimg.image.ops.MutualInformationOperator;
 
 /**
  *

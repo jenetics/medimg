@@ -76,8 +76,8 @@ public class ErrorListPlot extends javax.swing.JFrame {
         m[0] = mean;
         DefaultCategoryDataset lineData = new DefaultCategoryDataset(m);            
         
-        String xTitle = "Gibbspotential b";
-        String yTitle = "Gesamtfehlerrate";
+        String xTitle = "Anzahl der Merkmale";
+        String yTitle = "Gesamtfehlerrate"; 
         HorizontalCategoryAxis xAxis = new HorizontalCategoryAxis(xTitle);
         VerticalNumberAxis yAxis = new VerticalNumberAxis(yTitle);        
         OverlaidVerticalCategoryPlot plot = new 

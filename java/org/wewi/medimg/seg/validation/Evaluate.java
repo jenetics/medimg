@@ -15,9 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.wewi.medimg.image.ops.MutualInformation;
 import org.wewi.medimg.math.MathUtil;
-import org.wewi.medimg.util.AccumulatorArray; 
 
 /**
  * @author Franz Wilhelmstötter
@@ -92,7 +90,7 @@ public class Evaluate {
     private void init() {
         files = dir.listFiles(new FileFilter() {
                                         public boolean accept(File file) {
-                                            return file.toString().endsWith(".xml"); 
+                                            return file.toString().toLowerCase().endsWith(".xml"); 
                                         }   
                                   });                           
     }
@@ -106,9 +104,9 @@ public class Evaluate {
             Protocol protocol = new Protocol(files[i]);
             
             Integer k = new Integer(protocol.getK());
-            MutualInformation mi = new MutualInformation(protocol.getAccu());
-            double error = mi.getMutualInformation();            
-            //double error = protocol.getOverallError();
+            //MutualInformation mi = new MutualInformation(protocol.getAccu());
+            //double error = mi.getMutualInformation();            
+            double error = protocol.getOverallError();
             
             if (!ktable.containsKey(k)) {
                 ktable.put(k, new Vector());      
@@ -398,12 +396,13 @@ public class Evaluate {
     
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         Evaluate eval = new Evaluate(new File(
-         //"C:/Workspace/fwilhelm/Projekte/Diplom/code/data/validation/map/protocols/t1.n9.rf20"));
-        "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/validation/map/protocols"));        eval.evalBETAMutualInformation();
+         "C:/Workspace/Projekte/Diplom/code/data/validation/ml/protocols/t1.n9.rf20"));
+        //"/home/fwilhelm/Workspace/Projekte/Diplom/code/data/validation/map/protocols"));        
+        //eval.evalBETAMutualInformation();
         //eval.evalBETAOverallError(); 
-        //eval.evalNoOfIterations();
+        eval.evalNoOfIterations();
         //eval.evalKOverallError();
          
     }

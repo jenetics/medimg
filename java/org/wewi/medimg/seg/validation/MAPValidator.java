@@ -4,27 +4,25 @@
  */
 package org.wewi.medimg.seg.validation;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.*;
-import java.text.*;
-
+import java.text.NumberFormat;
 import java.util.Properties;
 
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
-import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ops.ColorRangeOperator;
-import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.ImageHeader;
+import org.wewi.medimg.image.io.ImageReader;
+import org.wewi.medimg.image.io.RawImageReader;
+import org.wewi.medimg.image.io.TIFFReader;
+import org.wewi.medimg.image.statistic.SecondOrder;
 import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
-import org.wewi.medimg.util.AccumulatorArray;
-import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.statistic.*;
 
 /**
  * @author Franz Wilhelmstötter
@@ -77,7 +75,7 @@ public class MAPValidator {
         
         //Segmentationprocedure   
         startTime = System.currentTimeMillis();
-        targetImage = clusterer.segment(sourceImage);
+        //targetImage = clusterer.segment(sourceImage);
         stopTime = System.currentTimeMillis();
         
         Properties imgProp = new Properties();
@@ -86,7 +84,7 @@ public class MAPValidator {
         //targetImage.getHeader().addImageProperties(imgProp);
         
         //ValidationMeasure
-        ValidationMeasure measure = /*new VarianceImageMeasure();//*/new SaveImageMeasure();//new ReverseMLMeasure();//new MIMeasure();
+        ValidationMeasure measure = new VarianceImageMeasure();//new SaveImageMeasure();//new ReverseMLMeasure();//new MIMeasure();
         double err = measure.measure(modelImage, targetImage);
         
         /*
@@ -160,7 +158,7 @@ public class MAPValidator {
         
         XMLOutputter out = new XMLOutputter("    ", true);
         
-        /*
+        
         try {
             out.output(doc, new FileOutputStream(protocolFile));
         } catch (FileNotFoundException e) {
@@ -168,14 +166,14 @@ public class MAPValidator {
         } catch (IOException e) {
             System.err.println("MAPValidator: " + e);
         }
-        */
+        
         
     }
     
     
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) {   
         NumberFormat format = NumberFormat.getIntegerInstance();
         format.setMaximumFractionDigits(3);
         format.setMinimumFractionDigits(3);
@@ -183,14 +181,14 @@ public class MAPValidator {
         
         try {
         
-            String imagePath = "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/segimg/t1.n9.rf20";
+            String imagePath = "Z:/Workspace/Projekte/Diplom/code/data/segimg/t1.n9.rf20";
             File[] files = (new File(imagePath)).listFiles();
-            File modelFile = new File("/home/fwilhelm/Workspace/Projekte/Diplom/code/data/nhead/seg.model");
+            File modelFile = new File("Z:/Workspace/Projekte/Diplom/code/data/nhead/seg.model");
         
             ImageReader tiffReader = new TIFFReader(ImageDataFactory.getInstance(), modelFile);
             tiffReader.read();
             Image modelImage = tiffReader.getImage();
-            SecondOrder so = new SecondOrder(modelImage);
+            SecondOrder so = new SecondOrder(modelImage); 
             modelImage = so.varianceImage();
             
             for (int i = 0; i < files.length; i++) {
@@ -200,7 +198,7 @@ public class MAPValidator {
                 
                 Image image = reader.getImage();
                 //System.out.println(image);
-                ImageHeader header = image.getHeader();
+                ImageHeader header = image.getHeader(); 
                 
                 Properties prop = header.getImageProperties();
                 int k = Integer.parseInt(prop.getProperty("k"));
@@ -215,14 +213,14 @@ public class MAPValidator {
                 validator.setTargetImage(image);
                 validator.setModelImage(modelImage);
                 validator.setProtocolFile(
-                "/home/fwilhelm/Workspace/Projekte/Diplom/code/data/validation/map/protocols/" +
-                format.format(k) + ":" + format.format(beta) + ":" + System.currentTimeMillis() + ".xml");
+                "C:/Workspace/Projekte/Diplom/code/data/validation/map/protocols/" +
+                format.format(k) + "-" + format.format(beta) + "-" + System.currentTimeMillis() + ".xml");
                 
                 validator.validate();
                 
             }
             
-        } catch (Exception e) {
+        } catch (Exception e) { 
             e.printStackTrace();
         }
         
