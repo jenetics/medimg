@@ -70,6 +70,17 @@ public class ImagePanel extends JPanel {
             }
             
             return point;  
+        }
+        
+        public void imagePointToPanelPoint(double[] imagePoint, double[] panelPoint) {
+            panelPoint[0] = imagePoint[0]*(((double)getWidth()-2d*ox)/(double)sizeX)+(double)ox;
+            panelPoint[1] = imagePoint[1]*(((double)getHeight()-2d*oy)/(double)sizeY)+(double)oy;                                                    
+                            
+        }
+        
+        public void panelPointToImagePoint(double[] panelPoint, double[] imagePoint) {
+            imagePoint[0] = (panelPoint[0]-ox)*((double)sizeX/((double)getWidth()-2*ox));
+            imagePoint[1] = (panelPoint[0]-oy)*((double)sizeY/((double)getHeight()-2*oy));            
         }   
     }
     /**************************************************************************/

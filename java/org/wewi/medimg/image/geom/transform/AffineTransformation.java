@@ -239,6 +239,8 @@ public class AffineTransformation implements InterpolateableTransformation,
          */
         DoubleMatrix1D pdum3 = cross(rot.viewColumn(1), rot.viewColumn(2));
         double temp = rot.viewColumn(0).zDotProduct(pdum3);
+        //Algebra alg = new Algebra();
+        //double det = alg.det(rot);
         if (temp < 0) {
             for (int i = 0; i < 3; i++ ) {
                 tran[U_SCALEX+i] *= -1;
@@ -403,13 +405,13 @@ public class AffineTransformation implements InterpolateableTransformation,
             }
         }
 
-        A.zMult(B, B, 1, 0, false, false);
+        DoubleMatrix2D C = A.zMult(B, null, 1, 0, false, false);
 
         pos = 0;
         double[] m = new double[12];
         for (int i  = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                m[pos] = B.getQuick(i, j);
+                m[pos] = C.getQuick(i, j);
                 pos++;
             }
         }
@@ -705,7 +707,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         a = transInterpol[U_TRANSX];
         b = transInterpol[U_TRANSY];
         c = transInterpol[U_TRANSZ];       
-        AffineTransformation At =getTranslateInstance(new double[]{a, b, c}); 
+        AffineTransformation At = getTranslateInstance(new double[]{a, b, c}); 
         
                  
         return (AffineTransformation)At.concatenate(Ar.concatenate(Ash.concatenate(As)));

@@ -50,7 +50,7 @@ public abstract class AbstractGridVectorField implements GridVectorField {
             getGridStartPoint(xyz[0], xyz[1], xyz[2], start);
             getGridEndPoint(xyz[0], xyz[1], xyz[2], end);
             
-            ++pos;
+            pos++;
 		}
         
         private void getCoordinates(int pos, int[] coordinate) {
@@ -111,9 +111,9 @@ public abstract class AbstractGridVectorField implements GridVectorField {
     }
     
     public void getGridStartPoint(int gridX, int gridY, int gridZ, double[] startPoint) {
-        startPoint[0] = origin.getX() + grid[0]*stride[0];
-        startPoint[1] = origin.getY() + grid[1]*stride[1];
-        startPoint[2] = origin.getZ() + grid[2]*stride[2];
+        startPoint[0] = origin.getX() + gridX*stride[0];
+        startPoint[1] = origin.getY() + gridY*stride[1];
+        startPoint[2] = origin.getZ() + gridZ*stride[2];
     }   
     
     public void getGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
@@ -127,16 +127,16 @@ public abstract class AbstractGridVectorField implements GridVectorField {
     public void getVector(int gridX, int gridY, int gridZ, double[] vector) { 
         getGridEndPoint(gridX, gridY, gridZ, vector);
         
-        vector[0] -= (origin.getX() + grid[0]*stride[0]);
-        vector[1] -= (origin.getX() + grid[1]*stride[1]);
-        vector[2] -= (origin.getX() + grid[2]*stride[2]);    
+        vector[0] -= (origin.getX() + gridX*stride[0]);
+        vector[1] -= (origin.getY() + gridY*stride[1]);
+        vector[2] -= (origin.getZ() + gridZ*stride[2]);    
     }
     
     private double[] temp = new double[3];
     public void setVector(int gridX, int gridY, int gridZ, double[] vector) {
-        temp[0] = vector[0] + origin.getX() + grid[0]*stride[0];
-        temp[1] = vector[1] + origin.getX() + grid[1]*stride[1];
-        temp[2] = vector[2] + origin.getX() + grid[2]*stride[2];
+        temp[0] = vector[0] + origin.getX() + gridX*stride[0];
+        temp[1] = vector[1] + origin.getY() + gridY*stride[1];
+        temp[2] = vector[2] + origin.getZ() + gridZ*stride[2];
         data.set(gridX, gridY, gridZ, temp);
     }
 
@@ -148,6 +148,28 @@ public abstract class AbstractGridVectorField implements GridVectorField {
 	}
     
     public abstract Object clone();
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("ListPlotVectorField[{");
+        
+        double[] pt = new double[3];
+        double[] vec = new double[3];
+        for (int i = 0; i < getGridsX(); i++) {
+            for (int j = 0; j < getGridsY(); j++) {
+                getGridStartPoint(i, j, 0, pt);
+                getVector(i, j, 0, vec);
+                
+                buffer.append("{");
+                buffer.append("{").append(pt[0]).append(",").append(pt[1]).append("},");
+                buffer.append("{").append(vec[0]).append(",").append(vec[1]).append("}");
+                buffer.append("},\n");            
+            }    
+        }
+        
+        
+        return buffer.toString();            
+    }
 
 }
 

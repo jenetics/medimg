@@ -24,9 +24,9 @@ public class ScaleVectorFunction implements VectorFunction {
 	 * @see org.wewi.medimg.math.VectorFunction#transform(double[])
 	 */
 	public void transform(double[] vector) {
-        vector[0] *= vector[0];
-        vector[1] *= vector[1];
-        vector[2] *= vector[2];
+        vector[0] *= scale;
+        vector[1] *= scale;
+        vector[2] *= scale;
 	}
 
 }

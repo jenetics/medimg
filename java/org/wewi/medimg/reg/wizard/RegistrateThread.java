@@ -1,4 +1,7 @@
 package org.wewi.medimg.reg.wizard;
+
+public class RegistrateThread {
+}
 /*
  * RegistrateThread.java
  *

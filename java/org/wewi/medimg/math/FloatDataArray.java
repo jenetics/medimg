@@ -41,9 +41,9 @@ final class FloatDataArray implements RealDataArray {
      * @see org.wewi.medimg.image.geom.RealDataArray#set(int, int, int, int, double)
      */
     public void set(int x, int y, int z, double[] value) {
-        value[0] = data[x][y][z][0];
-        value[1] = data[x][y][z][1];
-        value[2] = data[x][y][z][2];        
+        data[x][y][z][0] = (float)value[0];
+        data[x][y][z][1] = (float)value[1];
+        data[x][y][z][2] = (float)value[2];        
     }
 
     /**

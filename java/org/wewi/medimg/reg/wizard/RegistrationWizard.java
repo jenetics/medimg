@@ -5,6 +5,10 @@
  */
 
 package org.wewi.medimg.reg.wizard;
+
+public class  RegistrationWizard {
+}
+
 /*
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;

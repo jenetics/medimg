@@ -6,9 +6,12 @@
 
 package org.wewi.medimg.util;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.swing.JFrame;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -17,10 +20,12 @@ import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.RGBColorConversion;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.filter.ConvolutionFilter;
 import org.wewi.medimg.image.filter.EdgeDetectionFilter;
+import org.wewi.medimg.image.filter.GradientFilter;
 import org.wewi.medimg.image.filter.Kernel;
 import org.wewi.medimg.image.filter.UnaryPointTransformerFilter;
 import org.wewi.medimg.image.io.ImageIOException;
@@ -33,6 +38,15 @@ import org.wewi.medimg.image.io.TIFFWriter;
 import org.wewi.medimg.image.ops.MaxFunction;
 import org.wewi.medimg.image.ops.MinMaxFunction;
 import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
+import org.wewi.medimg.math.GridVectorField;
+import org.wewi.medimg.math.GridVectorFieldTransformer;
+import org.wewi.medimg.math.MathUtil;
+import org.wewi.medimg.math.MaxVectorLengthOperator;
+import org.wewi.medimg.math.ScaleVectorFunction;
+import org.wewi.medimg.math.VectorField;
+import org.wewi.medimg.math.VectorFieldAnalyzer;
+import org.wewi.medimg.math.VectorFieldImageCanvasAdapter;
+import org.wewi.medimg.seg.ac.GradientVectorFlow;
 
 
 /**
@@ -210,13 +224,84 @@ public class Test {
         }        
     }
     
+    public static void test10() {
+        try {
+            
+            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+                                                 new File("C:/Workspace/kappa/kappa.3.tif"));
+            reader.read();
+            Image image = reader.getImage();
+            /*JFrame frame = new JFrame("HelloWorldSwing");
+            ImagePanel ip = new ImagePanel(image);
+            frame.getContentPane().add(ip);
+
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+            frame.show();
+            frame.repaint();
+            ip.repaintImage();*/
+            
+            
+            /*
+            GradientFilter filter = new GradientFilter(image);
+            filter.filter();
+            VectorField field = filter.getGradientVectorField();
+            System.out.println(field);
+            */
+            
+            GradientVectorFlow flow = new GradientVectorFlow(image);
+            flow.start();
+            GridVectorField field = (GridVectorField)flow.getGradientVectorField();
+            
+            MaxVectorLengthOperator op = new MaxVectorLengthOperator(); 
+            VectorFieldAnalyzer analyzer = new VectorFieldAnalyzer(field, op);
+            analyzer.analyze();
+            double scale = 1d/op.getMaxLength(); 
+            GridVectorFieldTransformer trans = new GridVectorFieldTransformer(field, 
+                                               new ScaleVectorFunction(scale)); 
+            trans.transform();            
+            
+            VectorFieldImageCanvasAdapter adapter = new VectorFieldImageCanvasAdapter(field);
+            JFrame frame2 = new JFrame("HelloWorldSwing");
+            ImagePanel ip2 = new ImagePanel(image);
+            ip2.setImageCanvas(adapter);
+            frame2.getContentPane().add(ip2);
+
+            frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame2.pack();
+            frame2.setVisible(true);
+            frame2.show();
+            frame2.repaint();
+            ip2.repaintImage();            
+            
+            ImageData id = new ImageData(image.getDimension());
+            double[] p = new double[3];
+            for (int i = 0; i <= id.getMaxX(); i++) {
+                for (int j = 0; j <= id.getMaxY(); j++) {
+                    field.getVector(i, j, 0, p);
+                    id.setColor(i, j, 0, (int)(256*Math.sqrt(MathUtil.sqr(p[0])+MathUtil.sqr(p[1]))));        
+                }    
+            }
+            ImageWriter writer = new TIFFWriter(id, new File("X:/out.tiff"));
+            writer.write();
+            
+            
+            
+            
+        } catch (Exception e) {
+            System.out.println("Fehler test10");
+            e.printStackTrace();    
+        }    
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test9();
+        test10();
     }
     
 }
