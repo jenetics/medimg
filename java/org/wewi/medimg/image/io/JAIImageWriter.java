@@ -44,20 +44,22 @@ abstract class JAIImageWriter extends ImageWriter {
         FileOutputStream out = new FileOutputStream(file);
         initEncoder(out);
         
-        int maxX = image.getMaxX();
-        int maxY = image.getMaxY();
-        BufferedImage bufferedImage = new BufferedImage(maxX+1, maxY+1, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage bufferedImage = new BufferedImage(image.getMaxX()-image.getMinX()+1, 
+                                                        image.getMaxY()-image.getMinY()+1, 
+                                                        BufferedImage.TYPE_3BYTE_BGR);
         ColorConversion colorConversion = image.getColorConversion();
         
+        int minX = image.getMinX();
+        int minY = image.getMinY();
         int[] pixel = new int[3];
-        for (int i = 0; i <= maxX; i++) {
-            for (int j = 0; j <= maxY; j++) { 
+        for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
+            for (int j = image.getMinY(), m = image.getMaxY(); j <= m; j++) { 
                 colorConversion.convert(image.getColor(i, j, slice), pixel);        
 
                 pixel[0] = 0x00FF & pixel[0];
                 pixel[1] = 0x00FF & pixel[1];
                 pixel[2] = 0x00FF & pixel[2];        
-                bufferedImage.setRGB(i, j, (int)((0x00 << 24)|(pixel[0] << 16)|(pixel[1] << 8)|pixel[2]));
+                bufferedImage.setRGB(i-minX, j-minY, (int)((0x00 << 24)|(pixel[0] << 16)|(pixel[1] << 8)|pixel[2]));
             }
         }
         
