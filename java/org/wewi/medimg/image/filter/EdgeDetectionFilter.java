@@ -10,6 +10,8 @@ import org.wewi.medimg.image.MarginImage;
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
+ * 
+ * @todo Codedoubeling with ConvolutionFilter!
  */
 public class EdgeDetectionFilter extends ImageFilter {
     private Kernel horizontalKernel;
@@ -53,21 +55,15 @@ public class EdgeDetectionFilter extends ImageFilter {
                 
                 //Berechnen der vertikalen Maske
                 verticalKernelSum = 0;
+                horizontalKernelSum = 0;
                 for (int k = -verticalKernel.getMargin(), n = verticalKernel.getMargin(); k <= n; k++) {
                     for (int l = -verticalKernel.getMargin(), m = verticalKernel.getMargin(); l <= m; l++) {
-                        verticalKernelSum += verticalKernel.getValue(k, l) * tempImage.getColor(i+k, j+l, minZ);       
+                        verticalKernelSum += verticalKernel.getValue(k, l) * tempImage.getColor(i+k, j+l, minZ); 
+                        horizontalKernelSum += horizontalKernel.getValue(k, l) * tempImage.getColor(i+k, j+l, minZ);      
                     } 
                 }
                 verticalKernelSum = Math.abs((verticalKernelSum/verticalKernel.getDivisor()) + 
                                              verticalKernel.getBias());
-                
-                //Berechnen der horizontalen Maske
-                horizontalKernelSum = 0;
-                for (int k = -verticalKernel.getMargin(), n = verticalKernel.getMargin(); k <= n; k++) {
-                    for (int l = -verticalKernel.getMargin(), m = verticalKernel.getMargin(); l <= m; l++) {
-                        horizontalKernelSum += horizontalKernel.getValue(k, l) * tempImage.getColor(i+k, j+l, minZ);       
-                    } 
-                }
                 horizontalKernelSum = Math.abs((horizontalKernelSum/horizontalKernel.getDivisor()) + 
                                              horizontalKernel.getBias());                
                  
