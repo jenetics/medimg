@@ -5,13 +5,17 @@
  */
 package org.wewi.medimg.math;
 
+
 import org.wewi.medimg.util.Mutable;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public abstract class MutableNumber extends Number implements Mutable, Cloneable {
+public abstract class MutableNumber extends Number 
+                                    implements Comparable,
+                                               Mutable, 
+                                               Cloneable {
 
     public void setValue(byte n) {
         setValue((int)n);

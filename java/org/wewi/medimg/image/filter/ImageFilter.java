@@ -41,7 +41,7 @@ public abstract class ImageFilter {
     /**
      * This method starts the filter process.
      */
-    public void filter() {
+    public final void filter() {
         if (component != null) {
             component.filter();
         }
