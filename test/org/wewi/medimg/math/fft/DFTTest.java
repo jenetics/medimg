@@ -11,7 +11,7 @@ import org.wewi.medimg.math.Complex;
 import junit.framework.TestCase;
 
 /**
- * @author Franz WilhelmstÃ¶tter
+ * @author Franz Wilhelmstötter
  * @version 0.1
  */
 public class DFTTest extends TestCase {
@@ -26,8 +26,8 @@ public class DFTTest extends TestCase {
     }
     
     public void assertEquals(Complex a, Complex b, double EPSILON) {
-        assertEquals(a.real(), b.real(), EPSILON);
-        assertEquals(a.imag(), b.imag(), EPSILON);    
+        assertEquals(a.getRe(), b.getRe(), EPSILON);
+        assertEquals(a.getIm(), b.getIm(), EPSILON);    
     }
 
 }

@@ -35,7 +35,7 @@ public class RandomFunctionTest extends TestCase {
         UnaryPointTransformer transformer = new UnaryPointTransformer(image, funct);
         transformer.transform();
         
-        MinMaxOperator op = new MinMaxOperator();
+        ColorRangeOperator op = new ColorRangeOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
         analyzer.analyze();
         
