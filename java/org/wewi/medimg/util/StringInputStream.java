@@ -8,111 +8,84 @@
  */
 package org.wewi.medimg.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
+
 
 /**
  * @author Franz Wilhelmstötter
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
+ * @version 0.1
  */
 public class StringInputStream extends InputStream {
-    private ByteBuffer buffer;
-    private byte[] raw;
-
-	/**
-	 * Constructor for StringInputStream.
-	 */
-	public StringInputStream(String data) {
-		super();
-        
-        raw = Base64.decode(data);
-        buffer = ByteBuffer.wrap(raw);
-	}
-
-	/**
-	 * @see java.io.InputStream#read()
-	 */
-	public int read() throws IOException {
-		return buffer.get();
-	}
+	private ByteArrayInputStream stream;
+    
+    public StringInputStream(String data) {
+        stream = new ByteArrayInputStream(Base64.decode(data));    
+    }
+    
 
 	/**
 	 * @see java.io.InputStream#available()
 	 */
 	public int available() throws IOException {
-		return Integer.MAX_VALUE;
+		return stream.available();
 	}
 
 	/**
 	 * @see java.io.InputStream#close()
 	 */
 	public void close() throws IOException {
-		raw = null;
-        buffer = null;
+		stream.close();
 	}
 
 	/**
 	 * @see java.io.InputStream#mark(int)
 	 */
 	public synchronized void mark(int m) {
+		stream.mark(m);
 	}
 
 	/**
 	 * @see java.io.InputStream#markSupported()
 	 */
 	public boolean markSupported() {
-		return false;
+		return stream.markSupported();
+	}
+
+	/**
+	 * @see java.io.InputStream#read()
+	 */
+	public int read() throws IOException {
+		return stream.read();
 	}
 
 	/**
 	 * @see java.io.InputStream#read(byte[], int, int)
 	 */
 	public int read(byte[] b, int offset, int length) throws IOException {
-        if (length < buffer.remaining()) {
-            buffer.get(b, offset, buffer.remaining());
-            return buffer.remaining();    
-        } else {
-            buffer.get(b, offset, length);
-            return length;
-        }
+		return stream.read(b, offset, length);
 	}
 
 	/**
 	 * @see java.io.InputStream#read(byte[])
 	 */
 	public int read(byte[] b) throws IOException {
-        if (b.length < buffer.remaining()) {
-            buffer.get(b);
-            return buffer.remaining();    
-        } else {
-            buffer.get(b);
-            return b.length;
-        }
+		return stream.read(b);
 	}
 
 	/**
 	 * @see java.io.InputStream#reset()
 	 */
 	public synchronized void reset() throws IOException {
-		buffer.position(0);
+		stream.reset();
 	}
 
 	/**
 	 * @see java.io.InputStream#skip(long)
 	 */
-	public long skip(long length) throws IOException {
-        if (length < buffer.remaining()) {
-            buffer.position(buffer.position()+(int)length);
-            return length;
-        } else {
-            buffer.position(buffer.limit()); 
-            return buffer.remaining();   
-        }
+	public long skip(long n) throws IOException {
+		return stream.skip(n);
 	}
 
 }
