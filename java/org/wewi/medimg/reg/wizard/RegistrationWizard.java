@@ -33,8 +33,6 @@ import org.wewi.medimg.reg.MonteCarloWarping;
 import org.wewi.medimg.reg.WeightPointTransformationImportance;
 import org.wewi.medimg.reg.pca.GlobalNonRigidPCARegistration;
 import org.wewi.medimg.reg.pca.GlobalRigidPCARegistration;
-import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
-import org.wewi.medimg.reg.pca.RigidPCARegistration;
 import org.wewi.medimg.viewer.ImageFileChooser;
 import org.wewi.medimg.viewer.ImageViewerSynchronizer;
 import org.wewi.medimg.viewer.Viewer;

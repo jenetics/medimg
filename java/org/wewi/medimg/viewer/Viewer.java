@@ -54,11 +54,11 @@ import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.RawImageReaderFactory;
 import org.wewi.medimg.reg.wizard.RegistrationWizard;
-import org.wewi.medimg.viewer.wizard.seg.SegmentationWizard;
 import org.wewi.medimg.seg.ac.ActiveContourWizard;
 import org.wewi.medimg.util.Singleton;
 import org.wewi.medimg.viewer.image.ImageViewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
+import org.wewi.medimg.viewer.wizard.seg.SegmentationWizard;
 import org.wewi.medimg.visualisation.Viewer3D;
 import org.wewi.medimg.visualisation.mc.wizard.MarchingCubeWizard;
 
