@@ -175,5 +175,51 @@ public final class NullImage implements Image, Nullable {
         } 
         return true;  
     }
+
+	/**
+	 * @see org.wewi.medimg.image.ImageAccess#setColor(int, int, int, double)
+	 */
+	public void setColor(int x, int y, int z, double color) {
+	}
+
+	/**
+	 * @see org.wewi.medimg.image.ImageAccess#setColor(int, double)
+	 */
+	public void setColor(int pos, double color) {
+	}
+
+	/**
+	 * @see org.wewi.medimg.image.ImageAccess#resetColor(double)
+	 */
+	public void resetColor(double color) {
+	}
+
+	/**
+	 * @see org.wewi.medimg.image.ImageAccess#getIntColor(int)
+	 */
+	public int getIntColor(int pos) {
+		return 0;
+	}
+
+	/**
+	 * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int)
+	 */
+	public double getDoubleColor(int pos) {
+		return 0;
+	}
+
+	/**
+	 * @see org.wewi.medimg.image.ImageAccess#getIntColor(int, int, int)
+	 */
+	public int getIntColor(int x, int y, int z) {
+		return 0;
+	}
+
+	/**
+	 * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int, int, int)
+	 */
+	public double getDoubleColor(int x, int y, int z) {
+		return 0;
+	}
     
 }
