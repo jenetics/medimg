@@ -1,4 +1,4 @@
-/*
+/**
  * ClusterPanel.java
  *
  * Created on 5. Februar 2002, 16:09
@@ -17,7 +17,8 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import org.wewi.medimg.math.geom.*;
+import org.wewi.medimg.math.geom.DataPoint;
+import org.wewi.medimg.math.geom.IntegerDataPoint;
 
 /**
  *
