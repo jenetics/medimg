@@ -17,6 +17,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ops.MinMaxOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
+import org.wewi.medimg.util.*;
 
 /**
  * @author Franz Wilhelmstötter
@@ -93,7 +94,7 @@ public class MAPValidator {
         param.addContent(Integer.toString(k));
         alg.addContent(param);
         param= new Element("Parameter");
-        param.setAttribute("name", "beta");
+        param.setAttribute("name", "b");
         param.setAttribute("type", Double.class.getName());
         param.addContent(Double.toString(beta));
         alg.addContent(param);

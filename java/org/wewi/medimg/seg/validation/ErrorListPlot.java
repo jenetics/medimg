@@ -52,9 +52,9 @@ public class ErrorListPlot extends javax.swing.JFrame {
         init();
     }
     /*
-    public ErrorListPlot(String title, double[] beta, double[] mean, double[] var) {
+    public ErrorListPlot(String title, double[] b, double[] mean, double[] var) {
         this.title = title;
-        this.beta = beta;
+        this.b = b;
         this.mean = mean;
         this.var = var;
         initComponents();
@@ -76,7 +76,7 @@ public class ErrorListPlot extends javax.swing.JFrame {
         m[0] = mean;
         DefaultCategoryDataset lineData = new DefaultCategoryDataset(m);            
         
-        String xTitle = "Gibbspotential beta";
+        String xTitle = "Gibbspotential b";
         String yTitle = "Gesamtfehlerrate";
         HorizontalCategoryAxis xAxis = new HorizontalCategoryAxis(xTitle);
         VerticalNumberAxis yAxis = new VerticalNumberAxis(yTitle);        

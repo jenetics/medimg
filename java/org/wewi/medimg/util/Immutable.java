@@ -5,7 +5,7 @@
 package org.wewi.medimg.util;
 
 /**
- * Tagginginterface zur Kennzeichnung von NICHT veränderbaren Klassen.
+ * Markerinterface zur Kennzeichnung von NICHT veränderbaren Klassen.
  * 
  * @author Franz Wilhelmstötter
  * @version 0.1

@@ -63,8 +63,9 @@ public final class Base64 {
 	public static byte[] decode(String base64) throws IllegalArgumentException {
 		try {
 			int pad = 0;
-			for (int i = base64.length() - 1; base64.charAt(i) == '='; i--)
+			for (int i = base64.length() - 1; base64.charAt(i) == '='; i--) {
 				pad++;
+            }
 			int length = base64.length() * 6 / 8 - pad;
 			byte[] raw = new byte[length];
 			int rawIndex = 0;

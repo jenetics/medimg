@@ -14,6 +14,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.wewi.medimg.util.*;
 
 /**
  * @author Franz Wilhelmstötter
@@ -68,7 +69,7 @@ public class Protocol {
             String name = param.getAttribute("name").getValue();
             if ("k".equals(name)) {
                 k = Integer.parseInt(param.getText());       
-            } else if ("beta".equals(name)) { 
+            } else if ("b".equals(name)) { 
                 beta = Double.parseDouble(param.getText());
             } else if ("image".equals(name)) {
                 Element image = param.getChild("ImageHeader");

@@ -57,6 +57,8 @@ import org.wewi.medimg.math.ScaleVectorFunction;
 import org.wewi.medimg.math.VectorFieldAnalyzer;
 import org.wewi.medimg.math.VectorFieldImageCanvasAdapter;
 import org.wewi.medimg.math.fft.ImageDFT;
+import org.wewi.medimg.math.fft.NaiveDFT1D;
+import org.wewi.medimg.math.fft.RecursiveFFT1D;
 import org.wewi.medimg.seg.ac.GVFIntegral;
 import org.wewi.medimg.seg.ac.GradientVectorFlow;
 
@@ -420,11 +422,11 @@ public class Test {
     public static void test14() {
         try {
             ImageReader reader = new PNGReader(ImageDataFactory.getInstance(),
-                                                 new File("C:/Image1.png"));
+                                                 new File("C:/Image2.png"));
             reader.read();
             Image image = reader.getImage();
             
-            ImageDFT dft = new ImageDFT();
+            ImageDFT dft = new ImageDFT(new NaiveDFT1D());
             ComplexImage cimage = dft.transform(image);
             
             Image absimage = new ComplexAmplitudeImage(cimage);

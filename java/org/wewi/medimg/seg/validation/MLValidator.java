@@ -19,6 +19,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ops.MinMaxOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
+import org.wewi.medimg.util.*;
 
 
 /**
