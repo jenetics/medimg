@@ -13,7 +13,7 @@ import org.wewi.medimg.util.KDTreePoint;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public interface DataPoint extends KDTreePoint, Cloneable {
+public interface DataPoint extends Cloneable {
     
     public DataPoint add(DataPoint p);
     
@@ -25,9 +25,19 @@ public interface DataPoint extends KDTreePoint, Cloneable {
     
     public double norm();
     
+    public DataPoint getNullInstance();
+    
+    public DataPoint getOneInstance();
+    
+    public int getDim();
+    
+    public Number getOrdinateNumber(int dim);
+    
     public boolean equals(Object obj);
     
     public Object clone();
     
     public String toString();
+    
+    public String toMathematicaString();
 }
