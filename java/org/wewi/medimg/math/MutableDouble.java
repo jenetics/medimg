@@ -4,40 +4,75 @@
  */
 package org.wewi.medimg.math;
 
-import org.wewi.medimg.util.Mutable;
-
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class MutableDouble extends java.lang.Number implements Mutable {
+public final class MutableDouble extends MutableNumber {
     private double value;
-
-	/**
-	 * Constructor for MutableDouble.
-	 */
-	public MutableDouble(double value) {
-		this.value = value;
-	}
+    
+    public MutableDouble(double v) {
+        value = v;
+    }
     
     public MutableDouble() {
-        this(0);    
+        value = 0;
     }
-    
-    
-    public void setValue(double value) {
-        this.value = value;    
-    }
-    
-    public double getValue() {
-        return value;   
-    }
+
+	/**
+	 * @see org.wewi.medimg.math.MutableNumber#setValue(byte)
+	 */
+	public void setValue(byte n) {
+        value = n;
+	}
+
+	/**
+	 * @see org.wewi.medimg.math.MutableNumber#setValue(short)
+	 */
+	public void setValue(short n) {
+        value = n;
+	}
+
+	/**
+	 * @see org.wewi.medimg.math.MutableNumber#setValue(int)
+	 */
+	public void setValue(int n) {
+        value = n;
+	}
+
+	/**
+	 * @see org.wewi.medimg.math.MutableNumber#setValue(long)
+	 */
+	public void setValue(long n) {
+        value = n;
+	}
+
+	/**
+	 * @see org.wewi.medimg.math.MutableNumber#setValue(float)
+	 */
+	public void setValue(float n) {
+        value = n;		
+	}
+
+	/**
+	 * @see org.wewi.medimg.math.MutableNumber#setValue(double)
+	 */
+	public void setValue(double n) {
+        value = n;	
+	}
     
     /**
-     * @see java.lang.Number#doubleValue().
+     * @see java.lang.Number#intValue()
      */
-    public double doubleValue() {
-        return value;
+    public int intValue() {
+        return (int)Math.round(value);
+    }
+
+    /**
+     * @see java.lang.Number#longValue()
+     */
+    public long longValue() {
+        return Math.round(value);
     }
 
     /**
@@ -48,17 +83,17 @@ public class MutableDouble extends java.lang.Number implements Mutable {
     }
 
     /**
-     * @see java.lang.Number#intValue()
+     * @see java.lang.Number#doubleValue()
      */
-    public int intValue() {
-        return (int)value;
-    }
+    public double doubleValue() {
+        return value;
+    }    
 
-    /**
-     * @see java.lang.Number#longValue()
-     */
-    public long longValue() {
-        return (long)value;
-    }
+	/**
+	 * @see org.wewi.medimg.math.MutableNumber#clone()
+	 */
+	public Object clone() {
+		return new MutableDouble(value);
+	}
 
 }
