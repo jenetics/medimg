@@ -85,6 +85,7 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
         addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.RAW_IMAGE));
         addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.BMP_IMAGES));
         addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.TIFF_IMAGES));
+        setCurrentDirectory(new File(ViewerPreferences.getInstance().getMostRecentFile()));
         
         addActionListener(this);
         
@@ -129,6 +130,10 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
             }
             imageWriterFactory.setRange(rangePanel.getRange());
         }
+        
+        //Speichern des Verzeichnisses in den ViewerPreferences
+        String fileName = getCurrentDirectory().toString();
+        ViewerPreferences.getInstance().setMostRecentFile(fileName);
     }
     
 }

@@ -9,6 +9,7 @@ package org.wewi.medimg.image.io;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.ImageFactory;
+import org.wewi.medimg.image.RGBGreyColorConversion;
 
 import java.io.IOException;
 import java.io.File;
@@ -47,12 +48,21 @@ abstract class JAIImageReader extends ImageReader {
     
     private RenderedImage readRenderedImage(String filename) throws IOException {
         if (System.getProperty("JAI_IMAGE_READER_USE_CODECS") == null) {       
-            return JAI.create("fileload", filename);
+            RenderedImage im =  JAI.create("fileload", filename);
+            int comp = im.getColorModel().getColorSpace().getNumComponents();
+            if (comp == 3) {
+                colorConversion = new RGBGreyColorConversion(65000);
+            }
+            return im;
         } else {
             SeekableStream stream = new FileSeekableStream(filename);
             String[] names = ImageCodec.getDecoderNames(stream);
             ImageDecoder dec = ImageCodec.createImageDecoder(names[0], stream, null);
             RenderedImage im = dec.decodeAsRenderedImage();
+            
+            int colorType = im.getColorModel().getColorSpace().getNumComponents();
+            System.out.println("Comp: " + colorType);
+            
             return im;
         }
     }    
@@ -85,7 +95,7 @@ abstract class JAIImageReader extends ImageReader {
         }
         minSlice = range.getMinSlice();
         maxSlice = Math.min(range.getMaxSlice(), maxSlice);
-        System.out.println("JAIImageReader(88): min: " + minSlice + ",  max: " + maxSlice); 
+        //System.out.println("JAIImageReader(88): min: " + minSlice + ",  max: " + maxSlice); 
         
         //Lesen des ersten Bildes
         RenderedImage rimage = null;

@@ -134,4 +134,25 @@ public class SubImage implements Image {
         return new SubImage(image, minX, minY, minZ, maxX, maxY, maxZ);
     }
     
+    public ColorRange getColorRange() {
+        return image.getColorRange();
+    }
+    
+    public int getMaxColor() {
+        return image.getMaxColor();
+    }
+    
+    public int getMinColor() {
+        return image.getMinColor();
+    }
+    
+    public void getNeighbor3D12Positions(int pos, int[] n12) {
+    }
+    
+    public void getNeighbor3D18Positions(int pos, int[] n18) {
+    }
+    
+    public void getNeighbor3D6Positions(int pos, int[] n6) {
+    }
+    
 }

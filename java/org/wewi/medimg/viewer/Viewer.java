@@ -29,6 +29,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
@@ -49,7 +50,7 @@ public class Viewer extends JFrame implements Singleton,
                                               InternalFrameListener {
     
     private static Viewer singleton = null;
-    private Properties viewerStates; 
+    private ViewerPreferences viewerPrefs; 
     private Dimension desktopDim;
     
     //Command Objekte für Menübar
@@ -59,15 +60,22 @@ public class Viewer extends JFrame implements Singleton,
     
     /** Creates new form Viewer */
     private Viewer() {
-        viewerStates = new Properties();
+        viewerPrefs = ViewerPreferences.getInstance();
         initComponents();
         init();
     }
     
     private void init() {
         toolBar.add(NavigationPanel.getInstance());
-        
         openCommand = new OpenCommand(this);
+        
+        setSize(viewerPrefs.getViewerDimension());
+        setLocation(viewerPrefs.getViewerLocation());
+    }
+    
+    private void onExit() {
+        viewerPrefs.setViewerDimension(this.getSize());
+        viewerPrefs.setViewerLocation(this.getLocation());
     }
     
     public static Viewer getInstance() {
@@ -398,11 +406,13 @@ public class Viewer extends JFrame implements Singleton,
     }//GEN-LAST:event_contentMenuItemActionPerformed
     
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        onExit();
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
     
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
+        onExit();
         System.exit(0);
     }//GEN-LAST:event_exitForm
     

@@ -10,8 +10,7 @@ import java.io.IOException;
 
 /**
  *
- * @author  Franz Wilhelmstötter
- */
+ * @author  Franz Wilhelmstötter*/
 public interface GraphReader {
     public void read() throws IOException;
     

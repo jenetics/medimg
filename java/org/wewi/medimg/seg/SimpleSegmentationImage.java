@@ -7,6 +7,7 @@
 package org.wewi.medimg.seg;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.ImageHeader;
 import org.wewi.medimg.image.VoxelIterator;
 
@@ -48,6 +49,9 @@ public final class SimpleSegmentationImage implements Image {
     
     private byte[] data;
     
+    private int minColor;
+    private int maxColor;
+    private ColorRange colorRange = null;
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int size, sizeX, sizeY, sizeZ, sizeXY; 
@@ -79,6 +83,36 @@ public final class SimpleSegmentationImage implements Image {
     
     public int getColor(int x, int y, int z) {
         return data[sizeXY*z + sizeX*y + x];
+    }
+    
+    private void findColorRange() {
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            if (min > data[i]) {
+                min = data[i];
+            } else if (max < data[i]) {
+                max = data[i];
+            }
+        }
+        minColor = min;
+        maxColor = max;
+        colorRange = new ColorRange(minColor, maxColor);
+    }    
+    
+    public ColorRange getColorRange() {
+        if (colorRange == null) {
+            findColorRange();
+        }
+        return colorRange;
+    }
+    
+    public int getMinColor() {
+        return minColor;
+    }
+    
+    public int getMaxColor() {
+        return maxColor;
     }
     
     public int[] getCoordinates(int pos) {
@@ -158,4 +192,14 @@ public final class SimpleSegmentationImage implements Image {
     public Object clone() {
         return new SimpleSegmentationImage(minX, minY, minZ, maxX, maxY, maxZ);
     }
+    
+    public void getNeighbor3D12Positions(int pos, int[] n12) {
+    }
+    
+    public void getNeighbor3D18Positions(int pos, int[] n18) {
+    }
+    
+    public void getNeighbor3D6Positions(int pos, int[] n6) {
+    }
+    
 }

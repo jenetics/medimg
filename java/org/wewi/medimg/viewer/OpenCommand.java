@@ -34,7 +34,7 @@ final class OpenCommand implements Command {
         ImageFileChooser chooser = new ImageFileChooser();
         chooser.setDialogTitle("Datensatz auswählen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
+        //chooser.setCurrentDirectory(new File(ViewerPreferences.getInstance().getMostRecentFile()));
         
         int returnVal = chooser.showOpenDialog(viewer);
         if(returnVal != JFileChooser.APPROVE_OPTION) {
