@@ -17,7 +17,7 @@ final class DoubleData implements ImageData {
     /**
      * Constructor for ByteData.
      */
-    public DoubleData(int size) {
+    public DoubleData(int size) { 
         data = new double[size];
     }
     

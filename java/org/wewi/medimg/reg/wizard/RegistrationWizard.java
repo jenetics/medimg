@@ -1,3 +1,19 @@
+/* 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 /*
  * RegistrationWizard
  *
@@ -16,6 +32,7 @@ import javax.swing.JFileChooser;
 
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
@@ -197,7 +214,9 @@ public class RegistrationWizard extends Wizard implements Observer,
         regStartButton.setText("Transformieren der Bilder...");
         //registrationStateTextField.setText(event.toString());
         transformation = (AffineTransformation)registratorThread.getTransformation();
-        resultData = transformation.transform(imageData1);
+        ImageFactory fac = IntImageFactory.getInstance();
+        resultData = transformation.transform(imageData1, fac);
+        //resultData = transformation.transform(imageData1);
         ImageViewer viewer3 = new ImageViewer("Ergebnisbild", resultData);
         int sizeX = resultData.getMaxX() - resultData.getMinX() + 1;
         int sizeY = resultData.getMaxY() - resultData.getMinY() + 1;
