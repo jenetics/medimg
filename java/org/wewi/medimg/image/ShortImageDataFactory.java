@@ -33,5 +33,9 @@ public class ShortImageDataFactory implements ImageFactory, Singleton {
     public synchronized Image createImage(int maxX, int maxY, int maxZ) {
         return new ShortImageData(maxX, maxY, maxZ);
     }
+    
+    public synchronized Image createImage(Dimension dim) {
+        return new ShortImageData(dim);    
+    }
 
 }

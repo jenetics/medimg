@@ -33,5 +33,13 @@ public class ByteImageDataFactory implements ImageFactory, Singleton {
     public synchronized Image createImage(int maxX, int maxY, int maxZ) {
         return new ByteImageData(maxX, maxY, maxZ);
     }
+    
+    
+    /**
+     * Erzeugen eines neuen ImageData
+     */    
+    public synchronized Image createImage(Dimension dim) {
+        return new ByteImageData(dim);    
+    }
 
 }

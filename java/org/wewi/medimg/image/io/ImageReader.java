@@ -1,4 +1,4 @@
-/*
+/**
  * ImageReader.java
  *
  * Created on 5. Dezember 2001, 14:45
@@ -22,29 +22,37 @@ import org.wewi.medimg.image.ImageFactory;
  *
  */
 public abstract class ImageReader {
-    protected ImageFactory imageFactory;
     protected File source;
     protected Range range;
+    protected ImageFactory imageFactory;
     protected ColorConversion colorConversion;
     
     private Vector listeners;
     
-    ImageReader() {
-        colorConversion = new GreyColorConversion();
-        listeners = new Vector();
+    
+    public ImageReader(ImageFactory imageFactory, String source) {
+        this(imageFactory, new File(source));    
     }
     
     public ImageReader(ImageFactory imageFactory, File source) {
-        this.imageFactory = imageFactory;
-        this.source = source;
-        colorConversion = new GreyColorConversion();
-        range = new Range(0, Integer.MAX_VALUE);
-        listeners = new Vector();
+        this(imageFactory, source, new Range(0, Integer.MAX_VALUE));
+    }
+    
+    public ImageReader(ImageFactory imageFactory, String source, Range range) {
+        this(imageFactory, new File(source), range);    
     }
     
     public ImageReader(ImageFactory imageFactory, File source, Range range) {
-        this(imageFactory, source);
+        this.imageFactory = imageFactory;
+        this.source = source;
         this.range = range;
+        
+        init();
+    }
+    
+    private void init() {
+        colorConversion = new GreyColorConversion();
+        listeners = new Vector();        
     }
     
     /**
@@ -56,32 +64,9 @@ public abstract class ImageReader {
         return source;
     }
     
-    public synchronized void addProgressListener(ImageIOProgressListener l) {
-        listeners.add(l);
-    }
-    
-    public synchronized void removeProgressListener(ImageIOProgressListener l) {
-        listeners.remove(l);
-    }
-    
-    protected void notifyProgressListener(ImageIOProgressEvent event) {
-        Vector list = (Vector)listeners.clone();
-        ImageIOProgressListener l;
-        for (Iterator it = list.iterator(); it.hasNext();) {
-            l = (ImageIOProgressListener)it.next();
-            l.progressChanged(event);
-        }
-    }
-    
     public Range getRange() {
         return range;
     }
-    
-    
-    public void setRange(Range range) {
-        this.range = range;
-    }
-    
     
     /**
      * Starten des Lesevorgangs
@@ -93,6 +78,39 @@ public abstract class ImageReader {
      *
      * @return gelesene Image
      */
-    public abstract Image getImage();
+    public abstract Image getImage();    
+    
+    /**
+     * Hinzufügen eines ProgressListners. Diese Methode ist synchronisiert.
+     * 
+     * @param l ImageIOProgressListener, der hinzugefügt werden soll
+     */
+    public synchronized void addProgressListener(ImageIOProgressListener l) {
+        listeners.add(l);
+    }
+    
+    /**
+     * Entfernen eines ProgressListeners.
+     * Diese Methode ist synchronisiert.
+     */
+    public synchronized void removeProgressListener(ImageIOProgressListener l) {
+        listeners.remove(l);
+    }
+    
+    /**
+     * Informieren der ProgressListener über einen Lesefortschritt
+     */
+    protected void notifyProgressListener(ImageIOProgressEvent event) {
+        Vector list;
+        synchronized (listeners) {
+            list = (Vector)listeners.clone();
+        }
+        ImageIOProgressListener l;
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            l = (ImageIOProgressListener)it.next();
+            l.progressChanged(event);
+        }
+    }
+    
 }
 

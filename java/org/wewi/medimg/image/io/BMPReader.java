@@ -1,4 +1,4 @@
-/*
+/**
  * BMPReader.java
  *
  * Created on 11. Januar 2002, 14:53
@@ -19,16 +19,26 @@ public final class BMPReader extends JAIImageReader {
     
     public BMPReader(ImageFactory imageFactory, File source) {
         super(imageFactory, source);
-        fileFilter = new FileExtentionFilter(".bmp");
+        init();
     }
     
-    /*
-    public static void main(String[] args) {
-        File file = new File("C:/cygwin/home/fwilhelm/diplom/algorithms/data/head.in.001");
-        BMPReader reader = new BMPReader(ImageDataFactory.getInstance(), file);
-        reader.read();
-        ImageData data = (ImageData)reader.getImage();
-        System.out.println(data);
+    public BMPReader(ImageFactory imageFactory, String source) {
+        super(imageFactory, source);
+        init();    
     }
-    */    
+    
+    public BMPReader(ImageFactory imageFactory, File source, Range range) {
+        super(imageFactory, source, range);
+        init();        
+    }
+    
+    public BMPReader(ImageFactory imageFactory, String source, Range range) {
+        super(imageFactory, source, range);
+        init();    
+    }
+    
+
+    private void init() {
+        fileFilter = new FileExtentionFilter(".bmp");  
+    }   
 }

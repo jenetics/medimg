@@ -30,6 +30,18 @@ public class RawImageReader extends ImageReader {
         super(imageFactory, source);
     }
     
+    public RawImageReader(ImageFactory imageFactory, String source) {
+        super(imageFactory, source);    
+    }
+    
+    public RawImageReader(ImageFactory imageFactory, String source, Range range) {
+        super(imageFactory, source, range);    
+    }
+    
+    public RawImageReader(ImageFactory imageFactory, File source, Range range) {
+        super(imageFactory, source, range);    
+    }
+    
     public Image getImage() {
         return image;
     }

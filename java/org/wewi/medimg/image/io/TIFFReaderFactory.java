@@ -1,4 +1,4 @@
-/*
+/**
  * TIFFReaderFactory.java
  *
  * Created on 24. Januar 2002, 10:34
@@ -22,13 +22,12 @@ public final class TIFFReaderFactory implements ImageReaderFactory {
         range = new Range(0, Integer.MAX_VALUE, 1);
     }
     
-    public ImageReader createImageReader(ImageFactory imageFactory, File file) {
-        ImageReader reader = new TIFFReader(imageFactory, file);
-        reader.setRange(range);
+    public ImageReader createImageReader(ImageFactory imageFactory, File source) {
+        ImageReader reader = new TIFFReader(imageFactory, source, range);
         return reader;
     }
     
     public void setRange(Range range) {
         this.range = range;
     }
-}
+} 

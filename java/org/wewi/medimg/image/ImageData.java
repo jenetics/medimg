@@ -14,7 +14,7 @@ import org.wewi.medimg.util.Timer;
 /**
  *
  * @author  Franz Wilhelmstötter
- * @version 0.2
+ * @version 0.3
  */
 public class ImageData implements Image, RandomAccess { 
     
@@ -48,117 +48,99 @@ public class ImageData implements Image, RandomAccess {
             return new ImageDataVoxelIterator();
         }
     } 
-     
-    /* 
-    final static class CoordinatesToPosition {
-        private Dimension dim;
-        private int minX, minY, minZ;
-        private int sizeX, sizeXY;
-        
-        public CoordinatesToPosition(Dimension dim) {
-            this.dim = dim; 
-            minX = dim.getMinX();
-            minY = dim.getMinY();
-            minZ = dim.getMinZ();
-            sizeX = dim.getMaxX()-dim.getMinX()+1;
-            sizeXY = sizeX*(dim.getMaxY()-dim.getMinY()+1);   
-        }
-        
-        public int getPosition(int x, int y, int z) {
-            return sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX);
-        } 
-        
-        public void getCoordinates(int pos, int[] coordinate) {
-            coordinate[2] = pos / (sizeXY);
-            pos = pos - (coordinate[2] * sizeXY);
-            coordinate[1] = pos / (sizeX);
-            pos = pos - (coordinate[1] * sizeX);
-            coordinate[0] = pos; 
-            
-            coordinate[0] += minX;
-            coordinate[1] += minY;
-            coordinate[2] += minZ;                
-        }           
-    }
-    */
     /**************************************************************************/
+    
+    
     private int[] data;
     
-    
+    private ColorRange colorRange = null;
     private int minColor = Integer.MIN_VALUE;
     private int maxColor = Integer.MAX_VALUE;
-    private ColorRange colorRange = null;
+    
     protected int maxX, maxY, maxZ;
     protected int minX, minY, minZ;
     protected int sizeX, sizeY, sizeZ;
     protected Dimension dimension;
-    private int sizeXY;
-    protected int size;
     
     private ImageDataHeader header;
     private ColorConversion colorConversion;
     
+    private int sizeXY;
+    protected int size;
+    
+    
+    
     ImageData() {
-    	colorConversion = new GreyColorConversion();
+        colorConversion = new GreyColorConversion();
+    }    
+    
+    public ImageData(Dimension dim) {
+        this(dim.getMinX(), dim.getMaxX(),
+              dim.getMinY(), dim.getMaxY(),
+              dim.getMinZ(), dim.getMaxZ());
+        dimension = dim;
+    }
+    
+    public ImageData(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+        init(minX, minY, minZ, maxX, maxY, maxZ, new ImageDataHeader(this));
     }
     
         
-    ImageData(ImageData id) {
-        this(id.maxX + 1, id.maxY + 1, id.maxZ + 1);
+    public ImageData(ImageData id) {
+        this(id.dimension);
         System.arraycopy(id.data, 0, data, 0, size);
     }
-    
+     
     public ImageData(int sizeX, int sizeY, int sizeZ) {
-        init(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1);
-    }
-    
-    public ImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-        init(minX, minY, minZ, maxX, maxY, maxZ);
+        init(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1, new ImageDataHeader(this));
     }
     
     void init(Dimension dim, ImageDataHeader h) {
-        init(dim);
-        this.header = h;    
+        init(dim.getMinX(), dim.getMaxX(),
+             dim.getMinY(), dim.getMaxY(),
+             dim.getMinZ(), dim.getMaxZ(), h);    
     }
-    
-    void init(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, ImageDataHeader h) {
-        init(minX, minY, minZ, maxX, maxY, maxZ);
-        this.header = h;    
-    }
-    
-    void init(Dimension dim) {
-        init(dim.getMinX(), dim.getMinY(), dim.getMinZ(),
-             dim.getMaxX(), dim.getMaxY(), dim.getMaxZ());    
-    }
-    
-    void init(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+   
+    void init(int minX, int maxX, int minY, int maxY, int minZ, int maxZ, ImageDataHeader h) {
         this.minX = minX;
         this.minY = minY;
         this.minZ = minZ;
         this.maxX = maxX;
         this.maxY = maxY;
         this.maxZ = maxZ;
+        
         sizeX = maxX - minX + 1;
         sizeY = maxY - minY + 1;
         sizeZ = maxZ - minZ + 1;
         size = sizeX*sizeY*sizeZ;
         sizeXY = sizeX*sizeY;        
         dimension = new Dimension(minX, maxX, minY, maxY, minZ, maxZ);
-        header = new ImageDataHeader(this);
+        header = h;
         colorConversion = new GreyColorConversion();        
         
-        initData();
-    }    
+        initData();   
+    }   
     
+
+    /**
+     * Initialisieren des Datenarray. Je nach Implementierung 
+     * byte, short oder int.
+     */
     protected void initData() {
         data = new int[size]; 
         Arrays.fill(data, (int)0);        
     }
     
+    /**
+     * Der Zugriff auf das Daten-Array erfolgt über diese Methode.
+     */    
     protected int getData(int pos) {
         return data[pos];    
     }
     
+    /**
+     * Der Zugriff auf das Daten-Array erfolgt über diese Methode.
+     */     
     protected void setData(int pos, int color) {
         data[pos] = color;    
     }    
@@ -253,18 +235,18 @@ public class ImageData implements Image, RandomAccess {
         return new ImageData(this);
     }
     
-    public synchronized int getPosition(int x, int y, int z) {
+    public int getPosition(int x, int y, int z) {
         return (sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX));
     }
     
-    public synchronized int[] getCoordinates(int pos) {
+    public int[] getCoordinates(int pos) {
         int[] erg = new int[3];
         getCoordinates(pos, erg);
         return erg;
     } 
     
     
-    public synchronized void getCoordinates(int pos, int[] coordinate) {
+    public void getCoordinates(int pos, int[] coordinate) {
         coordinate[2] = pos / (sizeXY);
         pos = pos - (coordinate[2] * sizeXY);
         coordinate[1] = pos / (sizeX);
@@ -276,7 +258,7 @@ public class ImageData implements Image, RandomAccess {
         coordinate[2] += minZ;
     } 
     
-    public synchronized void getNeighbor3D12Positions(int pos, int[] n12) {
+    public void getNeighbor3D12Positions(int pos, int[] n12) {
         n12[0] = pos - 1 - sizeXY;
         n12[1] = pos - 1 + sizeXY;
         n12[2] = pos - 1 - sizeX;
@@ -291,7 +273,7 @@ public class ImageData implements Image, RandomAccess {
         n12[11] = pos + sizeX + sizeXY;         
     }
     
-    public synchronized void getNeighbor3D18Positions(int pos, int[] n18) {
+    public void getNeighbor3D18Positions(int pos, int[] n18) {
         n18[0] = pos - 1;
         n18[1] = pos + 1;
         n18[2] = pos - sizeX;
@@ -312,7 +294,7 @@ public class ImageData implements Image, RandomAccess {
         n18[17] = pos + sizeX + sizeXY;         
     }
     
-    public synchronized void getNeighbor3D6Positions(int pos, int[] n6) {
+    public void getNeighbor3D6Positions(int pos, int[] n6) {
         n6[0] = pos - 1;
         n6[1] = pos + 1;
         n6[2] = pos - sizeX;
@@ -372,7 +354,7 @@ public class ImageData implements Image, RandomAccess {
         }
         timer.stop();
         timer.print();        
-        
+        /*
         timer.start();
         for (VoxelIterator it = image.getVoxelIterator(); it.hasNext();) {
             it.next();    
@@ -386,37 +368,11 @@ public class ImageData implements Image, RandomAccess {
             it.next(p);    
         }
         timer.stop();
-        timer.print();            
+        timer.print(); 
+        */           
     }  
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

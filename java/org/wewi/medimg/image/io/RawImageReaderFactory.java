@@ -25,8 +25,7 @@ public final class RawImageReaderFactory implements ImageReaderFactory, Singleto
     }
     
     public ImageReader createImageReader(ImageFactory imageFactory, File file) {
-        ImageReader reader = new RawImageReader(imageFactory, file);
-        reader.setRange(range);
+        ImageReader reader = new RawImageReader(imageFactory, file, range);
         return reader;
     }
     

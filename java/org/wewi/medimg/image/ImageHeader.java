@@ -1,4 +1,4 @@
-/*
+/**
  * ImageHeader.java
  *
  * Created on 22. Februar 2002, 00:12
@@ -16,7 +16,7 @@ import org.wewi.medimg.util.Nullable;
 /**
  *
  * @author  Franz Wilhelmstötter
- * @version 0.1
+ * @version 0.2
  */
 public interface ImageHeader extends Nullable {
     
@@ -24,9 +24,9 @@ public interface ImageHeader extends Nullable {
 
     public void write(OutputStream out) throws IOException;
     
-    public Dimension readDimension(InputStream in) throws IOException;
-    
     public void setImageProperties(Properties prop);
+    
+    public void addImageProperties(Properties prop);
    
     public Properties getImageProperties();
 }

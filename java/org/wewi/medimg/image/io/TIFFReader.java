@@ -17,9 +17,28 @@ import org.wewi.medimg.image.ImageFactory;
  */
 public final class TIFFReader extends JAIImageReader {
 
+    public TIFFReader(ImageFactory imageFactory, String source) {
+        super(imageFactory, source);
+        init();    
+    }
+
     public TIFFReader(ImageFactory imageFactory, File source) {
         super(imageFactory, source);
-        fileFilter = new FileExtentionFilter(".tif");
+        init();
+    }
+    
+    public TIFFReader(ImageFactory imageFactory, File source, Range range) {
+        super(imageFactory, source, range);   
+        init(); 
+    }
+    
+    public TIFFReader(ImageFactory imageFactory, String source, Range range) {
+        super(imageFactory, source, range);  
+        init();  
+    }
+    
+    private void init() {
+        fileFilter = new FileExtentionFilter(".tif");   
     }
     
 }
