@@ -39,6 +39,13 @@ public class ImageFeatureVoxelIterator implements VoxelIterator {
 		return 0;
 	}
 
+    /**
+     * @see org.wewi.medimg.image.VoxelIterator#next(double[])
+     */
+    public int next(double[] p) {
+        return 0;
+    }
+
 	/**
 	 * @see org.wewi.medimg.image.VoxelIterator#size()
 	 */

@@ -16,6 +16,10 @@ import org.wewi.medimg.image.geom.transform.Transformation;
  * @version 0.1
  */
 public final class ConstantAffinityMetric implements AffinityMetric {
+    public static final ConstantAffinityMetric INSTANCE = new ConstantAffinityMetric();
+    
+    public ConstantAffinityMetric() {
+    }
 
     
 	/**
@@ -24,5 +28,20 @@ public final class ConstantAffinityMetric implements AffinityMetric {
 	public double similarity(VoxelIterator source, VoxelIterator target, Transformation trans) {
 		return 1;
 	}
+    
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;    
+        }    
+        if (!(o instanceof ConstantAffinityMetric)) {
+            return false;    
+        }
+        return true;
+    }
+    
+    
+    public String toString() {
+        return "ConstantAffinityMetric";   
+    }
 
 }

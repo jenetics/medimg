@@ -31,9 +31,8 @@ public class TissueIterator implements Iterator {
     }
     
     public boolean hasNext() {
-        int i;
         if (image != null) {
-            for (i = pos + 1; i < image.getNVoxels(); i++) {
+            for (int i = pos + 1, n = image.getNVoxels(); i < n; i++) {
                 if (image.getColor(i) == tissue.intValue()) {
                     pos = i;
                     return true;

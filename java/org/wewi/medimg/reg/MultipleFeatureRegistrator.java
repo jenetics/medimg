@@ -23,25 +23,18 @@ import org.wewi.medimg.image.geom.transform.Transformation;
  */
 public abstract class MultipleFeatureRegistrator implements Registrator {
     
-    /**
-     * Interface, welches die gefunden Transformationen interpoliert.
-     */
-    public static interface TransformationInterpolator {
-        public Transformation interpolate();    
-    }
-    
-    public final class TransformationProperties {
-           
-    } 
-    
-    protected TransformationInterpolator transformationInterpolator;
     protected AffinityMetric affinityMetric;
+    protected TransformationImportance transformationImportance;
+
+	private double[] weights;
 
 	/**
 	 * Constructor for MultipleFeatureRegistrator.
 	 */
 	public MultipleFeatureRegistrator() {
 		super();
+        affinityMetric = ConstantAffinityMetric.INSTANCE;
+        transformationImportance = ConstantTransformationImportance.INSTANCE;
 	}
 
 	/**
@@ -49,6 +42,9 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
 	 */
 	public Transformation registrate(Image source, Image target) {
         List transformationList = new Vector();
+        List similarityList = new Vector();
+        List featureList = new Vector();
+        List sitSizeList = new Vector();
         
         ColorRange scr = source.getColorRange();
         ColorRange tcr = target.getColorRange();
@@ -60,6 +56,12 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
             VoxelIterator sit = f.getSourceVoxelIterator(i);
             VoxelIterator tit = f.getTargetVoxelIterator(i);
             
+            int sitSize = sit.size();
+            int titSize = tit.size();
+            if (sitSize <= 0 || titSize <= 0) {
+                continue;    
+            }
+            
             //Berechnen der Transformation
             Transformation trans = getTransformation((VoxelIterator)sit.clone(), 
                                                      (VoxelIterator)tit.clone());
@@ -68,12 +70,42 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
             double similarity = affinityMetric.similarity((VoxelIterator)sit.clone(),
                                                            (VoxelIterator)tit.clone(), 
                                                             trans);
+                                                            
+            transformationList.add(trans);
+            similarityList.add(new Double(similarity));
+            featureList.add(new Integer(i));
+            sitSizeList.add(new Integer(sitSize));
                                                         
-        }      
+        } 
+        
+        int size = transformationList.size();
+        int[] features = new int[size];
+        double[] similarities = new double[size];
+        int[] featureNPoints = new int[size];
+        for (int i = 0; i < size; i++) {
+            features[i] = ((Integer)featureList.get(i)).intValue();
+            similarities[i] = ((Double)similarityList.get(i)).doubleValue();
+            featureNPoints[i] = ((Integer)sitSizeList.get(i)).intValue();
+        }
+        
+        double[] weights = transformationImportance.transformationWeights(features, similarities, featureNPoints);   
        
         //Rückgabe der berechnenten Interpolation der Transformationen.
-		return transformationInterpolator.interpolate();
+        InterpolateableTransformation[] trans = new InterpolateableTransformation[size];
+        transformationList.toArray(trans);
+		return interpolate(trans, weights);
 	}
+    
+    
+    private Transformation interpolate(InterpolateableTransformation[] transformation, double[] weight) {
+        InterpolateableTransformation trans = transformation[0];
+        double relationshipWeight;
+        for (int i = 1; i < weight.length; i++) {
+            relationshipWeight = ((weight[i]) / (weight[i - 1] + weight[i]));
+            trans = (InterpolateableTransformation)trans.interpolate(transformation[i], relationshipWeight);
+        }
+        return trans;    
+    }
     
     /**
      * Wenn keine Transformation gefunden werden kann, weil z.B. einer
@@ -88,6 +120,38 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
      */
     protected abstract InterpolateableTransformation getTransformation(VoxelIterator source, 
                                                                          VoxelIterator target);
+
+	/**
+	 * Returns the affinityMetric.
+	 * @return AffinityMetric
+	 */
+	public AffinityMetric getAffinityMetric() {
+		return affinityMetric;
+	}
+
+	/**
+	 * Sets the affinityMetric.
+	 * @param affinityMetric The affinityMetric to set
+	 */
+	public void setAffinityMetric(AffinityMetric affinityMetric) {
+		this.affinityMetric = affinityMetric;
+	}
+
+	/**
+	 * Returns the transformationImportance.
+	 * @return TransformationImportance
+	 */
+	public TransformationImportance getTransformationImportance() {
+		return transformationImportance;
+	}
+
+	/**
+	 * Sets the transformationImportance.
+	 * @param transformationImportance The transformationImportance to set
+	 */
+	public void setTransformationImportance(TransformationImportance transformationImportance) {
+		this.transformationImportance = transformationImportance;
+	}
 
 }
 
