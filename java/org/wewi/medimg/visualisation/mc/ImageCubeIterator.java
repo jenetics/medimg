@@ -50,30 +50,30 @@ final class ImageCubeIterator implements CubeIterator {
     public Cube next() {
         int cubeIndex = 0;
         final int d = gridSize;
-        int f = 2;
+        //int f = 2;
         
-        int color = image.getColor(cubeX,   cubeY,   cubeZ);
+        int color = image.getColor(cubeX,   cubeY+d,   cubeZ);
         if (color >= lower && color <= upper)   cubeIndex |= 1;
         
-        color = image.getColor(cubeX+d, cubeY,   cubeZ);
+        color = image.getColor(cubeX+d, cubeY+d,   cubeZ);
         if (color >= lower && color <= upper)   cubeIndex |= 2;
         
-        color = image.getColor(cubeX+d, cubeY,   cubeZ+d);
+        color = image.getColor(cubeX+d, cubeY+d,   cubeZ+d);
         if (color >= lower && color <= upper)   cubeIndex |= 4;
         
-        color = image.getColor(cubeX,   cubeY,   cubeZ+d);
+        color = image.getColor(cubeX,   cubeY+d,   cubeZ+d);
         if (color >= lower && color <= upper)   cubeIndex |= 8;
         
-        color = image.getColor(cubeX,   cubeY+d, cubeZ);
+        color = image.getColor(cubeX,   cubeY, cubeZ);
         if (color >= lower && color <= upper)   cubeIndex |= 16;
         
-        color = image.getColor(cubeX+d, cubeY+d, cubeZ);
+        color = image.getColor(cubeX+d, cubeY, cubeZ);
         if (color >= lower && color <= upper)   cubeIndex |= 32;
         
-        color = image.getColor(cubeX+d, cubeY+d, cubeZ+d);
+        color = image.getColor(cubeX+d, cubeY, cubeZ+d);
         if (color >= lower && color <= upper)   cubeIndex |= 64;
         
-        color = image.getColor(cubeX,   cubeY+d, cubeZ+d);
+        color = image.getColor(cubeX,   cubeY, cubeZ+d);
         if (color >= lower && color <= upper)   cubeIndex |= 128;
 
         Cube cube = new Cube(cubeX, cubeY, cubeZ, gridSize, cubeIndex);

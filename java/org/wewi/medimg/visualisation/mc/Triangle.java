@@ -52,11 +52,11 @@ public final class Triangle {
             float acx = c.x - a.x;
             float acy = c.y - a.y;
             float acz = c.z - a.z;
-            System.out.println(" triangle abx " + abx + " acx " + acx + " abz " + abz + " acz " + acz);           
+            //System.out.println(" triangle abx " + abx + " acx " + acx + " abz " + abz + " acz " + acz);           
             normal.x = -abz * acy + aby * acz;
             normal.y = abz * acx - abx * acz;
             normal.z = abx * acy - aby * acx;
-            System.out.println(" triangle normal.x " + normal);              
+            //System.out.println(" triangle normal.x " + normal);              
             float norm = (float)Math.sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
             normal.x = normal.x / norm;
             normal.y = normal.y / norm;

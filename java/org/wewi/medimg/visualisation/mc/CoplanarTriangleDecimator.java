@@ -16,7 +16,7 @@ import java.util.Vector;
  */
 public class CoplanarTriangleDecimator extends TriangleDecimator {
     
-    private static final double EPSILON = 0.0001;
+    private static final double EPSILON = 0.01;
     /** Creates new CoplanarTriangleDecimator */
     public CoplanarTriangleDecimator() {
     }
@@ -37,9 +37,16 @@ public class CoplanarTriangleDecimator extends TriangleDecimator {
         int two = 0;
         int three = 0;
         Vector verticesToRemove = new Vector();
-        Vector trianglesToAdd = new Vector();        
+        Vector trianglesToAdd = new Vector(); 
+        
+        Vertex[] vertices = new Vertex[graph.getNoOfVertices()];
+        int count = 0;
         for (Iterator it = graph.getVertices(); it.hasNext();) {
-            v = (Vertex)it.next();
+            vertices[count++] = (Vertex)it.next();
+        }
+        
+        for (int i = 0; i < vertices.length; i++) {
+            v = vertices[i];
             // Ein Punkt mit 2 Dreiecksnachbarn ist jedenfalls ein Punkt der Außenkontur
             // und darf daher nicht entfernt werden
             if (graph.getNoOfIncidentTriangles(v) <= 2) {
@@ -47,6 +54,9 @@ public class CoplanarTriangleDecimator extends TriangleDecimator {
                 continue;
             }
             p = graph.getPolygon(v);
+            if (p == null) {
+                continue;
+            }
             if (!p.isClosed()) {
                 two++;
                 continue;
@@ -60,15 +70,17 @@ public class CoplanarTriangleDecimator extends TriangleDecimator {
                 three++;
                 continue;
             }
+                        //System.out.println("vor tri: " + graph.getNoOfVertices());
             p.triangulate();
+                        //System.out.println("nach tri: " + graph.getNoOfVertices());
             graph.removeVertex(v);
             //verticesToRemove.add(v);
             for (Iterator it2 = p.getTriangles(); it2.hasNext();) {
                 //trianglesToAdd.add((Triangle)it2.next());
                 graph.addTriangle((Triangle)it2.next());
             }
-            System.out.println("NV: " + graph.getNoOfVertices());
-            it = graph.getVertices();
+            //System.out.println("NV: " + graph.getNoOfVertices());
+            //it = graph.getVertices();
         }
         
         

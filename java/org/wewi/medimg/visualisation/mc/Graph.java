@@ -69,11 +69,11 @@ public class Graph {
         vertices.put(v, new VertexTriangles());
     }
     
-    public void removeVertex(Vertex v) {
+    public boolean removeVertex(Vertex v) {
         //Es ist sinnvoll, nur Knoten zu entfernen, 
         //welche auch vorhanden sind.
         if (!vertices.containsKey(v)) {
-            return;
+            return false;
         }
 
         Vector trianglesToRemove = new Vector();
@@ -93,7 +93,7 @@ public class Graph {
             removeTriangle((Triangle)it.next());
         }
         //Ganz am Schluß kann der Knoten entfernt werden.
-        vertices.remove(v);
+        return (vertices.remove(v) != null);
     }
     
     public boolean contains(Vertex v) {
@@ -141,6 +141,9 @@ public class Graph {
      * Liefert die Anzahl der Dreiecke, zu denen dieser Punkt (v) gehört.
      */
     public int getNoOfIncidentTriangles(Vertex v) {
+        if (!vertices.containsKey(v)) {
+            return 0;
+        }
         return ((VertexTriangles)vertices.get(v)).size();
     }
         
@@ -160,6 +163,9 @@ public class Graph {
      * des Knoten v entstehen würde.
      */
     StarshapedPolygon getPolygon(Vertex v) {
+        if (!vertices.containsKey(v)) {
+            return null;
+        }        
         Triangle t;
         Vertex v1 = null, v2 = null;
         Vector e = new Vector();
@@ -177,7 +183,7 @@ public class Graph {
             }
             e.add(new Edge(v1, v2));
         }        
-        
+//System.out.println("Ecken: " + e.size());        
         Edge[] edges = new Edge[e.size()];
         e.toArray(edges);
         
