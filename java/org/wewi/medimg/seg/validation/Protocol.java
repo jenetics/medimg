@@ -146,7 +146,9 @@ public class Protocol {
         
         //MutualInformation
         Element mi = result.getChild("MutualInformation");
-        mutualInformation = Double.parseDouble(mi.getText());
+        if (mi != null) {
+            mutualInformation = Double.parseDouble(mi.getText());
+        }
     }
 
 	/**

@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
-
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;

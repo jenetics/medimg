@@ -6,16 +6,16 @@
 
 package org.wewi.medimg.seg.validation;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ColorRange;
+import java.io.File;
+import java.util.Arrays;
 
-import org.wewi.medimg.image.io.*;
+import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.ImageReader;
+import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
-import org.wewi.medimg.image.*;
-import java.io.File;
-
-import java.util.Arrays;
 
 /**
  *

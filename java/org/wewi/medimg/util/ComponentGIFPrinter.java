@@ -7,6 +7,7 @@
 package org.wewi.medimg.util;
 
 import jas.util.encoder.GifEncoder;
+
 import java.awt.Component;
 import java.awt.Graphics;
 import java.io.File;
