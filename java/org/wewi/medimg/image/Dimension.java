@@ -27,7 +27,7 @@ public class Dimension implements Cloneable, Immutable {
 		minY = dim.minY;
 		maxY = dim.maxY;
 		minZ = dim.minZ;
-		maxZ = dim.maxZ;
+		maxZ = dim.maxZ; 
 	}
 	
 	public Dimension(int sizeX, int sizeY, int sizeZ) throws IllegalArgumentException {

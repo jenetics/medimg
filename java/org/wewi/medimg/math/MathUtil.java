@@ -53,6 +53,7 @@ public final class MathUtil {
     }
     
     
+    
     public static void normalize(double[] array) {
         double value = 0;
         for (int i = 0, n = array.length; i < n; i++) {

@@ -16,6 +16,8 @@ import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.Clusterer;
 import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.SegmenterEvent;
@@ -33,6 +35,8 @@ public class MLKMeansClusterer extends ObservableSegmenter
     
     protected int MAX_ITERATION = 200;
     protected double ERROR_LIMIT = 0.1;
+    
+    protected ColorRange colorRange;
     
     protected final int k;
     protected double[] mean;
@@ -135,7 +139,12 @@ public class MLKMeansClusterer extends ObservableSegmenter
         iterationCount = 0;
         
         createSegimgOld(segimg);
-        initMeans(mrt.getColorRange());
+        
+        MinMaxOperator op = new MinMaxOperator();
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(mrt, op);
+        analyzer.analyze();      
+        
+        initMeans(new ColorRange(op.getMinimum(), op.getMaximum()));
         
         do {
             if (cancelled) {
@@ -164,6 +173,12 @@ public class MLKMeansClusterer extends ObservableSegmenter
 	 * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
 	 */
     public void segment(Image mrt, Image segimg) {
+        //Feststellen des Farbbereiches
+        MinMaxOperator op = new MinMaxOperator();
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(mrt, op);
+        analyzer.analyze();
+        colorRange = new ColorRange(op.getMinimum(), op.getMaximum());
+        
         iterate(mrt, segimg);
         
         setImageProperties(segimg);

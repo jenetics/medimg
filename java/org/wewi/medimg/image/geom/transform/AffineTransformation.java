@@ -12,6 +12,7 @@ import java.util.Arrays;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.ImageFactory;
+import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.util.Immutable;
 
 import cern.colt.function.DoubleDoubleFunction;
@@ -608,6 +609,7 @@ public class AffineTransformation implements InterpolateableTransformation,
     }
     
     public Image transform(Image source, ImageFactory targetFactory) {
+        final Dimension MAX_DIM = new Dimension(2000, 2000, 2000);
     	final int maxDim = 2000;
 
         int sminX = source.getMinX();
@@ -675,7 +677,48 @@ public class AffineTransformation implements InterpolateableTransformation,
     		}
     	}    	
     	
-    }    
+    } 
+    
+    private Dimension transform(Dimension dim) {
+        //Die acht Eckpunkte der Bounding-Box
+        int[] p1 = {dim.getMinX(), dim.getMinY(), dim.getMinZ()};
+        int[] p2 = {dim.getMaxX(), dim.getMinY(), dim.getMinZ()};
+        int[] p3 = {dim.getMaxX(), dim.getMaxY(), dim.getMinZ()};
+        int[] p4 = {dim.getMinX(), dim.getMaxY(), dim.getMinZ()};
+        int[] p5 = {dim.getMinX(), dim.getMinY(), dim.getMaxZ()};
+        int[] p6 = {dim.getMaxX(), dim.getMinY(), dim.getMaxZ()};
+        int[] p7 = {dim.getMaxX(), dim.getMaxY(), dim.getMaxZ()};
+        int[] p8 = {dim.getMinX(), dim.getMaxY(), dim.getMaxZ()};
+        
+        //Die transformierten Eckpunkte der Bounting-Box
+        int[] tp1 = new int[3];
+        int[] tp2 = new int[3];
+        int[] tp3 = new int[3];
+        int[] tp4 = new int[3];
+        int[] tp5 = new int[3];
+        int[] tp6 = new int[3];
+        int[] tp7 = new int[3];
+        int[] tp8 = new int[3];
+        
+        transform(p1, tp1);
+        transform(p2, tp2);
+        transform(p3, tp3);
+        transform(p4, tp4);
+        transform(p5, tp5);
+        transform(p6, tp6);
+        transform(p7, tp7);
+        transform(p8, tp8);
+        
+        //Die neuen Eckpunkte der Bounding-Box
+        int minX = MathUtil.min(new int[]{tp1[0], tp2[0], tp3[0], tp4[0], tp5[0], tp6[0], tp7[0],tp8[0]});
+        int minY = MathUtil.min(new int[]{tp1[1], tp2[1], tp3[1], tp4[1], tp5[1], tp6[1], tp7[1],tp8[1]});
+        int minZ = MathUtil.min(new int[]{tp1[2], tp2[2], tp3[2], tp4[2], tp5[2], tp6[2], tp7[2],tp8[2]});
+        int maxX = MathUtil.max(new int[]{tp1[0], tp2[0], tp3[0], tp4[0], tp5[0], tp6[0], tp7[0],tp8[0]});
+        int maxY = MathUtil.max(new int[]{tp1[1], tp2[1], tp3[1], tp4[1], tp5[1], tp6[1], tp7[1],tp8[1]});
+        int maxZ = MathUtil.max(new int[]{tp1[2], tp2[2], tp3[2], tp4[2], tp5[2], tp6[2], tp7[2],tp8[2]});        
+      
+        return new Dimension(minX, maxX, minY, maxY, minZ, maxZ);      
+    }   
 
     public void transform(double[] source, double[] target) {
         double x = matrix[0] * source[0] +

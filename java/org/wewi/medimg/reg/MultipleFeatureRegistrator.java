@@ -14,6 +14,8 @@ import org.wewi.medimg.image.VoxelIterator;
 
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
 import org.wewi.medimg.image.geom.transform.Transformation;
+import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.reg.wizard.ObservableRegistrator;
 import org.wewi.medimg.reg.wizard.RegistratorEvent;
 
@@ -54,8 +56,17 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
         
         double similarity = 1.0;
         
-        ColorRange scr = source.getColorRange();
-        ColorRange tcr = target.getColorRange();
+        MinMaxOperator op = new MinMaxOperator();
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(source, op);
+        analyzer.analyze();
+        ColorRange scr = new ColorRange(op.getMinimum(), op.getMaximum());
+        
+        op = new MinMaxOperator();
+        analyzer = new UnaryPointAnalyzer(target, op);
+        analyzer.analyze();
+        ColorRange tcr = new ColorRange(op.getMinimum(), op.getMaximum());
+        
+        
         int minFeature = Math.max(scr.getMinColor(), tcr.getMinColor());
         //Ignorieren des Hintergrundes
         if (minFeature < 1) {

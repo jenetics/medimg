@@ -14,7 +14,6 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.ImageHeader;
@@ -71,11 +70,9 @@ public class RawImageWriter extends ImageWriter {
 
 
 
-    private ColorRange colorRange;
 
     public RawImageWriter(Image image, File target) {
         super(image, target);
-        colorRange = image.getColorRange();
     }
       
     public void write() throws ImageIOException {

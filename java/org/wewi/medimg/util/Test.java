@@ -23,7 +23,7 @@ import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.RGBColorConversion;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.filter.DilationFilter;
-import org.wewi.medimg.image.filter.EdgeDetectionFilter;
+import org.wewi.medimg.image.filter.EdgeFilter;
 import org.wewi.medimg.image.filter.ErosionFilter;
 import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.Kernel;
@@ -212,7 +212,7 @@ public class Test {
         
         Kernel h = Kernel.SOBEL_HORIZONTAL;
         Kernel v = Kernel.SOBEL_VERTICAL;
-        EdgeDetectionFilter filter = new EdgeDetectionFilter(image, h, v);
+        EdgeFilter filter = new EdgeFilter(image, h, v);
         //ConvolutionFilter filter = new ConvolutionFilter(image, v);
         UnaryPointTransformerFilter norm = new UnaryPointTransformerFilter(filter, 
                                                new UnaryPointTransformerFactory(
@@ -332,7 +332,7 @@ public class Test {
             }
             
             /*
-            ImageFilter op = new EdgeDetectionFilter(image, Kernel.SOBEL_HORIZONTAL, Kernel.SOBEL_VERTICAL);
+            ImageFilter op = new EdgeFilter(image, Kernel.SOBEL_HORIZONTAL, Kernel.SOBEL_VERTICAL);
             op = new TresholdFilter(op, 150, 255);
             //op = new DilationFilter(op, b);
             op = new LinearNormalizeFilter(op, 0, 255);
@@ -374,13 +374,29 @@ public class Test {
         }        
     }
     
+    public static void test12() {
+        Runtime run = Runtime.getRuntime();
+        long mem = run.freeMemory();
+        
+        System.out.println("Freier Speicher: " + mem); 
+        
+        Image image;
+        try {
+            image = new ImageData(1000, 1000, 1000);
+        } catch (OutOfMemoryError e) {
+            System.out.println("Zu wenig freier Speicher");    
+        } 
+        
+        System.out.println("Freier Speicher: " + run.freeMemory());  
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test10();
+        test12();
     }
     
 }

@@ -30,7 +30,7 @@ import org.wewi.medimg.util.Nullable;
  * @see org.wewi.medimg.image.Dimension
  * 
  */
-public interface Image extends ImageGeometry, Nullable, Cloneable, Mutable {
+public interface Image extends ImageGeometry, ImageAccess, Nullable, Cloneable, Mutable {
        
     /**
      * Sets the specific color at the position (x, y, z)
@@ -63,7 +63,7 @@ public interface Image extends ImageGeometry, Nullable, Cloneable, Mutable {
     /**
      * Gets the color at the specified position.
      * 
-     * @param pos colorposition.
+     * @param pos Colorposition; <code>0 <= pos < getNVoxels()</code>.
      * @return the greyvalue at the position pos
      */
     public int getColor(int pos);
@@ -78,25 +78,6 @@ public interface Image extends ImageGeometry, Nullable, Cloneable, Mutable {
      */
     public int getColor(int x, int y, int z);      
     
-    /**
-     * Returns the minimal greyvalue of the current image.
-     * 
-     * @return the minimal greyvalue.
-     * 
-     * @todo This method should be removed. The mincolor determination
-     *       can be done by an analyse function (class).
-     */
-    public int getMinColor();
-    
-    /**
-     * Returns the maximal greyvalue of the current image.
-     * 
-     * @return the maximal greyvalue.
-     * 
-     * @todo This method should be removed. The maxcolor determination 
-     *        can be done by an analyse function (class).
-     */
-    public int getMaxColor();
     
     /**
      * A convinient method for getting the number
@@ -111,17 +92,7 @@ public interface Image extends ImageGeometry, Nullable, Cloneable, Mutable {
      * 
      * @return VoxelIterator of this image
      */
-    public VoxelIterator getVoxelIterator();
-    
-    /**
-     * Returns the ColorRange of this image.
-     * 
-     * @return ColorRange of this image.
-     * 
-     * @todo This method should be removed. The color range determination
-     *       can be done by an analyse function (class).
-     */
-    public ColorRange getColorRange();
+    public VoxelIterator getVoxelIterator();    
     
     /**
      * Returns the ImageHeader

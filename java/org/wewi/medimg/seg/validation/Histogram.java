@@ -10,6 +10,8 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ColorRange;
 
 import org.wewi.medimg.image.io.*;
+import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.image.*;
 import java.io.File;
 
@@ -32,7 +34,12 @@ public class Histogram {
     /** Creates new Histogram */
     public Histogram(Image image) {
         this.image = image;
-        colorRange = image.getColorRange();
+        
+        MinMaxOperator op = new MinMaxOperator();
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
+        analyzer.analyze();       
+        
+        colorRange = new ColorRange(op.getMinimum(), op.getMaximum());
     }
     
     public Image getImage() {

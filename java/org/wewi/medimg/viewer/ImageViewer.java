@@ -94,7 +94,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
         saveCommand = new SaveCommand(Viewer.getInstance(), image);
         printCommand = new PrintCommand(this);
          
-        setSlice(0);
+        setSlice(slice);
         
         //Aufbau des Popupnemüs///////////////////////////////////////
         popup = new JPopupMenu();

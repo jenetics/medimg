@@ -28,7 +28,8 @@ import com.jrefinery.data.IntervalCategoryDataset;
  */
 public class ErrorListPlot extends javax.swing.JFrame {
     private String title;
-    private int[] k;
+    private double[] k;
+    private double[] beta;
     private double[] mean;
     private double[] var;
     
@@ -42,7 +43,7 @@ public class ErrorListPlot extends javax.swing.JFrame {
     }
     
     /** Creates new form ErrorListPlot */
-    public ErrorListPlot(String title, int[] k, double[] mean, double[] var) {
+    public ErrorListPlot(String title, double[] k, double[] mean, double[] var) {
         this.title = title;
         this.k = k;
         this.mean = mean;
@@ -50,7 +51,16 @@ public class ErrorListPlot extends javax.swing.JFrame {
         initComponents();
         init();
     }
-    
+    /*
+    public ErrorListPlot(String title, double[] beta, double[] mean, double[] var) {
+        this.title = title;
+        this.beta = beta;
+        this.mean = mean;
+        this.var = var;
+        initComponents();
+        init();            
+    }
+    */
     public void init() { 
         //Erzeugen der Datensätze
         String[] categories = new String[mean.length];
@@ -59,15 +69,15 @@ public class ErrorListPlot extends javax.swing.JFrame {
         for (int i =  0; i < mean.length; i++) {
             starts[0][i] = mean[i] - var[i];
             ends[0][i] = mean[i] + var[i];  
-            categories[i] = Integer.toString(i+2);  
+            categories[i] = Double.toString(k[i]);  
         } 
         IntervalCategoryDataset intervalData = new DefaultIntervalCategoryDataset(starts, ends);   
         double[][] m = new double[1][];
         m[0] = mean;
         DefaultCategoryDataset lineData = new DefaultCategoryDataset(m);            
         
-        String xTitle = "Anzahl der Merkmale k";
-        String yTitle = "Iterationen";
+        String xTitle = "Gibbspotential beta";
+        String yTitle = "Gesamtfehlerrate";
         HorizontalCategoryAxis xAxis = new HorizontalCategoryAxis(xTitle);
         VerticalNumberAxis yAxis = new VerticalNumberAxis(yTitle);        
         OverlaidVerticalCategoryPlot plot = new 
@@ -127,7 +137,7 @@ public class ErrorListPlot extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        int[] k = new int[15];
+        double[] k = new double[15];
         double[] mean = new double[k.length];
         double[] var = new double[k.length];
         for (int i = 0; i < k.length; i++) {

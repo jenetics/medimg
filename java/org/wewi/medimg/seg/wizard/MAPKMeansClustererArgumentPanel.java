@@ -19,7 +19,7 @@ import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
 public final class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
     private int nfeatures = 1;
     
-    private final static double BETA_DIVISOR = 100d;
+    private final static double BETA_DIVISOR = 1000d;
     private int beta = 30;
     
     private NumberFormat format;
@@ -29,17 +29,19 @@ public final class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPane
     public MAPKMeansClustererArgumentPanel() {
         initComponents();
         init();
-        
-        format = NumberFormat.getInstance();
-        format.setMaximumFractionDigits(2);
-        format.setMinimumFractionDigits(2);
-        format.setMaximumIntegerDigits(1);
-        format.setMinimumIntegerDigits(1);
     }
     
     private void init() {
+        format = NumberFormat.getInstance();
+        format.setMaximumFractionDigits(3);
+        format.setMinimumFractionDigits(3);
+        format.setMaximumIntegerDigits(4);
+        format.setMinimumIntegerDigits(1);        
+          
         nfeatures = nfeaturesSlider.getValue();
-        beta = betaSlider.getValue();    
+        beta = betaSlider.getValue();  
+        
+        betaLabel.setText("  Beta (Gibbspotential):    " + format.format((double)beta/BETA_DIVISOR));         
     }
     
     public ObservableSegmenter getSegmenter() {
@@ -88,11 +90,11 @@ public final class MAPKMeansClustererArgumentPanel extends SegmenterArgumentPane
         betaLabel.setText("  Beta (Gibbspotential):    0,30");
         add(betaLabel);
 
-        betaSlider.setMajorTickSpacing(10);
-        betaSlider.setMaximum(200);
-        betaSlider.setMinorTickSpacing(5);
+        betaSlider.setMajorTickSpacing(100);
+        betaSlider.setMaximum(1200);
+        betaSlider.setMinorTickSpacing(50);
         betaSlider.setPaintTicks(true);
-        betaSlider.setValue(30);
+        betaSlider.setValue(300);
         betaSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 betaSliderStateChanged(evt);
