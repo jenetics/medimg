@@ -12,8 +12,8 @@ public interface VectorIterator {
     
     public boolean hasNext();
     
-    public void next(double[] source, double[] target);
+    public void next(double[] start, double[] end);
     
-    public void next(float[] source, float[] target);
+    public void next(float[] start, float[] end);
     
 }
