@@ -4,11 +4,13 @@
  */
 package org.wewi.medimg.math;
 
+import org.wewi.medimg.util.Mutable;
+
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public interface GridVectorField extends VectorField, Cloneable {
+public interface GridVectorField extends VectorField, Cloneable, Mutable {
     
     public void setGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint);
     
@@ -19,4 +21,12 @@ public interface GridVectorField extends VectorField, Cloneable {
     public void getVector(int gridX, int gridY, int gridZ, double[] vector);
     
     public void setVector(int gridX, int gridY, int gridZ, double[] vector);
+    
+    public int getGridsX();
+    
+    public int getGridsY();
+    
+    public int getGridsZ();
+    
+    public Object clone();
 }
