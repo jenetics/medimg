@@ -20,7 +20,8 @@ public final class Range {
     public Range(int minSlice, int maxSlice) throws IllegalArgumentException {
         if (minSlice > maxSlice) {
             throw new IllegalArgumentException("minSlice is greater then maxSlice: \n" +
-                                               "minSlice: " + minSlice + ", maxSlice: " + maxSlice);
+                                               "minSlice: " + minSlice + 
+                                               ", maxSlice: " + maxSlice);
         }
         this.minSlice = minSlice;
         this.maxSlice = maxSlice;
@@ -30,7 +31,8 @@ public final class Range {
     public Range(int minSlice, int maxSlice, int stride) {
         if (minSlice > maxSlice) {
             throw new IllegalArgumentException("minSlice is greater then maxSlice: \n" +
-                                               "minSlice: " + minSlice + ", maxSlice: " + maxSlice);
+                                               "minSlice: " + minSlice + 
+                                               ", maxSlice: " + maxSlice);
         }
         if (stride <= 0) {
             throw new IllegalArgumentException("Stride is less or equal zero:\n" +
