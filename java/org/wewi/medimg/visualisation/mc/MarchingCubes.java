@@ -113,15 +113,15 @@ public class MarchingCubes  {
                                             new File("C:/Workspace/fwilhelm/Projekte/Diplom/data/head"));
         try {
             reader.read();
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             System.out.println("Fehler: " + ioe);
         }
         Image image = reader.getImage();
         
         ImageSegmentationStrategy iss = new MLSegmentation(image, 4);
-        iss.doSegmentation();
+        iss.segmentate();
         
-        FeatureImage fi = iss.getFeatureImage();
+        Image fi = null;// = iss.getFeatureImage();
         
         CubeIterator cit = new CubeIterator(fi);
         MarchingCubes mc = new MarchingCubes(cit);

@@ -12,7 +12,6 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.FeatureImage;
 import org.wewi.medimg.image.ImageFormatTypes;
 import org.wewi.medimg.image.FeatureColorConversion;
 
@@ -29,6 +28,7 @@ import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.WriterThreadEvent;
 import org.wewi.medimg.image.io.Range;
 
+import org.wewi.medimg.seg.FeatureImage;
 import org.wewi.medimg.seg.SegmentationStrategy;
 import org.wewi.medimg.seg.SegmentationEvent;
 import org.wewi.medimg.seg.SegmentationKind;
@@ -159,7 +159,7 @@ public class SegmentationWizard extends Wizard implements Observer,
     } 
     
     public void segmentationStarted(SegmentationEvent event) {
-        imageViewer = new TwinImageViewer("Segmentiervorgang", imageData, segmentationStrategy.getFeatureImage());
+        imageViewer = new TwinImageViewer("Segmentiervorgang", imageData, segmentationStrategy.getSegmentedImage());
         imageViewer.setColorConversion2(new FeatureColorConversion());
         imageViewer.pack();
         Viewer.getInstance().addViewerDesktopFrame(imageViewer); 

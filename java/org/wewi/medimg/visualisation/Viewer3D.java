@@ -6,15 +6,17 @@
 
 package org.wewi.medimg.visualisation;
 
-//import javax.media.j3d.Canvas3D;
+import org.wewi.medimg.viewer.ViewerDesktopFrame;
+
+import javax.media.j3d.Canvas3D;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class Viewer3D {
-
+public class Viewer3D extends ViewerDesktopFrame {
+    private Canvas3D viewer3D;
 
     
     
