@@ -11,6 +11,18 @@ import org.wewi.medimg.image.geom.transform.Transform;
 import org.wewi.medimg.reg.RegisterParameter;
 import org.wewi.medimg.reg.RegStrategy;
 
+
+
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.FeatureImage;
+import org.wewi.medimg.reg.wizard.RegistrationListener;
+import org.wewi.medimg.reg.wizard.RegistrationEvent;
+
+import java.util.Vector;
+import java.util.Iterator;
+
+
+
 import org.wewi.medimg.util.Timer;
 
 /**
@@ -26,6 +38,8 @@ public class Registrate {
     private Transform trans;
 
     private RegisterParameter parameter;
+    
+    private Vector listeners;
 
     /**
      * Erzeugen eines neuen Register- Objektes. Die Strategie der
@@ -37,6 +51,7 @@ public class Registrate {
         strategy = s;
         parameter = p; 
         this.trans = null;
+        listeners = new Vector();
     }
 
     /**
@@ -50,6 +65,7 @@ public class Registrate {
      *         für diesen Methodenaufruf nicht vorhanden sind.
      */
     public void calculate() throws RegistrationException {
+        notifyRegistrationStarted(new RegistrationEvent(this));
         Timer timer1 = new Timer("CRegister::calculate");
         timer1.start();
         try {
@@ -65,6 +81,7 @@ public class Registrate {
         parameter.setTargetImage(trans.transform(parameter.getSourceImage()));
         timer2.stop();
         timer2.print(); 
+        notifyRegistrationFinished(new RegistrationEvent(this));
     }
 
     //class CRegisterParameter;
@@ -87,6 +104,33 @@ public class Registrate {
 
     public Transform getTrans() {
         return trans;
+    }    
+    
+    public void addRegistrationListener(RegistrationListener listener) {
+        listeners.add(listener);
+    }
+    
+   
+    public void removeRegistrationListener(RegistrationListener listener) {
+        listeners.remove(listener);
+    }
+
+    protected void notifyRegistrationStarted(RegistrationEvent event) {
+        Vector lv = (Vector)listeners.clone();
+        RegistrationListener l;
+        for (Iterator it = lv.iterator(); it.hasNext();) {
+            l = (RegistrationListener)it.next();
+            l.registrationStarted(event);
+        }
+    }    
+    
+    protected void notifyRegistrationFinished(RegistrationEvent event) {
+        Vector lv = (Vector)listeners.clone();
+        RegistrationListener l;
+        for (Iterator it = lv.iterator(); it.hasNext();) {
+            l = (RegistrationListener)it.next();
+            l.registrationFinished(event);
+        }
     }    
 
 }

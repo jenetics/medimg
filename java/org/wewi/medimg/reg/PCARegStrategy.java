@@ -31,6 +31,8 @@ import org.wewi.medimg.image.geom.transform.AffineTransform3D;
 import org.wewi.medimg.image.geom.transform.Transform;
 import org.wewi.medimg.image.geom.transform.TransformVector;
 
+import org.wewi.medimg.reg.wizard.RegistrationEvent;
+
 /**
  *
  * @author  werner weiser
@@ -46,8 +48,10 @@ public class PCARegStrategy implements RegStrategy {
     private static final double epsilon = 0.05;
 
     private static final int DIM = 3;
+    
     /** Creates new PCARegStrategy */
     public PCARegStrategy(InterpolStrategy strategy, AffinityMetric metric) {
+        super();
         weightStrategy = strategy;
         affinityMetric = metric;
     }
