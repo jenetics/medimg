@@ -646,7 +646,7 @@ public class Test {
             
             Image image = reader.getImage();
             
-            AffineTransformation affine = AffineTransformation.getRotateInstance(new double[]{0, 0, 0.1});
+            AffineTransformation affine = AffineTransformation.getRotateInstance(0, 0, 0.1);
             Image affineImage = affine.transform(image);
             
             int g = 10;
@@ -660,8 +660,7 @@ public class Test {
             showField(field, image.getDimension()); 
             
             showField((VectorField)field.createInverse(), image.getDimension());                                  
-            
-                                                
+                                             
             Image fieldImage = field.transform(image);
             
             ImageWriter writer = new TIFFWriter(affineImage, "C:/Temp/affine.form002");
