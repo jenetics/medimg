@@ -12,7 +12,7 @@ import org.wewi.medimg.math.Complex;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class ComplexImage extends LineScanImageGeometry implements Cloneable {
+public class ComplexImage extends RowMajorImageGeometry implements Cloneable {
     private Complex[] data;
 
     
@@ -25,7 +25,7 @@ public class ComplexImage extends LineScanImageGeometry implements Cloneable {
      * @param dimension
      */
     public ComplexImage(Dimension dimension) {
-        super(dimension);
+        super(dimension); 
         data = new Complex[size];
         resetImage(new Complex(0, 0));
     }

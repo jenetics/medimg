@@ -8,7 +8,7 @@ package org.wewi.medimg.image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public abstract class LineScanImageGeometry implements ImageGeometry {
+public abstract class RowMajorImageGeometry implements ImageGeometry {
 
     protected Dimension dimension;
     protected int maxX, maxY, maxZ;
@@ -17,10 +17,10 @@ public abstract class LineScanImageGeometry implements ImageGeometry {
     protected int sizeXY;
     protected int size;
     
-    protected LineScanImageGeometry() {
+    protected RowMajorImageGeometry() {
     }
   
-    protected LineScanImageGeometry(Dimension dimension) {
+    protected RowMajorImageGeometry(Dimension dimension) {
         init(dimension);
     }
     
