@@ -14,7 +14,7 @@ import org.wewi.medimg.util.Singleton;
  * @author  werner weiser
  * @version 
  */
-public class TissueColorConversion extends ColorConversion {
+public class TissueColorConversion implements ColorConversion, Singleton {
     private static TissueColorConversion singleton = null;
     /** Creates new TissueColorConversion */
     public TissueColorConversion() {
