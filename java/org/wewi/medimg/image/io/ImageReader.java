@@ -24,6 +24,7 @@ import org.wewi.medimg.image.ImageFactory;
 public abstract class ImageReader {
     protected File source;
     protected Range range;
+    protected Image image;
     protected ImageFactory imageFactory;
     protected ColorConversion colorConversion;
     
@@ -78,7 +79,9 @@ public abstract class ImageReader {
      *
      * @return gelesene Image
      */
-    public abstract Image getImage();    
+    public Image getImage() {
+        return image;    
+    }   
     
     /**
      * Hinzufügen eines ProgressListners. Diese Methode ist synchronisiert.

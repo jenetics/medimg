@@ -23,7 +23,7 @@ import org.wewi.medimg.util.Timer;
 public class Registrate {
 
     
-    private RegStrategy strategy;
+    private Registrator strategy;
 
     private Transformation trans;
 
@@ -37,7 +37,7 @@ public class Registrate {
      *
      * @param strategy Registrierungsstrategie
      */
-    public Registrate(RegStrategy s, RegisterParameter p) {
+    public Registrate(Registrator s, RegisterParameter p) {
         strategy = s;
         parameter = p; 
         this.trans = null;
@@ -83,7 +83,7 @@ public class Registrate {
         return parameter; 
     }
 
-    public RegStrategy getStrategy() {
+    public Registrator getStrategy() {
         return strategy;
     }
 

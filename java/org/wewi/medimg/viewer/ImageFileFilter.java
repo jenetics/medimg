@@ -10,7 +10,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.wewi.medimg.image.ImageFormatTypes;
+import org.wewi.medimg.image.io.ImageFormatTypes;
 
 /**
  *

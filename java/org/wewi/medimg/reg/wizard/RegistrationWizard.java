@@ -13,6 +13,7 @@ import java.util.Observer;
 
 import javax.swing.JFileChooser;
 
+import org.wewi.medimg.reg.pca.PCARegistrationStrategy;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.TissueColorConversion;
@@ -23,8 +24,7 @@ import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
 import org.wewi.medimg.image.io.WriterThreadEvent;
 import org.wewi.medimg.image.io.WriterThreadListener;
-import org.wewi.medimg.reg.PCARegStrategy;
-import org.wewi.medimg.reg.RegStrategy;
+import org.wewi.medimg.reg.Registrator;
 import org.wewi.medimg.reg.RegisterParameter;
 import org.wewi.medimg.reg.Registrate;
 import org.wewi.medimg.reg.interpolation.WeightPointStrategy;
@@ -57,7 +57,7 @@ public class RegistrationWizard
 	//private int nfeatures = 4;
 
 	private Registrate reg = null;
-	private RegStrategy regStrategy = null;
+	private Registrator regStrategy = null;
 	private RegisterParameter param = null;
 	private Image imageData1;
 	private Image imageData2;
@@ -145,7 +145,7 @@ public class RegistrationWizard
 				BBAffinityMetric myMetric = new BBAffinityMetric();
 				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
 				myStrategy.setErrorLimit(0.2);
-				regStrategy = new PCARegStrategy(myStrategy, myMetric);
+				regStrategy = new PCARegistrationStrategy(myStrategy, myMetric);
 			} else if (registrationKind.equals(RegistrationKind.MoreToCome)) {
 				WeightPointStrategy myStrategy = new WeightPointStrategy();
 				//ImportanceStrategy myStrategy = new ImportanceStrategy();
@@ -153,7 +153,7 @@ public class RegistrationWizard
 				BBAffinityMetric myMetric = new BBAffinityMetric();
 				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
 				myStrategy.setErrorLimit(0.2);
-				regStrategy = new PCARegStrategy(myStrategy, myMetric);
+				regStrategy = new PCARegistrationStrategy(myStrategy, myMetric);
 			}
 			param = new RegisterParameter();
 			param.setSourceImage(imageData1);

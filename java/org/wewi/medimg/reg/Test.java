@@ -8,6 +8,7 @@ package org.wewi.medimg.reg;
 
 import java.io.File;
 
+import org.wewi.medimg.reg.pca.*;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.TissueColorConversion;
@@ -86,7 +87,7 @@ public class Test {
             myStrategy.setImportance(Tissue.WHITE_MATTER, 0.0);
             myStrategy.setImportance(Tissue.SOFT_TISSUE, 0.0);
             myStrategy.setImportance(Tissue.ANGULAR_GYRUS, 0.0);*/
-        RegStrategy strategy = new PCARegStrategy(myStrategy, myMetric);
+        Registrator strategy = new PCARegistrationStrategy(myStrategy, myMetric);
         
         Registrate reg = new Registrate(strategy, param);
         //System.out.println("Mist222222");
@@ -112,7 +113,7 @@ public class Test {
         param.setTargetImage(data2);
          **/
         for (int i = 0 ; i < 1; i++) {
-        RegStrategy strategy2 = new MCWarpingRegStrategy();
+        Registrator strategy2 = new MCWarpingRegStrategy();
         Registrate reg2 = new Registrate(strategy2, param);
         Timer timer4 = new Timer("Test: calculate MC");
         param.temp = i;

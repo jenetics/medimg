@@ -153,8 +153,8 @@ public class Batch {
             //Auswerten des Segmentierten Bildes
             MLValidator validator = new MLValidator();
             validator.setProtocolFile("C:/Workspace/fwilhelm/Projekte/Diplom/validation/" +
-                                       "protocols/protocol." + System.currentTimeMillis() +
-                                       id + "." + i + "." + ".xml");                                                            
+                                       "protocols/protocol." + System.currentTimeMillis() + "." +
+                                       id + "." + i  + ".xml");                                                            
             validator.setK(k);
             validator.setAnatomicalModel(currentModelImage);
             validator.setSourceImage(currentSourceImage);

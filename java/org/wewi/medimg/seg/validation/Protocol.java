@@ -68,7 +68,7 @@ public class Protocol {
             if ("k".equals(name)) {
                 k = Integer.parseInt(param.getText());       
             } else if ("image".equals(name)) {
-                Element image = param.getChild("Image");
+                Element image = param.getChild("ImageHeader");
                 List imageParameter = image.getChildren();
                 imageProperties = new Properties();
                 for (Iterator it2 = imageParameter.iterator(); it2.hasNext();) {

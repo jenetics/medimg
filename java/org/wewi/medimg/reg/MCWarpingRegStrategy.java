@@ -24,7 +24,7 @@ import cern.jet.random.engine.RandomEngine;
  * @author  werner weiser
  * @version 
  */
-public class MCWarpingRegStrategy implements RegStrategy {
+public class MCWarpingRegStrategy implements Registrator {
     
     private InterpolStrategy weightStrategy;
     
