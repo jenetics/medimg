@@ -6,10 +6,12 @@
 
 package org.wewi.medimg.image.statistic;
 
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
+import java.io.File;
 
-import java.io.*;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.ImageReader;
+import org.wewi.medimg.image.io.TIFFReader;
 
 /**
  *
