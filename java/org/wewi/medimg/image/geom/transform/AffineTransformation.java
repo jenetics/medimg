@@ -73,7 +73,7 @@ public class AffineTransformation extends ImageTransformation
         m[15] = 1.0;
         
         matrix = new Matrix4d(m);
-        inverseMatrix = (Matrix4d)matrix.clone();
+        inverseMatrix = new Matrix4d(matrix);
         inverseMatrix.invert();
 
         unmatrix = new UnMatrix(matrix);        
