@@ -44,37 +44,42 @@ final class IntervalTree {
     }
     
     public int intervalNumber(int x) {
-        return intervalNumberRecursive(x, (ninterval)/2, (ninterval-4)/4);
+        //return intervalNumberRecursive(x, 0, ninterval-1);
+        return intervalNumberIterative(x);
     }
     
-    private int intervalNumberRecursive(int x, int i, int d) {
-        if (x < interval[i][0]) {
-            return intervalNumberRecursive(x, i-d, (d-1)/2+1);
+    private int intervalNumberRecursive(int x, int l, int u) {
+        //int m = (int)Math.ceil((double)(u-l+1)/(double)2.0)+(l-1);
+        int m = u-l+1; m = m >> 1; m += l; //Macht das Gleiche wie die obere Zeile
+        if (x < interval[m][0]) {
+            return intervalNumberRecursive(x, l, m-1);
         }
-        if (x >= interval[i][1]) {
-            return intervalNumberRecursive(x, i+d, (d-1)/2+1);
-        }
-        return i;
+        if (x >= interval[m][1]) {
+            return intervalNumberRecursive(x, m+1, u);
+        } 
+        return m;
     }
     
-    public int intervalNumberIterative(int x) {
-        int d = (ninterval-11)/4;
-        int i = ninterval/2;
-        d = i/2-1;
+    int intervalNumberIterative(int x) {
+        int l = 0;
+        int u = ninterval-1;
+        int m;
         while (true) {
-            if (x < interval[i][0]) {
-                i = i - d; d = (d-1)/2+1;
+            //m = (int)Math.ceil((double)(u-l+1)/(double)2.0)+(l-1);
+            m = u-l+1; m = m >> 1; m += l; //Macht das Gleiche wie die obere Zeile
+            if (x < interval[m][0]) {
+                u = m-1;
                 continue;
             }
-            if (x >= interval[i][1]) {
-                i = i + d; d = (d-1)/2+1;
+            if (x >= interval[m][1]) {
+                l = m+1;
                 continue;
             }
-            return i; 
+            return m; 
         }
     }
     
-    public int intervalNumberBF(int x) {
+    int intervalNumberBF(int x) {
         for (int i = 0; i < ninterval; i++) {
             if (x >= interval[i][0] && x < interval[i][1]) {
                 return i;
@@ -83,15 +88,24 @@ final class IntervalTree {
         return -1;
     }
     
-    public void test() {
+    static void test1() {
         int F = 100;
         int M = 1000;
         int color;
+        
+        int CENTERS = 5;
         Random rand = new Random(System.currentTimeMillis());
+        double[] center = new double[CENTERS];
+        for (int j = 0; j < CENTERS; j++) {
+            center[j] = rand.nextDouble()*CENTERS*1000;
+        }
+        Arrays.sort(center);
+        IntervalTree tree = new IntervalTree(center);        
+        
         for (int f = 1; f < F; f++) {
             for (int i = 0; i < M; i++) {
                 color = (int)(rand.nextDouble()*1000*100);
-                if (intervalNumber(color) != intervalNumberBF(color)) {
+                if (tree.intervalNumberIterative(color) != tree.intervalNumberBF(color)) {
                     System.out.println("NICHT OK");
                     return;
                 }
@@ -100,13 +114,13 @@ final class IntervalTree {
         System.out.println("OK");
     }
     
-    public static void main(String[] args) {
+    static void test2() {
         int CENTERS;
-        int TURNS = 1000;
+        int TURNS = 10000;
         long time1, time2;
         int color;
         
-        for (int i = 1; i < 5000; i++) {
+        for (int i = 1; i < 20000; i++) {
             System.out.print("" + i + " ");
             CENTERS = i;
             Random rand = new Random(System.currentTimeMillis());
@@ -117,6 +131,7 @@ final class IntervalTree {
             Arrays.sort(center);
             IntervalTree tree = new IntervalTree(center);
 
+            //Brute Force Methode
             time1 = System.currentTimeMillis();
             for (int j = 0; j < TURNS; j++) {
                 color = (int)(rand.nextDouble()*1000*CENTERS);
@@ -124,7 +139,8 @@ final class IntervalTree {
             }
             time2 = System.currentTimeMillis();
             System.out.print("" + (time2-time1) + " ");
-            /*
+            
+            //Rekursive Methode
             time1 = System.currentTimeMillis();
             for (int j = 0; j < TURNS; j++) {
                 color = (int)(rand.nextDouble()*1000*CENTERS);
@@ -132,16 +148,19 @@ final class IntervalTree {
             }
             time2 = System.currentTimeMillis();
             System.out.print("" + (time2-time1) + " ");
-            */
+            
+            //Iterative Methode
             time1 = System.currentTimeMillis();
             for (int j = 0; j < TURNS; j++) {
                 color = (int)(rand.nextDouble()*1000*CENTERS);
                 tree.intervalNumberIterative(color);
             }
             time2 = System.currentTimeMillis();
-            System.out.print("" + (time2-time1) + "\n");            
-
-        }
-        
+            System.out.println("" + (time2-time1)); 
+        }        
+    }
+    
+    public static void main(String[] args) {
+        test2();
     }
 }
