@@ -7,9 +7,7 @@
 package org.wewi.medimg.image.ops;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ROI;
-import org.wewi.medimg.util.Sort;
 
 /**
  * @author Franz Wilhelmstötter
@@ -17,7 +15,19 @@ import org.wewi.medimg.util.Sort;
  */
 public class ParallelImageLoop extends ImageLoop {
     
+    /**
+     * Factory for the <code>ImageLoop.Task</code> class.
+     * 
+	 * @author Franz Wilhelmstötter
+	 * @version 0.1
+     */
     public static interface TaskFactory {
+        
+        /**
+         * Factory method.
+         * 
+         * @return Task
+         */
         public Task create();
     }    
     
@@ -37,7 +47,7 @@ public class ParallelImageLoop extends ImageLoop {
         }
 
 		public void run() {
-            loop(roi, strideX, strideY, strideZ);
+            loop.loop(roi, strideX, strideY, strideZ);
             ready();
 		}
     }
@@ -45,76 +55,58 @@ public class ParallelImageLoop extends ImageLoop {
     
     private TaskFactory factory;
     private int threads = 2;
-    private int threadsReady = 0;
     
+    /**
+     * 
+     * @param image
+     * @param factory
+     */
     public  ParallelImageLoop(Image image, TaskFactory factory) {
-        this.image = image;    
+        this.image = image; 
+        this.factory = factory;   
     }
     
+    /**
+     * 
+     * @param image
+     * @param factory
+     * @param threads
+     */
     public ParallelImageLoop(Image image, TaskFactory factory, int threads) {
         this(image, factory);
         this.threads = threads;
     }
     
-    private ROI[] split(ROI roi, int parts) {
-        ROI[] result = new ROI[parts];
-        
-        ROI[] temp = new ROI[2];
-        temp[1] = roi;
-        for (int i = parts; i > 1; i--) {
-            temp = splitr(temp[1], i);
-            result[parts - 1] = temp[0];
-        }
-        result[0] = temp[1];
-        
-        return result;
-    }
+    private int threadsReady = 0;
     
-    private ROI[] splitr(ROI roi, int parts) {
-        ROI[] result = new ROI[2];
-        
-        int[] pivot = new int[3];
-        int[] size = new int[3];
-        for (int i = 0; i < 3; i++) {
-            size[i] = roi.getSize(i);
-        }
-        Sort.sort(size, pivot);
-        
-        int part = roi.size()/(parts*roi.getSize(pivot[0])*roi.getSize(pivot[1]));
-        
-        int[] min = new int[3];
-        int[] max = new int[3];
-        
-        min[pivot[0]] = roi.getMin(pivot[0]);
-        max[pivot[0]] = roi.getMax(pivot[0]);
-        min[pivot[1]] = roi.getMin(pivot[1]);
-        max[pivot[1]] = roi.getMax(pivot[1]);
-        min[pivot[2]] = roi.getMin(pivot[2]);
-        max[pivot[2]] = roi.getMin(pivot[2]) + part - 1;          
-        result[0] = new ROI(min[0], max[0], min[1], max[1], min[2], max[2]);
-        
-        min[pivot[2]] = roi.getMin(pivot[2]) + part;
-        max[pivot[2]] = roi.getMax(pivot[2]);          
-        result[1] = new ROI(min[0], max[0], min[1], max[1], min[2], max[2]);        
-
-        return result;
-    }
+    private synchronized void ready() { 
+        threadsReady++; 
+        notifyAll();
+    }    
     
-    
+    /**
+     * Overides the method in the <code>ImageLoop</code> class by a parallel
+     * one.
+     * 
+     * @see org.wewi.medimg.image.ops.ImageLoop#loop(ROI, int, int, int)
+     */
     public synchronized void loop(ROI roi, int strideX, int strideY, int strideZ) {
         threadsReady = 0;
         
         Thread[] t = new Thread[threads];
-        ROI[] rois = split(roi, threads);
+        ROI[] rois = roi.split(threads);
+
         for (int i = 0; i < threads; i++) { 
-            t[i] = new Thread(new LoopThread(image, factory.create(), 
-                              rois[i], strideX, strideY, strideZ));      
+            t[i] = new Thread(
+                   new LoopThread(image, factory.create(), rois[i], 
+                                   strideX, strideY, strideZ));      
         }
         
         for (int i = 0; i < threads; i++) {
             t[i].start();
         }
         
+        //Waiting, until all Loop Threads are ready.
         while (threadsReady < threads) {
             try {
 				wait();
@@ -122,30 +114,7 @@ public class ParallelImageLoop extends ImageLoop {
                 System.err.println(e);
 			}
         }
-    } 
-    
-    private synchronized void ready() {
-        threadsReady++;
-    }
-    
-    
-    public static void main(String[] args) {
-        Image image = new ImageData(100, 100, 100);
-        
-        ImageLoop loop = new ParallelImageLoop(image, 
-                     new TaskFactory() {
-                        public Task create() {
-                            return new Task() {
-                                public void execute(int x, int y, int z) {
-                                }
-                            };
-                        }
-                     }, 3);
-                     
-        loop.loop();
-        
-    }
-       
+    }     
 
 }
 

@@ -87,6 +87,12 @@ public class Dimension implements Cloneable, Immutable {
 		return maxZ;
 	}
     
+    /**
+     * Returns the maximum extention in the direction <code>dim</code>
+     * 
+     * @param dim
+     * @return int
+     */
     public int getMax(int dim){
         switch (dim) {
             case 0: return maxX;
@@ -120,6 +126,12 @@ public class Dimension implements Cloneable, Immutable {
 		return minZ;
 	}
     
+    /**
+     * Returns the minimum extention in the given direction <code>dim</dim>.
+     * 
+     * @param dim
+     * @return int
+     */
     public int getMin(int dim) {
         switch (dim) {
             case 0: return minX;
@@ -153,6 +165,12 @@ public class Dimension implements Cloneable, Immutable {
 		return sizeZ;
 	}
     
+    /**
+     * Returns the size in the given direction <code>dim</dim>
+     * 
+     * @param dim
+     * @return int
+     */
     public int getSize(int dim) {
         switch (dim) {
             case 0: return sizeX;

@@ -1,4 +1,4 @@
-/*
+/**
  * ImageAccess2D.java
  *
  * Created on 27. Jänner 2003, 18:28

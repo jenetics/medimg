@@ -23,7 +23,7 @@ import org.wewi.medimg.util.Nullable;
  *
  *
  * @author Franz Wilhelmstötter
- * @version 0.2
+ * @version 0.1
  * 
  * @see org.wewi.medimg.image.ColorConversion
  * @see org.wewi.medimg.image.VoxelIterator
