@@ -1,4 +1,4 @@
-/*
+/**
  * Polygon.java
  *
  * Created on 25. Februar 2002, 17:09
