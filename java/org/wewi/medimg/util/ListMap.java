@@ -186,7 +186,7 @@ public class ListMap implements Map {
 	}
     
     public List entryList() {
-        return (List)entries.clone();
+        return entries;
     }
     
     public Iterator iterator() {
