@@ -8,7 +8,57 @@ package org.wewi.medimg.image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public interface VoxelAccess {
+public interface ImageGeometry {
+    
+    /**
+     * Returns the maximal valid x-coordinate.
+     * 
+     * @return the maximal valid x-cooridnate.
+     */
+    public int getMaxX();
+    
+    /**
+     * Returns the maximal valid y-coordinate.
+     * 
+     * @return the maximal valid y-cooridnate.
+     */    
+    public int getMaxY();
+    
+    /**
+     * Returns the maximal valid z-coordinate.
+     * 
+     * @return the maximal valid z-cooridnate.
+     */    
+    public int getMaxZ();
+    
+    /**
+     * Returns the minimal valid x-coordinate.
+     * 
+     * @return the minimal valid x-cooridnate.
+     */    
+    public int getMinX();
+    
+    /**
+     * Returns the minimal valid y-coordinate.
+     * 
+     * @return the minimal valid y-cooridnate.
+     */     
+    public int getMinY();
+    
+    /**
+     * Returns the minimal valid z-coordinate.
+     * 
+     * @return the minimal valid z-cooridnate.
+     */     
+    public int getMinZ(); 
+    
+    /**
+     * Returns the image dimension
+     * 
+     * @return image dimension
+     */
+    public Dimension getDimension();       
+    
     /**
      * This method calculates the voxel position at
      * the coordinates (x, y, z). (For all image voxels holds:
