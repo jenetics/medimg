@@ -43,8 +43,8 @@ final class SegmentationWizardPreferences implements Singleton {
     }
     
     public Dimension getWizardDimension() {
-        int width = viewerNode.getInt("WIZARD_DIMENSION_WIDTH", 500);
-        int height = viewerNode.getInt("WIZARD_DIMENSION_HEIGHT", 300);
+        int width = swNode.getInt("WIZARD_DIMENSION_WIDTH", 500);
+        int height = swNode.getInt("WIZARD_DIMENSION_HEIGHT", 300);
         
         return new Dimension(width, height);
     }

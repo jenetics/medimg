@@ -1,4 +1,4 @@
-/*
+/**
  * Wizard.java
  *
  * Created on 6. April 2002, 19:37
@@ -26,7 +26,6 @@ public abstract class Wizard extends JInternalFrame {
     
     protected Logger logger;
     
-    /** Creates a new instance of Wizard */
     public Wizard() {
         super();
         init();
@@ -94,13 +93,17 @@ public abstract class Wizard extends JInternalFrame {
     }
     
     protected void notifyWizardListeners(WizardEvent wizardEvent) {
+        Vector wl;
+        synchronized (listeners) {
+            wl = (Vector)listeners.clone();
+        }
         WizardListener listener;
-        Vector wl = (Vector)listeners.clone();
         for (Iterator it = wl.iterator(); it.hasNext();) {
             listener = (WizardListener)it.next();
             listener.wizardEventOccurred(wizardEvent);
         }
     }
+    
     
     public abstract String getMenuName();
     

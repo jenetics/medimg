@@ -6,6 +6,8 @@
 
 package org.wewi.medimg.seg.wizard;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.logging.Logger;
@@ -30,6 +32,8 @@ import org.wewi.medimg.seg.SegmenterEvent;
 import org.wewi.medimg.seg.SegmenterListener;
 import org.wewi.medimg.seg.SegmenterThread;
 import org.wewi.medimg.viewer.ImageFileChooser;
+import org.wewi.medimg.viewer.ImageViewer;
+import org.wewi.medimg.viewer.ImageViewerSynchronizer;
 import org.wewi.medimg.viewer.LogHandlerPanel;
 import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
@@ -98,6 +102,8 @@ public class SegmentationWizard extends Wizard {
         private ObservableSegmenter segmenter;
         private TwinImageViewer twinImageViewer;
         
+        private ImageViewerSynchronizer imageSynchronizer;
+        
         public SegmenterWorker(SegmentationWizard wizard,
                                 SegmenterArgumentPanel segmenterArgumentPanel) {
             this.wizard = wizard;
@@ -114,12 +120,27 @@ public class SegmentationWizard extends Wizard {
             thread.setImage(wizard.mrtImage);
             thread.start();
             
+            
             wizard.segImage = thread.getSegmentedImage();
             wizard.segImage.setColorConversion(new FeatureColorConversion());
+            
+            ImageViewer mrtViewer = new ImageViewer(segmenter.toString(), mrtImage);
+            ImageViewer segViewer = new ImageViewer(segmenter.toString(), segImage);
+            mrtViewer.pack();
+            segViewer.pack();
+            imageSynchronizer = new ImageViewerSynchronizer();
+            imageSynchronizer.addImageViewer(mrtViewer, new Point(0, 0), new Dimension(300, 300));
+            imageSynchronizer.addImageViewer(segViewer, new Point(300, 0), new Dimension(300, 300));
+            Viewer.getInstance().addImageViewerSynchronizer(imageSynchronizer);
+
+            
+            
+            /*
             twinImageViewer = new TwinImageViewer(segmenter.toString(), 
                                                        mrtImage, segImage);
             twinImageViewer.pack();
             Viewer.getInstance().addViewerDesktopFrame(twinImageViewer);
+            */
         }
         
         public void interruptSegmenter() {
@@ -169,8 +190,11 @@ public class SegmentationWizard extends Wizard {
         }
         
         public void iterationFinished(AlgorithmIterationEvent event) {
-            if (twinImageViewer != null) {
-                twinImageViewer.redrawImages();    
+            //if (twinImageViewer != null) {
+            //    twinImageViewer.redrawImages();    
+            //}
+            if (imageSynchronizer != null) {
+                imageSynchronizer.repaintImages();    
             }
         } 
                
@@ -192,8 +216,11 @@ public class SegmentationWizard extends Wizard {
             wizardLogger.info("Segmentiervorgang beendet");
             /**************************************************************/ 
             
-           if (twinImageViewer != null) {
-                twinImageViewer.redrawImages();    
+            //if (twinImageViewer != null) {
+            //     twinImageViewer.redrawImages();    
+            //}
+            if (imageSynchronizer != null) {
+                imageSynchronizer.repaintImages();    
             }                      
         }
         
@@ -243,8 +270,8 @@ public class SegmentationWizard extends Wizard {
         swPrefs = SegmentationWizardPreferences.getInstance();
         wizardLogger = Logger.getLogger(SegmentationWizard.class.getName());
         
-        setPreferredSize(swPrefs.getWizardDimension());
-        setLocation(swPrefs.getWizardLocation());
+        setSize(swPrefs.getWizardDimension());
+        setLocation(swPrefs.getWizardLocation()); 
         
         logHandlerPanel = new LogHandlerPanel();
         ws3CenterPanel.add(logHandlerPanel);
@@ -265,7 +292,8 @@ public class SegmentationWizard extends Wizard {
         wizardLogger.addHandler(logHandlerPanel.getHandler());
         
         cancelButton.setEnabled(true);
-    }    
+    } 
+     
     
 	/**
      * Liefert den Namen des Wizards.
