@@ -1,10 +1,12 @@
-/*
+/**
  * DataPoint.java
  *
  * Created on 5. Februar 2002, 13:45
  */
 
 package org.wewi.medimg.math.geom;
+
+import org.wewi.medimg.util.MathematicaStringable;
 
 
 
@@ -13,7 +15,7 @@ package org.wewi.medimg.math.geom;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public interface DataPoint extends Cloneable {
+public interface DataPoint extends Cloneable, MathematicaStringable {
     
     public DataPoint add(DataPoint p);
     
@@ -38,6 +40,4 @@ public interface DataPoint extends Cloneable {
     public Object clone();
     
     public String toString();
-    
-    public String toMathematicaString();
 }
