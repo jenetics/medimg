@@ -10,7 +10,7 @@ package org.wewi.medimg.math.vec;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-final class FloatDataArray implements RealDataArray {
+public final class FloatDataArray implements RealDataArray {
     private float[][][][] data;
     
     private int sizeX;

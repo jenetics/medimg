@@ -2,11 +2,12 @@
  * Created on 21.11.2002 14:05:24
  *
  */
-package org.wewi.medimg.math.vec;
+package org.wewi.medimg.math.vec.ops;
 
-import org.wewi.medimg.math.vec.ops.VectorFunction;
 
 /**
+ * This <code>VectorFunction</code>
+ * 
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
