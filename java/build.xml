@@ -1,74 +1,74 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="build" name="build">
-    <!--Setzen einiger Variablen-->
-    <target name="init">
-      <property name="dir.src" value="."/>
-      <property name="dir.build" value="C:/Workspace/fwilhelm/Projekte/DIPLOM/build/dist"/>
-      <property name="dir.source" value="C:/Workspace/fwilhelm/Projekte/DIPLOM/build/source"/>
-      <property name="dir.javadoc" value="C:/Workspace/fwilhelm/Projekte/DIPLOM/build/javadoc"/>
-      
-      <delete dir="${dir.source}"/>
-      <mkdir dir="${dir.source}"/>
-      
-      <delete dir="${dir.build}"/>
-      <mkdir dir="${dir.build}"/>
-      
-      <delete dir="${dir.javadoc}"/>
-      <mkdir dir="${dir.javadoc}"/>
-    </target>
-    
-    <!--Packen der Sourcefiles-->
-    <target name="jar.source">
-        <copy todir="${dir.source}">
-           <fileset dir="${dir.src}">
-                <include name="**/*.java"/>
-                <include name="**/*.form"/>
-                <include name="**/*.gif"/>
-           </fileset>
-        </copy>
-        <jar basedir="${dir.source}" compress="true" jarfile="${dir.source}/source.jar">
-            <include name="**/*.java"/>
-            <include name="**/*.form"/>
-            <include name="**/*.gif"/>
-       </jar>
-    </target>    
+<project name="srt" default="compile.all" basedir=".">
 
-    <!--Compilieren-->
-    <target depends="init" name="compile">
-        <javac debug="true" deprecation="true" destdir="${dir.build}" optimize="off" srcdir="${dir.src}">
-            <classpath>
-                <pathelement location="lib/colt.jar"/>
-            </classpath>
-        </javac>
-        <copy todir="${dir.build}">
-           <fileset dir="${dir.src}">
-                <include name="**/*.gif"/>
-           </fileset>
-        </copy>
-    </target>
+        <target name="init">
+                <tstamp/>
+                <property name="dir.src" location="."/>
+                <property name="dir.build" location="../build"/>
+                <property name="dir.lib" location="../lib"/>
+                <property name="dir.dist" location="../dist"/>
+                <property name="dir.javadoc" location="../doc"/>
+                
+                <filter token="built" value="${DSTAMP}"/> 
+        </target>
 
-    <target depends="init,compile" name="jar.class">
-        <jar basedir="${dir.build}" compress="true" jarfile="${dir.build}/segreg.jar">
-            <include name="**/*.class"/>
-            <include name="**/*.gif"/>
-            <manifest>
-                <attribute name="Main-Class" value="org.wewi.medimg.viewer.Viewer"/>
-            </manifest>
-            
-        </jar>
-    </target>
+        <target name="compile.all" depends="init">
+                <echo message="Compiling all"/>
+                <mkdir dir="${dir.build}"/>
+	        <copy todir="${dir.build}">
+	           <fileset dir="${dir.src}">
+	                <include name="**/*.gif"/>
+	           </fileset>
+	        </copy>                
+                <javac srcdir="${dir.src}"
+                           destdir="${dir.build}"
+                           includes="org/wewi/medimg/**/*.class,
+		                     jas/util/encoder/**/*.class"
+                           compiler="javac1.4"
+                           target="1.4"
+                           optimize="on"/>
+               <!--<copy file="${dir.src}/viewer.cmd" todir="${dir.build}"/>-->
+        </target>
+        
+	<target name="dist" depends="compile.all">
+		<mkdir dir="${dir.dist}/viewer"/>
+		<mkdir dir="${dir.dist}/viewer/lib"/>
+		<jar jarfile="${dir.dist}/viewer/lib/srt.jar"
+		     basedir="${dir.build}"
+		     includes="org/wewi/medimg/**/*.class,
+		               jas/util/encoder/**/*.class">
+			<manifest>
+		            <attribute name="Built-By" value="Franz Wilhelmstoetter, Werner Weiser"/>
+		            <attribute name="Main-Class" value="org.wewi.medimg.viewer.Viewer"/>
+		            <attribute name="Class-Path" value="colt.jar jdom.jar junit.jar xalan.jar xerces.jar"/>
+			</manifest>
+	        </jar>
 
-   <!-- Generieren der Dokumentation-->
-    <target depends="init" description="Javadoc" name="javadoc">
-        <mkdir dir="${dir.javadoc}"/>
-        <javadoc author="true" destdir="${dir.javadoc}" packagenames="org.*" version="true">
-            <sourcepath>
-                <pathelement location="."/>
-            </sourcepath>
-        </javadoc>
-    </target>
-    
-    <target depends="init,compile,jar.source,jar.class,javadoc" name="build">
-    </target>
+		<copy file="${dir.lib}/colt.jar" todir="${dir.dist}/viewer/lib"/>
+		<copy file="${dir.lib}/jdom.jar" todir="${dir.dist}/viewer/lib"/>
+		<copy file="${dir.lib}/junit.jar" todir="${dir.dist}/viewer/lib"/>
+		<copy file="${dir.lib}/xalan.jar" todir="${dir.dist}/viewer/lib"/>
+		<copy file="${dir.lib}/xerces.jar" todir="${dir.dist}/viewer/lib"/>		
+	</target>  
+	
+	<target name="javadoc" depends="init">
+		<javadoc 
+			   destdir="${dir.javadoc}"
+			   author="true"
+			   version="true"
+			   use="true"
+			   windowtitle="Segmentierungs und Registrierungs API">
+		
+			<packageset dir="${dir.src}" defaultexcludes="yes">
+				<include name="org/wewi/medimg/**" />
+			</packageset>
+			
+			<doctitle><![CDATA[<h1>Segmentierungs und Registrierungs API</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2002 Werner Weiser, Franz Wilhelmst&ouml;tter. Alle Rechte vorbehalten.</i>]]></bottom>
+			<tag name="todo" scope="all" description="To do:" />
+
+			<link offline="true" href="http://java.sun.com/products/jdk/1.2/docs/api/" packagelistLoc="C:\tmp"/>
+			<link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
+		</javadoc>
+	</target>	      
 
 </project>
