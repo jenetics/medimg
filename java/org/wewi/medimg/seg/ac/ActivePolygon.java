@@ -183,6 +183,29 @@ public class ActivePolygon implements ActiveContour {
             }
         } 
         
+        //Testen, ob sich Benachbarte Conturpunkte nur um 
+        //eins, in den x und y Koordinaten unterscheiden
+        /*
+        int size = result.size();
+        Point p1 = (Point)result.get(0);
+        Point p2;
+        for (int i = 1; i < size; i++) {
+            p2 = p1;
+            p1 = (Point)result.get(i);
+            
+            if (Math.abs(p1.getOrdinate(0) - p2.getOrdinate(0)) > 1) {
+                System.out.println("Falsch");
+                break;
+            }   
+            if (Math.abs(p1.getOrdinate(1) - p2.getOrdinate(1)) > 1) {
+                System.out.println("Falsch");
+                break;
+            }            
+        }
+        */
+
+        
+        
         return result; 
     }    
 

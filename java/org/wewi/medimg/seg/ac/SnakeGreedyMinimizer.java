@@ -15,7 +15,9 @@ import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.SobelFilter;
 import org.wewi.medimg.image.geom.Neighborhood;
 import org.wewi.medimg.image.geom.Neighborhood2D4;
+import org.wewi.medimg.image.geom.Neighborhood2D8;
 import org.wewi.medimg.image.geom.Point;
+import org.wewi.medimg.math.MathUtil;
 
 /**
  * @author Franz Wilhelmstötter
@@ -52,16 +54,16 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
     /**************************************************************************/
     
     public static final double ERROR_LIMIT = 0.01;
-    public static final double ALPHA = 1;
-    public static final double BETA = 1;
-    public static final double W_EDGE = 1;
+    public double ALPHA = 1;
+    public double BETA = 1;
+    public double W_EDGE = 1;
     
     protected Image image;
     protected Image gradImage;
     protected ActiveContour contour;
     
-    protected double contourEnergy = Double.MAX_VALUE;
-    protected double newContourEnergy = -Double.MAX_VALUE;
+    protected double contourEnergy = -Double.MAX_VALUE;
+    protected double newContourEnergy = Double.MAX_VALUE;
 
 	/**
 	 * Constructor for SnakeGreedyMinimizer.
@@ -84,7 +86,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
             double vimx = cp[i-1].getOrdinate(0);
             double vimy = cp[i-1].getOrdinate(1);
             
-            d1 = ALPHA*((vix-vimx)*(vix-vimx) + (viy-vimy)*(viy-vimy));      
+            d1 += MathUtil.sqr(vix-vimx) + MathUtil.sqr(viy-vimy);      
         }
         
         double d2 = 0;
@@ -99,9 +101,9 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
             double x = vimx-2*vix+vipx;
             double y = vimy-2*viy+vipy;
             
-            d2 = BETA*(x*x + y*y);   
+            d2 += (x*x + y*y);   
         }
-        return d1 + d2;
+        return (ALPHA*d1 + BETA*d2)/(double)cp.length;
     }
     
     protected double outerEnergy(Point[] cp) {
@@ -111,9 +113,9 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         for (int i = 0, n = cp.length; i < n; i++) {
             int vx = cp[i].getOrdinate(0);
             int vy = cp[i].getOrdinate(1);
-            g += gradImage.getColor(vx, vy, 0)*gradImage.getColor(vx, vy, 0);        
+            g += MathUtil.sqr(gradImage.getColor(vx, vy, 0));        
         }
-        return -W_EDGE*g;    
+        return (-W_EDGE*g)/(double)cp.length;    
     }
     
     private double energy(ActiveContour ac) {
@@ -129,7 +131,6 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         
         Neighborhood neighbor = new Neighborhood2D4(image.getMinX(), image.getMinY(),
                                                     image.getMaxX(), image.getMaxY());
-        System.out.println("BasePoints: " + contour.getNBasePoints());
         
         contourEnergy = newContourEnergy;
         
@@ -180,6 +181,30 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
     
     public AlgorithmIterator getAlgorithmIterator() {
         return new GreedyMinimizerIterator();    
+    }
+    
+    public double getALPHA() {
+        return ALPHA;
+    }
+    
+    public void setALPHA(double ALPHA) {
+        this.ALPHA = ALPHA;
+    }
+    
+    public double getBETA() {
+        return BETA;
+    }
+    
+    public void setBETA(double BETA) {
+        this.BETA = BETA;
+    }
+    
+    public double getWE() {
+        return W_EDGE;
+    }
+    
+    public void setWE(double we) {
+        W_EDGE = we;
     }
 
 }

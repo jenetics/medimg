@@ -148,7 +148,69 @@ abstract class JAIImageReader extends ImageReader {
             count++;
             notifyProgressListener(new ImageIOProgressEvent(this, ((double)count/(double)maxSlice), false));          
         }        
-    }   
+    }
+    
+    private void readWithHeader() throws ImageIOException {
+        RenderedImage rimage = null;
+        Raster raster = null;
+        int[] pixel = new int[3];
+        Dimension dim = image.getDimension();
+        //Einlesen der Bilder
+        int count = 0;
+        int stride = range.getStride();
+        for (int k = dim.getMinZ(); k <= dim.getMaxZ(); k++) {
+            try {
+                rimage = readRenderedImage(slices[count].toString());
+                raster = rimage.getData();
+            } catch (Exception e) {
+                image = new NullImage();
+                //Das Einlesen ist hier abgeschlossen -> Listener
+                //müssen informiert werden.
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
+                throw new ImageIOException("Can't read JAI Image; Slice " + k, e);
+            }
+            for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
+                for (int j = image.getMinY(), m = image.getMaxY(); j <= m; j++) {
+                    raster.getPixel(i, j, pixel);
+                    image.setColor(i, j, k, colorConversion.convert(pixel));
+                }
+            } 
+             
+            //Informieren der Listener über den Fortschritt
+            count++;
+            notifyProgressListener(new ImageIOProgressEvent(this, 
+                                        ((double)count/(double)dim.getSizeZ()), false));          
+        }        
+    }  
+    
+    private void readSingleSlice() throws ImageIOException {
+        RenderedImage rimage = null;
+        Raster raster = null;
+        
+        try {
+			rimage = readRenderedImage(slices[0].toString());
+            raster = rimage.getData();
+            notifyProgressListener(new ImageIOProgressEvent(this, 0.5, false));
+		} catch (IOException e) {
+            image = new NullImage();
+            //Das Einlesen ist hier abgeschlossen -> Listener
+            //müssen informiert werden.
+            notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
+            throw new ImageIOException("Can't read JAI Image: ", e);		
+        }
+        
+        image = imageFactory.createImage(raster.getWidth(), raster.getHeight(), 1);
+        colorConversion = image.getColorConversion();  
+        
+        int[] pixel = new int[3];
+        for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) {
+            for (int j = image.getMinY(), m = image.getMaxY(); j <= m; j++) {
+                raster.getPixel(i, j, pixel);
+                image.setColor(i, j, 0, colorConversion.convert(pixel));
+            }
+        }             
+        
+    } 
     
     /**
      * Starten des Einlesevorgangs.
@@ -156,8 +218,17 @@ abstract class JAIImageReader extends ImageReader {
     public void read() throws ImageIOException {
         slices = null;
         
-        //Wenn die Quelle kein Verzeichnis ist, ist das Einlesen beendet.
+        
+        //Wenn die Quelle kein Verzeichnis ist, wird eine einzelne Datei eingelesen.
         if (source.isFile()) {
+            if (source.getName().endsWith(fileFilter.getExtention())) {
+                slices = new File[1];
+                slices[0] = source;
+                readSingleSlice(); 
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
+                return;       
+            }
+            
             notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
             throw new ImageIOException("The given source file must be an directory: " +
                                          source.toString());
@@ -198,36 +269,7 @@ abstract class JAIImageReader extends ImageReader {
         
                
         if (!image.equals(NullImage.IMAGE_INSTANCE)) {            
-            RenderedImage rimage = null;
-            Raster raster = null;
-            int[] pixel = new int[3];
-            Dimension dim = image.getDimension();
-            //Einlesen der Bilder
-            int count = 0;
-            int stride = range.getStride();
-            for (int k = dim.getMinZ(); k <= dim.getMaxZ(); k++) {
-                try {
-                    rimage = readRenderedImage(slices[count].toString());
-                    raster = rimage.getData();
-                } catch (Exception e) {
-                    image = new NullImage();
-                    //Das Einlesen ist hier abgeschlossen -> Listener
-                    //müssen informiert werden.
-                    notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-                    throw new ImageIOException("Can't read JAI Image; Slice " + k, e);
-                }
-                for (int i = 0; i < dim.getSizeX(); i++) {
-                    for (int j = 0; j < dim.getSizeY(); j++) {
-                        raster.getPixel(i, j, pixel);
-                        image.setColor(i, j, k, colorConversion.convert(pixel));
-                    }
-                } 
-                 
-                //Informieren der Listener über den Fortschritt
-                count++;
-                notifyProgressListener(new ImageIOProgressEvent(this, 
-                                            ((double)count/(double)dim.getSizeZ()), false));          
-            }        
+            readWithHeader();
         } else {
             readWithoutHeader(); 
         }

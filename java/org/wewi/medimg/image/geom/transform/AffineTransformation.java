@@ -1,4 +1,4 @@
-/*
+/**
  * AffineTransform.java
  *
  * Created on 21. März 2002, 13:50
@@ -253,13 +253,15 @@ public class AffineTransformation implements InterpolateableTransformation,
         
         tran[U_ROTATEZ] = Math.acos(rot.viewColumn(2).getQuick(1)/Math.sin(tran[U_ROTATEY]));
         
-        /*if (Math.cos(tran[U_ROTATEY]) != 0) {
+        /*
+        if (Math.cos(tran[U_ROTATEY]) != 0) {
             tran[U_ROTATEX] = Math.atan2(rot.viewColumn(1).getQuick(2), rot.viewColumn(2).getQuick(2));
             tran[U_ROTATEZ] = Math.atan2(rot.viewColumn(0).getQuick(1), rot.viewColumn(0).getQuick(0));
         } else {
             tran[U_ROTATEX] = Math.atan2(-rot.viewColumn(2).getQuick(0), rot.viewColumn(1).getQuick(1));
             tran[U_ROTATEZ] = 0;
-        } */
+        } 
+        */
          
     }
     
