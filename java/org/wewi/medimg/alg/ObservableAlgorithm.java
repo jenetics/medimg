@@ -17,39 +17,39 @@ public abstract class ObservableAlgorithm {
 	/**
 	 * Constructor for ObservableAlgorithm.
 	 */
-	public ObservableAlgorithm() {
+	public ObservableAlgorithm() { 
 		super();
         iterationListener = new Vector();
 	}
     
-    public synchronized void addIterationListener(IterationListener il) {
+    public synchronized void addIterationListener(AlgorithmIterationListener il) {
         iterationListener.add(il);   
     }
     
-    public synchronized void removeIterationListener(IterationListener il) {
+    public synchronized void removeIterationListener(AlgorithmIterationListener il) {
         iterationListener.remove(il);    
     }
     
-    protected void notifyIterationStarted(IterationEvent event) {
+    protected void notifyIterationStarted(AlgorithmIterationEvent event) {
         Vector lv;
         synchronized (iterationListener) {
            lv = (Vector)iterationListener.clone();
         }
-        IterationListener l;
+        AlgorithmIterationListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
-            l = (IterationListener)it.next();
+            l = (AlgorithmIterationListener)it.next();
             l.iterationStarted(event);
         }
     }    
     
-    protected void notifyIterationFinished(IterationEvent event) {
+    protected void notifyIterationFinished(AlgorithmIterationEvent event) {
         Vector lv;
         synchronized (iterationListener) {
             lv = (Vector)iterationListener.clone();
         }
-        IterationListener l;
+        AlgorithmIterationListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
-            l = (IterationListener)it.next();
+            l = (AlgorithmIterationListener)it.next();
             l.iterationFinished(event);
         }
     }     
