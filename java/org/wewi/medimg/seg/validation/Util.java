@@ -10,6 +10,7 @@ import java.util.Properties;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.util.*;
 
 /**
  * @author Franz Wilhelmstötter

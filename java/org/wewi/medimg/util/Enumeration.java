@@ -6,7 +6,6 @@
 
 package org.wewi.medimg.util;
 
-import java.util.Hashtable;
 
 /**
  *
@@ -15,11 +14,9 @@ import java.util.Hashtable;
  */
 public abstract class Enumeration {
     protected int type;
-    
-    private static Hashtable refCounters = new Hashtable();
 
     protected Enumeration(int t) {
-        type = (int)Math.pow(2, t);
+        type = (int)Math.rint(Math.pow(2, t));
     }
     
     protected Enumeration(Enumeration enum1, Enumeration enum2) throws IllegalArgumentException {

@@ -2,7 +2,7 @@
  * Created on 25.09.2002
  *
  */
-package org.wewi.medimg.seg.validation;
+package org.wewi.medimg.util;
 
 /**
  * @author Franz Wilhelmstötter

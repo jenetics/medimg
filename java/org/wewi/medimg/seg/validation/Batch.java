@@ -110,7 +110,7 @@ public class Batch {
         for (Iterator it = parameter.iterator(); it.hasNext();) {
             Element param = (Element)it.next();
             String name = param.getAttribute("name").getValue();
-            if ("beta".equals(name)) {
+            if ("b".equals(name)) {
                 beta = Double.parseDouble(param.getText());   
             } else if ("source_image".equals(name)) {
                 sourceName = param.getText();    
