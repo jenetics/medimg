@@ -17,7 +17,7 @@ public final class ImageData implements Image {
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int sizeX, sizeY, sizeZ;
-    private int size;
+    private int sizeXY, size;
     private short[] data;
     
     private ImageDataHeader header;
@@ -30,31 +30,34 @@ public final class ImageData implements Image {
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
-    void init(int sizeX, int sizeY, int sizeZ) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.sizeZ = sizeZ;
-        maxX = sizeX-1;
-        maxY = sizeY-1;
-        maxZ = sizeZ-1;
-        minX = minY = minZ = 0;
+    void init(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        this.minX = minX;
+        this.minY = minY;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this.maxZ = maxZ;
+        sizeX = maxX - minX + 1;
+        sizeY = maxY - minY + 1;
+        sizeZ = maxZ - minZ + 1;
         size = sizeX*sizeY*sizeZ;
+        sizeXY = sizeX*sizeY;
         data = new short[size]; 
         Arrays.fill(data, (short)0);
+        
+        header = new ImageDataHeader(minX, minY, minZ, maxX, maxY, maxZ, this);
     }
     
     public ImageData(int sizeX, int sizeY, int sizeZ) {
-        init(sizeX, sizeY, sizeZ);
-        header = new ImageDataHeader(sizeX, sizeY, sizeZ, this);
+        init(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1);
+    }
+    
+    public ImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        init(minX, minY, minZ, maxX, maxY, maxZ);
     }
    
     public int getColor(int x, int y, int z) {
-        try {
-            return data[sizeX*sizeY*z + sizeX*y + x];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("(" + maxX + "," + maxY + "," + maxZ +")(" + x + "," + y + "," + z + ")");
-            throw new ArrayIndexOutOfBoundsException("" + e);
-        }
+        return data[sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX)];
     }
     
     public int getColor(int pos) {
@@ -62,7 +65,7 @@ public final class ImageData implements Image {
     }
     
     public void setColor(int x, int y, int z, int color) {
-        data[sizeX*sizeY*z + sizeX*y + x] = (short)color;
+        data[sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX)] = (short)color;
     }
     
     public void setColor(int pos, int color) {
@@ -107,6 +110,7 @@ public final class ImageData implements Image {
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
+        buffer.append("ImageData:\n    ");
         buffer.append("(").append(minX);
         buffer.append(",").append(minY);
         buffer.append(",").append(minZ);
