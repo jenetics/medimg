@@ -8,8 +8,8 @@ package org.wewi.medimg.viewer.tools;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.VoxelSelectorListener;
 import org.wewi.medimg.image.VoxelSelectorEvent;
+import org.wewi.medimg.image.VoxelSelectorListener;
 import org.wewi.medimg.viewer.ImageViewer;
 
 /**

@@ -83,9 +83,9 @@ public class Complex implements Immutable, Cloneable {
     }
     
     public int hashCode() {
-        long re_bits = Double.doubleToLongBits(re);
-        long im_bits = Double.doubleToLongBits(im);
-        return (int)((re_bits^im_bits)^((re_bits^im_bits)>>32));
+        long reBits = Double.doubleToLongBits(re);
+        long imBits = Double.doubleToLongBits(im);
+        return (int)((reBits^imBits)^((reBits^imBits) >> 32));
     }
     
     public boolean equals(Complex z) {

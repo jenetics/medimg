@@ -8,17 +8,15 @@ package org.wewi.medimg.seg.stat;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.Properties;
 import java.util.Random;
 
-import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
+import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageProperties;
 import org.wewi.medimg.image.ops.AnalyzerUtils;
-import org.wewi.medimg.image.ops.ColorRangeOperator;
-import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.Clusterer;
 import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.SegmenterEvent;
@@ -180,10 +178,10 @@ public class MLKMeansClusterer extends ObservableSegmenter
     }
     
     protected void setImageProperties(Image segimg) {
-        Properties segProp = new Properties();
-        segProp.setProperty("Segmentiermethode", getClass().getName());
+        ImageProperties segProp = new ImageProperties();
+        segProp.setProperty("Segmentation class", getClass().getName());
         segProp.setProperty("k", Integer.toString(k));
-        segProp.setProperty("Iterationen", Integer.toString(iterationCount));
+        segProp.setProperty("Iterations", Integer.toString(iterationCount));
         for (int i = 0; i < k; i++) {
             segProp.setProperty("mean." + i, Double.toString(mean[i]));    
         }

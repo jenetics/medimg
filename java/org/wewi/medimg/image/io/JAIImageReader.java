@@ -263,13 +263,14 @@ abstract class JAIImageReader extends ImageReader {
                     break;  
                 } catch (Exception e) {
                     System.err.println(getClass().getName() + ":" + e);
+                    notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
                     throw new ImageIOException("Can't open header", e);   
                 }  
             }    
         }
         
                
-        if (!image.equals(NullImage.IMAGE_INSTANCE)) {            
+        if (!image.equals(NullImage.INSTANCE)) {            
             readWithHeader();
         } else {
             readWithoutHeader(); 

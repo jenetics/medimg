@@ -8,9 +8,8 @@ package org.wewi.medimg.image;
 
 import java.util.Iterator;
 
-import org.wewi.medimg.util.ListMap;
-
 import org.jdom.Verifier;
+import org.wewi.medimg.util.ListMap;
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1

@@ -7,19 +7,19 @@
 package org.wewi.medimg.viewer;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.io.File;
 
 import javax.swing.JFileChooser;
-import java.awt.Font;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
-import org.wewi.medimg.image.io.ImageIOProgressEvent;
 
 /**
  *

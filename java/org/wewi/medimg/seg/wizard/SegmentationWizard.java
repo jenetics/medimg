@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 
-import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.alg.AlgorithmIterationListener;
+import org.wewi.medimg.alg.InterruptableAlgorithm;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;

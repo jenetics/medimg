@@ -18,6 +18,7 @@ import org.jdom.output.XMLOutputter;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.ImageHeader;
+import org.wewi.medimg.image.ImageProperties;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.RawImageReader;
 import org.wewi.medimg.image.io.TIFFReader;
@@ -200,7 +201,7 @@ public class MAPValidator {
                 //System.out.println(image);
                 ImageHeader header = image.getHeader(); 
                 
-                Properties prop = header.getImageProperties();
+                ImageProperties prop = header.getImageProperties();
                 int k = Integer.parseInt(prop.getProperty("k"));
                 double beta = Double.parseDouble(prop.getProperty("BEAT"));
                 

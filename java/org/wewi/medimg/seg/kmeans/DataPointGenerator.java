@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.Vector;
 
-import org.wewi.medimg.math.geom.*;
+import org.wewi.medimg.math.geom.IntegerDataPoint;
 
 /**
  *

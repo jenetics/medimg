@@ -12,11 +12,11 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.ImageWriterFactory;
 import org.wewi.medimg.image.io.ImageWriterThread;
-import org.wewi.medimg.image.io.ImageIOProgressEvent;
 
 /**
  *

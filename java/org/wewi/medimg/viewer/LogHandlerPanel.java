@@ -6,16 +6,15 @@
 
 package org.wewi.medimg.viewer;
 
-import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
-
+import java.io.OutputStreamWriter;
 import java.util.logging.ErrorManager;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
-import javax.swing.JScrollBar;
 import javax.swing.JFileChooser;
+import javax.swing.JScrollBar;
 
 /**
  *

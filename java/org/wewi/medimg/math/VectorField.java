@@ -4,7 +4,6 @@
  */
 package org.wewi.medimg.math;
 
-import org.wewi.medimg.math.*;
 
 /**
  * @author Franz Wilhelmstötter

@@ -9,7 +9,6 @@ package org.wewi.medimg.image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Properties;
 
 import org.wewi.medimg.util.Nullable;
 
@@ -34,9 +33,7 @@ public interface ImageHeader extends Nullable {
 
     public void write(OutputStream out) throws IOException;
     
-    public void setImageProperties(Properties prop);
-    
-    public void addImageProperties(Properties prop);
+    public void setImageProperties(ImageProperties properties);
    
-    public Properties getImageProperties();
+    public ImageProperties getImageProperties();
 }
