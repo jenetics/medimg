@@ -16,7 +16,7 @@ public abstract class AbstractImage extends RowMajorImageGeometry
                                     implements Image, RandomAccess {
 
     private final class AbstractImageVoxelIterator implements VoxelIterator {
-        private int pos = 0;
+        private int pos = 0; 
         
         public AbstractImageVoxelIterator() {
         }
