@@ -29,6 +29,7 @@ public class ImportanceStrategy extends TransformInterpol {
     }
     
     public void calculateWeights() {
+       /*
         double sumimportance = 0.0;
         int transforms = transformVector.size();
         int i;
@@ -47,7 +48,7 @@ public class ImportanceStrategy extends TransformInterpol {
             }
             transWeights[i] = alpha;
         }
-
+*/
     }
 
     public void setImportance(Tissue t, double i) {

@@ -20,6 +20,8 @@ public class WeightPointStrategy extends TransformInterpol {
     public WeightPointStrategy() {
     }
     public void calculateWeights() {
+      
+      /*
         int sumpoints = 0;
         int transforms = transformVector.size();
         int i;
@@ -40,7 +42,7 @@ public class WeightPointStrategy extends TransformInterpol {
             }
             transWeights[i] = alpha;
         }
-
+*/
     }
 
     

@@ -37,7 +37,7 @@ import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.RawImageReaderFactory;
-import org.wewi.medimg.reg.wizard.RegistrationWizard;
+//import org.wewi.medimg.reg.wizard.RegistrationWizard;
 import org.wewi.medimg.seg.ac.ActiveContourWizard;
 import org.wewi.medimg.seg.wizard.SegmentationWizard;
 import org.wewi.medimg.util.Singleton;
@@ -441,7 +441,7 @@ public class Viewer extends JFrame implements Singleton,
         wizard.show();
         wizardMenu.setEnabled(false);
         segmentaionWizardMenuItem.setEnabled(false);
-        registrationWizardMenuItem.setEnabled(false);
+        //registrationWizardMenuItem.setEnabled(false);
         //marchingCubeWizardMenuItem.setEnabled(false);
     }
     
@@ -456,7 +456,7 @@ public class Viewer extends JFrame implements Singleton,
         wizard.removeComponentListener(scrollPanelHelper);
         wizardMenu.setEnabled(true);
         segmentaionWizardMenuItem.setEnabled(true);
-        registrationWizardMenuItem.setEnabled(true);  
+        //registrationWizardMenuItem.setEnabled(true);  
         //marchingCubeWizardMenuItem.setEnabled(true);
     }
     
@@ -701,7 +701,7 @@ public class Viewer extends JFrame implements Singleton,
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void registrationWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrationWizardMenuItemActionPerformed
-        addWizard(new RegistrationWizard());        
+        //addWizard(new RegistrationWizard());        
     }//GEN-LAST:event_registrationWizardMenuItemActionPerformed
     
     private void segmentaionWizardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_segmentaionWizardMenuItemActionPerformed
