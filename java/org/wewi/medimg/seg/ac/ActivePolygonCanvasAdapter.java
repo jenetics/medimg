@@ -31,7 +31,7 @@ public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas 
 	/**
 	 * @see org.wewi.medimg.image.ImagePanel.ImageCanvas#draw(Graphics, ImagePanel)
 	 */
-	public synchronized void draw(Graphics g, ImagePanel panel) {
+	public void draw(Graphics g, ImagePanel panel) {
         List contourPoints = null;
         
         Graphics2D graph = (Graphics2D)g;
@@ -51,35 +51,34 @@ public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas 
             graph.drawOval((int)pg3.getX()-3, (int)pg3.getY()-3, 6, 6);                 
         }           
 
-        synchronized (basePoints) {//Zeichnen der Polygonkanten
-            if (basePoints.size() <= 1) {
-                return;    
-            }
-            Point p = null, q = null;
-            Point f = null;
-        
-            Iterator it = basePoints.iterator();
-            if (it.hasNext()) {
-                q = (Point)it.next();
-                f = q;    
-            }    
-            while(it.hasNext()) {
-                p = q;
-                q = (Point)it.next();
-                java.awt.Point pg1 = pc.convert(new Point3D(p.getOrdinate(0),
-                                                             p.getOrdinate(1),0));
-                java.awt.Point pg2 = pc.convert(new Point3D(q.getOrdinate(0),
-                                                             q.getOrdinate(1),0));                                                             
-                graph.drawLine((int)pg1.getX(), (int)pg1.getY(), 
-                               (int)pg2.getX(), (int)pg2.getY());
-            }
-            java.awt.Point pg1 = pc.convert(new Point3D(q.getOrdinate(0),
-                                                         q.getOrdinate(1),0));
-            java.awt.Point pg2 = pc.convert(new Point3D(f.getOrdinate(0),
-                                                         f.getOrdinate(1),0));                                                             
+        if (basePoints.size() <= 1) {
+            return;    
+        }
+        Point p = null, q = null;
+        Point f = null;
+    
+        Iterator it = basePoints.iterator();
+        if (it.hasNext()) {
+            q = (Point)it.next();
+            f = q;    
+        }    
+        while(it.hasNext()) {
+            p = q;
+            q = (Point)it.next();
+            java.awt.Point pg1 = pc.convert(new Point3D(p.getOrdinate(0),
+                                                         p.getOrdinate(1),0));
+            java.awt.Point pg2 = pc.convert(new Point3D(q.getOrdinate(0),
+                                                         q.getOrdinate(1),0));                                                             
             graph.drawLine((int)pg1.getX(), (int)pg1.getY(), 
-                           (int)pg2.getX(), (int)pg2.getY()); 
-        } 
+                           (int)pg2.getX(), (int)pg2.getY());
+        }
+        java.awt.Point pg1 = pc.convert(new Point3D(q.getOrdinate(0),
+                                                     q.getOrdinate(1),0));
+        java.awt.Point pg2 = pc.convert(new Point3D(f.getOrdinate(0),
+                                                     f.getOrdinate(1),0));                                                             
+        graph.drawLine((int)pg1.getX(), (int)pg1.getY(), 
+                       (int)pg2.getX(), (int)pg2.getY()); 
+
    
     }
 

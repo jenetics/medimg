@@ -29,6 +29,10 @@ final class FileExtentionFilter implements FileFilter {
         this.to = to;
     }
     
+    public String getExtention() {
+        return extention;    
+    }
+    
     /*
     private boolean acceptRange(File file) {
         if (from == Integer.MIN_VALUE && to == Integer.MIN_VALUE) {

@@ -7,7 +7,12 @@
 package org.wewi.medimg.util;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
@@ -136,13 +141,26 @@ public class Test {
     }
     
     
+    public static void test7() {
+        SAXBuilder builder = new SAXBuilder();
+        try {
+			Document doc = builder.build(new URL("http://www.entwickler.com/"));
+            System.out.println(doc);
+		} catch (MalformedURLException e) {
+            System.out.println("Fehler: " + e);
+		} catch (JDOMException e) {
+            System.out.println("Fehler: " + e);
+		}
+           
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test6();
+        test7();
     }
     
 }

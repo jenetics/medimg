@@ -77,7 +77,7 @@ public class ImagePanel extends JPanel {
     private Vector listener;
 	
     private org.wewi.medimg.image.Image image = null;
-    private org.wewi.medimg.image.ColorConversion conversion = null;
+    private org.wewi.medimg.image.ColorConversion colorConversion = null;
     private BufferedImage bufferedImage = null;
     private int[] rawData = null;
     
@@ -94,7 +94,7 @@ public class ImagePanel extends JPanel {
         sizeX = image.getMaxX() - image.getMinX() + 1;
         sizeY = image.getMaxY() - image.getMinY() + 1;
         qxy = (double)sizeX/(double)sizeY;
-        conversion = image.getColorConversion();
+        colorConversion = image.getColorConversion();
         rawData = new int[sizeX*sizeY*3];      
         bufferedImage = new BufferedImage(sizeX, sizeY, 
                                           BufferedImage.TYPE_3BYTE_BGR); 
@@ -187,7 +187,7 @@ public class ImagePanel extends JPanel {
         int counter = 0;
         for (int j = minY; j <= maxY; j++) {
             for (int i = minX; i <= maxX; i++) {
-                conversion.convert(image.getColor(i, j, slice), pixel);
+                colorConversion.convert(image.getColor(i, j, slice), pixel);
                 rawData[3*counter+0] = pixel[0];
                 rawData[3*counter+1] = pixel[1];
                 rawData[3*counter+2] = pixel[2]; 
@@ -200,8 +200,24 @@ public class ImagePanel extends JPanel {
         this.repaint();
     }
     
+    public int getSlice() {
+        return slice;    
+    }
+    
+    public void repaintImage() {
+        setSlice(getSlice());    
+    }
+    
     public Image getImage() {
         return image;    
+    }
+    
+    public ColorConversion getColorConversion() {
+        return colorConversion;    
+    }
+    
+    public void setColorConversion(ColorConversion colorConversion) {
+        this.colorConversion = colorConversion;
     }
     
     public void setImageCanvas(ImageCanvas imageCanvas) {

@@ -169,7 +169,7 @@ public class Batch {
     
     public static void main(String[] args) {
         Batch batch = new Batch();
-        batch.batch(args);    
+        batch.batch(args);     
     }   
 
 }
