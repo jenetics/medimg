@@ -4,7 +4,7 @@
  * Created on 7. April 2002, 12:12
  */
 
-package org.wewi.medimg.seg.wizard;
+package org.wewi.medimg.viewer.wizard.seg;
 
 import java.awt.Dimension;
 import java.awt.Point;

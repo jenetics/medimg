@@ -4,7 +4,7 @@
  * Created on 6. April 2002, 21:31
  */
 
-package org.wewi.medimg.seg.wizard;
+package org.wewi.medimg.viewer.wizard.seg;
 
 import org.wewi.medimg.viewer.Command;
 

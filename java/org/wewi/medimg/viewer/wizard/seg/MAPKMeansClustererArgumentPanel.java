@@ -4,7 +4,7 @@
  * Created on 11. August 2002, 21:16
  */
 
-package org.wewi.medimg.seg.wizard;
+package org.wewi.medimg.viewer.wizard.seg;
 
 import java.text.NumberFormat;
 

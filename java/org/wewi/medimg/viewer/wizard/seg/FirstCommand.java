@@ -1,10 +1,10 @@
 /*
- * PevCommand.java
+ * FirstCommand.java
  *
- * Created on 6. April 2002, 21:23
+ * Created on 6. April 2002, 21:31
  */
 
-package org.wewi.medimg.seg.wizard;
+package org.wewi.medimg.viewer.wizard.seg;
 
 import org.wewi.medimg.viewer.Command;
 
@@ -13,21 +13,18 @@ import org.wewi.medimg.viewer.Command;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-final class PrevCommand implements Command {
+final class FirstCommand implements Command {
     private TwinImageViewer viewer;
     
-    /** Creates a new instance of PevCommand */
-    public PrevCommand(TwinImageViewer viewer) {
+    /** Creates a new instance of FirstCommand */
+    public FirstCommand(TwinImageViewer viewer) {
         this.viewer = viewer;
     }
     
     public void execute() {
-        int slice = viewer.getSlice();
         int minSlice = Math.max(viewer.getImage1().getMinZ(), 
                                 viewer.getImage2().getMinZ());
-        if (minSlice <= slice-1) {
-            viewer.setSlice(slice-1);
-        }
+        viewer.setSlice(minSlice);
     }
     
 }
