@@ -45,6 +45,20 @@ class AbstractImageHeader implements ImageHeader {
         properties = new ImageProperties();
     }
     
+    private String wordWrap(String text) {
+        StringBuffer buffer = new StringBuffer(text);
+        
+        for (int i = 80; i < buffer.length(); i += 81) {
+            buffer.insert(i, '\n');
+        }
+        
+        return buffer.toString();
+    }
+    
+    private String removeNewLine(String text) {
+        return text.replaceAll("\n", "");
+    }
+    
     /**
      * Method for converting a Dimension to a XML-Element (jdom)
      * 
@@ -60,6 +74,7 @@ class AbstractImageHeader implements ImageHeader {
         element.addContent((new Element("MaxY")).addContent(Integer.toString(dim.getMaxY())));
         element.addContent((new Element("MinZ")).addContent(Integer.toString(dim.getMinZ())));
         element.addContent((new Element("MaxZ")).addContent(Integer.toString(dim.getMaxZ())));
+        element.addContent((new Element("Step")).addContent(Integer.toString(dim.getStep())));
         
         return element;
     }
@@ -107,7 +122,7 @@ class AbstractImageHeader implements ImageHeader {
 			oout = new ObjectOutputStream(sout);
             oout.writeObject(cc);
             oout.close(); 
-            element.addContent(sout.getOutputString());
+            element.addContent(wordWrap(sout.getOutputString()));
 		} catch (IOException e) {
             //do nothing here
 		}      
@@ -128,11 +143,13 @@ class AbstractImageHeader implements ImageHeader {
         
         ColorConversion cc = null;
 		try {
-            StringInputStream sin = new StringInputStream(element.getText());          
+            StringInputStream sin = new StringInputStream(removeNewLine(element.getTextTrim()));          
             ObjectInputStream oin = new ObjectInputStream(sin);
             cc = (ColorConversion)oin.readObject();
 		} catch (Exception e) {
             //Plan B
+            logger.info("Plan B (ColorConversion): " + e);
+            System.out.println(e);
             String clazz = element.getAttributeValue("class");
             try {
     			cc = (ColorConversion)Class.forName(clazz).newInstance();

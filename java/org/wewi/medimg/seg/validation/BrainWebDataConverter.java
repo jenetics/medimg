@@ -1,33 +1,36 @@
 /**
  * Created on 20.08.2002
  *
- * To change this generated comment edit the template variable "filecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of file comments go to
- * Window>Preferences>Java>Code Generation.
  */
 package org.wewi.medimg.seg.validation;
 
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
-import org.wewi.medimg.image.FeatureColorConversion;
+import org.wewi.medimg.image.GreyColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageProperties;
 import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.image.io.RawImageWriter;
 
 /**
  * @author Franz Wilhelmstötter
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
+ * @version 0.1
  */
-public class BrainWebDataConverter {
+public final class BrainWebDataConverter {
+    private static final int MIN_X = -72;
+    private static final int MIN_Y = -126;
+    private static final int MIN_Z = -90;
+    
+    private static final int MAX_X = 108;
+    private static final int MAX_Y = 90;
+    private static final int MAX_Z = 90;
+    
 
 	/**
 	 * Constructor for BrainWebDataConverter.
@@ -36,57 +39,143 @@ public class BrainWebDataConverter {
 		super();
 	}
     
-    public static void readBrain() {
-        final int maxX = 181;
-        final int maxY = 217;
-        final int maxZ = 181;     
+    private static abstract class Reader {
+        protected DataInputStream stream;
+        protected String fileName;
         
-        
-        String modality = "pd";   
-        String noise = "9";
-        
-        //String input = "D:/msbrain." + modality + ".n" + noise + ".rf20.8bit.dat";
-        //String output = "X:/msheads/" + modality + ".n" + noise + ".rf20";
-        String input = "D:/msbrain.modell.seg.8bit.dat";
-        String output = "X:/mshead/seg.model";
-        ImageProperties imageProp = new ImageProperties();
-        imageProp.setProperty("BrainType", "NORMAL.MODEL");
-        //imageProp.setProperty("Modality", modality.toUpperCase());
-        //imageProp.setProperty("Noise", noise + "%");
-        //imageProp.setProperty("RF", "20%");
-        imageProp.setProperty("URL", "CDATA[http://www.bic.mni.mcgill.ca/brainweb/]");
-        
-        try {
-            //Einlesen des Bildes
-            System.out.println("Einlesen des Bildes " + input);
-            DataInputStream in = new DataInputStream(new FileInputStream(input));
-            Image img = new ImageData(maxX, maxY, maxZ);
-            int result = 0;
-            for (int k = 0; k < maxZ; k++) {
-                for (int j = 0; j < maxY; j++) {
-                    for (int i = 0; i < maxX; i++) {
-                        result = in.readUnsignedByte();
-                        img.setColor(i, j, k, result);
-                    }   
-                }   
+        public Reader(File file) {
+            try {
+                stream = new DataInputStream(new FileInputStream(file));
+                fileName = file.toString();
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
             }
-            in.close();
+        }        
+        
+        public abstract int read() throws IOException;
+    }
+    
+    private static class UnsignedByteReader extends Reader {       
+        public UnsignedByteReader(File file) {
+            super(file);
+        }
+		public int read() throws IOException {
+			return stream.readUnsignedByte();
+		}
+        
+        public String toString() {
+            return "ByteFile: " + fileName;
+        }
+    }
+    
+    private static class SignedShortReader extends Reader {       
+        public SignedShortReader(File file) {
+            super(file);
+        }
+        public int read() throws IOException {
+            return stream.readShort();
+        }
+        
+        public String toString() {
+            return "ShortFile: " + fileName;
+        }        
+    }    
+    
+    private static String[][] parseImageProperties(String file) {
+        StringTokenizer tokenizer = new StringTokenizer(file.toLowerCase(), "_");
+        
+        String dataType;
+        if (file.endsWith("b")) {
+            dataType = "byte";
+        } else {
+            dataType = "short";
+        }
+        
+        String modality = tokenizer.nextToken().toUpperCase();
+        String protokol = tokenizer.nextToken().toUpperCase();
+        String phantomName = tokenizer.nextToken().toUpperCase();
+        String sliceThickness = tokenizer.nextToken();
+        String noise = tokenizer.nextToken().substring(2);
+        String inu = tokenizer.nextToken().toUpperCase();
+        inu = inu.substring(0, inu.length()-5);
+        
+        return new String[][]{{"URL", "CDATA[http://www.bic.mni.mcgill.ca/brainweb/]"},
+                               {"Modality", modality},
+                               {"Protocol", protokol},
+                               {"PhantomName", phantomName},
+                               {"SliceThickness", sliceThickness},
+                               {"Noise", noise},
+                               {"INU", inu},
+                               {"ColorDepth", dataType}};
+        
+    }
+    
+    private static void readWrite(Reader reader, File out, String[][] imageProperties) {
+        try {
+            //Reading the image
+            System.out.println("Reading the image... (" + reader.toString() + ")");
+            Image image = new ImageData(MIN_X, MAX_X, MIN_Y, MAX_Y, MIN_Z, MAX_Z);
+            for (int k = MIN_Z; k <= MAX_Z; k++) {
+                for (int j = MIN_Y; j <= MAX_Y; j++) {
+                    for (int i = MIN_X; i <= MAX_X; i++) {
+                        image.setColor(i, j, k, reader.read());
+                    }
+                } 
+            }
             
-            //Schreiben des Bildes
-            System.out.println("Schreiben des Bildes " + output);
-            img.getHeader().setImageProperties(imageProp);
-            img.setColorConversion(new FeatureColorConversion());
-            ImageWriter writer = new TIFFWriter(img, new File(output));
+            //Setting the ImageProperties
+            ImageProperties prop = image.getHeader().getImageProperties();
+            for (int i = 0; i < imageProperties.length; i++) {
+                prop.setProperty(imageProperties[i][0], imageProperties[i][1]);   
+            }
+            
+            if (prop.getProperty("ColorDepth").equals("short")) {
+                image.setColorConversion(new GreyColorConversion(12));
+            }
+            
+            //Writing the image
+            System.out.println("Writing the image... (" + out.toString() + ")");
+
+            ImageWriter writer = new RawImageWriter(image, out);
             writer.write();
             
         } catch (Exception e) {
-            System.out.println("" + e); 
+            System.err.println(e);
             e.printStackTrace();
         }
+    }
+    
+    public static void readBrain(String inDir, String outDir) {
+        File[] inFiles = (new File(inDir)).listFiles();
+        System.out.println("There are " + inFiles.length + " in the directory \"" + inDir + "\"");
+        
+        Reader reader = null;
+        String[][] properties;
+        String outFile;
+        for (int i = 0; i < inFiles.length; i++) {
+            if (inFiles[i].toString().endsWith("b")) {
+                reader = new UnsignedByteReader(inFiles[i]);    
+            } else if (inFiles[i].toString().endsWith("s")){
+                reader = new SignedShortReader(inFiles[i]);    
+            } else {
+                reader = null;
+            }
             
-    }    
+            properties = parseImageProperties(inFiles[i].getName());
+            outFile = outDir + "/";
+            for (int j = 1; j < properties.length; j++) {
+                outFile += properties[j][1].toLowerCase() + ".";       
+            }
+            outFile += "rid";
+            
+            new File(outDir).mkdirs();
+            readWrite(reader, new File(outFile), properties);
+        }
+    }
+    
+   
 
 	public static void main(String[] args) {
-        readBrain();
+        readBrain(args[0], args[1]);
 	}
 }

@@ -620,13 +620,28 @@ public class Test {
         }
     }
     
+    
+    public static String wordWrap(String text) {
+        StringBuffer buffer = new StringBuffer(text);
+        
+        for (int i = 80; i < buffer.length(); i += 81) {
+            buffer.insert(i, '\n');
+        }
+        
+        return buffer.toString();
+    }    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test5();
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < 2323; i++) {
+            buffer.append("A");
+        }
+        
+        System.out.println(wordWrap(buffer.toString()));
     }
     
 }
