@@ -8,6 +8,7 @@ package org.wewi.medimg.reg;
 
 import java.util.Vector;
 
+import org.wewi.medimg.reg.metric.DoublePoint3D;
 /**
  *
  * @author  werner weiser
@@ -18,39 +19,27 @@ public class GridElement {
     private Vector referencePoints;
     private boolean computed = false;
     private double[] reference = new double[3];
-    private double[] location = new double[3];
+    private int[] location = new int[3];
     private int[] size = new int[3];
     
-    private class Point3D {
-    
-        protected double[] point;
-        public Point3D (double[] p) {
-            int i;
-            point = new double[p.length];
-            for( i = 0; i < p.length; i++) {
-                point[i] = p[i];
-            }
-        }
-        
-        public double getValue(int pos) {
-            return point[pos];
-        }
-    }
-    
+   
     /** Creates new GridElement */
     public GridElement(int sizeX, int sizeY, int sizeZ) {
         referencePoints = new Vector();
         size[0] = sizeX;
         size[1] = sizeY;
         size[2] = sizeZ;
+                    /*if (sizeX == 4 && sizeY == 4 && sizeZ == 1) {
+                        System.out.println("actual grid size " + size[0] + " , " + size[1] + " , " + size[2]);
+                    }*/        
     }
     
     public void addReferencePoint(int[] pointI) {
-        double[] pointD = new double[pointI.length - 1];
+        double[] pointD = new double[pointI.length];
         for (int i = 0; i < pointI.length; i++) {
             pointD[i] = (double)pointI[i];
         }
-        referencePoints.add(new Point3D(pointD));
+        referencePoints.addElement(new DoublePoint3D(pointD));
         computed = false;
     }
     
@@ -68,11 +57,11 @@ public class GridElement {
     
     private void computeReferencePoint() {
         //Todo
-        double[] sum = new double[reference.length - 1];
+        double[] sum = new double[reference.length];
 
         for (int i = 0; i < referencePoints.size(); i++) {
             for (int j = 0; j < reference.length; j++) {
-                sum[j] += ((Point3D)referencePoints.elementAt(i)).getValue(j);
+                sum[j] += ((DoublePoint3D)referencePoints.elementAt(i)).getValue(j);
             }
         }
         for (int j = 0; j < reference.length; j++) {
@@ -81,11 +70,12 @@ public class GridElement {
         
     }
     
-    public void setLocation(double[] newLoc) {
+    // minimalste Punkt am Grid
+    public void setLocation(int[] newLoc) {
         location = newLoc;
     }
     
-    public double[] getLocation() {
+    public int[] getLocation() {
         return location;
     }
     

@@ -223,16 +223,7 @@ public final class ImageData implements Image, RandomAccess {
     
     public int[] getCoordinates(int pos) {
         int[] erg = new int[3];
-        erg[2] = pos / (sizeXY);
-        pos = pos - (erg[2] * sizeXY);
-        erg[1] = pos / (sizeX);
-        pos = pos - (erg[1] * sizeX);
-        erg[0] = pos;
-        
-        //Hinzuaddieren des Offsets
-        erg[0] += minX;
-        erg[1] += minY;
-        erg[2] += minZ;
+        getCoordinates(pos, erg);
         return erg;
     } 
     

@@ -36,8 +36,10 @@ public class Test {
         timer1.start();       
         Timer timer3 = new Timer("Test: Image lesen");
         timer3.start();         
-        File source1 = new File("E:/temp/img/try07.tif");
-        File source2 = new File("E:/temp/img/try08.tif");   
+        File source1 = new File("D:/temp/circle004.tif");
+        File source2 = new File("D:/temp/circle005.tif");   
+        //File source1 = new File("E:/temp/img/erg/erg01/");
+        //File source2 = new File("E:/temp/img/erg/erg02/");        
         //File source1 = new File("E:/Daten/Dicoms/source/Dicoms/daten/bud/raw/batch5/");
         //File source2 = new File("E:/Daten/Dicoms/source/Dicoms/daten/bud/raw/batch7/");
         TIFFReader reader1 = new TIFFReader(ImageDataFactory.getInstance(), source1);
@@ -84,12 +86,12 @@ public class Test {
             myStrategy.setImportance(Tissue.SOFT_TISSUE, 0.0);
             myStrategy.setImportance(Tissue.ANGULAR_GYRUS, 0.0);*/
         RegStrategy strategy = new PCARegStrategy(myStrategy, myMetric);
-
+        
         Registrate reg = new Registrate(strategy, param);
         //System.out.println("Mist222222");
         Timer timer2 = new Timer("Test: calculate");
         timer2.start();
-
+        /*
         try {
             reg.calculate();
         } catch (RegistrationException re) {
@@ -97,8 +99,6 @@ public class Test {
         }
         timer2.stop();
         timer2.print();
-        ////////////////////////////////
-        //System.out.println("Mist33333");        
         ImageData show = (ImageData)param.getTargetImage();
         TIFFWriter rwriter = new TIFFWriter(show, new File("E:/temp/img/erg.tif"));
         rwriter.setColorConversion(tcc);
@@ -107,8 +107,38 @@ public class Test {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        System.out.println(show);
+        param.setSourceImage(show);
+        param.setTargetImage(data2);
+         **/
+        for (int i = 0 ; i < 1; i++) {
+        RegStrategy strategy2 = new MCWarpingRegStrategy();
+        Registrate reg2 = new Registrate(strategy2, param);
+        Timer timer4 = new Timer("Test: calculate MC");
+        param.temp = i;
+        timer4.start();
+
+        try {
+            reg2.calculate();
+        } catch (RegistrationException re) {
+            System.out.println("Mist");
+        }
+        timer4.stop();
+        timer4.print();        
+        ////////////////////////////////
+        //System.out.println("Mist33333");        
+        ImageData show2 = (ImageData)param.getTargetImage();
+        TIFFWriter rwriter2 = new TIFFWriter(show2, new File("C:/temp/erg2" + i + ".tif"));
+        //TIFFWriter rwriter2 = new TIFFWriter(show2, new File("E:/temp/img/erg2.tif"));
+        rwriter2.setColorConversion(tcc);
+        try {
+            rwriter2.write();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        param.setSourceImage(param.getTargetImage());
+        param.setTargetImage(data2);
+        }
+        //System.out.println(show2);
         timer1.stop();
         timer1.print();
         System.out.println("FERTIG");
