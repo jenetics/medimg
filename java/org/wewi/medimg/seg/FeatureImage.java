@@ -7,6 +7,7 @@
 package org.wewi.medimg.seg;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.ImageHeader;
 import org.wewi.medimg.image.VoxelIterator;
 
@@ -49,6 +50,9 @@ public final class FeatureImage implements Image {
     private byte[] features;
     private byte[] featuresOld;
     
+    private int minColor;
+    private int maxColor;
+    private ColorRange colorRange = null;
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int size, sizeX, sizeY, sizeZ, sizeXY;
@@ -89,6 +93,9 @@ public final class FeatureImage implements Image {
         maxZ = sizeZ - 1;
         minX = minY = minZ = 0;
         nfeatures = nf;
+        minColor = 0;
+        maxColor = nfeatures - 1;
+        colorRange = new ColorRange(minColor, maxColor);
         size = sizeX*sizeY*sizeZ;
         sizeXY = sizeX*sizeY;
         
@@ -270,6 +277,18 @@ public final class FeatureImage implements Image {
     public int getColor(int pos) {
         return getFeature(pos);
     }
+    
+    public ColorRange getColorRange() {
+        return colorRange;
+    }
+    
+    public int getMaxColor() {
+        return maxColor;
+    }
+    
+    public int getMinColor() {
+        return minColor;
+    }    
     
     public boolean isNull() {
         return false;

@@ -11,6 +11,7 @@ import org.wewi.medimg.util.Singleton;
 import java.util.prefs.Preferences;
 
 import java.awt.Dimension;
+import java.awt.Point;
 
 
 /**
@@ -23,9 +24,6 @@ final class ViewerPreferences implements Singleton {
     private Preferences viewerNode;
     
     private static ViewerPreferences singleton = null;
-    
-    //Default Werte
-    private static final Dimension DEFAULT_VIEWER_DIMENSION = new Dimension(1024, 748);
     
     /** Creates a new instance of ViewerPreferences */
     private ViewerPreferences() {
@@ -61,6 +59,38 @@ final class ViewerPreferences implements Singleton {
         } catch (Exception e) {
             System.out.println("ViewerPreferences.setViewerDimension: " + e);
         }
+    }
+    
+    public Point getViewerLocation() {
+        int x = viewerNode.getInt("VIEWER_LOCATION_X", 0);
+        int y = viewerNode.getInt("VIEWER_LOCATION_Y", 0);  
+        
+        return new Point(x, y);
+    }
+    
+    public void setViewerLocation(Point p) {
+        viewerNode.putInt("VIEWER_LOCATION_X", (int)p.getX());
+        viewerNode.putInt("VIEWER_LOCATION_Y", (int)p.getY());
+        
+        try {
+            viewerNode.sync();  
+        } catch (Exception e) {
+            System.out.println("ViewerPreferences.setViewerLocation: " + e);
+        }        
+    }
+    
+    public String getMostRecentFile() {
+        return viewerNode.get("VIEWER_MOST_RECENT_FILE", "");
+    }
+    
+    public void setMostRecentFile(String file) {
+        viewerNode.put("VIEWER_MOST_RECENT_FILE", file);
+        
+        try {
+            viewerNode.sync();  
+        } catch (Exception e) {
+            System.out.println("ViewerPreferences.setViewerLocation: " + e);
+        }         
     }
     
 }

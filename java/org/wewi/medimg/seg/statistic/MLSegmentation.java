@@ -208,8 +208,8 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         } while(!isM1M2Ready(m1m2Count));
         ///////////////////////////////////////////////////////////////////////
         protocol.setStopTime(System.currentTimeMillis());
-        //protocol.setMeanValues(meanValues);
-        //protocol.setVariance(getVariance());
+        protocol.setMeanValues(meanValues);
+        protocol.setVariance(getVariance());
         logger.info(protocol.toString());
         notifySegmentationFinished(new SegmentationEvent(this, m1m2Count, meanValues));
     }
@@ -238,7 +238,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         return featureDistribution;
     }
     
-/*
+
     public double[] getMeanValues() {
         double[] mv = new double[meanValues.length];
         System.arraycopy(meanValues, 0, mv, 0, mv.length);
@@ -263,10 +263,15 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         for (int i = 0; i < count.length; i++) {
             variance[i] = variance[i]/(double)count[i];
         }
+        System.out.println("Klassenwahrscheinlichkeiten:");
+        for (int i = 0; i < count.length; i++) {
+            System.out.print((double)count[i]/(double)size);
+            System.out.print(" , ");
+        }
         
         return variance;
     }
-*/    
+   
     
     
     

@@ -8,6 +8,8 @@ package org.wewi.medimg.seg.statistic;
 
 import org.wewi.medimg.QualityMeasure;
 
+import org.wewi.medimg.math.geom.VoronoiDiagram1D;
+
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.NullImage;
@@ -38,7 +40,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
     private double[] center;
     private double[] variance;
     private double[] pi;  //a posteriori probability for the i-th feature
-    private IntervalTree intervalTree;
+    private VoronoiDiagram1D voronoi;
     
     private int sizeX;
     private int sizeY;
@@ -77,7 +79,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
         }
         Arrays.sort(center);
             
-        intervalTree = new IntervalTree(center);
+        voronoi = new VoronoiDiagram1D(center);
         allIntervalFull = true;
     }
     
@@ -105,7 +107,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
         double temp;
         for (VoxelIterator it = (VoxelIterator)imageVoxelIterator.clone(); it.hasNext();) {
             color = it.next();
-            feature = intervalTree.intervalNumber(color); 
+            feature = voronoi.getVoronoiCellNo(color); 
             temp = center[feature]-color;
             sum[feature] = temp*temp;
             ++count[feature];
@@ -134,7 +136,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
             int feature = 0, color = 0;
             for (VoxelIterator it = (VoxelIterator)imageVoxelIterator.clone(); it.hasNext();) {
                 color = it.next();
-                feature = intervalTree.intervalNumber(color);
+                feature = voronoi.getVoronoiCellNo(color);
                 colorSum[feature] += color;
                 ++colorCount[feature];
             }
@@ -147,7 +149,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
                 epsilon += Math.abs(centerTemp[i] - center[i]);
             }
             System.arraycopy(centerTemp, 0, center, 0, k);
-            intervalTree = new IntervalTree(center);
+            voronoi = new VoronoiDiagram1D(center);
             
 ////////////////////////////////////////////////////////////////////
 StringBuffer buffer = new StringBuffer();

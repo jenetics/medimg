@@ -10,7 +10,7 @@ package org.wewi.medimg.seg;
  * Da nicht nur Bilder segmentiert werden könne, sondern beliebige Datenpunkt,
  * ist dies die Basisschnittstelle aller Segmentierungsmethoden. Dieses
  * Interface schreibt nur die Implementierung der Methode
- * <code>doSegmentation</code>. Diese Methode startet den Segmentiervorgang.
+ * <code>segmentate</code>. Diese Methode startet den Segmentiervorgang.
  *
  *
  * @author Franz Wilhelmstötter

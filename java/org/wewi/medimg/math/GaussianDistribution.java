@@ -6,34 +6,32 @@
 
 package org.wewi.medimg.math;
 
+import org.wewi.medimg.util.*;
+
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class GaussianDistribution implements DistributionFunction {
+public final class GaussianDistribution implements DistributionFunction {
     private final double meanValue;
     private final double variance;
-    private final double sqrVariance;
     
-    /** Creates a new instance of GaussianDistribution */
     public GaussianDistribution(double meanValue, double variance) {
         this.meanValue = meanValue;
         this.variance = variance;
-        sqrVariance = variance*variance;
     }
     
-    public double[] eval(double[] arg) {
-        double[] r = new double[1];
-        r[0] = eval(arg[0]);
-        return r;
+    private double sqr(double x) {
+        return x*x;
     }
     
     public double eval(double x) {
-        return (1.0d/(Math.sqrt(2d*Math.PI*sqrVariance))*
-                Math.exp(-Math.pow(x-meanValue,2)/(2d*sqrVariance)));
+        return (1.0d/(Math.sqrt(2d*Math.PI*variance))*
+                Math.exp(-sqr(x-meanValue)/(2d*variance)));
     }
     
+     
     public double getMeanValue() {
         return meanValue;
     }
@@ -41,4 +39,23 @@ public class GaussianDistribution implements DistributionFunction {
     public double getVariance() {
         return variance;
     }
+    
+    public String toString() {
+        return "Gaussian Distribution\n    Meanvalue: " + meanValue + ", Variance: " + variance;
+    }
+    
+    /*
+    public static void main(String[] args) {
+        int MAX = 20000000;
+        
+        Timer timer = new Timer("Test");
+        GaussianDistribution d = new GaussianDistribution(1.3, 6.5);
+        timer.start();
+        for (int i = 0; i < MAX; i++) {
+            d.eval(i);
+        }
+        timer.stop();
+        timer.print();
+    }
+    */
 }
