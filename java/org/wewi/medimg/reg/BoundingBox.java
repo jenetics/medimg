@@ -1,20 +1,4 @@
-/* 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
-
-/**
+/*
  * BoundingBox.java
  *
  * Created on 26. März 2002, 10:16
@@ -43,44 +27,43 @@ public class BoundingBox {
  
     /** Creates new BoundingBox */
     public BoundingBox(double[][] bb) {
-    // 8 x 3 Matrix 
+        // 8 x 3 Matrix 
         firstInit(bb);
-    initialize();
+        initialize();
     }
 
     public BoundingBox(BoundingBox bb) {
-    double[][] vertices = new double[8][3];
-    //bb->getVertices(vertices);
-    vertices = bb.getVertices();
-    firstInit(vertices);
-    initialize();
+        double[][] vertices = new double[8][3];
+        vertices = bb.getVertices();
+        firstInit(vertices);
+        initialize();
     }
     
     public void firstInit(double[][] bb) {
-    // 8 x 3 Matrix
+        // 8 x 3 Matrix
         int i, j;
-    for (i = 0; i < 8; i++) {
-        for (j = 0; j < 8; j++) {
-            ADJ[i][j] = false;
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 8; j++) {
+                ADJ[i][j] = false;
+            }
         }
-    }
-    ADJ[0][1] = true;
-    ADJ[0][3] = true;
-    ADJ[0][4] = true;
-    ADJ[1][2] = true;
-    ADJ[1][5] = true;
-    ADJ[2][3] = true;
-    ADJ[2][6] = true;
-    ADJ[3][7] = true;
-    ADJ[4][5] = true;
-    ADJ[4][7] = true;
-    ADJ[5][6] = true;
-    ADJ[6][7] = true;
-    for (i = 0; i < 8; i++) {
-        for (j = 0; j < 3; j++) {
-            vertices[i][j] = bb[i][j];
+        ADJ[0][1] = true;
+        ADJ[0][3] = true;
+        ADJ[0][4] = true;
+        ADJ[1][2] = true;
+        ADJ[1][5] = true;
+        ADJ[2][3] = true;
+        ADJ[2][6] = true;
+        ADJ[3][7] = true;
+        ADJ[4][5] = true;
+        ADJ[4][7] = true;
+        ADJ[5][6] = true;
+        ADJ[6][7] = true;
+        for (i = 0; i < 8; i++) {
+            for (j = 0; j < 3; j++) {
+                vertices[i][j] = bb[i][j];
+            }
         }
-    }
     }    
 
     public void copyRow(double[][] m1, int row1, double[][] m2, int row2) {
@@ -125,7 +108,7 @@ public class BoundingBox {
             copyRow(vertices, 5, planesPEPoints, 23);
 
 
-            // Erschaffen der 6 Halbräume vom Parallelepiped
+            // Create 6 Halfspaces of the Parallelepiped
             int i, j;
             double[] a = new double[3];
             double[] b = new double[3];
@@ -146,7 +129,7 @@ public class BoundingBox {
                     c[1] = planesPEPoints[i*4+2][1] - planesPEPoints[i*4][1];
                     c[2] = planesPEPoints[i*4+2][2] - planesPEPoints[i*4][2];
 
-                    //Kreuzprodukt
+                    //Cross product
                     n[0] = b[1] * c[2] - b[2] * c[1];
                     n[1] = b[2] * c[0] - b[0] * c[2];
                     n[2] = b[0] * c[1] - b[1] * c[0];
@@ -158,14 +141,14 @@ public class BoundingBox {
                             n[1] = n[1] / tmp2;
                             n[2] = n[2] / tmp2;
                     }
-                    // Ebenengleichung berechnen
+                    // compute plain equation
                     tmp1 = n[0] * a[0] + n[1] * a[1] + n[2] * a[2];
-                    // Richtung berechnen
+                    // compute direction
                     tmp2 = n[0] * planesPEPoints[i*4+3][0] + 
                                n[1] * planesPEPoints[i*4+3][1] + 
                                n[2] * planesPEPoints[i*4+3][2];
                     if (tmp2 < tmp1) {
-                            // Normalvektor umdrehen
+                            // turn normal vector
                             n[0] = -n[0];
                             n[1] = -n[1];
                             n[2] = -n[2];
@@ -196,60 +179,30 @@ public class BoundingBox {
     }
 
     public double[][] getVertices() {
-            /*int i, j;
-            double[][] v = new double[8][3];
-            for (i = 0; i < 8; i++) {
-                    for (j = 0; j < 3; j++) {
-                            v[i][j] = vertices[i][j];
-                    }
-            }
-            return v;*/
         return vertices;
     }
 
     public double[][] getNormal() {
-            /*int i, j;
-            for (i = 0; i < 6; i++) {
-                    for (j = 0; j < 4; j++) {
-                            n[i][j] = normal[i][j];
-                    }
-            }*/
         return normal;
     }
 
     public double[][] getPlanePoint() {
-            /*int i, j;
-            for (i = 0; i < 6; i++) {
-                    for (j = 0; j < 3; j++) {
-                            pp[i][j] = planePoint[i][j];
-                    }
-            }*/
         return planePoint;
     }
     
     public boolean[][] getADJ() {
-            /*int i, j;
-            for (i = 0; i < 8; i++) {
-                    for (j = 0; j < 8; j++) {
-                            adj[i][j] = ADJ[i][j];
-                    }
-            }*/
         return ADJ;
     }
 
     public double getVolume() {
 
-            //int *field = NULL;
             int[] field;
             int i, j, k, l, tmp;
-            //double* end;
             double[] end = new double[3];
             double tmp1, tmp2;
             double volume = 0.0;
             double[][] matDet = new double[4][4];
             double[][] triangle = new double[3][3];
-            //std::vector<double*> surfacePoints[6];
-            //std::vector<double*> pointorder;
             Vector pointorder = new Vector();
             Vector[] surfacePoints = new Vector[6];
             for ( i = 0; i < surfacePoints.length; i++) {
@@ -375,7 +328,6 @@ public class BoundingBox {
             }
             Vector intersectingPoints = new Vector();
             Vector allplanes = new Vector();            
-            //std::vector<double*>::iterator position;
             double[][] srcVertices = new double[8][3];
             double[][] srcPlanes = new double[6][4];
             double[][] srcPlanePoints = new double[6][3];            
@@ -384,7 +336,7 @@ public class BoundingBox {
             srcPlanePoints = bb.getPlanePoint();
             for (i = 0; i < 8; i++) {
                     // generate all intersecting points between parallelepiped and source cuboid
-                    // take a point
+                    // take a point of the parallelepiped
                     for (j = 0; j < 8; j++) {
                             // search a neighbour
                             if (ADJ[i][j]) {
@@ -425,6 +377,55 @@ public class BoundingBox {
                     erg[2] =  vertices[i][2];
                     intersectingPoints.addElement(new DoubleDataPoint(erg));
             }
+            
+            
+            
+            for (i = 0; i < 8; i++) {
+                    // generate all intersecting points between cuboid and source parallelepiped
+                    // take a point of the cuboid
+                    for (j = 0; j < 8; j++) {
+                            // search a neighbour
+                            if (ADJ[i][j]) {
+                                    // g := vec(a) + t vec(b)
+                                    end[0] = 0; end[1] = 0; end[2] = 0;
+                                    end[0] =  vertices[j][0] - vertices[i][0];
+                                    end[1] =  vertices[j][1] - vertices[i][1];
+                                    end[2] =  vertices[j][2] - vertices[i][2];
+                                    // intersect with all 6 halfspaces
+                                    // E := A + B + C = D
+                                    for  (k = 0; k < 6; k++) {
+                                            // tmp1 = vec(n) * vec(a)
+                                            tmp1 = srcPlanes[k][0] * vertices[j][0] + 
+                                                       srcPlanes[k][1] * vertices[j][1] + 
+                                                       srcPlanes[k][2] * vertices[j][2];
+                                            // tmp2 = vec(n) * vec(b)
+                                            tmp2 = srcPlanes[k][0] * end[0] + 
+                                                       srcPlanes[k][1] * end[1] + 
+                                                       srcPlanes[k][2] * end[2];
+                                            // if plain and g are not parallel
+                                            if (tmp2 != 0) {
+                                                    // t0 = (plain(D) - vec(n) * vec(a) ) / vec(n) * vec(b)
+                                                    alpha = (srcPlanes[k][3] - tmp1) / tmp2;
+                                                    // x0 = vec(a) + t0 * vec(b); intersecting point
+                                                    erg = new double[3];
+                                                    erg[0] =  alpha * end[0] + vertices[j][0];
+                                                    erg[1] =  alpha * end[1] + vertices[j][1];
+                                                    erg[2] =  alpha * end[2] + vertices[j][2];
+                                                    intersectingPoints.addElement(new DoubleDataPoint(erg));
+                                            }
+                                    }
+                            }
+                    }
+                    // plus vertices of the source cuboid
+                    erg = new double[3];
+                    erg[0] =  srcVertices[i][0];
+                    erg[1] =  srcVertices[i][1];
+                    erg[2] =  srcVertices[i][2];
+                    intersectingPoints.addElement(new DoubleDataPoint(erg));
+            }            
+            
+            
+            
 
             // delete equal points
 
@@ -682,5 +683,6 @@ public class BoundingBox {
                     }
             }
             return volume;
-    }    
+    }  
+
 }
