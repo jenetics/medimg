@@ -6,9 +6,11 @@
 
 package org.wewi.medimg.image.geom.transform;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.util.Immutable;
 
 import cern.colt.function.DoubleDoubleFunction;
 import cern.colt.matrix.DoubleFactory1D;
@@ -28,18 +30,19 @@ import cern.jet.math.Functions;
  *
  * @version 0.1
  */
-public class AffineTransformation implements Transformation, Interpolateable {
+public class AffineTransformation implements Transformation, 
+                                                Interpolateable,
+                                                Immutable {
     private double[] matrix;
     private double[] inverseMatrix;
     
-    private double[] tran;
     private AffineTransformation(double[] matrix, double[] inverseMatrix) {
         this.matrix = new double[12];
         this.inverseMatrix = new double[12];
         System.arraycopy(matrix, 0, this.matrix, 0, 12);
         System.arraycopy(inverseMatrix, 0, this.inverseMatrix, 0, 12);
         
-        calculateScaleShearRotTransPersp();
+        unmatrix();
     }
 
     public AffineTransformation(AffineTransformation transform) {
@@ -48,7 +51,7 @@ public class AffineTransformation implements Transformation, Interpolateable {
         System.arraycopy(transform.matrix, 0, matrix, 0, 12);
         System.arraycopy(transform.inverseMatrix, 0, inverseMatrix, 0, 12);
         
-        calculateScaleShearRotTransPersp();
+        unmatrix();
     }
 
     public AffineTransformation(double[] matrix) {
@@ -56,7 +59,7 @@ public class AffineTransformation implements Transformation, Interpolateable {
         System.arraycopy(matrix, 0, this.matrix, 0, 12);
         inverseMatrix = invert(this.matrix);
 
-        calculateScaleShearRotTransPersp();
+        unmatrix();
     }
       
 
@@ -107,11 +110,14 @@ public class AffineTransformation implements Transformation, Interpolateable {
     private final static int U_PERSPZ = 14;
     private final static int U_PERSPW = 15;
     
-    private void calculateScaleShearRotTransPersp() {
+    private double[] tran;
+    
+    private void unmatrix() {
         tran = new double[16];
         Arrays.fill(tran, 0);
         
         DoubleMatrix2D locmat = DoubleFactory2D.dense.make(4, 4);
+        locmat.assign(0);
         int pos = 0;
         for (int i  = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
@@ -124,26 +130,22 @@ public class AffineTransformation implements Transformation, Interpolateable {
                 
         //Normalisieren der Matrix 
         if (locmat.getQuick(3, 3) == 0) {
-            System.out.println("Singulär A");
+            System.err.println("Singulär A");
             return; //Singuläre Matrix kann nicht behandelt werden.
         }
-        double norm = locmat.getQuick(3, 3);
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                locmat.setQuick(i, j, locmat.getQuick(i ,j)/norm);
-            }
-        }
+        locmat.assign(Functions.div(locmat.getQuick(3, 3)));
+          
                  
         //pmat wird zum Lösen des perspektivischen Anteils verwendet.
         //Es wird hier automatisch die ober 3x3 Komponente
         //auf Singularität getestet.
-        DoubleMatrix2D pmat = locmat.copy();
+        DoubleMatrix2D pmat = locmat.copy();        
+              
         pmat.viewRow(3).assign(0);
         pmat.setQuick(3, 3, 1);
-    
-        
+          
         if (Algebra.DEFAULT.det(pmat) == 0.0) {
-            System.out.println("Singulär B");
+            System.err.println("Singulär B");
             return; //Singuläre Matrix kann nicht behandelt werden.
         }
     
@@ -179,69 +181,82 @@ public class AffineTransformation implements Transformation, Interpolateable {
     
         //Finden der Translation und entfernen der Translation
         for (int i = 0; i < 3; i++) {
-            tran[U_TRANSX + i] = locmat.getQuick(i, 3);
-            locmat.setQuick(i, 3, 0);
+            tran[U_TRANSX + i] = locmat.viewColumn(3).getQuick(i);
         }
+        locmat.viewColumn(3).assign(0);
     
         //Finden der Skalierung und Scherung
-        DoubleMatrix2D rot = DoubleFactory2D.dense.make(3, 3);
-        for (int i = 0; i < 3; i++) {
-            rot.setQuick(0, i, locmat.getQuick(0, i));
-            rot.setQuick(1, i, locmat.getQuick(1, i));
-            rot.setQuick(2, i, locmat.getQuick(2, i));
-        }
-    
+        DoubleMatrix2D rot = locmat.viewPart(0, 0, 3, 3).copy();
+
         //Berechnen der X-Skalierung und normalisieren der ersten Spalte
         tran[U_SCALEX] = Math.sqrt(Algebra.DEFAULT.norm2(rot.viewColumn(0)));
-        rot.viewColumn(0).assign(Functions.mult(1/tran[U_SCALEX]));
-
+        rot.viewColumn(0).assign(Functions.div(tran[U_SCALEX]));
+             
     
         //Berechnen der XY-Scherung und orthogonalisieruen der ersten 
         //und zweiten Spalte der rot-Matrix.
         tran[U_SHEARXY] = rot.viewColumn(0).zDotProduct(rot.viewColumn(1));
-        rot.viewColumn(1).assign(rot.viewColumn(0), new LinearCombination(1, -tran[U_SHEARXY]));
-        
+        rot.viewColumn(1).assign(rot.viewColumn(0), new LinearCombination(1.0, -tran[U_SHEARXY]));
+           
     
         //Berechnen der Y-Skalierung und normalisieren der zweiten Spalte
         tran[U_SCALEY] = Math.sqrt(Algebra.DEFAULT.norm2(rot.viewColumn(1)));
-        rot.viewColumn(1).assign(Functions.mult(1/tran[U_SCALEY]));
+        rot.viewColumn(1).assign(Functions.div(tran[U_SCALEY]));
         tran[U_SHEARXY] /= tran[U_SCALEY];
+               
     
         //Berechnen der XZ und YZ-Scherungen und orthogonalisieren der dritten Spalte
         tran[U_SHEARXZ] = rot.viewColumn(0).zDotProduct(rot.viewColumn(2));
         rot.viewColumn(2).assign(rot.viewColumn(0), new LinearCombination(1, -tran[U_SHEARXZ])); 
         tran[U_SHEARYZ] = rot.viewColumn(1).zDotProduct(rot.viewColumn(2));
         rot.viewColumn(2).assign(rot.viewColumn(1), new LinearCombination(1, -tran[U_SHEARYZ]));               
+   
     
         //Berechnen der Z-Skalierung und normalisieren der dritten Spalte.
         tran[U_SCALEZ] = Math.sqrt(Algebra.DEFAULT.norm2(rot.viewColumn(2)));
-        rot.viewColumn(2).assign(Functions.mult(1/tran[U_SCALEZ]));
+        rot.viewColumn(2).assign(Functions.div(tran[U_SCALEZ]));
         tran[U_SHEARXZ] /= tran[U_SCALEZ];
         tran[U_SHEARYZ] /= tran[U_SCALEZ];
+               
      
         /* At this point, the matrix (in rows[]) is orthonormal.
          * Check for a coordinate system flip.  If the determinant
          * is -1, then negate the matrix and the scaling factors.
          */
-        DoubleMatrix2D pdum3 = Algebra.DEFAULT.multOuter(rot.viewColumn(1), rot.viewColumn(2), null);
-        double temp = rot.viewColumn(0).zDotProduct(pdum3.viewColumn(0));
+        DoubleMatrix1D pdum3 = cross(rot.viewColumn(1), rot.viewColumn(2));
+        double temp = rot.viewColumn(0).zDotProduct(pdum3);
         if (temp < 0) {
             for (int i = 0; i < 3; i++ ) {
                 tran[U_SCALEX+i] *= -1;
                 rot.viewColumn(i).assign(Functions.mult(-1));
             }
-        }
+        }             
      
         // Ermitteln des Rotationsanteils
-        tran[U_ROTATEY] = Math.asin(-rot.getQuick(2, 0));
-        if (Math.cos(tran[U_ROTATEY]) != 0) {
-            tran[U_ROTATEX] = Math.atan2(rot.getQuick(2, 1), rot.getQuick(2, 2));
-            tran[U_ROTATEZ] = Math.atan2(rot.getQuick(1, 0), rot.getQuick(0, 0));
+        tran[U_ROTATEY] = Math.acos(rot.viewColumn(2).getQuick(2));
+        
+        tran[U_ROTATEX] = Math.asin(rot.viewColumn(0).getQuick(2)/Math.sin(tran[U_ROTATEY]));
+        
+        tran[U_ROTATEZ] = Math.acos(rot.viewColumn(2).getQuick(1)/Math.sin(tran[U_ROTATEY]));
+        
+        /*if (Math.cos(tran[U_ROTATEY]) != 0) {
+            tran[U_ROTATEX] = Math.atan2(rot.viewColumn(1).getQuick(2), rot.viewColumn(2).getQuick(2));
+            tran[U_ROTATEZ] = Math.atan2(rot.viewColumn(0).getQuick(1), rot.viewColumn(0).getQuick(0));
         } else {
-            tran[U_ROTATEX] = Math.atan2(-rot.getQuick(0, 2), rot.getQuick(1, 1));
+            tran[U_ROTATEX] = Math.atan2(-rot.viewColumn(2).getQuick(0), rot.viewColumn(1).getQuick(1));
             tran[U_ROTATEZ] = 0;
-        }
-       
+        } */
+         
+    }
+    
+    private DoubleMatrix1D cross(DoubleMatrix1D a, DoubleMatrix1D b) {
+        DoubleMatrix1D c = DoubleFactory1D.dense.make(3);
+        
+        c.setQuick(0, a.getQuick(1)*b.getQuick(2) - a.getQuick(2)*b.getQuick(1));
+        c.setQuick(1, a.getQuick(2)*b.getQuick(0) - a.getQuick(0)*b.getQuick(2));
+        c.setQuick(2, a.getQuick(0)*b.getQuick(1) - a.getQuick(1)*b.getQuick(0));
+
+        return c;    
     }
     
     private class LinearCombination implements DoubleDoubleFunction {
@@ -256,8 +271,83 @@ public class AffineTransformation implements Transformation, Interpolateable {
 		}
 
     }
+    
     ////////////////////////////////////////////////////////////////////////////
     
+    public AffineTransformation getPerspectiveTransformation() {
+        double[] m = new double[12];
+        Arrays.fill(m, 0);
+        m[8] = tran[U_PERSPX];
+        m[9] = tran[U_PERSPY];
+        m[10] = tran[U_PERSPZ];
+        m[11] = tran[U_PERSPW];
+        
+        //Rotationsteil ist Einheitsmatrix
+        m[0] = 1;
+        m[5] = 1;
+        m[10] = 1;
+        
+        return new AffineTransformation(m);    
+    }
+    
+    public AffineTransformation getTranslateTransformation() {
+        double[] m = new double[12];
+        Arrays.fill(m, 0);
+        m[3] = tran[U_TRANSX];
+        m[7] = tran[U_TRANSY];
+        m[11] = tran[U_TRANSZ];
+        
+        //Rotationsteil ist Einheitsmatrix
+        m[0] = 1;
+        m[5] = 1;
+        m[10] = 1;        
+        
+        return new AffineTransformation(m);    
+    }
+    
+    public AffineTransformation getRotationTransformation() {
+        double[] m = new double[12];
+        Arrays.fill(m, 0);
+        
+        double a = tran[U_ROTATEX];
+        double b = tran[U_ROTATEY];
+        double c = tran[U_ROTATEZ];
+        m[0] = Math.cos(a)*Math.cos(c) - Math.cos(b)*Math.sin(a)*Math.sin(c);
+        m[1] = Math.cos(c)*Math.sin(a) + Math.cos(a)*Math.cos(b)*Math.sin(c);
+        m[2] = Math.sin(b)*Math.sin(c);
+        m[4] = -(Math.cos(b)*Math.cos(c)*Math.sin(a)) - Math.cos(a)*Math.sin(c);
+        m[5] = Math.cos(a)*Math.cos(b)*Math.cos(c) - Math.sin(a)*Math.sin(c);
+        m[6] = Math.cos(c)*Math.sin(b);
+        m[8] = Math.sin(a)*Math.sin(b);
+        m[9] = -(Math.cos(a)*Math.sin(b));
+        m[10] = Math.cos(b);
+        
+        return new AffineTransformation(m);    
+    }
+       
+    
+    public AffineTransformation getShearTransformation() {
+        double[] m = new double[12];
+        Arrays.fill(m, 0);
+        
+        //Rotationsteil ist Einheitsmatrix
+        m[0] = 1;
+        m[5] = 1;
+        m[10] = 1;        
+        
+        return null;    
+    }
+    
+    public AffineTransformation getScaleTransformation() {
+        double[] m = new double[12];
+        Arrays.fill(m, 0);
+        
+        m[0] = tran[U_SCALEX];
+        m[5] = tran[U_SCALEY];
+        m[10] = tran[U_SCALEZ];
+        
+        return new AffineTransformation(m);    
+    }
 
     public Transformation scale(double alpha) {
         matrix[0] *= alpha;
@@ -287,19 +377,18 @@ public class AffineTransformation implements Transformation, Interpolateable {
             }
         }
 
-        B.zMult(A, A, 1, 0, false, false);
+        A.zMult(B, B, 1, 0, false, false);
 
         pos = 0;
+        double[] m = new double[12];
         for (int i  = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                matrix[pos] = A.getQuick(i, j);
+                m[pos] = B.getQuick(i, j);
                 pos++;
             }
         }
 
-        inverseMatrix = invert(matrix);
-
-        return this;
+        return new AffineTransformation(m);
     }
 
     private double[] invert(double[] matrix) {
@@ -439,8 +528,53 @@ public class AffineTransformation implements Transformation, Interpolateable {
     /**
      * @see org.wewi.medimg.image.geom.transform.Interpolateable#interpolate(Transformation, double)
      */
-    public Transformation interpolate(Transformation trans2, double w) {
-        return null;
+    public Transformation interpolate(Transformation trans2, double w) throws IllegalArgumentException {
+        if (!(trans2 instanceof AffineTransformation)) {
+            throw new IllegalArgumentException("trans2 not an AffineTransformation: " + 
+                                                getClass().getName() + ".interpolate()");   
+        }
+        
+        AffineTransformation t2 = (AffineTransformation)trans2;
+        
+        double[] transInterpol = new double[16];
+        for (int i = 0; i < 16; i++) {
+            transInterpol[i] = tran[i]*(1-w) + t2.tran[i]*w;    
+        }
+        
+        double[] m = new double[12];
+        Arrays.fill(m, 0);
+        m[0] = transInterpol[U_SCALEX];
+        m[5] = transInterpol[U_SCALEY];
+        m[10] = transInterpol[U_SCALEZ];
+        AffineTransformation As = new AffineTransformation(m);  
+        
+        Arrays.fill(m, 0);
+        double a = transInterpol[U_ROTATEX];
+        double b = transInterpol[U_ROTATEY];
+        double c = transInterpol[U_ROTATEZ];
+        m[0] = Math.cos(a)*Math.cos(c) - Math.cos(b)*Math.sin(a)*Math.sin(c);
+        m[1] = Math.cos(c)*Math.sin(a) + Math.cos(a)*Math.cos(b)*Math.sin(c);
+        m[2] = Math.sin(b)*Math.sin(c);
+        m[4] = -(Math.cos(b)*Math.cos(c)*Math.sin(a)) - Math.cos(a)*Math.sin(c);
+        m[5] = Math.cos(a)*Math.cos(b)*Math.cos(c) - Math.sin(a)*Math.sin(c);
+        m[6] = Math.cos(c)*Math.sin(b);
+        m[8] = Math.sin(a)*Math.sin(b);
+        m[9] = -(Math.cos(a)*Math.sin(b));
+        m[10] = Math.cos(b);
+        AffineTransformation Ar = new AffineTransformation(m);  
+       
+        Arrays.fill(m, 0);
+        m[3] = transInterpol[U_TRANSX];
+        m[7] = transInterpol[U_TRANSY];
+        m[11] = transInterpol[U_TRANSZ];
+        //Rotationsteil ist Einheitsmatrix
+        m[0] = 1;
+        m[5] = 1;
+        m[10] = 1;         
+        AffineTransformation At = new AffineTransformation(m); 
+        
+                 
+        return At.concatenate(Ar.concatenate(As));
     }    
 
     private void transformBackward(double[] source, double[] target) {
@@ -508,16 +642,14 @@ public class AffineTransformation implements Transformation, Interpolateable {
 
 
     private String format(double number, int length) {
-        String string = Double.toString(number);
-        string += "000000000000000000000000000";
-        if (string.length() >= length) {
-            string = string.substring(0, length-1);
-        }
-        return string;
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(length);
+        
+        return nf.format(number);
     }
 
     public String toString() {
-        final int length = 8;
+        final int length = 5;
         StringBuffer buffer = new StringBuffer();
         buffer.append("AffineTransformation: 4x4\n");
         buffer.append("[\n");
@@ -525,7 +657,8 @@ public class AffineTransformation implements Transformation, Interpolateable {
         for (int i = 0; i < 3; i++) {
             buffer.append(" [");
             for (int j = 0; j < 4; j++) {
-                buffer.append("(").append(format(matrix[pos++], length)).append(")");
+                buffer.append("(").append(format(matrix[pos], length)).append(")");
+                ++pos;
             }
             buffer.append("]\n");
         }
@@ -534,24 +667,7 @@ public class AffineTransformation implements Transformation, Interpolateable {
         buffer.append("(").append(format(0, length)).append(")");
         buffer.append("(").append(format(1, length)).append(")]\n");
         buffer.append("]\n");
-        
-        buffer.append("\n Translation:\n");
-        buffer.append(tran[U_TRANSX]).append(",");
-        buffer.append(tran[U_TRANSY]).append(",");
-        buffer.append(tran[U_TRANSZ]).append("\n");
-        
-        buffer.append("\n Scalierung:\n");
-        buffer.append(tran[U_SCALEX]).append(",");
-        buffer.append(tran[U_SCALEY]).append(",");
-        buffer.append(tran[U_SCALEZ]).append("\n"); 
-        
-             
-        buffer.append("\n Rotation:\n");
-        buffer.append(tran[U_ROTATEX]).append(",");
-        buffer.append(tran[U_ROTATEY]).append(",");
-        buffer.append(tran[U_ROTATEZ]).append("\n"); 
                      
-
         return buffer.toString();
     }
     
@@ -561,11 +677,53 @@ public class AffineTransformation implements Transformation, Interpolateable {
     
     
     public static void main(String[] args) {
-        double[] matrix = {-3.32917, 26.0387, 1.53029, 23., -7.27438, -11.9168, -0.700351, 
-    1., 0., -44.598, 1.0806, 65., 0., 0., 0., 1.};
-        AffineTransformation transform = new AffineTransformation(matrix);
-        System.out.println(transform);                    
+        double[][] m0 = {{7.54204, 17.6748, 0., 23.}, {1.39266, -26.0827, 5.11764, 
+    34.}, {2.27556, -42.618, -3.13205, 65.}, {0., 0., 0., 1.}};
     
+    
+        double[] matrix = new double[12];
+        int pos = 0;
+        for (int i  = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                matrix[pos] = m0[i][j];
+                ++pos;
+            }
+        }
+        
+        
+
+    
+        AffineTransformation transform = new AffineTransformation(matrix);
+        System.out.println(transform);  
+        
+        System.out.println("Rotation:");
+        System.out.println(transform.getRotationTransformation());
+        
+        System.out.println("Translation:");
+        System.out.println(transform.getTranslateTransformation());
+        
+        System.out.println("Skalierung:");
+        System.out.println(transform.getScaleTransformation()); 
+        
+        System.out.println("Scherung:");
+        System.out.println(transform.getShearTransformation());                       
+        
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
