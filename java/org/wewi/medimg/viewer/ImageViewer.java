@@ -26,12 +26,13 @@ import org.wewi.medimg.image.VoxelSelectorListener;
  * @version 0.1
  */
 public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
-    private Image image;
-    private int slice;
-    private ImagePanel imagePanel;
     private Vector observers;
+
+    protected Image image;
+    protected int slice;
+    protected ImagePanel imagePanel;
     
-    private String frameTitle;
+    protected String frameTitle;
     
     private ColorConversion cc = null;
     
@@ -132,11 +133,11 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         imagePanel.setImageCanvas(canvas);    
     }
     
-    public void addVoxelSelectorListener(VoxelSelectorListener listener) {
+    public synchronized void addVoxelSelectorListener(VoxelSelectorListener listener) {
         imagePanel.addVoxelSelectorListener(listener);
     }
     
-    public void removeVoxelSelectorListener(VoxelSelectorListener listener) {
+    public synchronized void removeVoxelSelectorListener(VoxelSelectorListener listener) {
         imagePanel.removeVoxelSelectorListener(listener);    
     }
     
@@ -212,5 +213,5 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         }
 
     }
-    
+
 }

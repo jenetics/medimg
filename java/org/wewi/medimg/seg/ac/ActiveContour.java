@@ -29,6 +29,8 @@ public interface ActiveContour extends Cloneable {
 
     public List getBasePoints();
     
+    public int getNBasePoints();
+    
     public List getContourPoints();
     
     public Object clone();

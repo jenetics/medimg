@@ -4,6 +4,8 @@
  */
 package org.wewi.medimg.seg.ac;
 
+import org.wewi.medimg.alg.AlgorithmIterationEvent;
+import org.wewi.medimg.alg.AlgorithmIterationListener;
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelSelectorEvent;
@@ -17,7 +19,8 @@ import org.wewi.medimg.viewer.ImageViewer;
  *
  */
 public class ActiveContourImageViewer extends ImageViewer
-                                        implements VoxelSelectorListener {
+                                        implements VoxelSelectorListener,
+                                                    AlgorithmIterationListener {
 
     private ActiveContour contour;                                            
 
@@ -59,5 +62,18 @@ public class ActiveContourImageViewer extends ImageViewer
         contour.addBasePoint(p);
         repaintImage();
     }       
+
+	/**
+	 * @see org.wewi.medimg.alg.AlgorithmIterationListener#iterationFinished(AlgorithmIterationEvent)
+	 */
+	public void iterationFinished(AlgorithmIterationEvent event) {
+        repaintImage();
+	}
+
+	/**
+	 * @see org.wewi.medimg.alg.AlgorithmIterationListener#iterationStarted(AlgorithmIterationEvent)
+	 */
+	public void iterationStarted(AlgorithmIterationEvent event) {
+	}
 
 }

@@ -28,15 +28,15 @@ public abstract class ObservableSegmenter extends ObservableAlgorithm
         logger = Logger.getLogger(getClass().getPackage().getName());        
     }
     
-    public void addLoggerHandler(Handler handler) {
+    public synchronized void addLoggerHandler(Handler handler) {
         logger.addHandler(handler);
     }
     
-    public void removeLoggerHandler(Handler handler) {
+    public synchronized void removeLoggerHandler(Handler handler) {
         logger.removeHandler(handler);
     }
     
-    public void setLoggerLevel(Level level) {
+    public synchronized void setLoggerLevel(Level level) {
         logger.setLevel(level);
     }
     

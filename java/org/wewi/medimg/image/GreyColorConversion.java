@@ -34,7 +34,8 @@ public class GreyColorConversion implements ColorConversion {
 	 * @see org.wewi.medimg.image.ColorConversion#convert(int[])
 	 */
 	public int convert(int[] rgb) {
-        return (rgb[0]+rgb[1]+rgb[2])/3;
+        //return (rgb[0]+rgb[1]+rgb[2])/3;
+        return rgb[0];
 	}
 
 	public Object clone() {
