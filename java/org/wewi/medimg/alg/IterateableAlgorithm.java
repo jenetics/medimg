@@ -10,4 +10,6 @@ package org.wewi.medimg.alg;
  */
 public interface IterateableAlgorithm {
     public AlgorithmIterator getAlgorithmIterator();
+    
+    public int getIterations();
 }

@@ -9,11 +9,14 @@ import java.util.List;
 
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
 import org.wewi.medimg.alg.AlgorithmIterator;
+import org.wewi.medimg.alg.IterateableAlgorithm;
 import org.wewi.medimg.alg.ObservableAlgorithm;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.filter.BlurFilter;
 import org.wewi.medimg.image.filter.ImageFilter;
+import org.wewi.medimg.image.filter.NormalizeFilter;
 import org.wewi.medimg.image.filter.SobelFilter;
+import org.wewi.medimg.image.filter.TresholdFilter;
 import org.wewi.medimg.image.geom.Neighborhood;
 import org.wewi.medimg.image.geom.Neighborhood2D8;
 import org.wewi.medimg.image.geom.Point;
@@ -26,9 +29,14 @@ import org.wewi.medimg.viewer.Viewer;
  * @version 0.1
  */
 public class SnakeGreedyMinimizer extends ObservableAlgorithm
-                                   implements ContourMinimizer {
+                                   implements ContourMinimizer,
+                                               IterateableAlgorithm {
     
     private final class GreedyMinimizerIterator implements AlgorithmIterator {
+        
+        public GreedyMinimizerIterator() {
+            iterationCount = 0;   
+        }
         
         /**
 		 * @see org.wewi.medimg.alg.AlgorithmIterator#getInterimResult()
@@ -49,6 +57,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
 		 * @see org.wewi.medimg.alg.AlgorithmIterator#nextIteration()
 		 */
 		public void nextIteration() {
+            ++iterationCount;
             iteration();
 		}
 
@@ -67,6 +76,8 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
     
     protected double contourEnergy = -Double.MAX_VALUE;
     protected double newContourEnergy = Double.MAX_VALUE;
+    
+    private int iterationCount = 0;
 
 	/**
 	 * Constructor for SnakeGreedyMinimizer.
@@ -80,7 +91,11 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
                                         image.getMaxX(), image.getMaxY());
         
         gradImage = (Image)image.clone();
-        ImageFilter filter = new SobelFilter(new BlurFilter(gradImage));
+        ImageFilter filter = new TresholdFilter(
+                             new NormalizeFilter(
+                             new SobelFilter(
+                             new BlurFilter(gradImage)), 0, 255), 50, 255);
+
         filter.filter(); 
         
         ///////////////////////////////////////////////////////////////777
@@ -202,7 +217,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
     }
     
     private void iteration() {
-        notifyIterationStarted(new AlgorithmIterationEvent(this));
+        notifyIterationStarted(new AlgorithmIterationEvent(this, iterationCount));
         
         contourEnergy = newContourEnergy;
         
@@ -232,7 +247,7 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
         
         newContourEnergy = energy; 
         
-        notifyIterationFinished(new AlgorithmIterationEvent(this));       
+        notifyIterationFinished(new AlgorithmIterationEvent(this, iterationCount));       
     }
 
 	/**
@@ -252,6 +267,10 @@ public class SnakeGreedyMinimizer extends ObservableAlgorithm
 	public ActiveContour getActiveContour() {
 		return contour;
 	}
+    
+    public int getIterations() {
+        return iterationCount;    
+    }
     
     public AlgorithmIterator getAlgorithmIterator() {
         return new GreedyMinimizerIterator();    

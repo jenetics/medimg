@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
 
-import org.wewi.medimg.image.io.ImageFormatTypes;
+import org.wewi.medimg.image.io.ImageFormatEnum;
 
 /**
  * @author Franz Wilhelmstötter
@@ -35,18 +35,18 @@ final class ImageFileView extends FileView {
             return super.getIcon(file);    
         }
         
-        ImageFormatTypes type = ((ImageFileFilter)filter).getImageFormatType();
+        ImageFormatEnum type = ((ImageFileFilter)filter).getImageFormatType();
         
-        if (ImageFormatTypes.RAW_IMAGE.equals(type)) {
+        if (ImageFormatEnum.RAW_IMAGE.equals(type)) {
             if (file.isDirectory()) {
                 return super.getIcon(file);    
             } 
-            if (file.toString().endsWith(".rid")) {
+            if (file.toString().toLowerCase().endsWith(".rid")) {
                 return icon;    
             }
-        } else if (ImageFormatTypes.TIFF_IMAGES.equals(type)) {
+        } else if (ImageFormatEnum.TIFF_IMAGES.equals(type)) {
             if (!file.isDirectory()) {
-                if (file.getName().endsWith(".tif")) {
+                if (file.getName().toLowerCase().endsWith(".tif")) {
                     return icon;    
                 }
                 return super.getIcon(file);    
@@ -56,9 +56,9 @@ final class ImageFileView extends FileView {
                 return icon;    
             }
             return super.getIcon(file);
-        } else if (ImageFormatTypes.BMP_IMAGES.equals(type)) {
+        } else if (ImageFormatEnum.BMP_IMAGES.equals(type)) {
             if (!file.isDirectory()) {
-                if (file.getName().endsWith(".bmp")) {
+                if (file.getName().toLowerCase().endsWith(".bmp")) {
                     return icon;    
                 }                
                 return super.getIcon(file);    
@@ -67,9 +67,9 @@ final class ImageFileView extends FileView {
             if (endsWith(files, ".bmp")) {
                 return icon;    
             }                       
-        } else if (ImageFormatTypes.JPEG_IMAGES.equals(type)) {
+        } else if (ImageFormatEnum.JPEG_IMAGES.equals(type)) {
             if (!file.isDirectory()) {
-                if (file.getName().endsWith(".jpg")) {
+                if (file.getName().toLowerCase().endsWith(".jpg")) {
                     return icon;    
                 }                
                 return super.getIcon(file);    
@@ -88,7 +88,7 @@ final class ImageFileView extends FileView {
             return false;    
         }
         for (int i = 0; i < files.length; i++) {
-            if (files[i].endsWith(pattern)) {
+            if (files[i].toLowerCase().endsWith(pattern)) {
                 return true;    
             }    
         }   

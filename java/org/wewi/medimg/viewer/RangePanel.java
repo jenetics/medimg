@@ -167,7 +167,6 @@ class RangePanel extends javax.swing.JPanel {
         strideReadButton.setFont(new java.awt.Font("Dialog", 0, 12));
         strideReadButton.setMnemonic('L');
         strideReadButton.setText("Lesen der Schichten");
-        strideReadButton.setToolTipText("null");
         strideReadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 strideReadButtonActionPerformed(evt);
@@ -221,17 +220,17 @@ class RangePanel extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel rangeToLabel;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JTextField rangeFromTextField;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton strideReadButton;
+    private javax.swing.JTextField rangeToTextField;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel strideLabel;
+    private javax.swing.JLabel rangeFromLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField strideTextField;
-    private javax.swing.JLabel rangeFromLabel;
-    private javax.swing.JButton strideReadButton;
-    private javax.swing.JLabel strideLabel;
-    private javax.swing.JTextField rangeToTextField;
-    private javax.swing.JTextField rangeFromTextField;
+    private javax.swing.JLabel rangeToLabel;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -10,7 +10,7 @@ import java.util.RandomAccess;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public abstract class AbstractImage implements Image, RandomAccess {
+abstract class AbstractImage implements Image, RandomAccess {
 
     private final class AbstractImageVoxelIterator implements VoxelIterator {
         private int pos;
@@ -73,7 +73,7 @@ public abstract class AbstractImage implements Image, RandomAccess {
         colorConversion = new GreyColorConversion();
     } 
     
-    public AbstractImage(AbstractImage id) {
+    protected AbstractImage(AbstractImage id) {
         this(id.dimension);
         id.data.copy(this.data);
     }       

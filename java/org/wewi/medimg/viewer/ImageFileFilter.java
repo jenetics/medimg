@@ -10,7 +10,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.wewi.medimg.image.io.ImageFormatTypes;
+import org.wewi.medimg.image.io.ImageFormatEnum;
 
 /**
  *
@@ -18,42 +18,42 @@ import org.wewi.medimg.image.io.ImageFormatTypes;
  * @version 0.1
  */
 public class ImageFileFilter extends FileFilter {
-        private ImageFormatTypes type;
+        private ImageFormatEnum type;
         
-        public ImageFileFilter(ImageFormatTypes type) {
+        public ImageFileFilter(ImageFormatEnum type) {
             this.type = type;
         }
         
         public boolean accept(File file) {
-            if (type.equals(ImageFormatTypes.TIFF_IMAGES)) {
+            if (type.equals(ImageFormatEnum.TIFF_IMAGES)) {
                 if (!file.isDirectory()) {
-                     if (file.getName().endsWith(".tif")) {
+                     if (file.getName().toLowerCase().endsWith(".tif")) {
                         return true;   
                      }
                      else return false;  
                 }
                 return true;
-            } else if (type.equals(ImageFormatTypes.BMP_IMAGES)) {
+            } else if (type.equals(ImageFormatEnum.BMP_IMAGES)) {
                 if (!file.isDirectory()) {
-                     if (file.getName().endsWith(".bmp")) {
+                     if (file.getName().toLowerCase().endsWith(".bmp")) {
                         return true;   
                      }
                      else return false;  
                 }
                 return true;
-            } else if (type.equals(ImageFormatTypes.JPEG_IMAGES)) {
+            } else if (type.equals(ImageFormatEnum.JPEG_IMAGES)) {
                 if (!file.isDirectory()) {
-                     if (file.getName().endsWith(".jpg")) {
+                     if (file.getName().toLowerCase().endsWith(".jpg")) {
                         return true;   
                      }
                      else return false;  
                 }
                 return true;
-            } else if (type.equals(ImageFormatTypes.RAW_IMAGE)) {
+            } else if (type.equals(ImageFormatEnum.RAW_IMAGE)) {
                 if (file.isDirectory()) {
                     return true;
                 }
-                return file.toString().endsWith(".rid");
+                return file.toString().toLowerCase().endsWith(".rid");
             }
             return false;
         }
@@ -62,7 +62,7 @@ public class ImageFileFilter extends FileFilter {
             return type.toString();
         }
  
-        public ImageFormatTypes getImageFormatType() {
+        public ImageFormatEnum getImageFormatType() {
             return type;
         }
 }
