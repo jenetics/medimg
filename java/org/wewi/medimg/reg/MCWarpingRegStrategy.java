@@ -1,4 +1,4 @@
-/*
+/**
  * MCWarpingRegStrategy.java
  *
  * Created on 16. Mai 2002, 11:34
@@ -13,8 +13,8 @@ import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
     

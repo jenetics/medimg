@@ -783,9 +783,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         target[2] = (int)Math.round(z);
     }
     
-    /**
-     * @see org.wewi.medimg.image.geom.transform.Interpolateable#interpolate(Transformation, double)
-     */
+
     public InterpolateableTransformation interpolate(InterpolateableTransformation trans2, double w) throws IllegalArgumentException {
         if (!(trans2 instanceof AffineTransformation)) {
             throw new IllegalArgumentException("trans2 not an AffineTransformation: " + 

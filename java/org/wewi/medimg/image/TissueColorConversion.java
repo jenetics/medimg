@@ -1,4 +1,4 @@
-/*
+/**
  * TissueColorConversion.java
  *
  * Created on 04. April 2002, 13:55
@@ -9,8 +9,8 @@ package org.wewi.medimg.image;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class TissueColorConversion implements ColorConversion {
 

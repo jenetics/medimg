@@ -178,9 +178,7 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         notifyIterationFinished(new AlgorithmIterationEvent(this, iterationCount));       
     }
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.Minimizer#minimize()
-	 */
+
 	public ActiveContour minimize() {
         for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNextIteration();) {
             it.nextIteration();    
@@ -197,9 +195,7 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         this.outerEnergyFunction = outerEnergyFunction;
     }    
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.Minimizer#getActiveContour()
-	 */
+
 	public ActiveContour getActiveContour() {
 		return contour;
 	}

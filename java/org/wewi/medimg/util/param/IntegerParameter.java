@@ -27,9 +27,6 @@ public class IntegerParameter extends Parameter {
         this.value = value;    
     }
 
-    /**
-     * @see org.wewi.medimg.util.param.Parameter#createParameter(Element)
-     */
     public Parameter initParameter(Element xml) {
         name = xml.getAttribute("name").getValue();
         value = Integer.parseInt(xml.getText());
@@ -37,9 +34,6 @@ public class IntegerParameter extends Parameter {
         return this;
     }
 
-    /**
-     * @see org.wewi.medimg.util.param.Parameter#createParameterElement()
-     */
     public Element createParameterElement() {
         Element e = new Element("Parameter");
         e.setAttribute("name", name);
@@ -49,9 +43,6 @@ public class IntegerParameter extends Parameter {
         return e;
     }
 
-    /**
-     * @see org.wewi.medimg.util.param.Parameter#getParameterObject()
-     */
     public Object getParameterObject() {
         return new Integer(value);
     }

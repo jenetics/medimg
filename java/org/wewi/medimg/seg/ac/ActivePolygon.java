@@ -53,7 +53,7 @@ public class ActivePolygon implements ActiveContour {
     }
 
     /**
-     * @see org.wewi.medimg.seg.ac.ActiveContour#removePoint(Point)
+     * @see org.wewi.medimg.seg.ac.ActiveContour#removeBasePoint(Point)
      */
     public synchronized void removeBasePoint(Point point) {
         synchronized (basePoints) {

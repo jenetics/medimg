@@ -49,10 +49,6 @@ public class ImageParameter extends Parameter {
 
 
 
-
-	/**
-	 * @see org.wewi.medimg.util.param.Parameter#createParameterElement()
-	 */
 	public Element createParameterElement() {
         Element e = new Element("Parameter");
         e.setAttribute("name", name);
@@ -64,9 +60,7 @@ public class ImageParameter extends Parameter {
 		return e;
 	}
 
-	/**
-	 * @see org.wewi.medimg.util.param.Parameter#getParameterObject()
-	 */
+
 	public Object getParameterObject() {
         if (image != null) {
             return image;            
@@ -103,9 +97,7 @@ public class ImageParameter extends Parameter {
 		return image;
 	}
 
-	/**
-	 * @see org.wewi.medimg.util.param.Parameter#initParameter(Element)
-	 */
+
 	public Parameter initParameter(Element xml) {
         name = xml.getAttribute("name").getValue();
         String factoryName = xml.getAttribute("image.factory").getValue();

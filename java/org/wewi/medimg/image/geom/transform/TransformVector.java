@@ -1,4 +1,4 @@
-/*
+/**
  * TransformVector.java
  *
  * Created on 23. März 2002, 12:45
@@ -11,8 +11,8 @@ import java.util.Vector;
 import org.wewi.medimg.image.Tissue;
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class TransformVector {
 

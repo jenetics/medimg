@@ -30,15 +30,7 @@ import org.wewi.medimg.util.Nullable;
  * @see org.wewi.medimg.image.Dimension
  * 
  */
-public interface Image extends ImageGeometry, ImageAccess, Nullable, Cloneable, Mutable {
-            
-    /**
-     * A convinient method for getting the number
-     * of voxels of the image.
-     * 
-     * @return the number of voxels the image contains.
-     */
-    public int getNVoxels();    
+public interface Image extends ImageGeometry, ImageAccess, Nullable, Cloneable, Mutable {   
     
     /**
      * Returns the ImageHeader

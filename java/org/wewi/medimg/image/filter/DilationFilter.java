@@ -39,9 +39,6 @@ public final class DilationFilter extends MorphologicalOperation {
 		super(component, b);
 	}
 
-	/**
-	 * @see org.wewi.medimg.image.filter.MorphologicalOperation#morphologicalFiltering()
-	 */
 	protected int operation(int i, int j) {
         int result = 0;
         

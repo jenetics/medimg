@@ -30,5 +30,5 @@ public class MutableDouble implements Mutable {
     public double getValue() {
         return value;   
     }
-
+    
 }

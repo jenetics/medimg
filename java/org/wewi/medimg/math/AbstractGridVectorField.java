@@ -34,16 +34,10 @@ public abstract class AbstractGridVectorField implements GridVectorField {
             xyz = new int[3];
 		}
 
-		/**
-		 * @see org.wewi.medimg.image.geom.VectorIterator#hasNext()
-		 */
 		public boolean hasNext() {
 			return pos < SIZE;
 		}
 
-		/**
-		 * @see org.wewi.medimg.image.geom.VectorIterator#next(double[], double[])
-		 */
 		public void next(double[] start, double[] end) {
             getCoordinates(pos, xyz);
             
@@ -140,9 +134,6 @@ public abstract class AbstractGridVectorField implements GridVectorField {
         data.set(gridX, gridY, gridZ, temp);
     }
 
-	/**
-	 * @see org.wewi.medimg.image.geom.VectorField#getVectorIterator()
-	 */
 	public VectorIterator getVectorIterator() {
 		return new RegularVectorIterator();
 	}
