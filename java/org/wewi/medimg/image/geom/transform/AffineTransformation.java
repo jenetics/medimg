@@ -54,14 +54,29 @@ public class AffineTransformation implements InterpolateableTransformation,
     }
 
     public AffineTransformation(double[] matrix) {
+        init(matrix);
+    }
+      
+    public AffineTransformation(double[][] matrix) {
+        double[] m = new double[12];
+        int count = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                m[count] = matrix[i][j];
+                ++count;
+            }
+        }
+        init(m);
+    }
+    
+    private void init(double[] matrix) {
         this.matrix = new double[12];
         System.arraycopy(matrix, 0, this.matrix, 0, 12);
         inverseMatrix = invert(this.matrix);
 
-        unmatrix();
+        unmatrix();        
     }
-      
-
+    
     public double[] getMatrix() {
         double[] m = new double[12];
         System.arraycopy(matrix, 0, m, 0, 9);

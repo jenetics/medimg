@@ -40,6 +40,13 @@ public class ImageData implements Image, RandomAccess {
             return c;
         }
         
+        public int next(double[] p) {
+            int c = getData(pos);
+            getCoordinates(pos, p);
+            ++pos;
+            return c;
+        }        
+        
         public int size() {
             return size;
         }
@@ -258,6 +265,18 @@ public class ImageData implements Image, RandomAccess {
         coordinate[2] += minZ;
     } 
     
+    private void getCoordinates(int pos, double[] coordinate) {
+        coordinate[2] = pos / (sizeXY);
+        pos = (int)(pos - (coordinate[2] * sizeXY));
+        coordinate[1] = pos / (sizeX);
+        pos = (int)(pos - (coordinate[1] * sizeX));
+        coordinate[0] = pos; 
+        
+        coordinate[0] += minX;
+        coordinate[1] += minY;
+        coordinate[2] += minZ;
+    }    
+    
     public void getNeighbor3D12Positions(int pos, int[] n12) {
         n12[0] = pos - 1 - sizeXY;
         n12[1] = pos - 1 + sizeXY;
@@ -337,7 +356,7 @@ public class ImageData implements Image, RandomAccess {
     public static void main(String[] args) {
         Timer timer = new Timer("ImageData");
         
-        Image image = new ImageData(350, 350, 350); 
+        Image image = new ImageData(181, 217, 181); 
          
         
         timer.start();

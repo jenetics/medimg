@@ -45,6 +45,10 @@ public class NullVoxelIterator implements VoxelIterator {
         return 0;    
     }
 
+    public int next(double[] p) {
+        return 0;    
+    }
+    
 	/**
 	 * @see org.wewi.medimg.image.VoxelIterator#size()
 	 */
