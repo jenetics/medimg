@@ -7,6 +7,7 @@
 package org.wewi.medimg.visualisation.mc;
 
 import java.util.Iterator;
+import java.util.Vector;
 
 /**
  *
@@ -30,12 +31,22 @@ public class SingleTriangleDecimator extends TriangleDecimator {
         
         int ntri = 0;
         Vertex v;
+        Triangle t;
+        Vector verticesToRemove = new Vector();
         for (Iterator it = graph.getVertices(); it.hasNext();) {
             v = (Vertex)it.next();
             ntri = graph.getNoOfIncidentTriangles(v);
-            if (ntri < MIN_INCIDENT_TRIANGLES) {
-                graph.removeVertex(v);
-            }
+            if (ntri >= MIN_INCIDENT_TRIANGLES) {
+                continue;
+            }  
+            //Die Knoten können nicht gleich entfernt werden,
+            //da sonst der Iterator ungültig wird
+            verticesToRemove.add(v);
+        }
+        
+        //Das eigentliche Entfernen der Dreiecke
+        for (Iterator it = verticesToRemove.iterator(); it.hasNext();) {
+            graph.removeVertex((Vertex)it.next());
         }
     }
 }

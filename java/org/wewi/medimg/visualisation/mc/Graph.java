@@ -56,29 +56,43 @@ public class Graph {
     
     /** Creates a new instance of Graph */
     public Graph() {
-        vertices = new Hashtable(2000);
+        vertices = new Hashtable(3000);
         triangles = new HashSet(1000);
     }
     
     public void addVertex(Vertex v) {
-        if (vertices.contains(v)) {
+        //Ein Knoten wird nur dann eingefügt, wenn er noch nicht 
+        //im Hashtable vorhanden ist.
+        if (vertices.containsKey(v)) {
             return;
         }
         vertices.put(v, new VertexTriangles());
     }
     
     public void removeVertex(Vertex v) {
-        if (!vertices.contains(v)) {
+        //Es ist sinnvoll, nur Knoten zu entfernen, 
+        //welche auch vorhanden sind.
+        if (!vertices.containsKey(v)) {
             return;
         }
-        //Wird ein Knoten entfernt, so müssen auch alle Dreiecke
-        //entfernt werden, zu denen dieser Knoten gehört.
+
+        Vector trianglesToRemove = new Vector();
         Triangle t;
+        //Wird ein Knoten entfernt, so müssen auch alle Dreiecke
+        //entfernt werden, zu denen dieser Knoten gehört.        
         for (Iterator it = ((VertexTriangles)vertices.get(v)).getTriangles(); it.hasNext();) {
             t = (Triangle)it.next();
-            removeTriangle(t);
+            //Die Dreiecke können nicht gleich entfert werden, da sonst 
+            //dieser Iterator nicht mehr gültig ist. Die zu entfernenden
+            //Dreicke werden deshalb zunächst in einem Vector gespeichert,
+            //um danach entfernt zu werden.
+            trianglesToRemove.add(t);
         }
-        
+        //Eigentliches Entfernen der Dreiecke
+        for (Iterator it = trianglesToRemove.iterator(); it.hasNext();) {
+            removeTriangle((Triangle)it.next());
+        }
+        //Ganz am Schluß kann der Knoten entfernt werden.
         vertices.remove(v);
     }
     
@@ -91,6 +105,8 @@ public class Graph {
     }
     
     public void addTriangle(Triangle t) {
+        //Ein Dreieck wird nur eingefügt, wenn es noch nicht 
+        //vorhanden ist.
         if (triangles.contains(t)) {
             return;
         }
@@ -124,22 +140,26 @@ public class Graph {
     /**
      * Liefert die Anzahl der Dreiecke, zu denen dieser Punkt (v) gehört.
      */
-    public int getNoOfTriangles(Vertex v) {
+    public int getNoOfIncidentTriangles(Vertex v) {
         return ((VertexTriangles)vertices.get(v)).size();
     }
         
     /**
      * Liefert jene Dreiecke, zu denen dieser Punkt (v) gehört.
      */
-    public Iterator getTriangles(Vertex v) {
+    public Iterator getIncidentTriangles(Vertex v) {
         return ((VertexTriangles)vertices.get(v)).getTriangles();
+    }
+    
+    public Iterator getTriangles() {
+        return triangles.iterator();
     }
     
     /**
      * Liefert jenes Polygon, das bei einem Entfernen
      * des Knoten v entstehen würde.
      */
-    public StarshapedPolygon getPolygon(Vertex v) {
+    StarshapedPolygon getPolygon(Vertex v) {
         Triangle t;
         Vertex v1 = null, v2 = null;
         Vector e = new Vector();

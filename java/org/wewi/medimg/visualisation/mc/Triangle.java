@@ -15,7 +15,6 @@ public final class Triangle {
     Vertex a, b, c;
     Point normal;
     
-    /** Creates a new instance of Triangle */
     Triangle() {
     }
     
@@ -47,6 +46,10 @@ public final class Triangle {
     
     public Point getNormal() {
         return normal;
+    }
+    
+    public String toString() {
+        return a.toString() + " " + b.toString() + " " + c.toString() + " " + normal.toString();
     }
     
 }
