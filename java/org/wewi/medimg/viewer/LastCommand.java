@@ -11,7 +11,7 @@ package org.wewi.medimg.viewer;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class LastCommand implements Command {
+final class LastCommand implements Command {
     private ImageViewer imageViewer;
 
     /** Creates new LastCommand */

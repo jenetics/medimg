@@ -8,7 +8,8 @@ package org.wewi.medimg.image.io;
 
 import org.wewi.medimg.image.Image;
 
-import java.util.Observable;
+import java.util.Vector;
+import java.util.Iterator;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,9 @@ import java.io.IOException;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ImageWriterThread extends Observable implements Runnable {
+public final class ImageWriterThread extends Thread {
+    private Vector listeners;
+    
     private Image image;
     private ImageWriterFactory imageWriterFactory;
     private File targetFileName;
@@ -27,6 +30,25 @@ public final class ImageWriterThread extends Observable implements Runnable {
         this.image = image;
         this.imageWriterFactory = imageWriterFactory;
         this.targetFileName = targetFileName;
+        
+        listeners = new Vector();
+    }
+    
+    public void addWriterThreadListener(WriterThreadListener listener) {
+        listeners.add(listener);
+    }
+    
+    public void removeWriterThreadListener(WriterThreadListener listener) {
+        listeners.add(listener);
+    }
+    
+    private void notifyListeners(WriterThreadEvent event) {
+        Vector wtl = (Vector)listeners.clone();
+        WriterThreadListener l;
+        for (Iterator it = wtl.iterator(); it.hasNext();) {
+            l = (WriterThreadListener)it.next();
+            l.imageWritten(event);
+        }
     }
 
     public void run() {
@@ -37,9 +59,7 @@ public final class ImageWriterThread extends Observable implements Runnable {
             System.out.println("ImageWriterThread.run: " + ioe);
         }
         
-        setChanged();
-        notifyObservers();
-        clearChanged();       
+        notifyListeners(new WriterThreadEvent(this));      
     }
     
 }

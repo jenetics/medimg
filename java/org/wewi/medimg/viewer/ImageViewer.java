@@ -12,21 +12,11 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.swing.event.InternalFrameListener;
 import javax.swing.event.InternalFrameEvent;
 
 import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ComponentEvent;
+
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImagePanel;
@@ -48,12 +38,7 @@ import java.io.File;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class ImageViewer extends JInternalFrame implements MouseListener,
-                                                           MouseMotionListener,
-                                                           KeyListener,
-                                                           FocusListener,
-                                                           InternalFrameListener,
-                                                           ComponentListener {
+public class ImageViewer extends ViewerDesktopFrame {
     private Image image;
     private int slice;
     private ImagePanel imagePanel;
@@ -81,12 +66,7 @@ public class ImageViewer extends JInternalFrame implements MouseListener,
         imagePanel.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
         
         //Anmelden der Listener
-        addFocusListener(this);
-        addMouseListener(this);
-        addMouseMotionListener(this);
-        addKeyListener(this);
-        addInternalFrameListener(this);
-        addComponentListener(this);
+        addListeners();
         
         //Initialisieren der Navigationsleiste
         prevCommand = new PrevCommand(this);
@@ -165,94 +145,48 @@ public class ImageViewer extends JInternalFrame implements MouseListener,
    
     ///////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////  
-    public void componentShown(ComponentEvent componentEvent) {
-    }
-    
-    public void componentMoved(ComponentEvent componentEvent) {
-    }
-    
-    public void componentResized(ComponentEvent componentEvent) {
-    }
-    
-    public void componentHidden(ComponentEvent componentEvent) {
-    }    
-    
-    public void mouseClicked(MouseEvent mouseEvent) {
-    }
-    
-    public void mouseDragged(MouseEvent mouseEvent) {
-    }
-    
-    public void mouseEntered(MouseEvent mouseEvent) {
-    }
-    
-    public void mouseExited(MouseEvent mouseEvent) {
-    }
-    
-    public void mouseMoved(MouseEvent mouseEvent) {
-    }
-    
-    public void mousePressed(MouseEvent mouseEvent) {
-    }
-    
-    public void mouseReleased(MouseEvent mouseEvent) {
-    }
-    
-    public void keyPressed(KeyEvent keyEvent) {
-    }
-    
-    public void keyReleased(KeyEvent keyEvent) {
-    }
-    
-    public void keyTyped(KeyEvent keyEvent) {
-    }
-    
     public void focusGained(FocusEvent focusEvent) {
         initCommands();
-    }
-    
-    public void focusLost(FocusEvent focusEvent) {
     }
     
     public void internalFrameActivated(InternalFrameEvent internalFrameEvent) {
         initCommands();
     }
     
-    public void internalFrameDeiconified(InternalFrameEvent internalFrameEvent) {
-    }
-    
-    public void internalFrameDeactivated(InternalFrameEvent internalFrameEvent) {
-    }
-    
-    public void internalFrameOpened(InternalFrameEvent internalFrameEvent) {
-    }
-    
-    public void internalFrameIconified(InternalFrameEvent internalFrameEvent) {
-    }
-    
     public void internalFrameClosing(InternalFrameEvent internalFrameEvent) {
-        Viewer.getInstance().removeImageViewer(this);
+        Viewer.getInstance().removeViewerDesktopFrame(this);
         imagePanel = null;
         image = null;
         disposeCommands();
-        
-        nextCommand = null;
-        prevCommand = null;
-        firstCommand = null;
-        lastCommand = null;
-        prevPrevCommand = null;
-        nextNextCommand = null;
         dispose();
     }
     
     public void internalFrameClosed(InternalFrameEvent internalFrameEvent) {
-        removeMouseListener(this);
-        removeMouseMotionListener(this);
-        removeKeyListener(this);
-        removeFocusListener(this);
-        removeInternalFrameListener(this);
-        removeComponentListener(this);
+        //removeListeners();
     }    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

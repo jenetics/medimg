@@ -7,6 +7,7 @@
 package org.wewi.medimg.seg.kmeans;
 
 import org.wewi.medimg.seg.SegmentationStrategy;
+import org.wewi.medimg.seg.SegmentationListener;
 
 import java.util.Random;
 import java.util.Vector;
@@ -199,4 +200,11 @@ public final class DirectClustering implements SegmentationStrategy {
         
         return buffer.toString();        
     }
+    
+    public void addSegmentationListener(SegmentationListener listener) {
+    }
+    
+    public void removeSegmentationListener(SegmentationListener listener) {
+    }
+    
 }
