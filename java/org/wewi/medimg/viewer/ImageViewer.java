@@ -46,6 +46,8 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     private ImagePanel imagePanel;
     private Vector observers;
     
+    private ColorConversion cc = null;
+    
     private Command prevCommand;
     private Command nextCommand;
     private Command firstCommand;
@@ -61,9 +63,21 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         initFrame();
     }
     
+    public ImageViewer(String title, Image image, ColorConversion cc) {
+        super(title, true, true, true, true);
+        this.cc = cc;
+        this.image = image;//new TransformableImage(image);
+        observers = new Vector();   
+        slice = image.getMinZ();
+        initFrame();        
+    }    
+    
     private void initFrame() {
         imagePanel = new ImagePanel(image);
         getContentPane().add(imagePanel);
+        if ( cc != null) {
+            setColorConversion(cc);
+        }
         imagePanel.setSlice(slice);
         imagePanel.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
         
