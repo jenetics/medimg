@@ -100,8 +100,7 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
             
             saveOldFeatureColor(i, segimg.getColor(i));
             segimg.setColor(i, minDistanceFeature);
-        }
-                  
+        }            
     }
     
     private void m2Step(Image mrt, Image segimg) {
