@@ -1,4 +1,4 @@
-/*
+/**
  * Image.java
  *
  * Created on 18. Jänner 2002, 17:20
@@ -8,6 +8,7 @@
 
 package org.wewi.medimg.image;
 
+import org.wewi.medimg.util.Mutable;
 import org.wewi.medimg.util.Nullable;
 
 
@@ -19,7 +20,7 @@ import org.wewi.medimg.util.Nullable;
  * @author Franz Wilhelmstötter
  * @version 0.2
  */
-public interface Image extends Nullable, Cloneable {
+public interface Image extends Nullable, Cloneable, Mutable {
        
     public void setColor(int x, int y, int z, int color);
       
@@ -29,11 +30,7 @@ public interface Image extends Nullable, Cloneable {
     
     public int getColor(int pos);
     
-    public int getColor(int x, int y, int z);   
-    
-    public ColorRange getColorRange();
-    
-    public Dimension getDimension();
+    public int getColor(int x, int y, int z);      
     
     public int getMinColor();
     
@@ -67,14 +64,17 @@ public interface Image extends Nullable, Cloneable {
     
     public VoxelIterator getVoxelIterator();
     
-    public Object clone();
+    public ColorRange getColorRange();
     
-    //public void dispose();
+    public Dimension getDimension();
     
     public ImageHeader getHeader();
     
     public ColorConversion getColorConversion();
     
-    public void setColorConversion(ColorConversion cc);
+    public void setColorConversion(ColorConversion cc);     
+    
+    public Object clone();
+    
 }
 

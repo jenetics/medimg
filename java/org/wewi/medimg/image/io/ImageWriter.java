@@ -1,4 +1,4 @@
-/*
+/**
  * ImageWriter.java
  *
  * Created on 5. Dezember 2001, 16:16
@@ -20,18 +20,23 @@ import org.wewi.medimg.image.Image;
 public abstract class ImageWriter {
     protected Image image;
     protected File target;
-    protected String imageExtention = "";
     
     private Vector listeners;
+
     
-    ImageWriter() {
-        listeners = new Vector();
+    public ImageWriter(Image image, String target) {
+        this(image, new File(target));    
     }
     
     public ImageWriter(Image image, File target) {
         this.image = image;
         this.target = target;
-        listeners = new Vector();
+        
+        init();
+    }
+    
+    private void init() {
+        listeners = new Vector();    
     }
    
     
@@ -44,7 +49,10 @@ public abstract class ImageWriter {
     }
     
     protected void notifyProgressListener(ImageIOProgressEvent event) {
-        Vector list = (Vector)listeners.clone();
+        Vector list;
+        synchronized (listeners) {
+            list = (Vector)listeners.clone();
+        }
         ImageIOProgressListener l;
         for (Iterator it = list.iterator(); it.hasNext();) {
             l = (ImageIOProgressListener)it.next();

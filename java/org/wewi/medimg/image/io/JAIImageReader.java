@@ -1,4 +1,4 @@
-/*
+/**
  * JAIImageReader.java
  *
  * Created on 14. Januar 2002, 10:06
@@ -35,12 +35,21 @@ abstract class JAIImageReader extends ImageReader {
     private File[] slices = null;
     
     protected FileExtentionFilter fileFilter;
+    
+    public JAIImageReader(ImageFactory imageFactory, String source) {
+        super(imageFactory, source);    
+    }
 
     public JAIImageReader(ImageFactory imageFactory, File source) {
         super(imageFactory, source);
-        this.imageFactory = imageFactory;
-        
-        this.source = source;
+    }
+    
+    public JAIImageReader(ImageFactory imageFactory, File source, Range range) {
+        super(imageFactory, source, range);    
+    }
+    
+    public JAIImageReader(ImageFactory imageFactory, String source, Range range) {
+        super(imageFactory, source, range);    
     }
     
     public Image getImage() {
@@ -48,27 +57,31 @@ abstract class JAIImageReader extends ImageReader {
     }
     
     
+    /**
+     * Einlesen eines einzelnen Bildes als RenderedImage
+     */
     private RenderedImage readRenderedImage(String filename) throws IOException {
+        RenderedImage img = null;
         if (System.getProperty("JAI_IMAGE_READER_USE_CODECS") == null) {       
-            RenderedImage img =  JAI.create("fileload", filename);
+            img =  JAI.create("fileload", filename);
             int comp = img.getColorModel().getColorSpace().getNumComponents();
             if (comp == 3) {
                 //colorConversion = new RGBColorConversion();
             }
-            return img;
         } else {
             SeekableStream stream = new FileSeekableStream(filename);
             String[] names = ImageCodec.getDecoderNames(stream);
             ImageDecoder dec = ImageCodec.createImageDecoder(names[0], stream, null);
-            RenderedImage im = dec.decodeAsRenderedImage();
+            img = dec.decodeAsRenderedImage();
             
-            int colorType = im.getColorModel().getColorSpace().getNumComponents();
-            System.out.println("Comp: " + colorType);
-            
-            return im;
+            int colorType = img.getColorModel().getColorSpace().getNumComponents();
         }
+        return img;
     } 
     
+    /**
+     * Einlesen der Bild, wenn kein Header im Verzeichnis gefunden wurde
+     */
     private void readWithoutHeader() throws ImageIOException {
         RenderedImage rimage = null;
         Raster raster = null;         
@@ -135,27 +148,34 @@ abstract class JAIImageReader extends ImageReader {
         }        
     }   
     
+    /**
+     * Starten des Einlesevorgangs.
+     */
     public void read() throws ImageIOException {
         slices = null;
         
         //Wenn die Quelle kein Verzeichnis ist, ist das Einlesen beendet.
         if (source.isFile()) {
             notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-            return;
+            throw new ImageIOException("The given source file must be an directory: " +
+                                         source.toString());
         } else {
             slices = source.listFiles(fileFilter);
             if (slices == null) {
                 notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-                return;
+                throw new ImageIOException("The given source directory contains no files: " +
+                                             source.toString());
             }
             if (slices.length <= 0) {
                 notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-                return;
+                throw new ImageIOException("The given source directory contains no files: " +
+                                             source.toString());
             }            
         }
         
         //ASSERT: Ab hier muß das Array der Schichten gefüllt sein.
         assert(slices == null);
+        ///////////////////////////////////////////////////////////
         
         //Einlesen des Headers, falls vorhanden
         File[] fileList = source.listFiles();
@@ -169,16 +189,13 @@ abstract class JAIImageReader extends ImageReader {
                     break;  
                 } catch (Exception e) {
                     System.err.println(getClass().getName() + ":" + e);
-                    //nichts    
+                    throw new ImageIOException("Can't open header", e);   
                 }  
             }    
         }
         
                
-        if (!image.equals(NullImage.IMAGE_INSTANCE)) {
-            System.out.println("JAIImageReader: Bild mit Header");
-            
-            
+        if (!image.equals(NullImage.IMAGE_INSTANCE)) {            
             RenderedImage rimage = null;
             Raster raster = null;
             int[] pixel = new int[3];
@@ -199,13 +216,14 @@ abstract class JAIImageReader extends ImageReader {
                         raster.getPixel(i, j, pixel);
                         image.setColor(i, j, k, colorConversion.convert(pixel));
                     }
-                }  
+                } 
+                 
                 //Informieren der Listener über den Fortschritt
                 count++;
-                notifyProgressListener(new ImageIOProgressEvent(this, ((double)count/(double)dim.getSizeZ()), false));          
+                notifyProgressListener(new ImageIOProgressEvent(this, 
+                                            ((double)count/(double)dim.getSizeZ()), false));          
             }        
         } else {
-            System.out.println("JAIImageReader: Bild ohne Header");
             readWithoutHeader(); 
         }
         

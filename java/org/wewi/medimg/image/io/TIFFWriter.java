@@ -1,4 +1,4 @@
-/*
+/**
  * TIFFWriter.java
  *
  * Created on 14. Januar 2002, 12:09
@@ -21,13 +21,21 @@ import com.sun.media.jai.codec.TIFFEncodeParam;
  */
 public final class TIFFWriter extends JAIImageWriter {
     
-    public TIFFWriter(Image image, File destination) {
-        super(image, destination);
-        
+    public TIFFWriter(Image image, String target) {
+        super(image, target); 
+        init();   
+    }
+    
+    public TIFFWriter(Image image, File target) {
+        super(image, target);
+        init();
+    }
+    
+    private void init() {
         TIFFEncodeParam param = new TIFFEncodeParam();
         param.setCompression(TIFFEncodeParam.COMPRESSION_PACKBITS);
         encodeParameter = param;
-        imageExtention = ".tif";
+        imageExtention = ".tif";        
     }
     
     protected void initEncoder(OutputStream out) {

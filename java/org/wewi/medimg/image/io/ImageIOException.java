@@ -1,4 +1,4 @@
-/*
+/**
  * ImageIOException.java
  *
  * Created on 25. Februar 2002, 23:05
@@ -22,6 +22,7 @@ public class ImageIOException extends Exception {
 
     /**
      * Constructs an <code>ImageIOException</code> with the specified detail message.
+     * 
      * @param msg the detail message.
      */
     public ImageIOException(String msg) {

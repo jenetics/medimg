@@ -32,9 +32,14 @@ abstract class JAIImageWriter extends ImageWriter {
     public JAIImageWriter(Image image, File target) {
         super(image, target);
     }
-
-    protected abstract void initEncoder(OutputStream out);
     
+    public JAIImageWriter(Image image, String target) {
+        super(image, target);    
+    }
+    
+    /**
+     * Schreiben einer einzelnen Schicht
+     */
     private void writeSlice(int slice, File file) throws IOException {
         FileOutputStream out = new FileOutputStream(file);
         initEncoder(out);
@@ -42,27 +47,34 @@ abstract class JAIImageWriter extends ImageWriter {
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
         BufferedImage bufferedImage = new BufferedImage(maxX+1, maxY+1, BufferedImage.TYPE_3BYTE_BGR);
-        //BufferedImage bufferedImage = new BufferedImage(maxX+1, maxY+1, BufferedImage.TYPE_USHORT_GRAY);
         ColorConversion colorConversion = image.getColorConversion();
         
         int[] pixel = new int[3];
         for (int i = 0; i <= maxX; i++) {
             for (int j = 0; j <= maxY; j++) { 
                 colorConversion.convert(image.getColor(i, j, slice), pixel);        
-                // take lower 8 bits
+
                 pixel[0] = 0x00FF & pixel[0];
                 pixel[1] = 0x00FF & pixel[1];
                 pixel[2] = 0x00FF & pixel[2];        
-                // put this pixel in the java image
-                bufferedImage.setRGB(i, j, (int)((0x00 << 24) | (pixel[0] << 16) | (pixel[1] << 8) | pixel[2]));
-               // bufferedImage.setRGB(i, j, image.getColor(i, j, slice));
+                bufferedImage.setRGB(i, j, (int)((0x00 << 24)|(pixel[0] << 16)|(pixel[1] << 8)|pixel[2]));
             }
         }
         
         encoder.encode(bufferedImage);
         out.close();
-    }  
+    } 
     
+    /**
+     * Die initialisierung der JAI-Parameter muß von
+     * den abgeleiteten Klassen durchgeführt werden.
+     */
+    protected abstract void initEncoder(OutputStream out);     
+    
+    /**
+     * Wenn beim Schreiben etwas schief geht, müssen
+     * die bereits geschriebenen Datein gelöscht werden.
+     */
     private void dispose() {
         File[] files = target.listFiles();
         for (int i = 0; i < files.length; i++) {
@@ -75,6 +87,11 @@ abstract class JAIImageWriter extends ImageWriter {
         }
     }
     
+    /**
+     * Schreiben des Bildes.
+     * 
+     * @throws ImageIOException wenn das Bild nicht geschrieben werden kann.
+     */
     public void write() throws ImageIOException {
         try {
             target.mkdirs();
@@ -91,17 +108,16 @@ abstract class JAIImageWriter extends ImageWriter {
                 buffer.append(imageExtention);
                 writeSlice(k, new File(buffer.toString()));
                 
+                //Informieren der ProgressListener
                 progress = (double)(k-image.getMinZ())/(double)(image.getMaxZ()-image.getMinZ());
                 notifyProgressListener(new ImageIOProgressEvent(this, progress, false));
             }  
         } catch (IOException ioe) {
             dispose();
-            notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
             throw new ImageIOException("Can't write Image: ", ioe);
+        } finally {
+            notifyProgressListener(new ImageIOProgressEvent(this, 1, true));    
         }
-        
-        notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-        
     }
     
 }

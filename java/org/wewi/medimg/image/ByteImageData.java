@@ -1,5 +1,5 @@
 /**
- * LightSegmentationImage.java
+ * ByteImageData.java
  *
  * Created on 10. Mai 2002, 15:59
  */
@@ -24,6 +24,10 @@ public final class ByteImageData extends ImageData {
     ByteImageData(ByteImageData id) {
         super(id.maxX + 1, id.maxY + 1, id.maxZ + 1);
         System.arraycopy(id.data, 0, data, 0, size);
+    }
+    
+    public ByteImageData(Dimension dim) {
+        super(dim);    
     }
     
     public ByteImageData(int sizeX, int sizeY, int sizeZ) {

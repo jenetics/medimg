@@ -23,6 +23,10 @@ public final class ShortImageData extends ImageData {
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
+    public ShortImageData(Dimension dim) {
+        super(dim);    
+    }
+    
     public ShortImageData(int sizeX, int sizeY, int sizeZ) {
         super(sizeX, sizeY, sizeZ);
     }

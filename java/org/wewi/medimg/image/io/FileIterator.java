@@ -1,4 +1,4 @@
-/*
+/**
  * SliceImageFiles.java
  *
  * Created on 17. Jänner 2002, 22:41

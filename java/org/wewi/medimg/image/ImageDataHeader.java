@@ -1,4 +1,4 @@
-/*
+/**
  * ImageDataHeader.java
  *
  * Created on 22. Februar 2002, 10:42
@@ -15,6 +15,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jdom.Comment;
 import org.jdom.Document;
@@ -30,23 +32,29 @@ import org.wewi.medimg.util.StringOutputStream;
 /**
  *
  * @author  Franz Wilhelmsötter
- * @version 0.1
+ * @version 0.2
  */
 class ImageDataHeader implements ImageHeader {
     private ImageData image;
-    private Dimension dim;
     
+    private Dimension dim;
     private Properties properties;
+    
+    private Logger logger;
 
     public ImageDataHeader(ImageData image) {
         this.image = image;
         properties = new Properties();
+        
+        logger = Logger.getLogger(getClass().getName());
     }
     
-    
+    /**
+     * Schreiben des Headers als XML
+     */
     private void writeXML(OutputStream out) throws IOException {
         Element root = new Element("ImageHeader");
-        root.setAttribute("class", this.getClass().getName());
+        root.setAttribute("class", getClass().getName());
         Document doc = new Document(root);
         
         //Schreiben der Abmessungen
@@ -64,7 +72,7 @@ class ImageDataHeader implements ImageHeader {
         //Schreiben der Art der ColorConversion
         Element cc = new Element("ColorConversion");
         cc.setAttribute("class", image.getColorConversion().getClass().getName());
-        StringOutputStream sout = new StringOutputStream(10000);
+        StringOutputStream sout = new StringOutputStream();
         ObjectOutputStream oout = new ObjectOutputStream(sout);
         oout.writeObject(image.getColorConversion());
         oout.close();
@@ -78,7 +86,7 @@ class ImageDataHeader implements ImageHeader {
         cr.addContent((new Element("MaxColor")).addContent(Integer.toString(colorRange.getMaxColor()))); 
         root.addContent(cr);  
         
-        //Schreiben der Properties
+        //Schreiben der ImageProperties
         root.addContent(new Comment("Die ImageProperties können beliebig verwendet werden"));
         Element prop = new Element("ImageProperties");
         for (Enumeration e = properties.propertyNames(); e.hasMoreElements();) {
@@ -90,9 +98,14 @@ class ImageDataHeader implements ImageHeader {
         
         XMLOutputter outputter = new XMLOutputter("    ", true);
         outputter.output(doc, out);
+        
+        //"Aufblasen" des Image auf die richtige Größe.
+        image.init(dim, this);
     }
     
-    
+    /**
+     * Lesen des Headers aus dem InputStream
+     */
     private void readXML(InputStream in) throws IOException {
         SAXBuilder builder = new SAXBuilder();
         Document doc = null;
@@ -112,45 +125,31 @@ class ImageDataHeader implements ImageHeader {
                                       Integer.parseInt(dimension.getChildText("MaxY")),
                                       Integer.parseInt(dimension.getChildText("MinZ")),
                                       Integer.parseInt(dimension.getChildText("MaxZ")));
-        image.init(dim, this);
         
                                       
                                       
-        //Erzeugen der ColorConverion
-        ColorConversion cc = null;//new GreyColorConversion();
+        //Einlesen und Erzeugen der ColorConverion
+        ColorConversion cc = new GreyColorConversion();
         Element ccElement = root.getChild("ColorConversion");
         String ccString = root.getChildText("ColorConversion");
         StringInputStream sin = new StringInputStream(ccString);
         ObjectInputStream oin = new ObjectInputStream(sin);
         try {
 			cc = (ColorConversion)oin.readObject();
-            
-            System.out.println(cc.getClass().toString());
+            logger.log(Level.WARNING, "Can't read ColorConversion");
 		} catch (IOException e) {
-            System.out.println("" + e);
+            logger.log(Level.WARNING, "Can't read ColorConversion");
             throw new IOException("" + e);
 		} catch (ClassNotFoundException e) {
-            System.out.println("" + e);
+            logger.log(Level.WARNING, "Can't read ColorConversion");
             throw new IOException("" + e);
 		}
-        /*
-        try {
-            Element ccElement = root.getChild("ColorConversion");
-			cc = (ColorConversion)Class.forName(ccElement.getAttribute("class").getValue()).newInstance();
-		} catch (InstantiationException e) {
-            throw new IOException("" + e);
-		} catch (IllegalAccessException e) {
-            throw new IOException("" + e);
-		} catch (ClassNotFoundException e) {
-            throw new IOException("" + e);
-		}
-        */
+
         image.setColorConversion(cc); 
         
         //Einlesen der ImageProperties
         Element prop = root.getChild("ImageProperties");
         if (prop == null) {
-             System.out.println("Keine ImageProperties");
             return;    
         }
         List list = prop.getChildren();
@@ -168,32 +167,6 @@ class ImageDataHeader implements ImageHeader {
 	 */
 	public void read(InputStream in) throws IOException {
         readXML(in);
-	}
-
-	/**
-	 * @see org.wewi.medimg.image.ImageHeader#readDimension(InputStream)
-	 */
-	public Dimension readDimension(InputStream in) throws IOException {
-        SAXBuilder builder = new SAXBuilder();
-        Document doc = null;
-        try {
-            doc = builder.build(in);
-        } catch (JDOMException e) {
-            throw new IOException("ImageDataHeader: " + e.toString()); 
-        }
-        
-        Element root = doc.getRootElement();
-        
-        //Auslesen der Dimension
-        Element dimension = root.getChild("Dimension");
-        Dimension dim = new Dimension(Integer.parseInt(dimension.getChildText("MinX")),
-                                      Integer.parseInt(dimension.getChildText("MaxX")),
-                                      Integer.parseInt(dimension.getChildText("MinY")),
-                                      Integer.parseInt(dimension.getChildText("MaxY")),
-                                      Integer.parseInt(dimension.getChildText("MinZ")),
-                                      Integer.parseInt(dimension.getChildText("MaxZ")));
-                                      
-        return dim;
 	}
 
 	/**
@@ -228,6 +201,13 @@ class ImageDataHeader implements ImageHeader {
         }
 	}
     
+    public void addImageProperties(Properties prop) {
+        for (Enumeration enum = prop.keys(); enum.hasMoreElements();) {
+            String key = (String)enum.nextElement();
+            properties.setProperty(key, prop.getProperty(key));    
+        }    
+    }
+    
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -239,11 +219,3 @@ class ImageDataHeader implements ImageHeader {
     }
 
 }
-
-
-
-
-
-
-
-

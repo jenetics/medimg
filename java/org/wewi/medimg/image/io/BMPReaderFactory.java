@@ -1,4 +1,4 @@
-/*
+/**
  * BMPReaderFactory.java
  *
  * Created on 24. Januar 2002, 10:39
@@ -19,11 +19,11 @@ public final class BMPReaderFactory implements ImageReaderFactory {
     private Range range;
 
     public BMPReaderFactory() {
+        range = new Range(0, Integer.MAX_VALUE, 1);
     }
     
     public ImageReader createImageReader(ImageFactory imageFactory, File file) {
-        ImageReader reader = new BMPReader(imageFactory, file);
-        reader.setRange(range);
+        ImageReader reader = new BMPReader(imageFactory, file, range);
         return reader;
     }
     

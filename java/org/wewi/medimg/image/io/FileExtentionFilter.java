@@ -1,4 +1,4 @@
-/*
+/**
  * FileExtentionFilter.java
  *
  * Created on 11. Januar 2002, 14:48
