@@ -8,12 +8,47 @@ package org.wewi.medimg.math.fft;
 
 
 /**
+ * Diese Klasse legt einige grundlegende Eigenschaften
+ * der implementierten Transformationen fest. Verwendet
+ * wird die allgemeine Form der Fouriertransformation
+ * 
+ * <pre>
+ * Vorwärtstransformation:
+ * 
+ *                           N-1
+ *                  1        ---
+ *     F(s) =  ---------- *  \             2*PI*b*r*s/N
+ *               (1-a)/2     /    f(r) * e
+ *              N            ---
+ *                           r=0
+ * 
+ * 
+ * Rückwärtstransformation:
+ * 
+ *                           N-1
+ *                  1        ---
+ *     f(r) =  ---------- *  \             -2*PI*b*r*s/N
+ *               (1+a)/2     /    F(s) * e
+ *              N            ---
+ *                           s=0
+ * </pre>
+ * 
+ * Für die Datenanalyse werden für {a, b} = {-1, 1} und für
+ * die Signalverarbeitung {1, -1} verwendet.  
+ * 
+ * 
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
 public abstract class DFT {
-    protected double alpha = 1;
-    protected double beta = -1;
+    /**
+     * a = 1
+     */
+    protected double a = 1;
+    /**
+     * b = -1
+     */
+    protected double b = -1;
 
     /**
      * Constructor for DFT.
@@ -23,8 +58,8 @@ public abstract class DFT {
     }
 
     public DFT(double a, double b) {
-        this.alpha = a;
-        this.beta = b;
+        this.a = a;
+        this.b = b;
     }
 
     protected boolean isPowerOfTwo(int n) {

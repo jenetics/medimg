@@ -14,7 +14,7 @@ import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.seg.stat.MAPKMeansClusterer;
 import org.wewi.medimg.util.*;
@@ -67,7 +67,7 @@ public class MAPValidator {
         target = clusterer.segment(source);
         stopTime = System.currentTimeMillis();
         
-        MinMaxOperator op = new MinMaxOperator();
+        ColorRangeOperator op = new ColorRangeOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(anatomicalModel, op);
         analyzer.analyze(); 
         ColorRange cr = new ColorRange(op.getMinimum(), op.getMaximum());       

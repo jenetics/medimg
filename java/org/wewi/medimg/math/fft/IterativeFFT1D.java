@@ -58,7 +58,7 @@ public final class IterativeFFT1D extends DFT implements DFT1D {
             m = (int) Math.rint(MathUtil.pow(2, s));
             Wm =
                 MathUtil.exp(
-                    new Complex(0, dir * 2 * Math.PI * beta / (double) m));
+                    new Complex(0, dir * 2 * Math.PI * b / (double) m));
 
             for (int k = 0; k < N; k += m) {
                 W = Complex.ONE;
@@ -76,7 +76,7 @@ public final class IterativeFFT1D extends DFT implements DFT1D {
         
         
         //Skalieren der Daten
-        final double M = 1d / (Math.pow((double) N, (1d - (dir * alpha)) / 2d));
+        final double M = 1d / (Math.pow((double) N, (1d - (dir * a)) / 2d));
         for (int i = 0; i < N; i++) {
             data[i] = MathUtil.mult(M, data[i]);
         }        

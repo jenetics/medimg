@@ -55,8 +55,8 @@ public final class NaiveDFT1D extends DFT implements DFT1D {
     
     private void transform(Complex[] data, double dir) {
         final int N = data.length;
-        final double M = 1d/(Math.pow((double)N, (1d - (dir*alpha))/2d));
-        final Complex Wn = MathUtil.exp(new Complex(0, dir*2*Math.PI*beta/(double)N));
+        final double M = 1d/(Math.pow((double)N, (1d - (dir*a))/2d));
+        final Complex Wn = MathUtil.exp(new Complex(0, dir*2*Math.PI*b/(double)N));
         
         Complex[] result = new Complex[N];                                                                 
                                      

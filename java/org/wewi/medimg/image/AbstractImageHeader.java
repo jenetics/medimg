@@ -24,7 +24,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
-import org.wewi.medimg.image.ops.MinMaxOperator;
+import org.wewi.medimg.image.ops.ColorRangeOperator;
 import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.util.StringInputStream;
 import org.wewi.medimg.util.StringOutputStream;
@@ -82,7 +82,7 @@ class AbstractImageHeader implements ImageHeader {
         root.addContent(cc);
         
         //Schreiben des Farbbereichs (ColorRange)
-        MinMaxOperator op = new MinMaxOperator();
+        ColorRangeOperator op = new ColorRangeOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
         analyzer.analyze(); 
         ColorRange colorRange = new ColorRange(op.getMinimum(), op.getMaximum());        

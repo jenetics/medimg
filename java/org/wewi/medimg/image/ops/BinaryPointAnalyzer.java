@@ -28,12 +28,12 @@ public class BinaryPointAnalyzer {
     }
     
     public void analyze() {
-        int minX = Math.max(img1.getMinX(), img2.getMinX());
-        int maxX = Math.min(img1.getMaxX(), img2.getMaxX());   
-        int minY = Math.max(img1.getMinY(), img2.getMinY());
-        int maxY = Math.min(img1.getMaxY(), img2.getMaxY());
-        int minZ = Math.max(img1.getMinZ(), img2.getMinZ());
-        int maxZ = Math.min(img1.getMaxZ(), img2.getMaxZ());
+        final int minX = Math.max(img1.getMinX(), img2.getMinX());
+        final int maxX = Math.min(img1.getMaxX(), img2.getMaxX());   
+        final int minY = Math.max(img1.getMinY(), img2.getMinY());
+        final int maxY = Math.min(img1.getMaxY(), img2.getMaxY());
+        final int minZ = Math.max(img1.getMinZ(), img2.getMinZ());
+        final int maxZ = Math.min(img1.getMaxZ(), img2.getMaxZ());
         
         for (int k = minZ; k <= maxZ; k++) {
             for (int j = minY; j <= maxY; j++) {

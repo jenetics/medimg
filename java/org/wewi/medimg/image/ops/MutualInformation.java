@@ -79,7 +79,7 @@ public class MutualInformation {
                     continue;    
                 }                
                  
-                mi += aij * MathUtil.log2(aij*N/(px[i]*py[j]));        
+                mi += aij * MathUtil.log2((aij/N)/(px[i]*py[j]));        
             }    
         }
 

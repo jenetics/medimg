@@ -6,8 +6,8 @@
 
 package org.wewi.medimg.math;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  *
@@ -70,7 +70,7 @@ public final class MathUtil {
     }
 
     public static long[] primeFactors(long number) {
-        List v = new Vector();
+        List v = new ArrayList();
         long divisor = 2L;
         long exponent;
         long root;
@@ -632,7 +632,7 @@ public final class MathUtil {
      *  @param  x   The numerator, a double.
      *  @return A newly constructed Complex initialized to x/y.
      */
-    public Complex div(double x, Complex y) {
+    public static Complex div(double x, Complex y) {
         double den, t;
         Complex z;
         if (Math.abs(y.re) > Math.abs(y.im)) {
@@ -652,5 +652,46 @@ public final class MathUtil {
      * -------------------------------------------------------------------------
      * -------------------------------------------------------------------------
      */
+     
+     
+     public static Complex min(Complex a, Complex b) {
+        double re = Math.min(a.re, b.re);
+        double im = Math.min(a.im, b.im);
+     
+        return new Complex(re, im);   
+     }
+     
+     public static Complex max(Complex a, Complex b) {
+        double re = Math.max(a.re, b.re);
+        double im = Math.max(a.im, b.im);
+     
+        return new Complex(re, im);        
+     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
