@@ -4,6 +4,9 @@
  */
 package org.wewi.medimg.image.geom;
 
+import org.wewi.medimg.math.VectorField;
+import org.wewi.medimg.math.VectorIterator;
+
 
 /**
  * @author Franz Wilhelmstötter
@@ -47,18 +50,6 @@ public class RegularVectorField implements VectorField {
             
             getGridStartPoint(xyz[0], xyz[1], xyz[2], start);
             getGridEndPoint(xyz[0], xyz[1], xyz[2], end);
-            
-            ++pos;
-		}
-
-		/**
-		 * @see org.wewi.medimg.image.geom.VectorIterator#next(float[], float[])
-		 */
-		public void next(float[] start, float[] end) {
-            getCoordinates(pos, xyz);
-            
-            getGridStartPoint(xyz[0], xyz[1], xyz[2], start);
-            getGridEndPoint(xyz[0], xyz[1], xyz[2], end);            
             
             ++pos;
 		}
@@ -116,25 +107,13 @@ public class RegularVectorField implements VectorField {
         startPoint[0] = origin.getX() + grid[0]*stride[0];
         startPoint[1] = origin.getY() + grid[1]*stride[1];
         startPoint[2] = origin.getZ() + grid[2]*stride[2];
-    }
-    
-    public void getGridStartPoint(int gridX, int gridY, int gridZ, float[] startPoint) {
-        startPoint[0] = origin.getX() + grid[0]*stride[0];
-        startPoint[1] = origin.getY() + grid[1]*stride[1];
-        startPoint[2] = origin.getZ() + grid[2]*stride[2];
-    }    
+    }   
     
     public void getGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
         endPoint[0] = data[gridX][gridY][gridZ][0];
         endPoint[1] = data[gridX][gridY][gridZ][1];
         endPoint[2] = data[gridX][gridY][gridZ][2];
-    }
-    
-    public void getGridEndPoint(int gridX, int gridY, int gridZ, float[] endPoint) {
-        endPoint[0] = (float)data[gridX][gridY][gridZ][0];
-        endPoint[1] = (float)data[gridX][gridY][gridZ][1];
-        endPoint[2] = (float)data[gridX][gridY][gridZ][2];
-    }    
+    }   
     
     public void setGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
         data[gridX][gridY][gridZ][0] = endPoint[0]; 
