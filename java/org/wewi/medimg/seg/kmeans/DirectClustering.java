@@ -6,22 +6,22 @@
 
 package org.wewi.medimg.seg.kmeans;
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+
+import org.wewi.medimg.alg.AlgorithmIterator;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.2
  */
-public final class DirectClustering {
+public final class DirectClustering implements DataPointClusterer {
     
-    private class DirectClusteringIterator implements Iterator {
+    private class DirectClusteringIterator implements AlgorithmIterator {
         private double ERROR_LIMIT = 0.1;
         
         private int k;
-        private Collection data;
+        private DataPointCollection data;
         private DataPoint[] clusterCenter;
         private DirectClustering parent;
 
@@ -30,7 +30,7 @@ public final class DirectClustering {
         private double error = Double.MAX_VALUE, error0 = 0;
         private int iterationCount = 0;        
         
-        public DirectClusteringIterator(Collection data, int k, DirectClustering parent) {
+        public DirectClusteringIterator(DataPointCollection data, int k, DirectClustering parent) {
             this.data = data;
             this.k = k;
             this.parent = parent;
@@ -47,16 +47,6 @@ public final class DirectClustering {
                 }
             }
         }      
-        
-        public boolean hasNext() {
-            return Math.abs(error0 - error) > ERROR_LIMIT;
-        }
-        
-        public Object next() {           
-            m1Step();
-            m2Step();
-            return parent;            
-        }
         
         private void m1Step() {
             int size = data.size();
@@ -92,7 +82,6 @@ public final class DirectClustering {
             
             error0 = error;
             error = err;
-            //System.out.println("error0: " + error0 + " error: " + error);
         }  
         
         private void m2Step() {
@@ -101,17 +90,23 @@ public final class DirectClustering {
             }
         } 
         
-        public DataPoint[] getClusterCenter() {
-            //DataPoint[] ret = new DataPoint[k];
-            //System.arraycopy(clusterCenter, 0, ret, 0, k);
-            //return ret;
-            return clusterCenter;
+        public boolean hasNextIteration() {
+            return Math.abs(error0 - error) > ERROR_LIMIT;
         }
         
-        public void remove() {
-            throw new UnsupportedOperationException();
+        public void nextIteration() {           
+            m1Step();
+            m2Step();            
         }
         
+		/**
+		 * @see org.wewi.medimg.alg.AlgorithmIterator#getInterimResult()
+		 */
+		public Object getInterimResult() throws UnsupportedOperationException {
+            Clusterer clusterer = new Clusterer(clusterCenter);
+			return clusterer.getCluster(data);
+		}
+
     }
     
     private class Clusterer {
@@ -121,10 +116,10 @@ public final class DirectClustering {
             this.center = center;
         }
         
-        public Collection[] getCluster(Collection data) {
-            Vector[] cluster = new Vector[center.length];
+        public DataPointCollection[] getCluster(DataPointCollection data) {
+            DataPointCollection[] cluster = new DataPointCollection[center.length];
             for (int i = 0; i < cluster.length; i++) {
-                cluster[i] = new Vector();
+                cluster[i] = new DataPointCollection();
             }
             
             double distance, minDistance;
@@ -151,35 +146,35 @@ public final class DirectClustering {
     
     
     private int k;
-    private Collection data;
     private DirectClusteringIterator clusteringIterator;
     
-    public DirectClustering(Collection data, int k) {
+    public DirectClustering(int k) {
         this.k = k;
-        this.data = data;
-        
-        clusteringIterator = new DirectClusteringIterator(data, k, this);
     }
     
-    public Iterator getClusterIterator() {
+    public AlgorithmIterator getClusterIterator(DataPointCollection data) {
         clusteringIterator = new DirectClusteringIterator(data, k, this);
         return clusteringIterator;
     }
     
-    public void cluster() {
+    public DataPointCollection[] cluster(DataPointCollection data) {
         clusteringIterator = new DirectClusteringIterator(data, k, this);
-        while (clusteringIterator.hasNext()) {
-            clusteringIterator.next();
+        while (clusteringIterator.hasNextIteration()) {
+            clusteringIterator.nextIteration();
         }
-    }
-    
-    public Collection[] getCluster() {
-        Clusterer clusterer = new Clusterer(clusteringIterator.getClusterCenter());
-        return clusterer.getCluster(data);
+        
+        return (DataPointCollection[])clusteringIterator.getInterimResult();
     }
     
     public DataPoint[] getClusterCenter() {
-        return clusteringIterator.getClusterCenter();
+        return (DataPoint[])clusteringIterator.getInterimResult();
     }
     
 }
+
+
+
+
+
+
+
