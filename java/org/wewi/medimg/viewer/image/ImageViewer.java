@@ -258,7 +258,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
         return image;
     }
     
-    public synchronized void setImageCanvas(ImagePanel.ImageCanvas canvas) {
+    public synchronized void setImageCanvas(ImageCanvas canvas) {
         imagePanel.setImageCanvas(canvas);    
     }
     

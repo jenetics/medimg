@@ -8,7 +8,6 @@ package org.wewi.medimg.viewer.image;
 
 import java.awt.Graphics;
 
-import org.wewi.medimg.viewer.image.ImagePanel.ImageCanvas;
 
 /**
  * @author Franz Wilhelmstötter
