@@ -41,7 +41,7 @@ public class VarianceImageMeasure implements ValidationMeasure {
         BinaryPointAnalyzer analyzer = new BinaryPointAnalyzer(modelImage, segmentedImage, op);
         analyzer.analyze(ROI.create(modelImage.getDimension(), 1)); 
         
-        return op.getMutialInformation();
+        return op.getMutualInformation();
     }
     
 }

@@ -34,7 +34,6 @@ public final class ROI extends Dimension {
      * @throws IllegalArgumentException
      */
     public ROI(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-        
         super(minX, maxX, minY, maxY, minZ, maxZ);
     }
 
@@ -223,8 +222,8 @@ public final class ROI extends Dimension {
     public ROI[] split(int strideX, int strideY, int strideZ) {
         if (strideX <= 0 || strideY <= 0 || strideZ <= 0) {
             throw new IllegalArgumentException("Stride have to be bigger than zero: \n"
-                                                 + "strideX= " + strideX
-                                                 + " strideY= " + strideY 
+                                                 + " strideX = " + strideX
+                                                 + " strideY = " + strideY 
                                                  + " strideZ = " + strideZ );
         }
         
@@ -233,7 +232,7 @@ public final class ROI extends Dimension {
                     Math.max(1, getSizeZ()/strideZ);
         ROI[] rois = new ROI[count];
         count = 0;
-        int[] max = {getMinX(), getMinY(), getMinZ()};
+        int[] max = new int[3];
         int[] min = new int[3];
 
         for (int i = getMinX(); i <= getMaxX(); i += strideX) {
@@ -246,14 +245,14 @@ public final class ROI extends Dimension {
             for (int j = getMinY(); j <= getMaxY(); j += strideY) {
                 max[1] = j + strideY - 1;
                 min[1] = j;
-                if (j + 2 * strideY - 1> getMaxY()) {
+                if (j + 2 * strideY - 1 > getMaxY()) {
                     max[1] = getMaxY();
                     j += strideY;                  
                 }                
                 for (int k = getMinZ(); k <= getMaxZ(); k += strideZ) {
                     max[2] = k + strideZ - 1;
                     min[2] = k;
-                    if (k + 2 * strideZ - 1> getMaxZ()) {
+                    if (k + 2 * strideZ - 1 > getMaxZ()) {
                         max[2] = getMaxZ();   
                         k += strideZ;                
                     }      
