@@ -8,6 +8,7 @@ package org.wewi.medimg.reg;
 
 
 
+import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
 
@@ -107,6 +108,10 @@ public class FeatureIterator implements VoxelIterator {
             }
         }
         return count;
+    }
+    
+    public Dimension getDimension() {
+    	return image.getDimension();
     }
     
     public void remove() {

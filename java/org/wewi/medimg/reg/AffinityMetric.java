@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.reg;
 
-import org.wewi.medimg.image.VoxelIterator;
+import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.geom.transform.Transformation;
 
 
@@ -18,8 +18,8 @@ import org.wewi.medimg.image.geom.transform.Transformation;
  */
 public interface AffinityMetric {
     
-    public double similarity(VoxelIterator source, 
-                               VoxelIterator target, 
+    public double similarity(Image source, 
+                               Image target, 
                                Transformation trans);
     
 }

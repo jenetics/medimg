@@ -1,30 +1,32 @@
 /**
- * MutualInformationOperator.java
+ * DirectComparisonOperator.java
  * 
  * Created on 23.12.2002, 14:56:12
  *
  */
 package org.wewi.medimg.image.ops;
 
+
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.util.AccumulatorArray;
 
-
 /**
- * @author Franz Wilhelmstötter
- * @version 0.1
+ * @author werner weiser
+ *
+ * To change this generated comment edit the template variable "typecomment":
+ * Window>Preferences>Java>Templates.
+ * To enable and disable the creation of type comments go to
+ * Window>Preferences>Java>Code Generation.
  */
-public class MutualInformationOperator implements BinaryOperator {
+public class DirectComparisonOperator implements BinaryOperator {
     private ColorRange cr1;
     private ColorRange cr2;
     
     private AccumulatorArray accu;
-    
-
     /**
      * Constructor for MutualInformationOperator.
      */
-    public MutualInformationOperator(ColorRange cr1, ColorRange cr2) {
+    public DirectComparisonOperator(ColorRange cr1, ColorRange cr2) {
         this.cr1 = cr1;
         this.cr2 = cr2;
         
@@ -39,22 +41,10 @@ public class MutualInformationOperator implements BinaryOperator {
     }
     
     
-    public double getMutualInformation() {
-        MutualInformation mi = new MutualInformation(accu);
-        return mi.getMutualInformation();   
-    }  
+    public double getDirectComparison() {
+        DirectComparison dc = new DirectComparison(accu);
+        return dc.getDirectComparison(cr1, cr2);   
+    }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

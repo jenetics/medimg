@@ -8,12 +8,20 @@ package org.wewi.medimg.reg;
 
 import java.io.File;
 
+import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.image.ops.AnalyzerUtils;
+import org.wewi.medimg.image.ops.BinaryPointAnalyzer;
+import org.wewi.medimg.image.ops.CrossCorrelationOperator;
+import org.wewi.medimg.image.ops.DirectComparisonOperator;
+import org.wewi.medimg.image.ops.MutualInformationOperator;
+import org.wewi.medimg.image.ops.NormalizedMutualInformationOperator;
+import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
 import org.wewi.medimg.reg.pca.RigidPCARegistration;
 import org.wewi.medimg.util.Timer;
 
@@ -37,8 +45,8 @@ public class Test {
         timer1.start();       
         Timer timer3 = new Timer("Test: Image lesen");
         timer3.start();     
-        File source1 = new File(path + "try16.tif");
-        File source2 = new File(path + "try17.tif");                
+        File source1 = new File(path + "more01.tif");
+        File source2 = new File(path + "more01b.tif");                
         //File source1 = new File("D:/temp/circle004.tif");
         //File source2 = new File("D:/temp/circle005.tif");   
         //File source1 = new File(path + "erg02/");
@@ -88,8 +96,8 @@ public class Test {
             myImportance.setImportance(9, 0.0);
             myImportance.setImportance(10, 0.0);
             myImportance.setImportance(11, 0.0); */           
-        //NonRigidPCARegistration strategy = new NonRigidPCARegistration();
-        RigidPCARegistration strategy = new RigidPCARegistration();
+        NonRigidPCARegistration strategy = new NonRigidPCARegistration();
+        //RigidPCARegistration strategy = new RigidPCARegistration();
         strategy.setAffinityMetric(myMetric);
         strategy.setTransformationImportance(myImportance);
         
@@ -97,14 +105,15 @@ public class Test {
         //System.out.println("Mist222222");
         Timer timer2 = new Timer("Test: calculate");
         timer2.start();
-        AffineTransformation transformation;
+        AffineTransformation transformation = null;
+        Image show = null;
         try {
             transformation = (AffineTransformation)strategy.registrate(data1, data2);
             timer2.stop();
             timer2.print();
             //Image show = new ImageData(0, 500, 0, 500, 0, 0);
             ImageDataFactory fac = ImageDataFactory.getInstance();
-            Image show = transformation.transform(data1, fac);
+            show = transformation.transform(data1, fac);
             //Image show = transformation.transform(data1);
 
             
@@ -127,7 +136,61 @@ public class Test {
             System.out.println("Mist");
             re.printStackTrace();
         }
+        ColorRange cr1 = AnalyzerUtils.getColorRange(data2);
+        ColorRange cr2 = AnalyzerUtils.getColorRange(data1);
+        ColorRange cr3 = AnalyzerUtils.getColorRange(show);
         
+        System.out.println("Uebereinstimmung der Originalbilder:");
+
+        System.out.println("BB: " + myMetric.similarity(data1, data2, null));
+        
+        MutualInformationOperator op = new MutualInformationOperator(cr1, cr2);
+        BinaryPointAnalyzer analyzer = new BinaryPointAnalyzer(data2, data1, op);
+        analyzer.analyze();
+        System.out.println("MI: " + op.getMutualInformation());
+        
+		NormalizedMutualInformationOperator op2 = new NormalizedMutualInformationOperator(cr1, cr2);
+        analyzer = new BinaryPointAnalyzer(data2, data1, op2);
+        analyzer.analyze();
+        System.out.println("NMI: " + op2.getMutualInformation());   
+        
+		DirectComparisonOperator op3 = new DirectComparisonOperator(cr1, cr2);
+        analyzer = new BinaryPointAnalyzer(data2, data1, op3);
+        analyzer.analyze();
+        System.out.println("DC: " + op3.getDirectComparison());             
+
+		CrossCorrelationOperator op4 = new CrossCorrelationOperator(cr1, cr2);
+        analyzer = new BinaryPointAnalyzer(data2, data1, op4);
+        analyzer.analyze();
+        System.out.println("CC: " + op4.getCrossCorrelation());
+        
+        System.out.println("Uebereinstimmung der transformierten Bilder:"); 
+        
+        System.out.println("BB: " + myMetric.similarity(data1, data2, transformation));
+
+        op = new MutualInformationOperator(cr1, cr3);
+        analyzer = new BinaryPointAnalyzer(data2, show, op);
+        analyzer.analyze();
+        System.out.println("MI: " + op.getMutualInformation());
+         
+        op2 = new NormalizedMutualInformationOperator(cr1, cr3);
+        analyzer = new BinaryPointAnalyzer(data2, show, op2);
+        analyzer.analyze();
+        System.out.println("NMI: " + op2.getMutualInformation()); 
+        
+        op3 = new DirectComparisonOperator(cr1, cr3);
+        analyzer = new BinaryPointAnalyzer(data2, show, op3);
+        analyzer.analyze();
+        System.out.println("DC: " + op3.getDirectComparison()); 
+        
+        op4 = new CrossCorrelationOperator(cr1, cr3);
+        analyzer = new BinaryPointAnalyzer(data2, show, op4);
+        analyzer.analyze();
+        System.out.println("CC: " + op4.getCrossCorrelation());
+        
+        //NormalizedMIAffinityMetric met = new NormalizedMIAffinityMetric();
+		//System.out.println("new CC: " + met.similarity(data1, data2, null));
+                     
         /*try {
             TIFFWriter rwriter = new TIFFWriter(data1, new File("E:/temp/img/erg2"));   
             rwriter.write();         

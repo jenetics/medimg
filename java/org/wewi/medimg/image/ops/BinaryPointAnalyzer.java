@@ -38,6 +38,8 @@ public final class BinaryPointAnalyzer {
         final int maxZ = Math.min(img1.getMaxZ(), img2.getMaxZ());
         */
         ROI roi = ROI.create(img1.getDimension()).intersect(ROI.create(img2.getDimension()));
+        //System.out.println("CC" + roi + "CC" + img1.getDimension()+ "CC" + img2.getDimension());
+        //System.out.println("interCC" + ROI.create(img1.getDimension()) + "M" + ROI.create(img2.getDimension()));
         
         for (int k = roi.getMinZ(); k <= roi.getMaxZ(); k++) {
             for (int j = roi.getMinY(); j <= roi.getMaxY(); j++) {

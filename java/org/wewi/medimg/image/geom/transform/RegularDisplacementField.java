@@ -59,6 +59,7 @@ public class RegularDisplacementField extends DisplacementF
     private int strideX;
     private int strideY;
     private int strideZ;
+    private int[] strideXYZ = {0, 0, 0};
     
     private GridVectorField vectorField;
     
@@ -100,7 +101,9 @@ public class RegularDisplacementField extends DisplacementF
         int[] gridsXYZ = {(int)Math.ceil((double)dim.getSizeX()/(double)strideX),
                           (int)Math.ceil((double)dim.getSizeY()/(double)strideY),
                           (int)Math.ceil((double)dim.getSizeZ()/(double)strideZ)};
-        int[] strideXYZ = {strideX, strideY, strideZ};
+        strideXYZ[0] = strideX;
+        strideXYZ[1] = strideY;
+        strideXYZ[2] = strideZ;
         
         vectorField = new DoubleGridVectorField(origin, gridsXYZ, strideXYZ);
         
@@ -110,8 +113,33 @@ public class RegularDisplacementField extends DisplacementF
         setFieldInterpolator(NEAREST_NEIGHBOR);        
     }
 
+	/**
+	 * 
+	 */
+	public int getStrideX() {
+		return strideX;
+	}
+    
+	/**
+	 * 
+	 */
+	public int getStrideY() {
+		return strideY;
+	}
+    
+	/**
+	 * 
+	 */
+	public int getStrideZ() {
+		return strideZ;
+	}
 
-
+	/**
+	 * 
+	 */
+	public int[] getStrideXYZ() {
+		return strideXYZ;
+	}
     
 
     /**
@@ -231,11 +259,14 @@ public class RegularDisplacementField extends DisplacementF
         vectorField.addVector(startPoint, endPoint);
     }
     
-    /**
-     * @see org.wewi.medimg.math.vec.VectorField#getVectorIterator()
-     */
-    public VectorIterator getVectorIterator() {
-        return vectorField.getVectorIterator();
-    }
+
+	/**
+	 * @see org.wewi.medimg.math.vec.VectorField#getVectorIterator()
+	 */
+	public VectorIterator getVectorIterator() {
+		return vectorField.getVectorIterator();
+	}
+	
+
 
 }
