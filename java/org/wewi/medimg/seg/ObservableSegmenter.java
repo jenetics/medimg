@@ -12,20 +12,19 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.wewi.medimg.alg.*;
+import org.wewi.medimg.alg.ObservableAlgorithm;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  */
-public abstract class ObservableSegmenter implements Segmenter { 
+public abstract class ObservableSegmenter extends ObservableAlgorithm 
+                                            implements Segmenter { 
     private Vector segmenterListener;
-    private Vector iterationListener;
     protected Logger logger;
     
     public ObservableSegmenter() {
         segmenterListener = new Vector();
-        iterationListener = new Vector();
         logger = Logger.getLogger(getClass().getPackage().getName());        
     }
     
@@ -53,16 +52,11 @@ public abstract class ObservableSegmenter implements Segmenter {
         segmenterListener.remove(o);
     }
     
-    public synchronized void addIterationListener(IterationListener il) {
-        iterationListener.add(il);   
-    }
-    
-    public synchronized void removeIterationListener(IterationListener il) {
-        iterationListener.remove(il);    
-    }
-    
     protected void notifySegmenterStarted(SegmenterEvent event) {
-        Vector lv = (Vector)segmenterListener.clone();
+        Vector lv;
+        synchronized (segmenterListener) {
+            lv = (Vector)segmenterListener.clone();
+        }
         SegmenterListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
             l = (SegmenterListener)it.next();
@@ -71,29 +65,14 @@ public abstract class ObservableSegmenter implements Segmenter {
     }    
     
     protected void notifySegmenterFinished(SegmenterEvent event) {
-        Vector lv = (Vector)segmenterListener.clone();
+        Vector lv;
+        synchronized (segmenterListener) {
+            lv = (Vector)segmenterListener.clone();
+        }
         SegmenterListener l;
         for (Iterator it = lv.iterator(); it.hasNext();) {
             l = (SegmenterListener)it.next();
             l.segmenterFinished(event);
-        }
-    } 
-    
-    protected void notifyIterationStarted(IterationEvent event) {
-        Vector lv = (Vector)iterationListener.clone();
-        IterationListener l;
-        for (Iterator it = lv.iterator(); it.hasNext();) {
-            l = (IterationListener)it.next();
-            l.iterationStarted(event);
-        }
-    }    
-    
-    protected void notifyIterationFinished(IterationEvent event) {
-        Vector lv = (Vector)iterationListener.clone();
-        IterationListener l;
-        for (Iterator it = lv.iterator(); it.hasNext();) {
-            l = (IterationListener)it.next();
-            l.iterationFinished(event);
         }
     }  
     
