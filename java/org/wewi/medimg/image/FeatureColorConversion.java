@@ -30,6 +30,11 @@ public class FeatureColorConversion implements ColorConversion{
                                   Color.GRAY,
                                   Color.DARK_GRAY,
                                   Color.ORANGE,
+                                  new Color(64, 64, 255),
+                                  new Color(64, 255, 64),
+                                  new Color(255, 64, 255),
+                                  new Color(255, 128, 128),
+                                  new Color(255, 255, 64),
                                   new Color(22, 22, 20),
                                   new Color(20, 0, 20),
                                   new Color(80, 21, 20),
@@ -44,7 +49,7 @@ public class FeatureColorConversion implements ColorConversion{
     public FeatureColorConversion() {
         cc = new int[colors][3];
         for (int i = 0; i < colors; i++) {
-            cc[i][0] = c[i].getRed();
+        	cc[i][0] = c[i].getRed();
             cc[i][1] = c[i].getGreen();
             cc[i][2] = c[i].getBlue();
         }
