@@ -4,7 +4,7 @@
  * Created on 24. Januar 2002, 15:00
  */
 
-package org.wewi.medimg.viewer;
+package org.wewi.medimg.viewer.image;
 
 
 import java.awt.Color;
@@ -20,8 +20,7 @@ import javax.swing.JPanel;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.VoxelSelectorEvent;
-import org.wewi.medimg.image.VoxelSelectorListener;
+import org.wewi.medimg.image.geom.Point2D;
 import org.wewi.medimg.image.geom.Point3D;
 
 /**
@@ -31,37 +30,48 @@ import org.wewi.medimg.image.geom.Point3D;
  */
 public class ImagePanel extends JPanel {
     
-    public interface ImageCanvas {
+    /**
+     * This interface defines the canvas you can put on the displayed image.
+     * 
+	 * @author Franz Wilhelmstötter
+	 * @version 0.1
+     */
+    public static interface ImageCanvas {
+        /**
+         * When ever the image panel is repainted (by calling the method
+         * <code>paintComponent(Graphics graph)</code>), this method is called
+         * 
+         * @param graph
+         * @param panel the current ImagePanel
+         */
         public void draw(Graphics graph, ImagePanel panel);
     }
     
-    /**
-     * Diese Klasse nimmt eine Konvertierung zwischen
-     * den Bild-Koordinaten und den Panel-Koordinaten durch.
-     */
-    public final class PointConverter {
-        
+    public abstract class PointConverter {
         private PointConverter() {
         }
         
-        /**
-         * Konvertierung eines Bildpunktes in einen java.awt.Point
-         * in Panel-Koordinaten.
-         */
-        public synchronized java.awt.Point convert(Point3D p) {
+        public abstract Point2D convert(Point3D p);
+        
+        public abstract Point3D convert(Point2D p);    
+    }
+    
+    private final class PointConverterImpl extends PointConverter {
+		/**
+		 * @see org.wewi.medimg.viewer.ImagePanel.PointConverter#convert(org.wewi.medimg.image.geom.Point3D)
+		 */
+		public Point2D convert(Point3D p) {
             int px = (int)Math.rint((double)p.getX()*(((double)getWidth()-2d*ox)/
                                                     (double)sizeX)+(double)ox);
             int py = (int)Math.rint((double)p.getY()*(((double)getHeight()-2d*oy)/
-                                                    (double)sizeY)+(double)oy);                                                    
-            
-            return new java.awt.Point(px, py);    
-        } 
+                                                    (double)sizeY)+(double)oy);        
         
-        /**
-         * Konvertierung eines java.awt.Point Panel-Punktes
-         * in einen entsprechenden Bildpunkt.
-         */
-        public synchronized Point3D convert(java.awt.Point p) {
+            return new Point2D(px, py);
+		}
+		/**
+		 * @see org.wewi.medimg.viewer.ImagePanel.PointConverter#convert(org.wewi.medimg.image.geom.Point2D)
+		 */
+		public Point3D convert(Point2D p) {
             int imageX = (int)Math.rint((p.getX()-ox)*((double)sizeX/
                                          ((double)getWidth()-2*ox)));
             int imageY = (int)Math.rint((p.getY()-oy)*((double)sizeY/
@@ -73,46 +83,46 @@ public class ImagePanel extends JPanel {
                     point = new Point3D(imageX, imageY, slice);
             }
             
-            return point;  
-        }
-        
-        public void imagePointToPanelPoint(double[] imagePoint, double[] panelPoint) {
-            panelPoint[0] = imagePoint[0]*(((double)getWidth()-2d*ox)/(double)sizeX)+(double)ox;
-            panelPoint[1] = imagePoint[1]*(((double)getHeight()-2d*oy)/(double)sizeY)+(double)oy;                                                    
-                            
-        }
-        
-        public void panelPointToImagePoint(double[] panelPoint, double[] imagePoint) {
-            imagePoint[0] = (panelPoint[0]-ox)*((double)sizeX/((double)getWidth()-2*ox));
-            imagePoint[1] = (panelPoint[0]-oy)*((double)sizeY/((double)getHeight()-2*oy));            
-        }   
+            return point;
+		}
     }
-    /**************************************************************************/
+    
+    
     
     private Vector listener;
 	
-    private org.wewi.medimg.image.Image image = null;
-    private org.wewi.medimg.image.ColorConversion colorConversion = null;
-    private BufferedImage bufferedImage = null;
-    private int[] rawData = null;
+    private Image image;
+    private ColorConversion colorConversion;
+    
+    private ImageCanvas imageCanvas;
+    private BufferedImage bufferedImage;
+    private int[] rawData;
     
     private int sizeX, sizeY;
     private int ox, oy, x, y;
     private int slice = 0;
-    private double qxy;
-    
-    private ImageCanvas imageCanvas;
-    private PointConverter pointConverter;
+    private double qxy;    
 
-    public ImagePanel(org.wewi.medimg.image.Image image) {
+    /**
+     * Creating a new ImagePanel.
+     * 
+     * @param image This image is displayed in the panel.
+     */
+    public ImagePanel(Image image) {
         this.image = image;
-        sizeX = image.getMaxX() - image.getMinX() + 1;
-        sizeY = image.getMaxY() - image.getMinY() + 1;
+        init();    
+    }
+    
+    /**
+     * Initializing the panel.
+     */
+    private void init() {
+        sizeX = image.getDimension().getSizeX();
+        sizeY = image.getDimension().getSizeY();
         qxy = (double)sizeX/(double)sizeY;
-        colorConversion = image.getColorConversion();
+
         rawData = new int[sizeX*sizeY*3];      
-        bufferedImage = new BufferedImage(sizeX, sizeY, 
-                                          BufferedImage.TYPE_3BYTE_BGR); 
+        bufferedImage = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_3BYTE_BGR); 
         
         setBackground(Color.WHITE);
         
@@ -128,26 +138,46 @@ public class ImagePanel extends JPanel {
                             }
                         };
                         
-        pointConverter = new PointConverter();
     }
     
-    public PointConverter getPointConverter() {
-        return pointConverter;    
-    }
-    
+    /**
+     * This method is called, whenever a mouse event occurs
+     * 
+     * @param event
+     */
     private void pointChoosed(MouseEvent event) {
-        notifyListener(new VoxelSelectorEvent(this, event.getPoint(), image, 
-                                              pointConverter.convert(event.getPoint())));                                            
+        PointConverter converter = new PointConverterImpl();
+        
+        Point2D p2d = new Point2D(event.getPoint().x, event.getPoint().y);
+        Point3D p3d = converter.convert(p2d);
+        
+        VoxelSelectorEvent e = new VoxelSelectorEvent(this, p2d, p3d);
+        notifyListener(e);                                            
     }
     
+    /**
+     * Adds a new VoxelSelectorListener.
+     * 
+     * @param l listener to be add.
+     */
     public synchronized void addVoxelSelectorListener(VoxelSelectorListener l) {
         listener.add(l);    
     }
     
+    /**
+     * Removes a VoxelSelectorListener.
+     * 
+     * @param l listener to remove.
+     */
     public synchronized void removeVoxelSelectorListener(VoxelSelectorListener l) {
         listener.remove(l);    
     }
     
+    /**
+     * This method notifys the listener, when a voxel is selected.
+     * 
+     * @param event VoxelSelectorEvent.
+     */
     protected void notifyListener(VoxelSelectorEvent event) {
         Vector list;
         synchronized (listener) {
@@ -160,10 +190,14 @@ public class ImagePanel extends JPanel {
         }    
     }
     
-    
+    /**
+     * 
+     * @see javax.swing.JComponent#paintComponent(Graphics)
+     */
     public void paintComponent(Graphics graph) {
         super.paintComponent(graph);
         
+        //This part preserves the image height and image width ratio.
         double qx = (double)getWidth()/(double)sizeX;
         double qy = (double)getHeight()/(double)sizeY;
         if (qx < qy) {
@@ -180,7 +214,7 @@ public class ImagePanel extends JPanel {
         
         graph.drawImage(bufferedImage, ox, oy, x, y, this);
         
-        //Dies bietet die Möglichkeit eine "Skizze" über das Bild zu legen
+        //This lets you draw an aditional graph onto the panel.
         if (imageCanvas != null) {
             imageCanvas.draw(graph, this);
         }
@@ -188,6 +222,11 @@ public class ImagePanel extends JPanel {
         setVisible(true);
     }    
       
+    /**
+     * Sets the image z-slice that should be displayed
+     * 
+     * @param slice
+     */
     public void setSlice(int slice) { 
         if (slice < image.getMinZ() || slice > image.getMaxZ()) {
             return;
@@ -215,22 +254,57 @@ public class ImagePanel extends JPanel {
         this.repaint();
     }
     
+    /**
+     * Returns teh current slice, respectively the z-coordinate.
+     * 
+     * @return int the z slice.
+     */
     public int getSlice() {
         return slice;    
     }
     
+    /**
+     * Forces a repaint of the image.
+     */
     public void repaintImage() {
         setSlice(getSlice());    
     }
     
+    /**
+     * Returns the displayed image.
+     * 
+     * @return Image
+     */
     public Image getImage() {
         return image;    
     }
     
+    /**
+     * Returns the ColorConversion of the image panel. This must not be
+     * the ColorConversion of the image.
+     * 
+     * @return ColorConversion of the panel.
+     */
     public ColorConversion getColorConversion() {
         return colorConversion;    
     }
     
+    public PointConverter getPointConverter() {
+        return new PointConverterImpl();
+        
+    }
+    
+    /**
+     * Sets the ColorConversion for this panel. This has no effect to the
+     * ColorConversion of the image. To change the ColorConversion of the
+     * image, you can do this as follows: <p/>
+     * 
+     * <pre>
+     *       getImage().setColorConversion(colorConversion);
+     * </pre>
+     * 
+     * @param colorConversion
+     */
     public void setColorConversion(ColorConversion colorConversion) {
         this.colorConversion = colorConversion;
     }

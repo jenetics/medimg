@@ -10,6 +10,8 @@ import java.awt.print.PrinterJob;
 
 import javax.swing.JOptionPane;
 
+import org.wewi.medimg.viewer.image.*;
+
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1

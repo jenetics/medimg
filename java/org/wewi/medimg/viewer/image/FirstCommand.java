@@ -4,7 +4,9 @@
  * Created on 28. März 2002, 21:14
  */
 
-package org.wewi.medimg.viewer;
+package org.wewi.medimg.viewer.image;
+
+import org.wewi.medimg.viewer.Command;
 
 /**
  *

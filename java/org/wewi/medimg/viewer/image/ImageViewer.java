@@ -4,7 +4,7 @@
  * Created on March 28, 2002, 11:31 AM
  */
 
-package org.wewi.medimg.viewer;
+package org.wewi.medimg.viewer.image;
 
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -26,8 +26,16 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImagePanel;
-import org.wewi.medimg.image.VoxelSelectorListener;
+import org.wewi.medimg.viewer.Command;
+import org.wewi.medimg.viewer.ImageContainer;
+import org.wewi.medimg.viewer.ImageViewerEvent;
+import org.wewi.medimg.viewer.ImageViewerListener;
+import org.wewi.medimg.viewer.NavigationPanel;
+import org.wewi.medimg.viewer.NullCommand;
+import org.wewi.medimg.viewer.PrintCommand;
+import org.wewi.medimg.viewer.SaveCommand;
+import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.ViewerDesktopFrame;
 import org.wewi.medimg.viewer.tools.ImagePropertiesDialog;
 
 
