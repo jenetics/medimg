@@ -7,7 +7,7 @@
 package org.wewi.medimg.reg.interpolation;
 
 import org.wewi.medimg.image.geom.transform.TransformVector;
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
 /**
  *
  * @author  werner weiser
@@ -16,7 +16,7 @@ import org.wewi.medimg.image.geom.transform.Transform;
 public interface InterpolStrategy {
     //virtual ITransform* interpolate(CTransformVector* tv) = 0;
     
-    public Transform interpolate(TransformVector tv);
+    public Transformation interpolate(TransformVector tv);
 
 
 }

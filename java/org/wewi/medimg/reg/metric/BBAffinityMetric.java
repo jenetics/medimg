@@ -8,7 +8,7 @@ package org.wewi.medimg.reg.metric;
 
 import org.wewi.medimg.image.Tissue;
 
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
 
 /**
  *
@@ -17,7 +17,7 @@ import org.wewi.medimg.image.geom.transform.Transform;
  */
 public class BBAffinityMetric implements AffinityMetric {
     
-    private Transform trans;
+    private Transformation trans;
     private TissueData trg;
     private TissueData src;
     private static double EPSILON = 0.01;
@@ -69,11 +69,11 @@ public class BBAffinityMetric implements AffinityMetric {
             trg = sfi;
     }
 
-    public void setTransformation(Transform transform) {
+    public void setTransformation(Transformation transform) {
             trans = transform;
     }
 
-    private double getFitness(TissueIterator source, TissueIterator target, Transform transformation) {
+    private double getFitness(TissueIterator source, TissueIterator target, Transformation transformation) {
             BoundingBox sourceBB;
             BoundingBox targetBB;
             sourceBB = source.getBoundingBox();

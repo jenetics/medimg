@@ -8,7 +8,7 @@ package org.wewi.medimg.reg;
 
 import java.util.Vector;
 
-import org.wewi.medimg.reg.metric.DoublePoint3D;
+import org.wewi.medimg.math.geom.DoubleDataPoint;
 /**
  *
  * @author  werner weiser
@@ -39,7 +39,7 @@ public class GridElement {
         for (int i = 0; i < pointI.length; i++) {
             pointD[i] = (double)pointI[i];
         }
-        referencePoints.addElement(new DoublePoint3D(pointD));
+        referencePoints.addElement(new DoubleDataPoint(pointD));
         computed = false;
     }
     
@@ -61,7 +61,7 @@ public class GridElement {
 
         for (int i = 0; i < referencePoints.size(); i++) {
             for (int j = 0; j < reference.length; j++) {
-                sum[j] += ((DoublePoint3D)referencePoints.elementAt(i)).getValue(j);
+                sum[j] += ((DoubleDataPoint)referencePoints.elementAt(i)).getValue(j);
             }
         }
         for (int j = 0; j < reference.length; j++) {

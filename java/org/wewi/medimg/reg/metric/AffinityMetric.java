@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.reg.metric;
 
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
 /**
  *
  * @author  werner weiser
@@ -20,7 +20,7 @@ public interface AffinityMetric {
 
     public void setTargetTissueData(TissueData sfi);
 
-    public void setTransformation(Transform transformation);
+    public void setTransformation(Transformation transformation);
 
 }
 

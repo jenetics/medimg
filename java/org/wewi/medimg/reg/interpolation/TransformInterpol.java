@@ -7,8 +7,8 @@
 package org.wewi.medimg.reg.interpolation;
 
 import org.wewi.medimg.image.geom.transform.TransformVector;
-import org.wewi.medimg.image.geom.transform.Transform;
-import org.wewi.medimg.image.geom.transform.AffineTransform3D;
+import org.wewi.medimg.image.geom.transform.Transformation;
+import org.wewi.medimg.image.geom.transform.AffineInterpolation;
 /**
  *
  * @author  werner weiser
@@ -36,10 +36,10 @@ public class TransformInterpol implements InterpolStrategy {
     
 
     
-    public Transform interpolate(TransformVector tv) {
+    public Transformation interpolate(TransformVector tv) {
         
-        AffineTransform3D erg = new AffineTransform3D();
-        AffineTransform3D transTemp;
+        AffineInterpolation erg = new AffineInterpolation();
+        AffineInterpolation transTemp;
         transformVector = tv;
         int transforms = transformVector.size();
         transWeights = new double[transforms];
@@ -65,7 +65,7 @@ public class TransformInterpol implements InterpolStrategy {
         }
 
         for (i = 0; i < transforms; i++) {
-            transTemp = (AffineTransform3D)(tv.getTransformByPos(i));
+            transTemp = (AffineInterpolation)(tv.getTransformByPos(i));
             //std::cout << "Transform: " << i << std::endl;
             System.out.println(transTemp);
             if (transWeights[i] == 0) {
@@ -96,22 +96,20 @@ public class TransformInterpol implements InterpolStrategy {
             rot[2][i] = rot[2][i]*norm;
         }
             //Zum Test kann eine eigene Transformationsmatrix angegeben werden
-            /*transScale[0][0] = 1;
-            transScale[0][1] = 0;
-            transScale[0][2] = 0;
-            transScale[0][3] = 0;
+        /*transScale[0][0] = 1;
+        transScale[0][1] = 0;
+        transScale[0][2] = 0;
+        transScale[0][3] = 0;
 
-            transScale[1][0] = 0;
-            transScale[1][1] = 1;
-            transScale[1][2] = 0;
-            transScale[1][3] = 0;
+        transScale[1][0] = 0;
+        transScale[1][1] = 1;
+        transScale[1][2] = 0;
+        transScale[1][3] = 0;
 
-            transScale[2][0] = 0;
-            transScale[2][1] = 0;
-            transScale[2][2] = 1.0;
-            transScale[2][3] = 5.55112e-017;
-
-            erg->setTransformMatrix(transScale);*/
+        transScale[2][0] = 0;
+        transScale[2][1] = 0;
+        transScale[2][2] = 1.0;
+        transScale[2][3] = 0;*/
         erg.setTransformation(rot, transScale);
         return erg;
     }

@@ -10,7 +10,7 @@ package org.wewi.medimg.reg;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
 import org.wewi.medimg.reg.wizard.RegistrationEvent;
 import org.wewi.medimg.reg.wizard.RegistrationListener;
 import org.wewi.medimg.util.Timer;
@@ -25,7 +25,7 @@ public class Registrate {
     
     private RegStrategy strategy;
 
-    private Transform trans;
+    private Transformation trans;
 
     private RegisterParameter parameter;
     
@@ -67,7 +67,6 @@ public class Registrate {
         timer1.print(); 
         Timer timer2 = new Timer("CRegister::transform");
         timer2.start();
-        //!!Vorsicht
         parameter.setTargetImage(trans.transform(parameter.getSourceImage()));
         timer2.stop();
         timer2.print(); 
@@ -88,11 +87,11 @@ public class Registrate {
         return strategy;
     }
 
-    public void setTrans(Transform trans) {
+    public void setTrans(Transformation trans) {
         this.trans = trans;
     }
 
-    public Transform getTrans() {
+    public Transformation getTrans() {
         return trans;
     }    
     

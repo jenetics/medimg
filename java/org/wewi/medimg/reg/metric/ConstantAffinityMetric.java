@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.reg.metric;
 
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ConstantAffinityMetric implements AffinityMetric {
         initialized = false;
     }
 
-    public void setTransformation(Transform transform) {
+    public void setTransformation(Transformation transform) {
             initialized = false;
     }
     

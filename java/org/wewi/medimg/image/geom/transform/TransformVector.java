@@ -33,13 +33,13 @@ public class TransformVector {
     }
     
     //tissue == color
-    public void add(Tissue tissue, Transform trans, int npoints) {
+    public void add(Tissue tissue, Transformation trans, int npoints) {
         transformVector.addElement(trans);
         tissueVector.addElement(tissue);
         npointsVector.addElement(new Integer(npoints));
     }
 
-    public Transform getTransformByTissue(Tissue tissue) {
+    public Transformation getTransformByTissue(Tissue tissue) {
         int pos = -1;
         for (int i = 0; i < size(); i++) {
             if (((Tissue)tissueVector.elementAt(i)).intValue() == tissue.intValue()) {
@@ -49,14 +49,14 @@ public class TransformVector {
         }
 
         if (pos != -1) {
-            return (Transform)transformVector.elementAt(pos);
+            return (Transformation)transformVector.elementAt(pos);
         } else {
             return null;
         }
     }
 
-    public Transform getTransformByPos(int pos) {
-        return (Transform)transformVector.elementAt(pos);
+    public Transformation getTransformByPos(int pos) {
+        return (Transformation)transformVector.elementAt(pos);
     }
 
     public int size() {
