@@ -56,7 +56,7 @@ public final class NullImage implements Image, Nullable {
 		}
     }
     
-    public static final NullImage IMAGE_INSTANCE = new NullImage();
+    public static final NullImage INSTANCE = new NullImage();
     
     private NullImageHeader header;
 

@@ -117,7 +117,7 @@ public class FeatureColorConversion implements ColorConversion{
                
     } 
     
-    /*
+     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         
@@ -129,7 +129,7 @@ public class FeatureColorConversion implements ColorConversion{
         
         return buffer.toString();    
     } 
-    */ 
+     
     
 }
 
