@@ -25,8 +25,8 @@ import org.wewi.medimg.image.ops.MutualInformationOperator;
 import org.wewi.medimg.image.ops.NormalizedMutualInformationOperator;
 import org.wewi.medimg.math.vec.VectorField;
 import org.wewi.medimg.math.vec.VectorIterator;
-import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
-import org.wewi.medimg.reg.pca.RigidPCARegistration;
+import org.wewi.medimg.reg.pca.GlobalNonRigidPCARegistration;
+import org.wewi.medimg.reg.pca.GlobalRigidPCARegistration;
 import org.wewi.medimg.util.Timer;
 
 
@@ -37,8 +37,7 @@ import org.wewi.medimg.util.Timer;
  */
 public class Test {
 
-//private static String path = "E:/Daten/Diplom/data/reg.test.img/";
-private static String path = "/home/fwilhelm/temp/Werner/";
+private static String path = "E:/Daten/Diplom/data/reg.test.img/test/";
 private static String result;
 private static String storePath;
 
@@ -53,8 +52,8 @@ private static String storePath;
     */
     public static void main (String args[]) {
         File[] suite1 = new File[2];
-        suite1[0] = new File(path + "erg/image5/PCAMCWarping");
-        suite1[1] = new File(path + "A.tif");
+        suite1[0] = new File(path + "IS.tif");
+        suite1[1] = new File(path + "AS.tif");
         
 
         
@@ -149,7 +148,7 @@ private static String storePath;
         suite6[1] = new File(path + "erg2/");
         */
         
-        String store = "test";
+        String store = "erg";
         storePath = path + store + "/";
         testSuite(suite1);
         /*
@@ -208,7 +207,8 @@ private static String storePath;
         File source1;
         File source2; 
         Image data1;
-        Image data2;          
+        Image data2;   
+        int imgnumber = 13;       
         //for (int i = 0, n = images.length/2; i < n; i++) {
         for (int i = 1, n = 1 + images.length/2; i < n; i++) {
             
@@ -237,17 +237,33 @@ private static String storePath;
             data2 = (Image)reader2.getImage();
             timer3.stop();
             timer3.print(); 
+            
+			result += "Koregistrierung von \n";
+			result += "Startbild: " + source1.getPath() + "\n";
+			result += "Zielbild: " + source2.getPath() + "\n";
+            
             validateImages(data1, data2, i, "im Original:", null);
             validateImages(data2, data1, i, "im Original verkehrt:", null);
-            //testPCA(data1, data2, i);
-            //testAffinPCA(data1, data2, i); 
-            //testMCWarping(data1, data2, i);    
-            //testCompleteMethod(data1, data2, i);       
+
+            testPCA(data1, data2, i);
+            testAffinPCA(data1, data2, i); 
+            testMCWarping(data1, data2, i);    
+            testCompleteMethod(data1, data2, i);       
+
         }    
         timer1.stop();
         timer1.print();
         System.out.println("FERTIG");
         System.out.println(result);    
+        
+        
+        try {
+        		FileWriter ergtxt = new FileWriter(new File(storePath + "image" + imgnumber + "/erg.txt"));
+				ergtxt.write(result);
+				ergtxt.close();
+        } catch (Exception e) {
+        }        
+        
     
     }
     
@@ -289,7 +305,7 @@ private static String storePath;
         BBAffinityMetric myMetric = new BBAffinityMetric();
         //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
         myImportance.setErrorLimit(0.2);
-        RigidPCARegistration strategy = new RigidPCARegistration(); 
+        GlobalRigidPCARegistration strategy = new GlobalRigidPCARegistration(); 
         strategy.setAffinityMetric(myMetric);
         strategy.setTransformationImportance(myImportance);
         Timer timer2 = new Timer("Test: calculate");
@@ -313,7 +329,31 @@ private static String storePath;
                     validateImages(target, show, count, "mit rigider PCA:", null);
                     timer4.stop();
                     timer4.print();
-        
+                    
+                    
+			File suite = new File(path + "I.tif");
+			File suite1 = new File(path + "A.tif");
+			Image res = null;   
+			Image res1 = null;
+			Image resCompare = null;                       
+			TIFFReader reader3 = new TIFFReader(IntImageFactory.getInstance(), suite);
+			TIFFReader reader4 = new TIFFReader(IntImageFactory.getInstance(), suite1);
+					
+			//FeatureColorConversion tcc = new FeatureColorConversion();
+			//reader3.setColorConversion(tcc);
+			try {
+				reader3.read();
+				reader4.read();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}        
+			res = (Image)reader3.getImage();
+			resCompare = (Image)reader4.getImage();
+					
+			validateImages(resCompare, res, count, "Original - Grauwertbilder :", null);
+   			res1 = transformation.transform(res, fac);
+			validateImages(resCompare, res1, count, "Original - Grauwertbilder nach PCA-Ausrichtung :", null);
+                    			
         } catch (Exception re) {
             System.out.println("Mist");
             re.printStackTrace();
@@ -330,11 +370,13 @@ private static String storePath;
         //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
         myImportance.setErrorLimit(0.2);
         /*myImportance.setImportance(1, 1.0);
-        myImportance.setImportance(9, 0.0);
-        myImportance.setImportance(10, 0.0);
-        myImportance.setImportance(11, 0.0);
-        */
-        NonRigidPCARegistration strategy = new NonRigidPCARegistration();
+        myImportance.setImportance(2, 0.0);
+        myImportance.setImportance(3, 0.0);
+        myImportance.setImportance(4, 0.0);
+		myImportance.setImportance(5, 0.0);
+		*/        
+        //NonRigidPCARegistration strategy = new NonRigidPCARegistration();
+		GlobalNonRigidPCARegistration strategy = new GlobalNonRigidPCARegistration();
         strategy.setAffinityMetric(myMetric);
         strategy.setTransformationImportance(myImportance);
         Timer timer2 = new Timer("Test: calculate");
@@ -416,11 +458,32 @@ private static String storePath;
                     FileWriter file = new FileWriter(new File(storePath + "image" + count + "/MCWarping/Vectorfield.txt"));
                      
                     //toString von VectorField 
+					File suite = new File(path + "I.tif");
+					File suite1 = new File(path + "A.tif");
+					Image res = null;   
+					Image res1 = null;
+					Image resCompare = null;                       
+					TIFFReader reader3 = new TIFFReader(IntImageFactory.getInstance(), suite);
+					TIFFReader reader4 = new TIFFReader(IntImageFactory.getInstance(), suite1);
+				
+					//FeatureColorConversion tcc = new FeatureColorConversion();
+					//reader3.setColorConversion(tcc);
+					try {
+						reader3.read();
+						reader4.read();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}        
+					res = (Image)reader3.getImage();
+					resCompare = (Image)reader4.getImage();
+				
+					validateImages(resCompare, res, count, "Original - Grauwertbilder :", null);
+					res1 = transformation.transform(res, fac);
+					validateImages(resCompare, res1, count, "Original - Grauwertbilder nach MC - Warping :", null);                    
+                    
                     
                     double[] start = new double[3];
                     double[] end = new double[3];
-                    double[] p1 = new double[2];
-                    double[] p2 = new double[2];  
                     out = out + "\n{";                                    
                     for (VectorIterator it = ((VectorField)transformation).getVectorIterator(); it.hasNext();) {
                         it.next(start, end);
@@ -456,27 +519,38 @@ private static String storePath;
         BBAffinityMetric myMetric = new BBAffinityMetric();
         //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
         myImportance.setErrorLimit(0.2);
-            /*myImportance.setImportance(0, 0.0);
-            myImportance.setImportance(1, 0.0);
-            myImportance.setImportance(4, 1.0);
+           /* myImportance.setImportance(0, 0.0);
+            myImportance.setImportance(1, 1.0);
+            myImportance.setImportance(4, 00);
             myImportance.setImportance(5, 0.0);
             myImportance.setImportance(6, 0.0);
             myImportance.setImportance(8, 0.0);
             myImportance.setImportance(9, 0.0);
             myImportance.setImportance(10, 0.0);
-            myImportance.setImportance(11, 0.0); */ 
-        NonRigidPCARegistration strategy = new NonRigidPCARegistration();          
+            myImportance.setImportance(11, 0.0);  */
+		GlobalNonRigidPCARegistration strategy = new GlobalNonRigidPCARegistration();          
+        
         MonteCarloWarping strategy2 = new MonteCarloWarping();
+		FittnessTransformationImportance myImportance2 = new FittnessTransformationImportance();
         strategy.setAffinityMetric(myMetric);
         strategy.setTransformationImportance(myImportance);
         strategy2.setAffinityMetric(myMetric);
-        strategy2.setTransformationImportance(myImportance);
+        strategy2.setTransformationImportance(myImportance2);
         Timer timer2 = new Timer("Test: calculate");
         timer2.start();
         ImageTransformation transformation = null;
         ImageTransformation transformation2 = null;
         Image show = null;   
-        Image show2 = null;           
+        Image show2 = null;    
+        ////////////////////////////////
+        
+		File suite = new File(path + "I.tif");
+		File suite1 = new File(path + "A.tif");
+		Image res = null;   
+		Image resCompare = null;   
+		Image res1 = null;   
+		Image res2 = null;
+        /////////////////////////////////////
         try {
                     transformation = (ImageTransformation)strategy.registrate(source, target);
 			        IntImageFactory fac = IntImageFactory.getInstance();
@@ -510,6 +584,34 @@ private static String storePath;
                     validateImages(target, show2, count, "mit kombiniertem PCA und Monte Carlo Warping:", null);
                     TIFFWriter rwriter = new TIFFWriter(show2, new File(storePath + "image" + count + "/PCAMCWarping."));   
                     rwriter.writeView(source.getDimension(), 0);
+					///////////////////////////////
+					TIFFReader reader3 = new TIFFReader(IntImageFactory.getInstance(), suite);
+					TIFFReader reader4 = new TIFFReader(IntImageFactory.getInstance(), suite1);
+					
+					//FeatureColorConversion tcc = new FeatureColorConversion();
+					//reader3.setColorConversion(tcc);
+					try {
+						reader3.read();
+						reader4.read();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					res = (Image)reader3.getImage();
+					resCompare = (Image)reader4.getImage();
+					
+					validateImages(resCompare, res, count, "Original - Grauwertbilder :", null);
+                    
+					//res.setColorConversion(tcc);
+					res1 = transformation.transform(res, fac);
+					validateImages(resCompare, res1, count, "Original - Grauwertbilder nach PCA-Ausrichtung :", null);
+                    
+					res2 = transformation2.transform(res1, fac);					
+					TIFFWriter rwriter2 = new TIFFWriter(res2, new File(storePath + "image" + count + "/PCAMCWarpingerg."));   
+					rwriter2.writeView(source.getDimension(), 0);
+					validateImages(resCompare, res2, count, "Original- Grauwertbilder mit kombiniertem PCA und Monte Carlo Warping:", null);
+                    
+                    
+					///////////////////////////////
                     //rwriter.write();
                     timer4.stop();
                     timer4.print(); 
@@ -522,18 +624,20 @@ private static String storePath;
                     
                     double[] start = new double[3];
                     double[] end = new double[3];
-                    double[] p1 = new double[2];
-                    double[] p2 = new double[2];  
-                    out = out + "\n{";                                    
+                    out = out + "\n{";   
+                    int count1 = 0;                                 
                     for (VectorIterator it = ((VectorField)transformation2).getVectorIterator(); it.hasNext();) {
                         it.next(start, end);
-                        if (it.hasNext()) {
-                            out = out + "{{" + start[0] + "," + start[1] + "},{" 
-                                      + (end[0] - start[0]) + "," + (end[1] - start[1]) + "}},\n"; 
-                        } else {
-                            out = out + "{{" + start[0] + "," + start[1] + "},{" 
-                                      + (end[0] - start[0]) + "," + (end[1] - start[1]) + "}}}\n"; 
-                        }
+                        if (count1 % 2 == 0) {
+	                        if (it.hasNext()) {
+	                            out = out + "{{" + start[0] + "," + start[1] + "},{" 
+	                                      + (end[0] - start[0]) + "," + (end[1] - start[1]) + "}},\n"; 
+	                        } else {
+	                            out = out + "{{" + start[0] + "," + start[1] + "},{" 
+	                                      + (end[0] - start[0]) + "," + (end[1] - start[1]) + "}}}\n"; 
+	                        }
+                    	}
+                    	count1++;
                     }
                     file.write(out);
                     file.close();

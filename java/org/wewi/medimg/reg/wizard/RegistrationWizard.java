@@ -31,6 +31,8 @@ import org.wewi.medimg.reg.BBAffinityMetric;
 import org.wewi.medimg.reg.ManualTransformationImportance;
 import org.wewi.medimg.reg.MonteCarloWarping;
 import org.wewi.medimg.reg.WeightPointTransformationImportance;
+import org.wewi.medimg.reg.pca.GlobalNonRigidPCARegistration;
+import org.wewi.medimg.reg.pca.GlobalRigidPCARegistration;
 import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
 import org.wewi.medimg.reg.pca.RigidPCARegistration;
 import org.wewi.medimg.viewer.ImageFileChooser;
@@ -139,7 +141,7 @@ public class RegistrationWizard extends Wizard implements Observer,
 				BBAffinityMetric myMetric = new BBAffinityMetric();
 				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
 				myImportance.setErrorLimit(0.2);
-				RigidPCARegistration myRegistration = new RigidPCARegistration();
+				GlobalRigidPCARegistration myRegistration = new GlobalRigidPCARegistration();
 		        myRegistration.setAffinityMetric(myMetric);
 		        myRegistration.setTransformationImportance(myImportance);
 		        obReg = myRegistration;
@@ -159,7 +161,7 @@ public class RegistrationWizard extends Wizard implements Observer,
 				BBAffinityMetric myMetric = new BBAffinityMetric();
 				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
 				myImportance.setErrorLimit(0.2);
-				NonRigidPCARegistration myRegistration = new NonRigidPCARegistration();
+				GlobalNonRigidPCARegistration myRegistration = new GlobalNonRigidPCARegistration();
 		        myRegistration.setAffinityMetric(myMetric);
 		        myRegistration.setTransformationImportance(myImportance);
 		        obReg = myRegistration;
@@ -189,7 +191,7 @@ public class RegistrationWizard extends Wizard implements Observer,
                 BBAffinityMetric myMetric = new BBAffinityMetric();
                 //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
                 myImportance.setErrorLimit(0.2);
-                NonRigidPCARegistration myRegistration = new NonRigidPCARegistration();
+				GlobalNonRigidPCARegistration myRegistration = new GlobalNonRigidPCARegistration();
                 myRegistration.setAffinityMetric(myMetric);
                 myRegistration.setTransformationImportance(myImportance);
                 obReg = myRegistration;

@@ -21,7 +21,7 @@ import cern.jet.random.engine.RandomEngine;
  * @author  Werner Weiser
  * @version 0.1
  */
-public class MonteCarloWarping extends MultipleFeatureRegistrator {
+public class MonteCarloWarping extends LocalRegistrator {
     
     //private InterpolStrategy weightStrategy;
     
@@ -44,10 +44,10 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
         boolean temp;
         
         for (int i = 0, n = rois.length; i < n; i++) {
-            walk = new RandomWalk(rois[i], source, 40);
+            walk = new RandomWalk(rois[i], source, 4);
             walk.walk(color);
             if ((start = walk.getReferencePoint()) != null) {
-                walk = new RandomWalk(rois[i], target, 40);
+                walk = new RandomWalk(rois[i], target, 4);
                 walk.walk(color);
                 if ((end = walk.getReferencePoint()) != null) {
                     if (dive) {
@@ -72,16 +72,16 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
     
     
     protected InterpolateableTransformation getTransformation(VoxelIterator source, VoxelIterator target) {//throws RegistrationException {
-        Image sourceI = ((FeatureIterator)source).getImage();
-        Image targetI = ((FeatureIterator)target).getImage();
-        int color = ((FeatureIterator)source).getFeatureType();
+        Image sourceI = ((LocalFeatureIterator)source).getImage();
+        Image targetI = ((LocalFeatureIterator)target).getImage();
+        int color = ((LocalFeatureIterator)source).getFeatureType();
         Dimension dim1 = sourceI.getDimension();
         Dimension dim2 = targetI.getDimension();
-        int offsetX = 13;
-        int offsetY = 13;
-        int strideX = 43;
-        int strideY = 47;
-        int strideZ = 1;
+        int offsetX = 2;
+        int offsetY = 3;
+        int strideX = 3;
+        int strideY = 4;
+        //int strideZ = 1;
 
         ROI roi = ROI.create(dim1).intersect(ROI.create(dim2));
         // Durch Verändern von ROI kann der Offset erzielt werden
@@ -108,7 +108,7 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
                                           Math.min(roi.getMinY() + k * offsetY, roi.getMaxY()), roi.getMaxY(),
                                           roi.getMinZ(), roi.getMaxZ());
                 offsetted = ROI.create(shrinked);                                      
-                rois = offsetted.split(11 + h * 10, 13 + h * 10, 1);
+                rois = offsetted.split(strideX + h * 10, strideY + h * 10, 1);
                 createVectors(rois, sourceI, targetI, field, true, color);
             }
         }

@@ -7,7 +7,7 @@ import java.util.Arrays;
  * 
  * @version 0.1
  */
-public class NonRigidPCARegistration extends PCARegistration{
+public class NonRigidPCARegistration extends LocalPCARegistration{
     
         /**
      * Constructor for RigidPCARegistration.

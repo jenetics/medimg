@@ -84,6 +84,15 @@ public class IrregularDisplacementField extends DisplacementField
                 field.removeVector(i - removedVectors);
                 removedVectors++;
             }
+            //////////////////
+            
+			if (d > 5.0) {
+				field.removeVector(i - removedVectors);
+				removedVectors++;
+			}            
+            
+            ///////////////////
+            
         }
     }
 

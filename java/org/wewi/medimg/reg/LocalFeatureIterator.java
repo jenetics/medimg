@@ -17,7 +17,7 @@ import org.wewi.medimg.image.VoxelIterator;
  * @author  Werner Weiser
  * @version 0.1
  */
-public class FeatureIterator implements VoxelIterator {
+public class LocalFeatureIterator implements VoxelIterator {
 
     private int feature;
     private Image image;
@@ -25,13 +25,13 @@ public class FeatureIterator implements VoxelIterator {
     private boolean end = false;
     
     /** Creates new TissueIterator */
-    public FeatureIterator(Image img, int feat) {
+    public LocalFeatureIterator(Image img, int feat) {
         image = img;
         feature = feat;
         pos = 0;
     }
     
-    public FeatureIterator(FeatureIterator fi) {
+    public LocalFeatureIterator(LocalFeatureIterator fi) {
         this(fi.image, fi.feature);
     }
     
@@ -126,7 +126,7 @@ public class FeatureIterator implements VoxelIterator {
     }
   
     public Object clone() {
-        return new FeatureIterator(this);
+        return new LocalFeatureIterator(this);
     }
     
     private int nextPosition() {

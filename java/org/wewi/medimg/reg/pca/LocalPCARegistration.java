@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
-import org.wewi.medimg.reg.MultipleFeatureRegistrator;
+import org.wewi.medimg.reg.LocalRegistrator;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -23,7 +23,7 @@ import cern.colt.matrix.linalg.LUDecomposition;
  * 
  * @version 0.1
  */
-public abstract class PCARegistration extends MultipleFeatureRegistrator {
+public abstract class LocalPCARegistration extends LocalRegistrator {
     
     private static final double epsilon = 0.05;
     
@@ -31,7 +31,7 @@ public abstract class PCARegistration extends MultipleFeatureRegistrator {
     /**
      * Constructor for PCARegistration.
      */
-    public PCARegistration() {
+    public LocalPCARegistration() {
         super();
     }
 

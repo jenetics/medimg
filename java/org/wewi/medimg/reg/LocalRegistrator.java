@@ -24,7 +24,7 @@ import org.wewi.medimg.reg.wizard.RegistratorEvent;
  * @version 0.1
  *
  */
-public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
+public abstract class LocalRegistrator extends ObservableRegistrator {
     
     protected AffinityMetric affinityMetric;
     protected TransformationImportance transformationImportance;
@@ -34,7 +34,7 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
     /**
      * Constructor for MultipleFeatureRegistrator.
      */
-    public MultipleFeatureRegistrator() {
+    public LocalRegistrator() {
         super();
         affinityMetric = ConstantAffinityMetric.INSTANCE;
         transformationImportance = ConstantTransformationImportance.INSTANCE;
@@ -70,6 +70,7 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
         }
         int maxFeature = Math.min(scr.getMaxColor(), tcr.getMaxColor());
         VoxelIteratorFactory f = new VoxelIteratorFactory(source, target);
+        
         for (int i = minFeature; i <= maxFeature; i++) {
             VoxelIterator sit = f.getSourceVoxelIterator(i);
             VoxelIterator tit = f.getTargetVoxelIterator(i);
@@ -80,8 +81,8 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
             }
             
             //Berechnen der Transformation
-            Transformation trans = getTransformation((FeatureIterator)sit.clone(), 
-                                                     (FeatureIterator)tit.clone());
+            Transformation trans = getTransformation((LocalFeatureIterator)sit.clone(), 
+                                                     (LocalFeatureIterator)tit.clone());
                                        
             //Bestimmen der Qualität der berechneten Transformation
 
@@ -113,9 +114,9 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
             System.out.println("weights: " + weights[i]);
         }
         //Rückgabe der berechnenten Interpolation der Transformationen.
-        InterpolateableTransformation[] trans = new InterpolateableTransformation[size];
-        transformationList.toArray(trans);
-        transformation = interpolate(trans, weights);
+        InterpolateableTransformation[] itrans = new InterpolateableTransformation[size];
+        transformationList.toArray(itrans);
+        transformation = interpolate(itrans, weights);
         notifyRegistratorFinished(new RegistratorEvent(this));
         return transformation;
     }
@@ -133,7 +134,6 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
                 relationshipWeight = ((weight[i]) / weightSum);
             }
             trans = trans.interpolate(transformation[i], relationshipWeight);
-            System.out.println("Nach der  " + i + ". Interpolation" + trans);
         }
         // wenn alle Gewichte 0 waren
         /*if (weightSum == 0) {

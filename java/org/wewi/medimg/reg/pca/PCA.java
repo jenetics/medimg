@@ -26,17 +26,16 @@ import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.BMPReader;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.PNGReader;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.doublealgo.Sorting;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.colt.matrix.linalg.EigenvalueDecomposition;
 import cern.colt.matrix.linalg.LUDecomposition;
-import cern.colt.matrix.doublealgo.Sorting;
 
 /**
  * @author Franz Wilhelmstötter

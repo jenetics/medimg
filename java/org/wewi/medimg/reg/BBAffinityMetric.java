@@ -61,8 +61,8 @@ public class BBAffinityMetric implements AffinityMetric {
 	            VoxelIterator tittemp = f.getTargetVoxelIterator(j);
 				if (sittemp.hasNext()) {
 				    if (tittemp.hasNext()) {
-				        temp = getFitness((FeatureIterator)sittemp,
-                                                           (FeatureIterator)tittemp, 
+				        temp = getFitness((LocalFeatureIterator)sittemp,
+                                                           (LocalFeatureIterator)tittemp, 
                                                             trans); 
 				    }
 				}	            
@@ -75,7 +75,7 @@ public class BBAffinityMetric implements AffinityMetric {
 	   return similarity;
     }
 
-    private double getFitness(FeatureIterator source, FeatureIterator target, Transformation transformation) {
+    private double getFitness(LocalFeatureIterator source, LocalFeatureIterator target, Transformation transformation) {
             BoundingBox sourceBB;
             BoundingBox targetBB;
             sourceBB = getBoundingBox(source);
@@ -97,7 +97,7 @@ public class BBAffinityMetric implements AffinityMetric {
             return Math.abs(volume/refVolume);
     }
     
-    private BoundingBox getBoundingBox(FeatureIterator it) {
+    private BoundingBox getBoundingBox(LocalFeatureIterator it) {
 
         // Dimensionen ermitteln
         double[] min = new double[3];

@@ -27,8 +27,8 @@ final class VoxelIteratorFactory {
     
     public boolean hasJointVoxelIterator(int feature) {
 
-        VoxelIterator sit = new FeatureIterator(source, feature);    
-        VoxelIterator tit = new FeatureIterator(target, feature);    
+        VoxelIterator sit = new LocalFeatureIterator(source, feature);    
+        VoxelIterator tit = new LocalFeatureIterator(target, feature);    
         
         if (!(sit.hasNext()) || !(tit.hasNext())) {
             return false;    
@@ -37,11 +37,11 @@ final class VoxelIteratorFactory {
     }
     
     public VoxelIterator getSourceVoxelIterator(int feature) {
-        return new FeatureIterator(source, feature);    
+        return new LocalFeatureIterator(source, feature);    
     }
     
     public VoxelIterator getTargetVoxelIterator(int feature) {
-        return new FeatureIterator(target, feature);    
+        return new LocalFeatureIterator(target, feature);    
     }
 
 }
