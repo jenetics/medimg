@@ -22,6 +22,9 @@ public class Dimension implements Cloneable, Immutable {
      * @todo Introduce variable stepsize (so far set the default value to one).
      */
     private final int step = 1;
+    
+    //protected Dimension() {
+    //}
 	
 	public Dimension(Dimension dim) {
 		sizeX = dim.sizeX;

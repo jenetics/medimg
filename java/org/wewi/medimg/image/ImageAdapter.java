@@ -192,7 +192,7 @@ public abstract class ImageAdapter implements Image {
      * @see org.wewi.medimg.util.Nullable#isNull()
      */
     public boolean isNull() {
-        return false;
+        return image.isNull();
     }
 
 }

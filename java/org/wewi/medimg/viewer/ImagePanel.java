@@ -4,7 +4,7 @@
  * Created on 24. Januar 2002, 15:00
  */
 
-package org.wewi.medimg.image;
+package org.wewi.medimg.viewer;
 
 
 import java.awt.Color;
@@ -18,6 +18,10 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
+import org.wewi.medimg.image.ColorConversion;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.VoxelSelectorEvent;
+import org.wewi.medimg.image.VoxelSelectorListener;
 import org.wewi.medimg.image.geom.Point3D;
 
 /**
