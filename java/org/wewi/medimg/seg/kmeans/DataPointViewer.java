@@ -9,9 +9,6 @@ package org.wewi.medimg.seg.kmeans;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -222,7 +219,7 @@ public class DataPointViewer extends JPanel {
         return buffer.toString();
     }
     
-    
+ /*   
     public static void test1() {
         int size = 1500;
         Vector data = new Vector(size);
@@ -376,4 +373,5 @@ public class DataPointViewer extends JPanel {
     public static void main(String[] args) {
         test1();
     }
+    */
 }
