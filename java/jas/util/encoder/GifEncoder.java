@@ -1,4 +1,4 @@
-/*
+/**
  GifEncoder - write out an image as a GIF
  Transparency handling and variable bit size courtesy of Jack Palevich.
  Copyright (C)1996,1998 by Jef Poskanzer <jef@acme.com>. All rights reserved.
@@ -33,6 +33,8 @@ import java.awt.image.ImageProducer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+
+import org.wewi.medimg.util.*;
 
 /**
  * Write out an image as a GIF.
