@@ -34,7 +34,7 @@ public class T3 {
         
         for (int i = 0, n = accu.getRows(); i < n; i++) {
             for (int j = 0, m = accu.getCols(); j < m; j++) {
-                H[i][j] = (double)accu.getValue(i, j) / (double)rowSums[i];    
+                H[i][j] = ((double)accu.getValue(i, j)) / ((double)rowSums[i]);    
             }           
         } 
         
@@ -48,8 +48,8 @@ public class T3 {
         double max = -Double.MAX_VALUE;  
         int maxIndex = 0;  
         for (int i = 0, n = accu.getRows(); i < n; i++) {
-            if (accu.getValue(i, col) > max) {
-                max = accu.getValue(i, col);
+            if (H[i][col] > max) {
+                max = H[i][col];
                 maxIndex = i;    
             }       
         }

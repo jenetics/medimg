@@ -9,8 +9,8 @@ package org.wewi.medimg.seg.validation;
  * @version 0.1
  */
 public class AccumulatorArray {
-    private int rows;
-    private int cols;
+    private final int rows;
+    private final int cols;
     private int[][] accu;
 
 	/**
