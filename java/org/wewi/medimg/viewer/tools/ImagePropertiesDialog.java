@@ -47,8 +47,8 @@ public class ImagePropertiesDialog extends javax.swing.JDialog {
         
         pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(new java.awt.Dimension(401, 245));
-        setLocation((screenSize.width-401)/2,(screenSize.height-245)/2);
+        setSize(new java.awt.Dimension(379, 188));
+        setLocation((screenSize.width-379)/2,(screenSize.height-188)/2);
     }//GEN-END:initComponents
     
     /** Closes the dialog */ 

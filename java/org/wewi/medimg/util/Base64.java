@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 
 public final class Base64 {
+    
+    private Base64() {
+    }
 
 	public static String encode(byte[] raw, int offset, int length) {
 		StringBuffer encoded = new StringBuffer();

@@ -7,6 +7,7 @@
 package org.wewi.medimg.image;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.jdom.Verifier;
@@ -45,6 +46,19 @@ public class ImageProperties {
         props.add(pos, key, value);
     }
     
+    public void replace(String oldKey, String newKey, String newValue) {
+        props.replace(oldKey, newKey, newValue);
+    }
+    
+    public void swap(String key1, String key2) {
+        String tempKey = key1;
+        String tempValue = getProperty(key1);
+        
+        replace(key1, key2 + "xxx", getProperty(key2));
+        replace(key2, tempKey, tempValue);
+        replace(key2 + "xxx", key2, getProperty(key2 + "xxx"));
+    }
+    
     public boolean containsKey(String key) {
         return props.containsKey(key.trim());
     }
@@ -58,16 +72,55 @@ public class ImageProperties {
     }
     
     public String getProperty(String key){
+        if (key == null) {
+            return "";
+        }
         return (String)props.get(key.trim());
     }
     
     public String getPorperty(String key, String defaultValue) {
+        if (key == null) {
+            return defaultValue;
+        }
+        
         String value = getProperty(key);
         if (value == null) {
             value = defaultValue;
         }
         
         return value;
+    }
+    
+    public String getKey(int index) {
+        List list = props.entryList();
+        Map.Entry entry = (Map.Entry)list.get(index);
+        
+        if (entry == null) {
+            return null;
+        }
+        
+        return (String)entry.getKey();        
+    }
+    
+    public String getValue(int index) {
+        List list = props.entryList();
+        Map.Entry entry = (Map.Entry)list.get(index);
+        
+        return (String)entry.getValue();
+    }
+    
+    public int getIndex(String key) {
+        int index = 0;
+        Map.Entry entry;
+        for (Iterator it = iterator(); it.hasNext();) {
+            entry = (Map.Entry)it.next();
+            if  (key.equals(entry.getKey())) {
+                return index;
+            }
+            index++;
+        }
+        
+        return index;
     }
     
     /**
@@ -99,6 +152,17 @@ public class ImageProperties {
         return buffer.toString();
     }
     
+    public Object clone() {
+        ImageProperties ip = new ImageProperties();
+        
+        Map.Entry entry;
+        for (Iterator it = iterator(); it.hasNext();) {
+            entry = (Map.Entry)it.next();
+            ip.setProperty((String)entry.getKey(), (String)entry.getValue());
+        }
+        
+        return ip;
+    }
 
 }
 

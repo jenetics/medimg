@@ -146,121 +146,131 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
         zoomOutButton = new javax.swing.JButton();
         rotateLeftButton = new javax.swing.JButton();
         rotateRightButton = new javax.swing.JButton();
-
+        
         setLayout(new java.awt.GridLayout(1, 11));
-
+        
         setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 1, 1, 1)));
         setMinimumSize(new java.awt.Dimension(56, 34));
         firstButton.setFont(new java.awt.Font("Dialog", 0, 12));
         firstButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/first.gif")));
         firstButton.setToolTipText("erste Schicht");
+        firstButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         firstButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 firstButtonActionPerformed(evt);
             }
         });
-
+        
         add(firstButton);
-
+        
         prevPrevButton.setFont(new java.awt.Font("Dialog", 0, 12));
         prevPrevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/prev10.gif")));
         prevPrevButton.setToolTipText("schnell zur\u00fcck");
+        prevPrevButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         prevPrevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prevPrevButtonActionPerformed(evt);
             }
         });
-
+        
         add(prevPrevButton);
-
+        
         prevButton.setFont(new java.awt.Font("Dialog", 0, 12));
         prevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/prev.gif")));
         prevButton.setToolTipText("vorherige Schicht");
+        prevButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         prevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prevButtonActionPerformed(evt);
             }
         });
-
+        
         add(prevButton);
-
+        
         nextButton.setFont(new java.awt.Font("Dialog", 0, 12));
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/next.gif")));
         nextButton.setToolTipText("n\u00e4chste Schicht");
+        nextButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
             }
         });
-
+        
         add(nextButton);
-
+        
         nextNextButton.setFont(new java.awt.Font("Dialog", 0, 12));
         nextNextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/next10.gif")));
         nextNextButton.setToolTipText("schnell vorw\u00e4rts");
+        nextNextButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         nextNextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextNextButtonActionPerformed(evt);
             }
         });
-
+        
         add(nextNextButton);
-
+        
         lastButton.setFont(new java.awt.Font("Dialog", 0, 12));
         lastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/last.gif")));
         lastButton.setToolTipText("letzte Schicht");
+        lastButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         lastButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lastButtonActionPerformed(evt);
             }
         });
-
+        
         add(lastButton);
-
+        
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12));
         add(jLabel1);
-
+        
         zoomInButton.setFont(new java.awt.Font("Dialog", 0, 12));
         zoomInButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/zoom_in.gif")));
+        zoomInButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         zoomInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zoomInButtonActionPerformed(evt);
             }
         });
-
+        
         add(zoomInButton);
-
+        
         zoomOutButton.setFont(new java.awt.Font("Dialog", 0, 12));
         zoomOutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/zoom_out.gif")));
+        zoomOutButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         zoomOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zoomOutButtonActionPerformed(evt);
             }
         });
-
+        
         add(zoomOutButton);
-
+        
         rotateLeftButton.setFont(new java.awt.Font("Dialog", 0, 12));
         rotateLeftButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/rotate_left.gif")));
+        rotateLeftButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         rotateLeftButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rotateLeftButtonActionPerformed(evt);
             }
         });
-
+        
         add(rotateLeftButton);
-
+        
         rotateRightButton.setFont(new java.awt.Font("Dialog", 0, 12));
         rotateRightButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/rotate_right.gif")));
         rotateRightButton.setDoubleBuffered(true);
+        rotateRightButton.setMargin(new java.awt.Insets(1, 1, 1, 1));
         rotateRightButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rotateRightButtonActionPerformed(evt);
             }
         });
-
+        
         add(rotateRightButton);
-
+        
     }//GEN-END:initComponents
 
     private void rotateRightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rotateRightButtonActionPerformed

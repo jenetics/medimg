@@ -1,4 +1,4 @@
-/*
+/**
  * Util.java
  *
  * Created on 14. Januar 2002, 11:31
