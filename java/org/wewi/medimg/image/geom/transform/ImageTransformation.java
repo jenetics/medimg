@@ -1,19 +1,3 @@
-/* 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
-
 /**
  * ImageTransformation.java
  * 
@@ -84,11 +68,12 @@ public abstract class ImageTransformation implements Transformation {
             target[2] = z;
             
             getTransformation().transformBackward(target, source);
-            
+
             int sx = (int)Math.round(source[0]);
             int sy = (int)Math.round(source[1]);
             int sz = (int)Math.round(source[2]);
-            
+
+           
             Dimension dim = getSourceImage().getDimension();
             if (sx > dim.getMaxX() || sx < dim.getMinX() ||
                 sy > dim.getMaxY() || sy < dim.getMinY() ||
@@ -96,7 +81,6 @@ public abstract class ImageTransformation implements Transformation {
             
                 return 0;
             }
-            
             return getSourceImage().getColor(sx, sy, sz);
         }
     }
@@ -154,9 +138,7 @@ public abstract class ImageTransformation implements Transformation {
      * @return Image transformed image.
      */
     public Image transform(Image source, ImageFactory factory) {
-        //System.out.println("dim" + source.getDimension());
         Dimension dim = transform(source.getDimension());
-        //System.out.println("dim" + dim);
         Image target = null;
         try {
             target = factory.createImage(dim);
@@ -173,7 +155,6 @@ public abstract class ImageTransformation implements Transformation {
     public void transform(Image source, Image target) {
         target.resetColor(0);
         target.setColorConversion(source.getColorConversion());
-        //System.out.println("B" + target.getColorConversion());
         interpolator.setSourceImage(source);
         
         ImageLoop loop = new ImageLoop(target, new ImageLoop.Task() {
