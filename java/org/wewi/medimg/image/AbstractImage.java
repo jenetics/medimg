@@ -52,20 +52,19 @@ abstract class AbstractImage implements Image, RandomAccess {
     /**************************************************************************/
     
     private  DiscreteData data;
+    private AbstractImageHeader header;
     
     private ColorRange colorRange = null;
     private int minColor = Integer.MIN_VALUE;
     private int maxColor = Integer.MAX_VALUE;
+    private ColorConversion colorConversion;
     
+    private Dimension dimension;
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int sizeX, sizeY, sizeZ;
     private int sizeXY;
     private int size;    
-    private Dimension dimension;
-    
-    private ImageDataHeader header;
-    private ColorConversion colorConversion;
     
     
     
@@ -85,20 +84,20 @@ abstract class AbstractImage implements Image, RandomAccess {
     }
     
     public AbstractImage(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-        init(minX, maxX, minY, maxY, minZ, maxZ, new ImageDataHeader(this));
+        init(minX, maxX, minY, maxY, minZ, maxZ, new AbstractImageHeader(this));
     }
      
     public AbstractImage(int sizeX, int sizeY, int sizeZ) {
-        init(0, sizeX-1, 0, sizeY-1, 0, sizeZ-1, new ImageDataHeader(this));
+        init(0, sizeX-1, 0, sizeY-1, 0, sizeZ-1, new AbstractImageHeader(this));
     }
     
-    void init(Dimension dim, ImageDataHeader header) {
+    void init(Dimension dim, AbstractImageHeader header) {
         init(dim.getMinX(), dim.getMaxX(),
              dim.getMinY(), dim.getMaxY(),
              dim.getMinZ(), dim.getMaxZ(), header);    
     }
    
-    void init(int minX, int maxX, int minY, int maxY, int minZ, int maxZ, ImageDataHeader header) {
+    void init(int minX, int maxX, int minY, int maxY, int minZ, int maxZ, AbstractImageHeader header) {
         this.minX = minX;
         this.minY = minY;
         this.minZ = minZ;
@@ -119,7 +118,6 @@ abstract class AbstractImage implements Image, RandomAccess {
         data = createDiscreteData(size);   
     }   
     
-
     protected abstract DiscreteData createDiscreteData(int size);    
    
     public int getColor(int x, int y, int z) {

@@ -31,13 +31,13 @@ public class IntImageDataFactory implements ImageFactory, Singleton {
      * Erzeugen eines neuen ImageData
      */
     public synchronized Image createImage(int maxX, int maxY, int maxZ) {
-        return new ImageData(maxX, maxY, maxZ);
+        return new IntImageData(maxX, maxY, maxZ);
     }
     
     /**
      * Erzeugen eines neuen ImageData
      */    
     public synchronized Image createImage(Dimension dim) {
-        return new ImageData(dim);    
+        return new IntImageData(dim);    
     }
 }
