@@ -13,7 +13,7 @@ package org.wewi.medimg.image;
  * @version 0.1
  * 
  */
-public class RGBColorConversion implements ColorConversion {
+public final class RGBColorConversion implements ColorConversion {
     
     public RGBColorConversion() {
     }
@@ -23,9 +23,9 @@ public class RGBColorConversion implements ColorConversion {
 	 */
     public int convert(int[] rgb) {;
     	int r = rgb[0];
-    	r *= 256;
+        r = r << 8; //r *= 256;
     	r += rgb[1];
-    	r *= 256;
+    	r = r << 8; //r *= 256;
     	r += rgb[2];
     	return r;
     }
@@ -35,11 +35,11 @@ public class RGBColorConversion implements ColorConversion {
 	 */
     public void convert(int grey, int[] rgb) {
     	int g = grey;   	
-	    rgb[2] = (g%256);
-	    g /= 256;
-	    rgb[1] = (g%256);
-	    g /= 256;
-	    rgb[0] = (g%32);
+	    rgb[2] = g & 0x00FF;  //rgb[2] = (g%256);
+	    g = g >> 8;           //g /= 256;
+	    rgb[1] = g & 0x00FF;  //rgb[1] = (g%256);
+	    g = g >> 8;           //g /= 256;
+	    rgb[0] = g & 0x00FF;  //rgb[0] = (g%256);
     }
     
     public Object clone() {

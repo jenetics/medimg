@@ -10,7 +10,7 @@ import java.util.RandomAccess;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-abstract class AbstractImage implements Image, RandomAccess {
+public abstract class AbstractImage implements Image, RandomAccess {
 
     private final class AbstractImageVoxelIterator implements VoxelIterator {
         private int pos;
@@ -51,7 +51,7 @@ abstract class AbstractImage implements Image, RandomAccess {
     } 
     /**************************************************************************/
     
-    private  DiscreteData data;
+    private DiscreteData data;
     private AbstractImageHeader header;
     
     private ColorRange colorRange = null;
@@ -132,7 +132,7 @@ abstract class AbstractImage implements Image, RandomAccess {
         data.set(sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX), color);
     }
     
-    public void setColor(int pos, int color) {
+    public final void setColor(int pos, int color) {
         data.set(pos, color);
     } 
 
