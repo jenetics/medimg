@@ -27,9 +27,11 @@ public final class FeatureImage implements Image {
     
     private int maxX, maxY, maxZ, size;
     private int minX, minY, minZ;
-    private int sizeX, sizeY, sizeZ;
+    private int sizeX, sizeY, sizeZ, sizeXY;
     private int nfeatures;
     private double[] meanValues;
+    private int[] n6 = new int[6];
+    private int[] n12 = new int[12];
     
     private FeatureImageHeader header;
 
@@ -43,6 +45,7 @@ public final class FeatureImage implements Image {
         maxY = fi.maxY;
         maxZ = fi.maxZ;
         size = fi.size;
+        sizeXY = fi.sizeXY;
         nfeatures = fi.nfeatures;
         
         features = new byte[size];
@@ -65,6 +68,7 @@ public final class FeatureImage implements Image {
         minX = minY = minZ = 0;
         nfeatures = nf;
         size = sizeX*sizeY*sizeZ;
+        sizeXY = sizeX*sizeY;
         
         features = new byte[size];
         featuresOld = new byte[size];
@@ -79,16 +83,8 @@ public final class FeatureImage implements Image {
         return nfeatures;
     }
     
-    public boolean hasDifferentNeighbors(int x, int y, int z) {
-        return true;
-    }
-    
-    public boolean hasDifferentNeighbors(int pos) {
-        return true;
-    }
-    
     public byte getFeature(int x, int y, int z) {
-        return features[sizeX*sizeY*z + sizeX*y + x];
+        return features[sizeXY*z + sizeX*y + x];
     }
     
     public byte getFeature(int pos) {
@@ -96,11 +92,15 @@ public final class FeatureImage implements Image {
     }
 
     public byte getOldFeature(int x, int y, int z) {
-        return featuresOld[(sizeX*sizeY*z + sizeX*y + x)];
+        return featuresOld[(sizeXY*z + sizeX*y + x)];
+    }
+    
+    public byte getOldFeature(int pos) {
+        return featuresOld[pos];
     }
 
     public void setFeature(int x, int y, int z, byte f) {
-        int pos = (sizeX*sizeY*z + sizeX*y + x);
+        int pos = (sizeXY*z + sizeX*y + x);
         featuresOld[pos] = features[pos];
         features[pos] = f;
     } 
@@ -108,6 +108,32 @@ public final class FeatureImage implements Image {
     public void setFeature(int pos, byte f) {
         featuresOld[pos] = features[pos];
         features[pos] = f;  
+    }
+    
+    public int[] getNeighbor3D6Positions(int pos) {
+        n6[0] = pos - 1;
+        n6[1] = pos + 1;
+        n6[2] = pos - sizeX;
+        n6[3] = pos + sizeX;
+        n6[4] = pos - sizeXY;
+        n6[5] = pos + sizeXY;
+        return n6;
+    }
+    
+    public int[] getNeighbor3D12Positions(int pos) {
+        n12[0] = pos - 1 - sizeXY;
+        n12[1] = pos - 1 + sizeXY;
+        n12[2] = pos - 1 - sizeX;
+        n12[3] = pos - 1 + sizeX;
+        n12[4] = pos + 1 - sizeXY;
+        n12[5] = pos + 1 + sizeXY;
+        n12[6] = pos + 1 - sizeX;
+        n12[7] = pos + 1 + sizeX;
+        n12[8] = pos - sizeX - sizeXY;
+        n12[9] = pos - sizeX + sizeXY;
+        n12[10] = pos + sizeX - sizeXY;
+        n12[11] = pos + sizeX + sizeXY;
+        return n12;
     }
     
     public void setMeanValues(double[] mv) {

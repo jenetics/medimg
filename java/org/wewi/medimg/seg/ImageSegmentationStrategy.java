@@ -7,7 +7,7 @@
 package org.wewi.medimg.seg;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.FeatureData;
+import org.wewi.medimg.image.FeatureImage;
 
 import java.util.Vector;
 import java.util.Iterator;
@@ -21,7 +21,7 @@ public abstract class ImageSegmentationStrategy implements SegmentationStrategy 
     private Vector listeners;
     
     protected Image image;
-    protected FeatureData featureData;
+    protected FeatureImage featureImage;
     
     public ImageSegmentationStrategy(Image image) {
         this.image = image;
@@ -64,8 +64,8 @@ public abstract class ImageSegmentationStrategy implements SegmentationStrategy 
         }
     }    
     
-    public FeatureData getFeatureData() {
-        return featureData;
+    public FeatureImage getFeatureImage() {
+        return featureImage;
     }
     
     public Image getImage() {
