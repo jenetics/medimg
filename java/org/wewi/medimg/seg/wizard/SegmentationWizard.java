@@ -1,4 +1,4 @@
-/*
+/**
  * SegmentationWizard.java
  *
  * Created on 7. April 2002, 12:12
@@ -64,7 +64,7 @@ public class SegmentationWizard extends Wizard {
             }
 
             /**************************************************************/
-            wizard.getLogger().info("Das Bild wird gerade geladen...");
+            wizardLogger.info("Das Bild wird gerade geladen...");
             /**************************************************************/
 
             ImageReaderThread readerThread = new ImageReaderThread(imageReader);
@@ -132,7 +132,7 @@ public class SegmentationWizard extends Wizard {
             try {
                 algorithm.interruptAlgorithm();
             } catch (UnsupportedOperationException e) {
-                //nichts
+                getLogger().warning("interruptAlgorithm not implemented");
             }  
         }
         
@@ -146,7 +146,7 @@ public class SegmentationWizard extends Wizard {
             try {
                 algorithm.resumeAlgorithm();               
             } catch (UnsupportedOperationException e) {
-                //nichts
+                getLogger().warning("resumeAlgorithm not implemented");
             }    
         }
         
@@ -158,14 +158,9 @@ public class SegmentationWizard extends Wizard {
             
             algorithm = (InterruptableAlgorithm)segmenter;
             try {
-                algorithm.cancelAlgorithm();
-                wizard.setClosable(true);
-                wizard.closeButton.setEnabled(true);
-                wizard.startButton.setEnabled(true); 
-                wizard.cancelButton.setEnabled(false);
-                wizard.cancelButton.setEnabled(false);               
+                algorithm.cancelAlgorithm();             
             } catch (UnsupportedOperationException e) {
-                //nichts
+                getLogger().warning("cancleAlgorithm not implemented");
             }    
         }
         
@@ -194,7 +189,7 @@ public class SegmentationWizard extends Wizard {
             wizard.cancelButton.setEnabled(false);
             
             /**************************************************************/
-            wizard.getLogger().info("Segmentiervorgang beendet");
+            wizardLogger.info("Segmentiervorgang beendet");
             /**************************************************************/ 
             
            if (twinImageViewer != null) {
@@ -207,7 +202,7 @@ public class SegmentationWizard extends Wizard {
          */
         public void segmenterStarted(SegmenterEvent event) {
             /**************************************************************/
-            wizard.getLogger().info("Segmentiervorgang gestartet");
+            wizardLogger.info("Segmentiervorgang gestartet");
             /**************************************************************/
         }
         
@@ -228,6 +223,8 @@ public class SegmentationWizard extends Wizard {
     
     private SegmentationWizardPreferences swPrefs;
     
+    private Logger wizardLogger;
+    
     /**
      * Erzeugen eines neuen SegmentationWizards.
      */
@@ -244,6 +241,7 @@ public class SegmentationWizard extends Wizard {
      */
     private void init() {
         swPrefs = SegmentationWizardPreferences.getInstance();
+        wizardLogger = Logger.getLogger(SegmentationWizard.class.getName());
         
         setPreferredSize(swPrefs.getWizardDimension());
         setLocation(swPrefs.getWizardLocation());
@@ -264,7 +262,7 @@ public class SegmentationWizard extends Wizard {
         }
         setSegmenterArgumentPanel(panel);
         
-        addLoggerHandler(logHandlerPanel.getHandler());
+        wizardLogger.addHandler(logHandlerPanel.getHandler());
         
         cancelButton.setEnabled(true);
     }    
@@ -292,14 +290,6 @@ public class SegmentationWizard extends Wizard {
         segmenterPanel.add(panel);
         
         segmenterPanel.updateUI();
-    }
-    
-    /**
-     * Ist für die Hilfsklassen notwendig, da der direkte 
-     * Zugriff auf die logger Variable nicht funktioniert.
-     */
-    private Logger  getLogger() {
-        return logger;    
     }
     
     public void dispose() {
@@ -556,7 +546,7 @@ public class SegmentationWizard extends Wizard {
             setClosed(true);
             Viewer.getInstance().removeWizard(this);
         } catch (PropertyVetoException pve) {
-            //Zur Zeit nichts
+            logger.throwing(getClass().getName(), "frameInternalFrameClosed()", pve);
         }
     }//GEN-LAST:event_formInternalFrameClosed
     
@@ -584,27 +574,27 @@ public class SegmentationWizard extends Wizard {
     }//GEN-LAST:event_imageDataSearchButtonActionPerformed
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton imageDataSearchButton;
-    private javax.swing.JPanel northPanel;
-    private javax.swing.JPanel wizardStep3;
-    private javax.swing.JPanel jPanel24;
-    private javax.swing.JPanel wizardStep2;
-    private javax.swing.JPanel wizardStep1;
-    private javax.swing.JPanel southPanel;
-    private javax.swing.JPanel ws3NorthPanel;
-    private javax.swing.JButton startButton;
     private javax.swing.JComboBox segEnumComboBox;
-    private javax.swing.JPanel centerPanel;
-    private javax.swing.JPanel ws3SouthPanel;
     private javax.swing.JTabbedPane wizardTappedPanel;
-    private javax.swing.JPanel comboBoxPanel;
-    private javax.swing.JPanel ws3CenterPanel;
+    private javax.swing.JPanel segmenterPanel;
+    private javax.swing.JPanel wizardStep2;
+    private javax.swing.JPanel wizardStep3;
+    private javax.swing.JPanel southPanel;
+    private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel centerPanel;
     private javax.swing.JPanel jPanel30;
+    private javax.swing.JPanel ws3SouthPanel;
+    private javax.swing.JButton startButton;
+    private javax.swing.JPanel ws3NorthPanel;
+    private javax.swing.JPanel wizardStep1;
     private javax.swing.JTextField imageDataSourceTextField;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton closeButton;
-    private javax.swing.JPanel segmenterPanel;
+    private javax.swing.JButton imageDataSearchButton;
     private javax.swing.JPanel jPanel28;
+    private javax.swing.JPanel comboBoxPanel;
+    private javax.swing.JPanel northPanel;
+    private javax.swing.JButton closeButton;
+    private javax.swing.JPanel ws3CenterPanel;
     // End of variables declaration//GEN-END:variables
         
 }

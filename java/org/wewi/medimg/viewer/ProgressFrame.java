@@ -6,6 +6,8 @@
 
 package org.wewi.medimg.viewer;
 
+import java.awt.Point;
+
 
 /**
  *
@@ -16,6 +18,15 @@ public class ProgressFrame extends ViewerDesktopFrame {
     /** Creates new form ProgressFrame */
     public ProgressFrame() { 
         initComponents();
+        init();
+    }
+    
+    private void init() {
+        Viewer v = Viewer.getInstance();
+        Point p = new Point(v.getWidth()/2 - getWidth()/2, 
+                            v.getHeight()/2 - getHeight()/2 - 50);  
+        //Point p = new Point(10, 10);
+        setLocation(p);  
     }
     
     public void setProgress(double progress) {

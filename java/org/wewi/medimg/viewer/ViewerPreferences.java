@@ -1,4 +1,4 @@
-/*
+/**
  * ViewerPreferences.java
  *
  * Created on 1. Juli 2002, 22:06
@@ -8,7 +8,10 @@ package org.wewi.medimg.viewer;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+
+import javax.swing.UIManager;
 
 import org.wewi.medimg.util.Singleton;
 
@@ -24,15 +27,19 @@ final class ViewerPreferences implements Singleton {
     
     private static ViewerPreferences singleton = null;
     
+    private Logger logger;
+    
     /** Creates a new instance of ViewerPreferences */
     private ViewerPreferences() {
+        logger = Logger.getLogger(Viewer.class.getName());
+        
         userRoot = Preferences.userRoot();
         try {
             //if (!userRoot.nodeExists("org.wewi.medimg.viewer.Viewer")) {
                 viewerNode = userRoot.node("org.wewi.medimg.viewer.Viewer");
             //}
         } catch (Exception e) {
-            System.out.println("ViewerPreferences: " + e);
+            logger.throwing(ViewerPreferences.class.getName(), "ViewerPreferences()", e);
         }
     }
     
@@ -56,7 +63,7 @@ final class ViewerPreferences implements Singleton {
         try {
             viewerNode.sync();  
         } catch (Exception e) {
-            System.out.println("ViewerPreferences.setViewerDimension: " + e);
+            logger.throwing(ViewerPreferences.class.getName(), "setViewerDimension()", e);
         }
     }
     
@@ -74,7 +81,7 @@ final class ViewerPreferences implements Singleton {
         try {
             viewerNode.sync();  
         } catch (Exception e) {
-            System.out.println("ViewerPreferences.setViewerLocation: " + e);
+            logger.throwing(ViewerPreferences.class.getName(), "setViewerLocation()", e);
         }        
     }
     
@@ -88,8 +95,34 @@ final class ViewerPreferences implements Singleton {
         try {
             viewerNode.sync();  
         } catch (Exception e) {
-            System.out.println("ViewerPreferences.setViewerLocation: " + e);
+            logger.throwing(ViewerPreferences.class.getName(), "getMostRecentFile()", e);
         }         
     }
     
+    public String getLookAndFeelClassName() {
+        return viewerNode.get("VIEWER_LOOK_AND_FEEL_CLASS_NAME", 
+                               UIManager.getCrossPlatformLookAndFeelClassName());   
+    }
+    
+    public void setLookAndFeelClassName(String name) {
+        viewerNode.put("VIEWER_LOOK_AND_FEEL_CLASS_NAME", name);
+        
+        try {
+            viewerNode.sync();  
+        } catch (Exception e) {
+            logger.throwing(ViewerPreferences.class.getName(), "setLookAndFeelClassName", e);
+        }            
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+

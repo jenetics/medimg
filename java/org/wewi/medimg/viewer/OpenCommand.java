@@ -1,4 +1,4 @@
-/*
+/**
  * OpenCommand.java
  *
  * Created on 27. Juni 2002, 22:38
@@ -37,7 +37,8 @@ final class OpenCommand implements Command, ImageIOProgressListener {
     }
     
     public OpenCommand(Viewer viewer, String file) {
-        this(viewer);    
+        this(viewer);  
+        selectedFile = file;
     }
     
     

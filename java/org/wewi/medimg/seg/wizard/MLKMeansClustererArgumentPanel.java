@@ -1,21 +1,21 @@
-    /*
-     * MLKMeansClustererArgumentPanel.java
-     *
-     * Created on 11. August 2002, 21:16
-     */
-    
-    package org.wewi.medimg.seg.wizard;
-    
-    import org.wewi.medimg.seg.ObservableSegmenter;
-    import org.wewi.medimg.seg.stat.MLKMeansClusterer;
-    
-    /**
-     *
-     * @author  Franz Wilhelmstötter 
-     * @version 0.1
-     */
+/**
+ * MLKMeansClustererArgumentPanel.java
+ *
+ * Created on 11. August 2002, 21:16
+ */
+
+package org.wewi.medimg.seg.wizard;
+
+import org.wewi.medimg.seg.ObservableSegmenter;
+import org.wewi.medimg.seg.stat.MLKMeansClusterer;
+
+/**
+ *
+ * @author  Franz Wilhelmstötter 
+ * @version 0.1
+ */
 public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel { 
-    private int nfeatures = 1;
+    private int nfeatures = 2;
     
     /** Creates new form MLKMeansClustererArgumentPanel */
     public MLKMeansClustererArgumentPanel() { 
@@ -39,16 +39,16 @@ public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
 
         setBorder(new javax.swing.border.TitledBorder(null, "ML-Segmentierer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12)));
         propertyLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        propertyLabel.setText("Anzahl der Merkmale:    1");
+        propertyLabel.setText("  Anzahl der Merkmale:    2");
         add(propertyLabel);
 
-        nfeatureSlide.setMajorTickSpacing(15);
-        nfeatureSlide.setMaximum(15);
-        nfeatureSlide.setMinimum(1);
+        nfeatureSlide.setMajorTickSpacing(5);
+        nfeatureSlide.setMaximum(20);
+        nfeatureSlide.setMinimum(2);
         nfeatureSlide.setMinorTickSpacing(1);
         nfeatureSlide.setPaintTicks(true);
         nfeatureSlide.setSnapToTicks(true);
-        nfeatureSlide.setValue(1);
+        nfeatureSlide.setValue(2);
         nfeatureSlide.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 nfeatureSlideStateChanged(evt);
@@ -61,7 +61,7 @@ public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel {
 
     private void nfeatureSlideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nfeatureSlideStateChanged
         nfeatures = nfeatureSlide.getValue();
-        propertyLabel.setText("Anzahl der Merkmale:    " + nfeatures);
+        propertyLabel.setText("  Anzahl der Merkmale:    " + nfeatures);
     }//GEN-LAST:event_nfeatureSlideStateChanged
                
         

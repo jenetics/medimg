@@ -29,7 +29,15 @@ public class FeatureColorConversion implements ColorConversion{
                                   Color.LIGHT_GRAY,
                                   Color.GRAY,
                                   Color.DARK_GRAY,
-                                  Color.ORANGE};
+                                  Color.ORANGE,
+                                  new Color(22, 22, 20),
+                                  new Color(20, 0, 20),
+                                  new Color(80, 21, 20),
+                                  new Color(80, 21, 0),
+                                  new Color(20, 101, 20),
+                                  new Color(120, 21, 20),
+                                  new Color(20, 21, 120),
+                                  new Color(50, 21, 20)};
     private static int colors = c.length;
     private static int[][] cc;
 
