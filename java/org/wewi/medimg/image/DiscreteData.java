@@ -8,7 +8,7 @@ package org.wewi.medimg.image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-interface DiscreteData {
+public interface DiscreteData {
     
     public int get(int pos);
     

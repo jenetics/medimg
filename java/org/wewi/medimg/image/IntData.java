@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-final class IntData implements DiscreteData {
+public final class IntData implements DiscreteData {
     private int[] data;
 
 	/**

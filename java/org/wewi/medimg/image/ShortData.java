@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-final class ShortData implements DiscreteData {
+public final class ShortData implements DiscreteData {
     private short[] data;
 
 	/**
