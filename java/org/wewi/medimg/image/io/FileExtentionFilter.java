@@ -29,6 +29,7 @@ final class FileExtentionFilter implements FileFilter {
         this.to = to;
     }
     
+    /*
     private boolean acceptRange(File file) {
         if (from == Integer.MIN_VALUE && to == Integer.MIN_VALUE) {
             return true;
@@ -46,7 +47,8 @@ final class FileExtentionFilter implements FileFilter {
         
         return (from <= slice && slice <= to);
     }
-
+    */
+    
     public boolean accept(File file) {
         if (file == null) {
             return false;
@@ -54,7 +56,6 @@ final class FileExtentionFilter implements FileFilter {
         if (file.isFile()) {
             return file.getName().toLowerCase().endsWith(extention);
         }
-        return file.getName().toLowerCase().endsWith(extention) &&
-               acceptRange(file);
+        return file.getName().toLowerCase().endsWith(extention);   // && acceptRange(file);
     }
 }

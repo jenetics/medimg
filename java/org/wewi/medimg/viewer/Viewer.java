@@ -253,6 +253,7 @@ public class Viewer extends JFrame implements Singleton,
         String fileName = chooser.getSelectedFile().getAbsolutePath();
         ImageReader reader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
                                                              new File(fileName));
+        //reader.setRange(new Range(101, 130));
         try {
             reader.read();
         } catch (Exception e) {
@@ -264,8 +265,8 @@ public class Viewer extends JFrame implements Singleton,
 
         Image image = reader.getImage();
         ImageViewer iv = new ImageViewer(chooser.getSelectedFile().toString(), image);
-        int sizeX = image.getMaxX();
-        int sizeY = image.getMaxY();
+        int sizeX = image.getMaxX() - image.getMinX() + 1;
+        int sizeY = image.getMaxY() - image.getMinY() + 1;
         iv.setPreferredSize(new Dimension(sizeX, sizeY));            
         iv.pack();
         addViewerDesktopFrame(iv);

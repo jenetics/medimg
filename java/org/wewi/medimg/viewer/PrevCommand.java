@@ -21,7 +21,7 @@ final class PrevCommand implements Command {
 
     public void execute() {
         int slice = imageViewer.getSlice();
-        if (imageViewer.getImage().getMinZ() < slice) {
+        if (imageViewer.getImage().getMinZ() <= slice-1) {
             imageViewer.setSlice(slice-1);
         }
     }

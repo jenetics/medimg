@@ -21,7 +21,7 @@ final class NextCommand implements Command {
 
     public void execute() {
         int slice = imageViewer.getSlice();
-        if (imageViewer.getImage().getMaxZ()-1 > slice+1) {
+        if (imageViewer.getImage().getMaxZ() >= slice+1) {
             imageViewer.setSlice(slice+1);
         }
     }

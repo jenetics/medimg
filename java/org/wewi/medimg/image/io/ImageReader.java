@@ -21,8 +21,9 @@ import java.io.IOException;
  *
  */
 public abstract class ImageReader {
-    protected File source;
     protected ImageFactory imageFactory;
+    protected File source;
+    protected Range range;
     protected ColorConversion colorConversion;
     
     ImageReader() {
@@ -33,6 +34,12 @@ public abstract class ImageReader {
         this.imageFactory = imageFactory;
         this.source = source;
         colorConversion = new GreyRGBConversion();
+        range = new Range(0, Integer.MAX_VALUE);
+    }
+    
+    public ImageReader(ImageFactory imageFactory, File source, Range range) {
+        this(imageFactory, source);
+        this.range = range;
     }
     
     /**
@@ -42,6 +49,14 @@ public abstract class ImageReader {
      */
     File getSource() {
         return source;
+    }
+    
+    public Range getRange() {
+        return range;
+    }
+    
+    public void setRange(Range range) {
+        this.range = range;
     }
     
     /**

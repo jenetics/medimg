@@ -22,6 +22,7 @@ import java.io.DataInputStream;
  */
 public class RawImageDataReader extends ImageReader {
     private Image image;
+    private int minX, minY, minZ;
     private int maxX, maxY, maxZ;
 
     public RawImageDataReader(File source) {
@@ -33,26 +34,31 @@ public class RawImageDataReader extends ImageReader {
     }
     
     private void readHeader(DataInputStream in) throws IOException {
+        minX = in.readInt();
+        minY = in.readInt();
+        minZ = in.readInt();
         maxX = in.readInt();
         maxY = in.readInt();
         maxZ = in.readInt();
     }
     
-    public void read() {
+    public void read() throws ImageIOException {
         try {
             DataInputStream in = new DataInputStream(new FileInputStream(source));
             readHeader(in);
-            image = new ImageData(maxX, maxY, maxZ);
+            int sizeX = maxX - minX + 1;
+            int sizeY = maxY - minY + 1;
+            int sizeZ = maxZ - minZ + 1;
+            image = new ImageData(sizeX, sizeY, sizeZ);
             int size = image.getNVoxels();
             for (int i = 0; i < size; i++) {
                 image.setColor(i, in.readShort());
             }
             in.close();
-        } catch (Exception e) {
-            System.out.println("RawImageReader.read: " + e);
-            e.printStackTrace();
-            image = NullImage.getInstance();
-            return;
+        } catch (IOException ioe) {
+            System.err.println("RawImageReader.read: ");
+            image = new NullImage();
+            throw new ImageIOException("Can't read Image: " + ioe);
         }
     }
     

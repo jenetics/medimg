@@ -63,7 +63,8 @@ public class GreedySnakeMinimizer implements Minimizer {
     }
       
     public void minimize() {       
-        Neighborhood neighbor = new Neighborhood2D4(image.getMaxX(), image.getMaxY());
+        Neighborhood neighbor = new Neighborhood2D4(image.getMinX(), image.getMinY(),
+                                                    image.getMaxX(), image.getMaxY());
         gradImage = (Image)image.clone();
         ImageFilter filter = new SobelFilter(gradImage);
         filter.filter();

@@ -43,14 +43,14 @@ public class RawImageReader extends ImageReader {
             image.getHeader().read(fin);
             int size = image.getNVoxels();
             for (int i = 0; i < size; i++) {
-                image.setColor(i, in.readShort());
+                image.setColor(i, in.readInt());
             }
             in.close();            
         } catch (FileNotFoundException fnfe) {
-            image = NullImage.getInstance();
+            image = new NullImage();
             throw new ImageIOException("" + fnfe);
         } catch (IOException ioe) {
-            image = NullImage.getInstance();
+            image = new NullImage();
             throw new ImageIOException("" + ioe);            
         }
     }

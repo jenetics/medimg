@@ -13,7 +13,7 @@ import org.wewi.medimg.util.Singleton;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class NavigationPanel extends javax.swing.JPanel implements Singleton {
+public final class NavigationPanel extends javax.swing.JPanel implements Singleton {
     private static NavigationPanel singleton = null;
     
     private Command firstCommand;

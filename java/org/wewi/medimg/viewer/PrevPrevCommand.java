@@ -23,7 +23,7 @@ final class PrevPrevCommand implements Command {
 
     public void execute() {
         int slice = imageViewer.getSlice();
-        if (imageViewer.getImage().getMinZ() < slice-stride) {
+        if (imageViewer.getImage().getMinZ() <= slice-stride) {
             imageViewer.setSlice(slice-stride);
         }
     }
