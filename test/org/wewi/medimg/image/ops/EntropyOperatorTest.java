@@ -49,5 +49,19 @@ public class EntropyOperatorTest extends TestCase {
         
         System.out.println("Entropy: " + op.getEntropy());
     }
+    
+    public void testEntropyAnalyzerRandom() {
+        Image image = new ImageData(20, 32, 21); 
+        image.resetColor(32);
+        
+        UnaryPointTransformer transformer = new UnaryPointTransformer(image, new RandomFunction());
+        transformer.transform();
+        
+        EntropyOperator op = new EntropyOperator();
+        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
+        analyzer.analyze();
+        
+        System.out.println("Entropy: " + op.getEntropy());
+    }    
 
 }
