@@ -40,7 +40,7 @@ public class PerspectiveTransformation extends AffineTransformation {
 
     private void init(double[] mat) {
         matrix = new Matrix4d(mat);
-        inverseMatrix = (Matrix4d)matrix.clone();
+        inverseMatrix = new Matrix4d(matrix);
         inverseMatrix.invert();
 
         unmatrix = new UnMatrix(matrix);        
