@@ -11,8 +11,12 @@ package org.wewi.medimg.image;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public interface VoxelIterator {
+public interface VoxelIterator extends Cloneable {
     public boolean hasNext();
     
     public int next();
+    
+    public int size();
+    
+    public Object clone();
 }
