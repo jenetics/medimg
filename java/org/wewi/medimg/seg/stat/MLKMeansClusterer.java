@@ -45,7 +45,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
 
 	/**
 	 *
-	 * @param k Anzahl der zu segmentierenden Merkmalen.
+	 * @param k number of features.
 	 */
     public MLKMeansClusterer(int k) {
         super();
@@ -67,10 +67,9 @@ public class MLKMeansClusterer extends ObservableSegmenter
     }
     
 	/**
-	 * Initialisieren der Anfangsmittelwerte.
-     * Diese werden zufällig erzeugt und danach sortiert.
+	 * Initializing the feature means randomly.
      * 
-	 * @param cr
+	 * @param cr ColorRange of the current image
 	 */
     protected void initMeans(ColorRange cr) {
         Random random = new Random(System.currentTimeMillis());
@@ -90,8 +89,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
     
     
     /**
-     * Formatiert die aktuellen Mittelwerte für
-     * die Ausgabe.
+     * Private formating method.
      */
     private String formatMeanValues() {
         NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);

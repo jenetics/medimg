@@ -149,8 +149,8 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
 
         setLayout(new java.awt.GridLayout(1, 11));
 
+        setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 1, 1, 1)));
         setMinimumSize(new java.awt.Dimension(56, 34));
-        setName("null");
         firstButton.setFont(new java.awt.Font("Dialog", 0, 12));
         firstButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/first.gif")));
         firstButton.setToolTipText("erste Schicht");
@@ -315,17 +315,17 @@ public final class NavigationPanel extends javax.swing.JPanel implements Singlet
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton zoomInButton;
+    private javax.swing.JButton prevButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton prevPrevButton;
     private javax.swing.JButton lastButton;
     private javax.swing.JButton nextNextButton;
-    private javax.swing.JButton prevPrevButton;
-    private javax.swing.JButton rotateLeftButton;
-    private javax.swing.JButton rotateRightButton;
-    private javax.swing.JButton zoomOutButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton nextButton;
-    private javax.swing.JButton prevButton;
     private javax.swing.JButton firstButton;
+    private javax.swing.JButton rotateRightButton;
+    private javax.swing.JButton zoomInButton;
+    private javax.swing.JButton rotateLeftButton;
+    private javax.swing.JButton zoomOutButton;
+    private javax.swing.JButton nextButton;
     // End of variables declaration//GEN-END:variables
     
 }

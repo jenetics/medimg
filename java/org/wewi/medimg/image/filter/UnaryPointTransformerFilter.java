@@ -12,7 +12,7 @@ import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class UnaryPointTransformerFilter extends ImageFilter {
+public final class UnaryPointTransformerFilter extends ImageFilter {
     private UnaryPointTransformerFactory factory;
 
 	/**

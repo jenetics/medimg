@@ -30,7 +30,7 @@ public abstract class ObservableSegmenter extends ObservableAlgorithm
     }
     
     public synchronized void addLoggerHandler(Handler handler) {
-        //Es soll kein Handler doppelt eingefügt werden.
+        //Don't add a handler twice.
         Handler[] handlers = logger.getHandlers();
         for (int i = 0; i < handlers.length; i++) {
             if (handlers[i] == handler) {

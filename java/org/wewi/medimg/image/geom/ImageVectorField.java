@@ -88,7 +88,7 @@ public class ImageVectorField extends AbstractImage {
     }
     
     public void getVector(int x, int y, int z, float[] vector) {
-        getCoordinates(getPosition(x, y, z), temp);
+        getCoordinates(getColor(getPosition(x, y, z)), temp);
         
         vector[0] = temp[0];
         vector[1] = temp[1];

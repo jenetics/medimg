@@ -9,6 +9,7 @@ package org.wewi.medimg.seg;
 import org.wewi.medimg.image.Image;
 
 /**
+ * This interface defines the minimal segmenter methods.
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1

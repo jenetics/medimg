@@ -1,4 +1,4 @@
-/*
+/**
  * MLClassifier.java
  *
  * Created on 24. Juli 2002, 19:34
