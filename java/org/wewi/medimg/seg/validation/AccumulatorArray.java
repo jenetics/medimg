@@ -9,27 +9,39 @@ package org.wewi.medimg.seg.validation;
  * @version 0.1
  */
 public class AccumulatorArray {
-    private int sizex;
-    private int sizey;
+    private int rows;
+    private int cols;
     private int[][] accu;
 
 	/**
 	 * Constructor for AccumulatorArray.
 	 */
-	public AccumulatorArray(int sizex, int sizey) {
-		this.sizex = sizex;
-        this.sizey = sizey;
-        accu = new int[sizex][sizey];
+	public AccumulatorArray(int rows, int cols) {
+		this.rows = rows;
+        this.cols = cols;
+        accu = new int[rows][cols];
         
-        for (int i = 0; i < sizex; i++) {
-            for (int j = 0; j < sizey; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 accu[i][j] = 0;   
             }    
         }
 	}
     
-    public void inc(int x, int y) {
-        ++accu[x][y];    
+    public void inc(int row, int col) {
+        ++accu[row][col];    
+    }
+    
+    public int getRows() {
+        return rows;    
+    }
+    
+    public int getCols() {
+        return cols;    
+    }
+    
+    public int getValue(int row, int col) {
+        return accu[row][col];    
     }
 
 }
