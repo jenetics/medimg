@@ -1,4 +1,6 @@
 /* 
+ * MarginImage.java, created on 13.11.2002 15:53:02
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,12 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 13.11.2002 15:53:02
- *
- */
 package org.wewi.medimg.image;
-
 
 
 /**
@@ -47,17 +44,10 @@ public class MarginImage extends AbstractImage {
     }
     
 
-    /**
-     * Constructor for MarginImage.
-     */
     public MarginImage(Image image, int margin) {
         this(image, image.getMinZ(), margin);              
     }
 
-    /**
-     * Constructor for MarginImage.
-     * @param id
-     */
     private MarginImage(MarginImage id) {
         super(id);
     }
@@ -112,42 +102,9 @@ public class MarginImage extends AbstractImage {
     protected ImageData createImageData(int size) {
         return new IntData(size);
     }
-
-    /**
-     * @see java.lang.Object#clone()
-     */
+    
     public Object clone() {
-        return new MarginImage(this);
+    	return new MarginImage(this);
     }
-    
-    
-    
-    /*
-    public static void main(String[] args) {
-        ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-                                           new File("../../data/nhead/t1.n3.rf20/image.0045.tif")); 
-                                           
-        try {
-            reader.read();
-        } catch (ImageIOException e) {
-            System.out.println("MarginImage: " + e); 
-            return;
-        }    
-        
-        Image image = reader.getImage();
-        MarginImage mimage = new MarginImage(image, 50);
-        //mimage = new MarginImage(mimage, 50);
-        
-        ImageWriter writer = new TIFFWriter(mimage, new File("X:/margin.image.tif"));
-        try {
-            writer.write();
-        } catch (ImageIOException e) {
-        }
-        
-        
-        
-        
-    }
-    */
     
 }

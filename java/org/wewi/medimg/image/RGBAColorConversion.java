@@ -1,4 +1,6 @@
 /* 
+ * RGBAColorConversion.java, created on 24.10.2002 20:12:38
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 24.10.2002 20:12:38
- *
- */
+
 package org.wewi.medimg.image;
 
 /**
@@ -26,16 +25,10 @@ package org.wewi.medimg.image;
  */
 public class RGBAColorConversion implements ColorConversion {
 
-    /**
-     * Constructor for RGBAColorConversion.
-     */
     public RGBAColorConversion() {
         super();
     }
 
-    /**
-     * @see org.wewi.medimg.image.ColorConversion#convert(int[])
-     */
     public int convert(int[] rgba) {;
         int r = rgba[0];
         r = r << 8; //r *= 256;
@@ -46,10 +39,7 @@ public class RGBAColorConversion implements ColorConversion {
         r += rgba[3];
         return r;
     }
-    
-    /**
-     * @see org.wewi.medimg.image.ColorConversion#convert(int, int[])
-     */
+
     public void convert(int grey, int[] rgba) {
         int g = grey;   
         rgba[3] = g & 0x00FF;
@@ -62,7 +52,12 @@ public class RGBAColorConversion implements ColorConversion {
     }
     
     public Object clone() {
-        return new RGBAColorConversion();    
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }   
     }
     
     public String toString() {

@@ -44,10 +44,10 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
         boolean temp;
         
         for (int i = 0, n = rois.length; i < n; i++) {
-            walk = new RandomWalk(rois[i], source, 1500);
+            walk = new RandomWalk(rois[i], source, 40);
             walk.walk(color);
             if ((start = walk.getReferencePoint()) != null) {
-                walk = new RandomWalk(rois[i], target, 1500);
+                walk = new RandomWalk(rois[i], target, 40);
                 walk.walk(color);
                 if ((end = walk.getReferencePoint()) != null) {
                     if (dive) {
@@ -94,21 +94,21 @@ public class MonteCarloWarping extends MultipleFeatureRegistrator {
         IrregularDisplacementField field = new IrregularDisplacementField();
         
         ROI[] rois;
-        int m = 0;
+        int m = 3;
         //m = strideX/offsetX;
-        int l = 0;
+        int l = 4;
         //l = strideY/offsetY;
         int split = 0;
         
         for (int h = 0; h <= split; h++) {
         for (int j = 0; j <= m; j++) {
             for (int k = 0; k <= l; k++) {
-                System.out.println("Hallo" + j + " " + k);
+                //System.out.println("Hallo" + j + " " + k);
                 shrinked = new Dimension(Math.min(roi.getMinX() + j * offsetX, roi.getMaxX()), roi.getMaxX(),
                                           Math.min(roi.getMinY() + k * offsetY, roi.getMaxY()), roi.getMaxY(),
                                           roi.getMinZ(), roi.getMaxZ());
                 offsetted = ROI.create(shrinked);                                      
-                rois = offsetted.split(43 + h * 10, 47 + h * 10, 1);
+                rois = offsetted.split(11 + h * 10, 13 + h * 10, 1);
                 createVectors(rois, sourceI, targetI, field, true, color);
             }
         }

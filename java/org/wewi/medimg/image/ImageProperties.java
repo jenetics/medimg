@@ -1,4 +1,6 @@
 /* 
+ * ImageProperties.java, created on 13.02.2003, 15:32:55
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,12 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * ImageProperties.java
- * 
- * Created on 13.02.2003, 15:32:55
- *
- */
+
 package org.wewi.medimg.image;
 
 import java.util.Iterator;
@@ -28,6 +25,8 @@ import java.util.Map;
 
 import org.jdom.Verifier;
 import org.wewi.medimg.util.ListMap;
+
+
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1

@@ -133,6 +133,7 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
                 relationshipWeight = ((weight[i]) / weightSum);
             }
             trans = trans.interpolate(transformation[i], relationshipWeight);
+            System.out.println("Nach der  " + i + ". Interpolation" + trans);
         }
         // wenn alle Gewichte 0 waren
         /*if (weightSum == 0) {

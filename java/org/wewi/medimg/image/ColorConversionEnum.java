@@ -1,4 +1,6 @@
 /* 
+ * ColorConversionEnum.java
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -37,12 +39,9 @@ public class ColorConversionEnum extends Enumeration {
                                                          RGBA_CC,
                                                          PSEUDO_CC};
                                                          
-    private String name;
+    private final String name;
 
-    /**
-     * Constructor for ColorConversionEnumeration.
-     * @param t
-     */
+
     private ColorConversionEnum(int t, String name) {
         super(t);
         this.name = name;

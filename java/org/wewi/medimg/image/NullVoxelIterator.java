@@ -1,4 +1,6 @@
 /* 
+ * NullVoxelIterator.java, created on 17.08.2002
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 17.08.2002
- *
- */package org.wewi.medimg.image;
+package org.wewi.medimg.image;
 
 /**
  * @author Franz Wilhelmstötter
@@ -28,23 +27,14 @@ public class NullVoxelIterator implements VoxelIterator {
     public NullVoxelIterator() {
     }
 
-    /**
-     * @see java.lang.Object#clone()
-     */
     public Object clone() {
         return new NullVoxelIterator();
     }
 
-    /**
-     * @see org.wewi.medimg.image.VoxelIterator#hasNext()
-     */
     public boolean hasNext() {
         return false;
     }
 
-    /**
-     * @see org.wewi.medimg.image.VoxelIterator#next()
-     */
     public int next() {
         return 0;
     }
@@ -57,9 +47,6 @@ public class NullVoxelIterator implements VoxelIterator {
         return 0;    
     }
     
-    /**
-     * @see org.wewi.medimg.image.VoxelIterator#size()
-     */
     public int size() {
         return 0;
     }

@@ -1,4 +1,6 @@
 /* 
+ * RGBGreyColorConversion.java, created on 1. Juli 2002, 21:35
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,17 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * RGBGreyColorConversion.java
- *
- * Created on 1. Juli 2002, 21:35
- */
-
 package org.wewi.medimg.image;
 
 
 /**
- *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  * 
@@ -34,9 +29,6 @@ public final class RGBColorConversion implements ColorConversion {
     public RGBColorConversion() {
     }
     
-    /**
-     * @see org.wewi.medimg.image.ColorConversion#convert(int[])
-     */
     public int convert(int[] rgb) {;
         int r = rgb[0];
         r = r << 8; //r *= 256;
@@ -46,9 +38,6 @@ public final class RGBColorConversion implements ColorConversion {
         return r;
     }
     
-    /**
-     * @see org.wewi.medimg.image.ColorConversion#convert(int, int[])
-     */
     public void convert(int grey, int[] rgb) {
         int g = grey;       
         rgb[2] = g & 0x00FF;  //rgb[2] = (g%256);
@@ -59,7 +48,12 @@ public final class RGBColorConversion implements ColorConversion {
     }
     
     public Object clone() {
-        return new RGBColorConversion();    
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     public String toString() {

@@ -1,4 +1,6 @@
 /* 
+ * Tissue.java, created on 26. März 2002, 16:42
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -23,11 +25,10 @@
 package org.wewi.medimg.image;
 
 /**
- *
  * @author  Werner Weiser
  * @version 0.1
  */
-public class Tissue {
+public final class Tissue {
     public static final Tissue VENTRICLE = new Tissue(0, "VENTRICLE");
     public static final Tissue BONE = new Tissue(1, "BONE");
     public static final Tissue FAT = new Tissue(2, "FAT");
@@ -38,7 +39,14 @@ public class Tissue {
     public static final Tissue DEEP_TISSUE = new Tissue(7, "DEEP_TISSUE");
     public static final Tissue UNDEFINED = new Tissue(10, "UNDEFINED");    
     
-    public static final Tissue[] TISSUES = {VENTRICLE, BONE, FAT, GREY_MATTER, WHITE_MATTER, SOFT_TISSUE, ANGULAR_GYRUS, DEEP_TISSUE};
+    public static final Tissue[] TISSUES = {VENTRICLE, 
+    	                                    BONE, 
+    	                                    FAT, 
+    	                                    GREY_MATTER, 
+    	                                    WHITE_MATTER, 
+    	                                    SOFT_TISSUE, 
+    	                                    ANGULAR_GYRUS, 
+    	                                    DEEP_TISSUE};
     
     private final int val;
     private final String name;

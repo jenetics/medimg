@@ -1,4 +1,6 @@
 /* 
+ * GreyColorConversion.java, created on 09.08.2002
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 09.08.2002
- *
- */
 package org.wewi.medimg.image;
 
 import java.io.IOException;
@@ -40,18 +38,12 @@ public class GreyColorConversion implements ColorConversion {
         diffBits = bits - 8;
     }
 
-    /**
-     * @see org.wewi.medimg.image.ColorConversion#convert(int, int[])
-     */
     public void convert(int grey, int[] rgb) {
         rgb[0] = grey >> diffBits;
         rgb[1] = rgb[0];
         rgb[2] = rgb[0];        
     }
 
-    /**
-     * @see org.wewi.medimg.image.ColorConversion#convert(int[])
-     */
     public int convert(int[] rgb) {
         //return (rgb[0]+rgb[1]+rgb[2])/3;
         return rgb[0] << diffBits;
@@ -67,7 +59,12 @@ public class GreyColorConversion implements ColorConversion {
     }
 
     public Object clone() {
-        return new GreyColorConversion(bits);    
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
     //Serialization part

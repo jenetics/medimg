@@ -48,8 +48,7 @@ import org.wewi.medimg.util.StringOutputStream;
 class AbstractImageHeader implements ImageHeader {
     private static Logger logger = Logger.getLogger("org.wewi.medimg.image");
     
-    private AbstractImage image;   
-    //private Dimension dim;    
+    private AbstractImage image;      
     private ImageProperties properties;
 
     public AbstractImageHeader(AbstractImage image) {

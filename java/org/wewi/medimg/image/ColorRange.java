@@ -1,4 +1,6 @@
 /* 
+ * ColorRange.java, created on 1. Juli 2002, 20:14
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,18 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * ColorRange.java
- *
- * Created on 1. Juli 2002, 20:14
- */
 
 package org.wewi.medimg.image;
 
 import org.wewi.medimg.util.Immutable;
 
 /**
- *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */

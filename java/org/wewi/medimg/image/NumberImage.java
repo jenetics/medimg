@@ -21,7 +21,6 @@ package org.wewi.medimg.image;
 import org.wewi.medimg.math.MutableDouble;
 import org.wewi.medimg.math.MutableInteger;
 import org.wewi.medimg.math.MutableNumber;
-import org.wewi.medimg.util.Timer;
 
 
 /**
@@ -209,45 +208,6 @@ public class NumberImage extends RowMajorImageGeometry {
         }
         
         return img;    
-    }
-    
-    
-    public static void main(String[] args) {
-        Integer s = new Integer(0);
-        synchronized(s) {
-            try {
-                s.wait(2000);
-                
-                
-                Image img = new IntImage(200, 200, 200); 
-                Timer timer = new Timer("IntImage");
-                timer.start();
-                for (int i = 0, n = img.getNVoxels(); i < n; i++) {
-                    img.getColor(i);
-                }
-                timer.stop();
-                timer.print();
-                System.out.println("Speicher: " + Runtime.getRuntime().totalMemory()/1000);
-                System.gc();
-                
-                s.wait(2000);
-                
-                NumberImage nimg = new NumberImage(200, 200, 200);
-                timer = new Timer("NumberImage");
-                timer.start();
-                for (int i = 0, n = nimg.getNVoxels(); i < n; i++) {
-                    nimg.getColor(i).intValue();
-                }
-                timer.stop();
-                timer.print();
-                System.out.println("Speicher: " + Runtime.getRuntime().totalMemory()/1000);
-                
-                
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-               
-        }
     }
     
 }

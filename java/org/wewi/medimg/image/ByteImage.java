@@ -1,4 +1,6 @@
 /* 
+ * ByteImage.java, created on 10. Mai 2002, 15:59
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,11 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * ByteImage.java
- *
- * Created on 10. Mai 2002, 15:59
- */
 
 package org.wewi.medimg.image;
 
@@ -55,10 +52,10 @@ public final class ByteImage extends AbstractImage {
      */
     protected ImageData createImageData(int size) {
         return new ByteData(size);
-    }          
+    } 
     
     public Object clone() {
-        return new ByteImage(this);
-    }    
+    	return new ByteImage(this);             
+    }
 
 }

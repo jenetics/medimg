@@ -1,4 +1,6 @@
 /* 
+ * ImageHeader.java, created on 22. Februar 2002, 00:12
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,11 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * ImageHeader.java
- *
- * Created on 22. Februar 2002, 00:12
- */
 
 package org.wewi.medimg.image;
 
@@ -29,21 +26,18 @@ import java.io.OutputStream;
 import org.wewi.medimg.util.Nullable;
 
 /**
- *
  * @author  Franz Wilhelmstötter
- * @version 0.2
+ * @version 0.1
  */
 public interface ImageHeader extends Nullable {
     
     /**
-     * Die Implementierung dieser Methode muß den
-     * Header vom InputStream lesen UND das zugehörige
-     * Image mit der richtigen Größe neu initialisieren.
+     * The implementation of this method has to read the Header from an
+     * InputStream AND initialize the coresponding image with the rigth size.
      * 
-     * @param in InputStream aus dem der ImageHeader
-     *             erzeugt wird.
+     * @param in header InputStream
      * 
-     * @throws IOException wenn der Header nicht gelesen werden kann.
+     * @throws IOException if the header cannot be read.
      */
     public void read(InputStream in) throws IOException;
 

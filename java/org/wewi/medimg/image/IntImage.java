@@ -1,4 +1,6 @@
 /* 
+ * IntImage.java, created on 18.09.2002
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 18.09.2002
- *
- */
 package org.wewi.medimg.image;
 
 
@@ -46,17 +44,13 @@ public final class IntImage extends AbstractImage {
     public IntImage(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         super(minX, minY, minZ, maxX, maxY, maxZ);
     }
-       
-    
-    public Object clone() {
-        return new IntImage(this);
-    } 
-       
-    /**
-     * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
-     */
+   
     protected ImageData createImageData(int size) {
         return new IntData(size);
+    }
+    
+    public Object clone() {
+    	return new IntImage(this);
     }
 
 }

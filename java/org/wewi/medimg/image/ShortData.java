@@ -1,4 +1,6 @@
 /* 
+ * ShortData.java, created on 22.10.2002 00:03:03
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 22.10.2002 00:03:03
- *
- */
 package org.wewi.medimg.image;
 
 import java.util.Arrays;
@@ -29,9 +27,6 @@ import java.util.Arrays;
 final class ShortData implements ImageData {
     private short[] data;
 
-    /**
-     * Constructor for ByteData.
-     */
     public ShortData(int size) {
         data = new short[size];
     }
@@ -116,6 +111,15 @@ final class ShortData implements ImageData {
         
         ShortData t = (ShortData)target;
         System.arraycopy(data, 0, t.data, 0, t.data.length);        
+    }
+    
+    public Object clone() {
+    	try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

@@ -37,7 +37,8 @@ import org.wewi.medimg.util.Timer;
  */
 public class Test {
 
-private static String path = "E:/Daten/Diplom/data/reg.test.img/";
+//private static String path = "E:/Daten/Diplom/data/reg.test.img/";
+private static String path = "/home/fwilhelm/temp/Werner/";
 private static String result;
 private static String storePath;
 
@@ -52,8 +53,8 @@ private static String storePath;
     */
     public static void main (String args[]) {
         File[] suite1 = new File[2];
-        suite1[0] = new File(path + "serie01_04_a.tif");
-        suite1[1] = new File(path + "serie01_04_b.tif");
+        suite1[0] = new File(path + "erg/image5/PCAMCWarping");
+        suite1[1] = new File(path + "A.tif");
         
 
         
@@ -239,7 +240,7 @@ private static String storePath;
             validateImages(data1, data2, i, "im Original:", null);
             validateImages(data2, data1, i, "im Original verkehrt:", null);
             //testPCA(data1, data2, i);
-            testAffinPCA(data1, data2, i); 
+            //testAffinPCA(data1, data2, i); 
             //testMCWarping(data1, data2, i);    
             //testCompleteMethod(data1, data2, i);       
         }    

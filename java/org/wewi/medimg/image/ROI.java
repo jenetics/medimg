@@ -1,4 +1,6 @@
-/* 
+/*
+ * ROI.java, created on 22.10.2002 20:26:54
+ *  
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,10 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * Created on 22.10.2002 20:26:54
- *
- */
 package org.wewi.medimg.image;
 
 import org.wewi.medimg.util.Arrays;
@@ -30,25 +28,10 @@ import org.wewi.medimg.util.Arrays;
  */
 public final class ROI extends Dimension {
 
-    /**
-     * Constructor for ROI.
-     * 
-     * @see org.wewi.medimg.image.Dimension#Dimension(int, int, int)
-     */
     public ROI(int sizeX, int sizeY, int sizeZ) {
         super(sizeX, sizeY, sizeZ);
     }
 
-    /**
-     * Constructor for ROI.
-     * @param minX
-     * @param maxX
-     * @param minY
-     * @param maxY
-     * @param minZ
-     * @param maxZ
-     * @throws IllegalArgumentException
-     */
     public ROI(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         super(minX, maxX, minY, maxY, minZ, maxZ);
     }
@@ -163,7 +146,6 @@ public final class ROI extends Dimension {
         int maxY = Math.min(getMaxY(), b.getMaxY());
         int minZ = Math.max(getMinZ(), b.getMinZ());
         int maxZ = Math.min(getMaxZ(), b.getMaxZ());
-        //System.out.println("minX" + minX + "minX" + maxX + "minX" + minY + "minX" + maxY + "minX" + minZ + "minX" + maxZ);
         if (minX > maxX || minY > maxY || minZ > maxZ) {
             return new ROI(minX, minX, minY, minY, minZ, minZ);
         }

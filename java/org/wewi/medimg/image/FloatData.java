@@ -1,4 +1,6 @@
 /* 
+ * FloatData.java, created on 13.06.2003
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,11 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * FloatData.java
- * Created on 13.06.2003
- *
- */
 package org.wewi.medimg.image;
 
 import java.util.Arrays;
@@ -117,5 +114,14 @@ final class FloatData implements ImageData {
         
         FloatData t = (FloatData)target;
         System.arraycopy(data, 0, t.data, 0, t.data.length);        
+    }
+    
+    public Object clone() {
+    	try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

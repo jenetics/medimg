@@ -1,4 +1,6 @@
 /* 
+ * MLKMeansClusterer.java, created on 24. Juli 2002, 20:08
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -12,12 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
-
-/**
- * MLKMeansClusterer.java
- *
- * Created on 24. Juli 2002, 20:08
  */
 
 package org.wewi.medimg.seg.stat;
@@ -183,14 +179,18 @@ public class MLKMeansClusterer extends ObservableSegmenter
      * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
      */
     public void segment(Image mrt, Image segimg) {
-        //Feststellen des Farbbereiches
-        colorRange =AnalyzerUtils.getColorRange(mrt);
+        //Determining the ColorRange
+        System.out.println(mrt);
+        colorRange = AnalyzerUtils.getColorRange(mrt);
+        System.out.println(colorRange);
         
         iterate(mrt, segimg);
         try {
             setImageProperties(segimg);
         } catch (Exception e) {
-            //Verursacht einen Fehler???
+            //TODO Generates an ERROR???
+            System.out.println("MLKMeansClusterer.segment()");
+            e.printStackTrace();
         }
     }
     

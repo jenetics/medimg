@@ -1,4 +1,6 @@
 /* 
+ * TissueColorConversion.java, created on 04. April 2002, 13:55
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,23 +16,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * TissueColorConversion.java
- *
- * Created on 04. April 2002, 13:55
- */
 
 package org.wewi.medimg.image;
 
 
 /**
- *
  * @author  Werner Weiser
  * @version 0.1
  */
 public class TissueColorConversion implements ColorConversion {
 
-    /** Creates new TissueColorConversion */
     public TissueColorConversion() {
     }
     
@@ -116,6 +111,11 @@ public class TissueColorConversion implements ColorConversion {
     }
     
     public Object clone() {
-        return new TissueColorConversion();    
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

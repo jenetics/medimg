@@ -1,4 +1,6 @@
 /* 
+ * NullImage.java, created on 26. Jänner 2002, 21:08
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,18 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * NullImage.java
- *
- * Created on 26. Jänner 2002, 21:08
- */
 
 package org.wewi.medimg.image;
 
 import org.wewi.medimg.util.Nullable;
 
 /**
- *
  * @author  Franz Wilhelmstötter
  * @version 0.2
  */
@@ -192,153 +188,82 @@ public final class NullImage implements Image, Nullable {
         return true;  
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageAccess#setColor(int, int, int, double)
-     */
     public void setColor(int x, int y, int z, double color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageAccess#setColor(int, double)
-     */
     public void setColor(int pos, double color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageAccess#resetColor(double)
-     */
     public void resetColor(double color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageAccess#getIntColor(int)
-     */
     public int getIntColor(int pos) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int)
-     */
     public double getDoubleColor(int pos) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageAccess#getIntColor(int, int, int)
-     */
     public int getIntColor(int x, int y, int z) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageAccess#getDoubleColor(int, int, int)
-     */
     public double getDoubleColor(int x, int y, int z) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#setColor(int, byte)
-     */
     public void setColor(int pos, byte color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#setColor(int, short)
-     */
     public void setColor(int pos, short color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#setColor(int, long)
-     */
     public void setColor(int pos, long color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#setColor(int, float)
-     */
     public void setColor(int pos, float color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#getByteColor(int)
-     */
     public byte getByteColor(int pos) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#getShortColor(int)
-     */
     public short getShortColor(int pos) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#getLongColor(int)
-     */
     public long getLongColor(int pos) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#getFloatColor(int)
-     */
     public float getFloatColor(int pos) {
         return 0;
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#fill(byte)
-     */
     public void fill(byte color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#fill(short)
-     */
     public void fill(short color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#fill(int)
-     */
     public void fill(int color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#fill(long)
-     */
     public void fill(long color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#fill(float)
-     */
     public void fill(float color) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.Image#fill(double)
-     */
     public void fill(double color) {
     }
 
-	/**
-	 * @see org.wewi.medimg.image.ImageGeometry#getPosition(int[])
-	 */
 	public int getPosition(int[] corodinate) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.wewi.medimg.image.Image#iterator()
-	 */
 	public PixelIterator iterator() {
-		// TODO Auto-generated method stub
 		return null;
 	}
     

@@ -42,22 +42,12 @@ public class NullImageHeader implements ImageHeader, Nullable {
         return true;
     }
     
-    /**
-     * @see org.wewi.medimg.image.ImageHeader#read(InputStream)
-     */
     public void read(InputStream in) throws IOException {
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageHeader#write(OutputStream)
-     */
     public void write(OutputStream out) throws IOException {
     }
 
-
-    /**
-     * @see org.wewi.medimg.image.ImageHeader#getImageProperties()
-     */
     public ImageProperties getImageProperties() {
         return new ImageProperties();
     }
@@ -65,9 +55,6 @@ public class NullImageHeader implements ImageHeader, Nullable {
     public void addImageProperties(Properties prop) {
     }
 
-    /**
-     * @see org.wewi.medimg.image.ImageHeader#setImageProperties(Properties)
-     */
     public void setImageProperties(ImageProperties prop) {
     }
 

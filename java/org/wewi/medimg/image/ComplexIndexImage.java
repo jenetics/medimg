@@ -1,4 +1,6 @@
 /* 
+ * ComplexIndexImage.java, created on 02.01.2003, 12:08:51
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -14,12 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
- * ComplexIndexImage.java
- * 
- * Created on 02.01.2003, 12:08:51
- *
- */
 package org.wewi.medimg.image;
 
 import org.wewi.medimg.math.Complex;
@@ -63,9 +59,6 @@ public class ComplexIndexImage extends ImageAdapter {
     
     private int index(Complex z) {
         z = MathUtil.log(z);
-        
-        //System.out.println(z);        
-        
         return lattice.index(z.getRe(), z.getIm());    
     }
 

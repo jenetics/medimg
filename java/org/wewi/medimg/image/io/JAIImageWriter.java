@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.wewi.medimg.image.ByteImage;
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
@@ -188,14 +189,18 @@ abstract class JAIImageWriter extends ImageWriter {
 	 */
 	public void writeView(Dimension dim, int color) throws ImageIOException {
 		try {
+            StringBuffer buffer;
+            double progress = 0;
+            ROI roi = ROI.create(dim).intersect(ROI.create(image.getDimension()));
+            
+            ///Workaround
+            Image tempImage = new ByteImage(roi);
+            tempImage.getHeader().setImageProperties(image.getHeader().getImageProperties());
+            
 			target.mkdirs();
 			FileOutputStream out = new FileOutputStream(target.getPath() + File.separator + "header.xml");
-			image.getHeader().write(out);
+			tempImage.getHeader().write(out);
 			out.close();
-
-			StringBuffer buffer;
-			double progress = 0;
-			ROI roi = ROI.create(dim).intersect(ROI.create(image.getDimension()));
             
             
 			for (int k = roi.getMinZ(); k <= roi.getMaxZ(); k++) {

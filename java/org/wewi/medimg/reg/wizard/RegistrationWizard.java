@@ -18,14 +18,17 @@ import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.geom.transform.ImageTransformation;
+import org.wewi.medimg.image.io.ImageIOException;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
 import org.wewi.medimg.image.io.ReaderThreadListener;
+import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.WriterThreadEvent;
 import org.wewi.medimg.image.io.WriterThreadListener;
 import org.wewi.medimg.reg.BBAffinityMetric;
+import org.wewi.medimg.reg.ManualTransformationImportance;
 import org.wewi.medimg.reg.MonteCarloWarping;
 import org.wewi.medimg.reg.WeightPointTransformationImportance;
 import org.wewi.medimg.reg.pca.NonRigidPCARegistration;
@@ -131,7 +134,7 @@ public class RegistrationWizard extends Wizard implements Observer,
 			imageData2 = imageReader2.getImage();
 			if (registrationEnumeration.equals(RegistratorEnumeration.PCA_METHOD_RIGID)) {
 				WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
-				//ImportanceStrategy myStrategy = new ImportanceStrategy();
+				//ImportanceStrategy myImportance = new ImportanceStrategy();
 				//FittnessStrategy myStrategy = new FittnessStrategy();
 				BBAffinityMetric myMetric = new BBAffinityMetric();
 				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
@@ -141,8 +144,17 @@ public class RegistrationWizard extends Wizard implements Observer,
 		        myRegistration.setTransformationImportance(myImportance);
 		        obReg = myRegistration;
 			} else if (registrationEnumeration.equals(RegistratorEnumeration.PCA_METHOD_NONRIGID)) {
-				WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
-				//ImportanceStrategy myStrategy = new ImportanceStrategy();
+				//WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+				ManualTransformationImportance myImportance = new ManualTransformationImportance();
+				myImportance.setImportance(1,1.0);
+				myImportance.setImportance(2,0.0);
+				myImportance.setImportance(3,0.0);
+				myImportance.setImportance(4,0);
+				myImportance.setImportance(5,0.0);
+				
+				
+				
+				
 				//FittnessStrategy myStrategy = new FittnessStrategy();
 				BBAffinityMetric myMetric = new BBAffinityMetric();
 				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
@@ -166,8 +178,13 @@ public class RegistrationWizard extends Wizard implements Observer,
 		        obReg = myRegistration;
 			} else if (registrationEnumeration.equals(RegistratorEnumeration.COMBINED_MC_PCA_METHOD)) {
                      
-                WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
-                //ImportanceStrategy myStrategy = new ImportanceStrategy();
+				//WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+				ManualTransformationImportance myImportance = new ManualTransformationImportance();
+				myImportance.setImportance(1,1.0);
+				myImportance.setImportance(2,0.0);
+				myImportance.setImportance(3,0.0);
+				myImportance.setImportance(4,0);
+				myImportance.setImportance(5,0.0);
                 //FittnessStrategy myStrategy = new FittnessStrategy();
                 BBAffinityMetric myMetric = new BBAffinityMetric();
                 //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
@@ -217,17 +234,36 @@ public class RegistrationWizard extends Wizard implements Observer,
             //registrationStateTextField.setText(event.toString());         
          }
     }
-
+    
+    
+	Image grid = null;
     public void registratorFinished(RegistratorEvent event) {
         regStartButton.setText("Transformieren der Bilder...");
+        
         //registrationStateTextField.setText(event.toString());
         if (registrationEnumeration.equals(RegistratorEnumeration.COMBINED_MC_PCA_METHOD)) {
             
             
             if (regCount == 0) {
                 regCount++;
+                
+				////////////////////////////////////////////////////////////////
+				ImageReader reader = new TIFFReader(IntImageFactory.getInstance(),
+									 "/home/fwilhelm/Workspace/Projekte/Papers/WSCG2004/document/v04/test/grid.tif");
+				try {
+					reader.read();
+				} catch (ImageIOException e) {
+					e.printStackTrace();
+				}
+				grid = reader.getImage();
+				
+                
+                
                 transformation = (ImageTransformation)registratorThread.getTransformation();
                 work = transformation.transform(imageData1);
+                
+				grid = transformation.transform(grid);
+                
                 WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
                 BBAffinityMetric myMetric = new BBAffinityMetric();
                 myImportance.setErrorLimit(0.2);
@@ -255,6 +291,15 @@ public class RegistrationWizard extends Wizard implements Observer,
                 viewer3.pack();
                 Viewer.getInstance().addViewerDesktopFrame(viewer3, new Point(150, 300), new Dimension(300, 300));
                 
+                ////////////////////////////////////////////////////////////////
+
+                grid = transformation.transform(grid);
+				ImageViewer viewer4 = new ImageViewer("Ergebnisgrid", grid);    
+				viewer4.setPreferredSize(new Dimension(300, 300));    
+				regStartButton.setText("Start");        
+				viewer4.pack();
+				Viewer.getInstance().addViewerDesktopFrame(viewer4, new Point(150, 300), new Dimension(300, 300));
+                /////////////////////////////////////////////////////////////////
                 
                 /*try {
                 TIFFWriter rwriter = new TIFFWriter(resultData, new File("E:/Daten/Diplom/data/reg.test.img/final/image" + 0 + "/rigidPCA."));   
