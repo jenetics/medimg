@@ -55,7 +55,7 @@ public final class ImageData implements Image {
     ImageData() {
     }
     
-    private ImageData(ImageData id) {
+    ImageData(ImageData id) {
         this(id.maxX + 1, id.maxY + 1, id.maxZ + 1);
         System.arraycopy(id.data, 0, data, 0, size);
     }
