@@ -29,7 +29,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.wewi.medimg.image.ColorConversion;
+import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ROI;
 
 import com.sun.media.jai.codec.ImageEncodeParam;
 import com.sun.media.jai.codec.ImageEncoder;
@@ -82,6 +84,47 @@ abstract class JAIImageWriter extends ImageWriter {
         encoder.encode(bufferedImage);
         out.close();
     } 
+    
+	/**
+	 * Schreiben einer einzelnen Schicht
+	 */
+	private void writeSliceView(int slice, Dimension dim, int color, File file) throws IOException {
+		FileOutputStream out = new FileOutputStream(file);
+		initEncoder(out);
+        
+		BufferedImage bufferedImage = new BufferedImage(dim.getMaxX()-dim.getMinX()+1, 
+														dim.getMaxY()-dim.getMinY()+1, 
+														BufferedImage.TYPE_3BYTE_BGR);
+		ROI roi = ROI.create(dim).intersect(ROI.create(image.getDimension()));
+		ColorConversion colorConversion = image.getColorConversion();
+        
+		int minX = dim.getMinX();
+		int minY = dim.getMinY();
+		int[] pixel = new int[3];
+		int[] pixelBg = new int[3];
+		colorConversion.convert(color, pixelBg);
+		pixelBg[0] = 0x00FF & pixelBg[0];
+		pixelBg[1] = 0x00FF & pixelBg[1];
+		pixelBg[2] = 0x00FF & pixelBg[2]; 
+		for (int i = dim.getMinX(), n = dim.getMaxX(); i <= n; i++) {
+			for (int j = dim.getMinY(), m = dim.getMaxY(); j <= m; j++) { 
+                
+				if (i > roi.getMaxX() || i < roi.getMinX() ||
+				j > roi.getMaxY() || j < roi.getMinY()) {
+					bufferedImage.setRGB(i-minX, j-minY, (int)((0x00 << 24)|(pixelBg[0] << 16)|(pixelBg[1] << 8)|pixelBg[2]));
+				} else {
+					colorConversion.convert(image.getColor(i, j, slice), pixel);        
+					pixel[0] = 0x00FF & pixel[0];
+					pixel[1] = 0x00FF & pixel[1];
+					pixel[2] = 0x00FF & pixel[2]; 
+					bufferedImage.setRGB(i-minX, j-minY, (int)((0x00 << 24)|(pixel[0] << 16)|(pixel[1] << 8)|pixel[2]));
+				}
+			}
+		}
+		encoder.encode(bufferedImage);
+		out.close();
+	}    
+        
     
     /**
      * Die initialisierung der JAI-Parameter muß von
@@ -137,5 +180,41 @@ abstract class JAIImageWriter extends ImageWriter {
             notifyProgressListener(new ImageIOProgressEvent(this, 1, true));    
         }
     }
+    
+	/**
+	 * Schreiben des Bildes.
+	 * 
+	 * @throws ImageIOException wenn das Bild nicht geschrieben werden kann.
+	 */
+	public void writeView(Dimension dim, int color) throws ImageIOException {
+		try {
+			target.mkdirs();
+			FileOutputStream out = new FileOutputStream(target.getPath() + File.separator + "header.xml");
+			image.getHeader().write(out);
+			out.close();
+
+			StringBuffer buffer;
+			double progress = 0;
+			ROI roi = ROI.create(dim).intersect(ROI.create(image.getDimension()));
+            
+            
+			for (int k = roi.getMinZ(); k <= roi.getMaxZ(); k++) {
+				buffer = new StringBuffer();
+				buffer.append(target.getPath()).append(File.separator);
+				buffer.append("image.").append(Util.format(k, 4));
+				buffer.append(imageExtention);
+				writeSliceView(k, dim, color, new File(buffer.toString()));
+                
+				//Informieren der ProgressListener
+				progress = (double)(k-image.getMinZ())/(double)(image.getMaxZ()-image.getMinZ());
+				notifyProgressListener(new ImageIOProgressEvent(this, progress, false));
+			}  
+		} catch (IOException ioe) {
+			dispose();
+			throw new ImageIOException("Can't write Image: ", ioe);
+		} finally {
+			notifyProgressListener(new ImageIOProgressEvent(this, 1, true));    
+		}
+	}    
     
 }
