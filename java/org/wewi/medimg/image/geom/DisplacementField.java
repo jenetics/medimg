@@ -12,21 +12,21 @@ import org.wewi.medimg.image.Image;
  *
  * @author  Franz Wilhelmstötter
  */
-public class DisplacementField implements Transform {
+public class DisplacementField implements Transformation {
     
     /** Creates a new instance of DisplacementField */
     public DisplacementField() {
     }
     
-    public Transform concatenate(Transform trans) {
+    public Transformation concatenate(Transformation trans) {
         return null;
     }
     
-    public Transform createInverse() {
+    public Transformation createInverse() {
         return null;
     }
     
-    public Transform scale(double alpha) {
+    public Transformation scale(double alpha) {
         return null;
     }
     

@@ -46,12 +46,12 @@ abstract class JAIImageReader extends ImageReader {
     
     private RenderedImage readRenderedImage(String filename) throws IOException {
         if (System.getProperty("JAI_IMAGE_READER_USE_CODECS") == null) {       
-            RenderedImage im =  JAI.create("fileload", filename);
-            int comp = im.getColorModel().getColorSpace().getNumComponents();
+            RenderedImage img =  JAI.create("fileload", filename);
+            int comp = img.getColorModel().getColorSpace().getNumComponents();
             if (comp == 3) {
                 colorConversion = new RGBGreyColorConversion(65000);
             }
-            return im;
+            return img;
         } else {
             SeekableStream stream = new FileSeekableStream(filename);
             String[] names = ImageCodec.getDecoderNames(stream);
@@ -66,7 +66,9 @@ abstract class JAIImageReader extends ImageReader {
     }    
     
     public void read() throws ImageIOException {
-        File[] slices;
+        File[] slices = null;
+        //Wenn die Quelle kein Verzeichnis ist, sondern
+        //eine einzelne Datei, wird nur diese Schicht eingelesen.
         if (source.isFile()) {
             if (fileFilter.accept(source)) {
                 slices = new File[1];
@@ -83,6 +85,9 @@ abstract class JAIImageReader extends ImageReader {
                 return;
             }            
         }
+        
+        //Ab hier muß das Array der Schichten gefüllt sein.
+        assert(slices == null);
         
         //Wenn ein Bereich festgelegt wurde, wird dies hier berücksichtigt
         int minSlice = 0;
@@ -138,28 +143,4 @@ abstract class JAIImageReader extends ImageReader {
         }        
     } 
     
-    
-    /*
-    public static void main(String[] args) {
-        try {
-            RenderedImage image = JAIImageReader.readRenderedImage("c:/temp/in.090.tif");
-            Raster raster = image.getData();
-            int x = raster.getWidth();
-            int y = raster.getHeight();
-            int[] pixel = new int[3];
-            FileOutputStream out = new FileOutputStream("c:/temp/in.o90.tif.raw");
-            for (int j = 0; j < y; j++) {
-                for (int i = 0; i < x; i++) {
-                    raster.getPixel(i, j, pixel);
-                    out.write(pixel[0]);
-                    out.write(pixel[1]);
-                    out.write(pixel[2]);
-                }
-            }
-            out.close();
-        } catch (Exception e) {
-            System.out.println("asdf: " + e);
-        }
-    }
-    */
 }
