@@ -17,8 +17,8 @@
                 <mkdir dir="${dir.build}"/>                              
                 <javac srcdir="${dir.src}"
                            destdir="${dir.build}"
-                           includes="org/wewi/medimg/**/*.class,
-		                     jas/util/encoder/**/*.class"
+                           includes="org/wewi/medimg/**/*.java,
+		                     jas/util/encoder/**/*.java"
                            compiler="javac1.4"
                            target="1.4"
                            optimize="on"/>

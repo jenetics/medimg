@@ -1,0 +1,1 @@
+../j2re1.4.1/bin/java -classpath ":.:../lib/colt.jar:../lib/jdom.jar:../lib/junit.jar:../lib/optional.jar:../lib/xalan.jar:../lib/xerces.jar:../j2re1.4.1/lib/rt.jar:../j2re1.4.1/lib/ext/jai_core.jar:../j2re1.4.1/lib/ext/jai_codec.jar:../j2re1.4.1/lib/ext/mlibwrapper_jai.jar" -Xmx256m org.wewi.medimg.viewer.Viewer
