@@ -24,16 +24,16 @@ public class ImageViewerSynchronizer implements ImageViewerListener {
     
     private int slice;
 
-	/**
-	 * Constructor for ImageViewerGlue.
-	 */
-	public ImageViewerSynchronizer() {
-		super();
+    /**
+     * Constructor for ImageViewerGlue.
+     */
+    public ImageViewerSynchronizer() {
+        super();
         viewerVector = new Vector();
         viewerLocation = new Vector();
         viewerSize = new Vector();
         slice = 0;
-	}
+    }
     
     public synchronized void addImageViewer(ImageViewer viewer) {
         addImageViewer(viewer, new Point(0, 0), new Dimension(300, 300));   
@@ -160,10 +160,10 @@ public class ImageViewerSynchronizer implements ImageViewerListener {
         }
     }
 
-	/**
-	 * @see org.wewi.medimg.viewer.ImageViewerListener#update(ImageViewerEvent)
-	 */
-	public void update(ImageViewerEvent event) {
+    /**
+     * @see org.wewi.medimg.viewer.ImageViewerListener#update(ImageViewerEvent)
+     */
+    public void update(ImageViewerEvent event) {
         if (event.isClosed()) {
             closeImageViewer((ImageViewer)event.getSource());
             return;    
@@ -172,7 +172,7 @@ public class ImageViewerSynchronizer implements ImageViewerListener {
         slice = event.getSlice();
         
         synchronize(event.getSlice());
-	}
+    }
 
 }
 

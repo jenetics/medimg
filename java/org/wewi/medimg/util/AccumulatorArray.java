@@ -33,13 +33,13 @@ public class AccumulatorArray {
      * @param cols  number of columns of the array.
      * @param value default value of the array elements.
      */
-	public AccumulatorArray(int rows, int cols, int value) {
+    public AccumulatorArray(int rows, int cols, int value) {
         if (rows <= 0 || cols <= 0) {
             throw new IllegalArgumentException("Rows and cols must be positive!");
         }
         
         
-		this.rows = rows;
+        this.rows = rows;
         this.cols = cols;
         accu = new int[rows][cols];
         
@@ -49,7 +49,7 @@ public class AccumulatorArray {
             }    
         }
         
-	}
+    }
     
     /**
      * Incrementing the specified array element by one.

@@ -20,26 +20,26 @@ public class NullVoxelIterator implements VoxelIterator {
     public NullVoxelIterator() {
     }
 
-	/**
-	 * @see java.lang.Object#clone()
-	 */
-	public Object clone() {
-		return new NullVoxelIterator();
-	}
+    /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+        return new NullVoxelIterator();
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.VoxelIterator#hasNext()
-	 */
-	public boolean hasNext() {
-		return false;
-	}
+    /**
+     * @see org.wewi.medimg.image.VoxelIterator#hasNext()
+     */
+    public boolean hasNext() {
+        return false;
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.VoxelIterator#next()
-	 */
-	public int next() {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.image.VoxelIterator#next()
+     */
+    public int next() {
+        return 0;
+    }
     
     public int next(int[] p) {
         return 0;    
@@ -49,11 +49,11 @@ public class NullVoxelIterator implements VoxelIterator {
         return 0;    
     }
     
-	/**
-	 * @see org.wewi.medimg.image.VoxelIterator#size()
-	 */
-	public int size() {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.image.VoxelIterator#size()
+     */
+    public int size() {
+        return 0;
+    }
 
 }

@@ -24,11 +24,11 @@ public class RegularDisplacementField extends DisplacementF
     
     private static class NearestNeighborInterpolator extends Interpolator {
         
-		public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
-		}
+        public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
+        }
 
-		public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
-		}
+        public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
+        }
         
         public Object clone() {
             return null;
@@ -37,11 +37,11 @@ public class RegularDisplacementField extends DisplacementF
     
     private static class TrilinearInterpolator extends Interpolator {
 
-		public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
-		}
+        public void interpolateEndPoint(double[] startPoint, double[] endPoint) {
+        }
 
-		public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
-		}
+        public void interpolateStartPoint(double[] endPoint, double[] startPoint) {
+        }
         
         public Object clone() {
             return null;
@@ -114,35 +114,35 @@ public class RegularDisplacementField extends DisplacementF
 
     
 
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#scale(double)
-	 */
-	public Transformation scale(double alpha) {
+    /**
+     * @see org.wewi.medimg.image.geom.transform.Transformation#scale(double)
+     */
+    public Transformation scale(double alpha) {
         ScaleVectorFunction f = new ScaleVectorFunction(alpha);
         GridVectorFieldTransformer t = new GridVectorFieldTransformer(this, f);
         t.transform();
         
-		return this;
-	}
+        return this;
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#concatenate(org.wewi.medimg.image.geom.transform.Transformation)
-	 */
-	public Transformation concatenate(Transformation trans) {
-		return null;
-	}
+    /**
+     * @see org.wewi.medimg.image.geom.transform.Transformation#concatenate(org.wewi.medimg.image.geom.transform.Transformation)
+     */
+    public Transformation concatenate(Transformation trans) {
+        return null;
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.geom.transform.Transformation#createInverse()
-	 */
-	public Transformation createInverse() {
+    /**
+     * @see org.wewi.medimg.image.geom.transform.Transformation#createInverse()
+     */
+    public Transformation createInverse() {
         RegularDisplacementField field = new RegularDisplacementField(this);
         
         
         GridFieldLoop loop = new GridFieldLoop(field, new GridFieldLoop.Task() {
             private double[] start = new double[3];
             private double[] end = new double[3];
-			public void execute(int gridX, int gridY, int gridZ) {
+            public void execute(int gridX, int gridY, int gridZ) {
 //              The start point of the normal grid is the end point of the inverse grid.
                 vectorField.getGridStartPoint(gridX, gridY, gridZ, end);
                 
@@ -150,92 +150,92 @@ public class RegularDisplacementField extends DisplacementF
                 getFieldInterpolator().interpolateStartPoint(end, start);
                 
                 getVectorField().setGridEndPoint(gridX, gridY, gridZ, start);
-			}
+            }
         
         });
         loop.loop();
         
-		return field;
-	}
+        return field;
+    }
 
     
     /***********Methods for the GridVectorField********************************/
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#setGridEndPoint(int, int, int, double[])
-	 */
-	public void setGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#setGridEndPoint(int, int, int, double[])
+     */
+    public void setGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
         vectorField.setGridEndPoint(gridX, gridY, gridZ, endPoint);
-	}
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#getGridStartPoint(int, int, int, double[])
-	 */
-	public void getGridStartPoint(int gridX, int gridY, int gridZ, double[] startPoint) {
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#getGridStartPoint(int, int, int, double[])
+     */
+    public void getGridStartPoint(int gridX, int gridY, int gridZ, double[] startPoint) {
         vectorField.getGridStartPoint(gridX, gridY, gridZ, startPoint);
-	}
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#getGridEndPoint(int, int, int, double[])
-	 */
-	public void getGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#getGridEndPoint(int, int, int, double[])
+     */
+    public void getGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
         vectorField.getGridEndPoint(gridX, gridY, gridZ, endPoint);
-	}
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#getVector(int, int, int, double[])
-	 */
-	public void getVector(int gridX, int gridY, int gridZ, double[] vector) {
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#getVector(int, int, int, double[])
+     */
+    public void getVector(int gridX, int gridY, int gridZ, double[] vector) {
         vectorField.getVector(gridX, gridY, gridZ, vector);
-	}
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#setVector(int, int, int, double[])
-	 */
-	public void setVector(int gridX, int gridY, int gridZ, double[] vector) {
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#setVector(int, int, int, double[])
+     */
+    public void setVector(int gridX, int gridY, int gridZ, double[] vector) {
         vectorField.setVector(gridX, gridY, gridZ, vector);
-	}
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#getGridsX()
-	 */
-	public int getGridsX() {
-		return vectorField.getGridsX();
-	}
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#getGridsX()
+     */
+    public int getGridsX() {
+        return vectorField.getGridsX();
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#getGridsY()
-	 */
-	public int getGridsY() {
-		return vectorField.getGridsY();
-	}
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#getGridsY()
+     */
+    public int getGridsY() {
+        return vectorField.getGridsY();
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#getGridsZ()
-	 */
-	public int getGridsZ() {
-		return vectorField.getGridsZ();
-	}
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#getGridsZ()
+     */
+    public int getGridsZ() {
+        return vectorField.getGridsZ();
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.GridVectorField#clone()
-	 */
-	public Object clone() {
-		return new RegularDisplacementField(this);
-	}
+    /**
+     * @see org.wewi.medimg.math.vec.GridVectorField#clone()
+     */
+    public Object clone() {
+        return new RegularDisplacementField(this);
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
-	 */
-	public void addVector(double[] startPoint, double[] endPoint) {
+    /**
+     * @see org.wewi.medimg.math.vec.VectorField#setVector(double[], double[])
+     */
+    public void addVector(double[] startPoint, double[] endPoint) {
         vectorField.addVector(startPoint, endPoint);
-	}
+    }
     
-	/**
-	 * @see org.wewi.medimg.math.vec.VectorField#getVectorIterator()
-	 */
-	public VectorIterator getVectorIterator() {
-		return vectorField.getVectorIterator();
-	}
+    /**
+     * @see org.wewi.medimg.math.vec.VectorField#getVectorIterator()
+     */
+    public VectorIterator getVectorIterator() {
+        return vectorField.getVectorIterator();
+    }
 
 }

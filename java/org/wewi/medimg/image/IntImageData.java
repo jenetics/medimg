@@ -36,11 +36,11 @@ public final class IntImageData extends AbstractImage {
         return new IntImageData(this);
     } 
        
-	/**
-	 * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
-	 */
-	protected DiscreteData createDiscreteData(int size) {
-		return new IntData(size);
-	}
+    /**
+     * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
+     */
+    protected DiscreteData createDiscreteData(int size) {
+        return new IntData(size);
+    }
 
 }

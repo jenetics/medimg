@@ -72,17 +72,17 @@ public class Viewer3D extends ViewerDesktopFrame {
     }
 
     public void init() {
-	canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-	getContentPane().add("Center", canvas);
-	
-	// Create a scene and attach it to the virtual universe
-	BranchGroup scene = createSceneGraph(canvas);
-	u = new SimpleUniverse(canvas);
-	
-	// This will move the ViewPlatform back a bit so the
-	// objects in the scene can be viewed.
-	u.getViewingPlatform().setNominalViewingTransform();
-	u.addBranchGraph(scene);       
+    canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+    getContentPane().add("Center", canvas);
+    
+    // Create a scene and attach it to the virtual universe
+    BranchGroup scene = createSceneGraph(canvas);
+    u = new SimpleUniverse(canvas);
+    
+    // This will move the ViewPlatform back a bit so the
+    // objects in the scene can be viewed.
+    u.getViewingPlatform().setNominalViewingTransform();
+    u.addBranchGraph(scene);       
     }
 
   public BranchGroup createSceneGraph(Canvas3D canvas)
@@ -116,10 +116,10 @@ public class Viewer3D extends ViewerDesktopFrame {
     // Now create the Alpha object that controls the speed of the
     // morphing operation.
     Alpha morphAlpha = new Alpha(-1, Alpha.INCREASING_ENABLE |
-				 Alpha.DECREASING_ENABLE,
-				 0, 0,
-				 4000, 1000, 500,
-				 4000, 1000, 500);
+                 Alpha.DECREASING_ENABLE,
+                 0, 0,
+                 4000, 1000, 500,
+                 4000, 1000, 500);
       
         
     behavior1 = new PickRotateBehavior(objRoot, canvas, bounds);
@@ -197,33 +197,33 @@ public class Viewer3D extends ViewerDesktopFrame {
       String value = e.getActionCommand();
       //System.out.println("action: name = " + name + " value = " + value);
       setPickMode(PickCanvas.BOUNDS);
-	 } else if (value == geometryString) {
-	     setPickMode(PickCanvas.GEOMETRY);
-	 } else if (value == geometryIntersectString) {
-	     setPickMode(PickCanvas.GEOMETRY_INTERSECT_INFO);
-	 } else {
-	     System.out.println("Unknown pick mode: " + value); 
-	 }
+     } else if (value == geometryString) {
+         setPickMode(PickCanvas.GEOMETRY);
+     } else if (value == geometryIntersectString) {
+         setPickMode(PickCanvas.GEOMETRY_INTERSECT_INFO);
+     } else {
+         System.out.println("Unknown pick mode: " + value); 
+     }
       } else if (name == toleranceString) {
-	 if (value == tolerance0String) {
-	     setPickTolerance(0.0f);
-	 } else if (value == tolerance2String) {
-	     setPickTolerance(2.0f);
-	 } else if (value == tolerance4String) {
-	     setPickTolerance(4.0f);
-	 } else if (value == tolerance8String) {
-	     setPickTolerance(8.0f);
-	 } else {
-	     System.out.println("Unknown tolerance: " + value); 
-	 }
+     if (value == tolerance0String) {
+         setPickTolerance(0.0f);
+     } else if (value == tolerance2String) {
+         setPickTolerance(2.0f);
+     } else if (value == tolerance4String) {
+         setPickTolerance(4.0f);
+     } else if (value == tolerance8String) {
+         setPickTolerance(8.0f);
+     } else {
+         System.out.println("Unknown tolerance: " + value); 
+     }
       } else if (name == viewModeString) {
-	 if (value == perspectiveString) {
-	     setViewMode(View.PERSPECTIVE_PROJECTION);
-	 } else if (value == parallelString) {
-	     setViewMode(View.PARALLEL_PROJECTION);
-	 } 
+     if (value == perspectiveString) {
+         setViewMode(View.PERSPECTIVE_PROJECTION);
+     } else if (value == parallelString) {
+         setViewMode(View.PARALLEL_PROJECTION);
+     } 
       } else {
-	 System.out.println("Unknown action name: " + name); 
+     System.out.println("Unknown action name: " + name); 
       }
   }  */
   
@@ -258,7 +258,7 @@ public class Viewer3D extends ViewerDesktopFrame {
     
     public void internalFrameClosed(InternalFrameEvent internalFrameEvent) {
         setNullCommands();   
-	u.removeAllLocales();        
+    u.removeAllLocales();        
     }
     
     public void mouseEntered(MouseEvent mouseEvent) {

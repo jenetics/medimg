@@ -28,25 +28,25 @@ public class ListMap implements Map {
             this.key = key;
             this.value = value;
         }
-		/**
-		 * @see java.util.Map.Entry#getKey()
-		 */
-		public Object getKey() {
-			return key;
-		}
-		/**
-		 * @see java.util.Map.Entry#getValue()
-		 */
-		public Object getValue() {
-			return value;
-		}
-		/**
-		 * @see java.util.Map.Entry#setValue(java.lang.Object)
-		 */
-		public Object setValue(Object value) {
+        /**
+         * @see java.util.Map.Entry#getKey()
+         */
+        public Object getKey() {
+            return key;
+        }
+        /**
+         * @see java.util.Map.Entry#getValue()
+         */
+        public Object getValue() {
+            return value;
+        }
+        /**
+         * @see java.util.Map.Entry#setValue(java.lang.Object)
+         */
+        public Object setValue(Object value) {
             this.value = value;
-			return value;
-		}
+            return value;
+        }
         
         public int hashCode() {
             return key.hashCode();
@@ -65,38 +65,38 @@ public class ListMap implements Map {
     }
     
     
-	/**
-	 * @see java.util.Map#size()
-	 */
-	public int size() {
-		return entries.size();
-	}
+    /**
+     * @see java.util.Map#size()
+     */
+    public int size() {
+        return entries.size();
+    }
     
-	/**
-	 * @see java.util.Map#isEmpty()
-	 */
-	public boolean isEmpty() {
-		return entries.isEmpty();
-	}
+    /**
+     * @see java.util.Map#isEmpty()
+     */
+    public boolean isEmpty() {
+        return entries.isEmpty();
+    }
     
-	/**
-	 * @see java.util.Map#containsKey(java.lang.Object)
-	 */
-	public boolean containsKey(Object key) {
-		return keys.contains(key);
-	}
+    /**
+     * @see java.util.Map#containsKey(java.lang.Object)
+     */
+    public boolean containsKey(Object key) {
+        return keys.contains(key);
+    }
     
-	/**
-	 * @see java.util.Map#containsValue(java.lang.Object)
-	 */
-	public boolean containsValue(Object value) {
+    /**
+     * @see java.util.Map#containsValue(java.lang.Object)
+     */
+    public boolean containsValue(Object value) {
         return values.contains(value);
-	}
+    }
     
-	/**
-	 * @see java.util.Map#get(java.lang.Object)
-	 */
-	public Object get(Object key) {
+    /**
+     * @see java.util.Map#get(java.lang.Object)
+     */
+    public Object get(Object key) {
         Map.Entry entry;
         for (Iterator it = entries.iterator(); it.hasNext();) {
             entry = (Map.Entry)it.next();
@@ -105,20 +105,20 @@ public class ListMap implements Map {
             }
         }        
         
-		return null;
-	}
+        return null;
+    }
     
-	/**
-	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
-	 */
-	public Object put(Object key, Object value) {
+    /**
+     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
+     */
+    public Object put(Object key, Object value) {
         Object ret = remove(key);
         entries.add(new ListMapEntry(key, value));
         keys.add(key);
         values.add(value);
         
         return ret;
-	}
+    }
         
         public void replace(Object oldKey, Object newKey, Object newValue) {
             ListMapEntry entry;
@@ -140,10 +140,10 @@ public class ListMap implements Map {
             put(key, value);
         }
     
-	/**
-	 * @see java.util.Map#remove(java.lang.Object)
-	 */
-	public Object remove(Object key) {
+    /**
+     * @see java.util.Map#remove(java.lang.Object)
+     */
+    public Object remove(Object key) {
         Map.Entry entry;
         for (Iterator it = entries.iterator(); it.hasNext();) {
             entry = (Map.Entry)it.next();
@@ -156,54 +156,54 @@ public class ListMap implements Map {
             }
         } 
         
-		return null;
-	}
+        return null;
+    }
     
-	/**
-	 * @see java.util.Map#putAll(java.util.Map)
-	 */
-	public void putAll(Map t) {
+    /**
+     * @see java.util.Map#putAll(java.util.Map)
+     */
+    public void putAll(Map t) {
         Map.Entry entry;
         for (Iterator it = t.entrySet().iterator(); it.hasNext();) {
             entry = (Map.Entry)it.next();
             put(entry.getKey(), entry.getValue());
         }
-	}
+    }
     
-	/**
-	 * @see java.util.Map#clear()
-	 */
-	public void clear() {
+    /**
+     * @see java.util.Map#clear()
+     */
+    public void clear() {
         entries.clear();
         keys.clear();
         values.clear();
-	}
+    }
     
-	/**
-	 * @see java.util.Map#keySet()
-	 */
-	public Set keySet() {     
-		return keys;
-	}
+    /**
+     * @see java.util.Map#keySet()
+     */
+    public Set keySet() {     
+        return keys;
+    }
     
-	/**
-	 * @see java.util.Map#values()
-	 */
-	public Collection values() {
+    /**
+     * @see java.util.Map#values()
+     */
+    public Collection values() {
         return values;
-	}
+    }
     
-	/**
-	 * @see java.util.Map#entrySet()
-	 */
-	public Set entrySet() {
+    /**
+     * @see java.util.Map#entrySet()
+     */
+    public Set entrySet() {
         Set set = new HashSet();
         for (Iterator it = entries.iterator(); it.hasNext();) {
             set.add(it.next());
         }
         
         return set;
-	}
+    }
     
     /**
      * Returns a list view of the values contained in this listmap. The

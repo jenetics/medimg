@@ -100,15 +100,15 @@ public class Test {
         AffineTransformation transformation;
         try {
             transformation = (AffineTransformation)strategy.registrate(data1, data2);
-	        timer2.stop();
-	        timer2.print();
+            timer2.stop();
+            timer2.print();
             //Image show = new ImageData(0, 500, 0, 500, 0, 0);
             ImageDataFactory fac = ImageDataFactory.getInstance();
             Image show = transformation.transform(data1, fac);
             //Image show = transformation.transform(data1);
 
             
-	        //transformation.transform(data1, show);
+            //transformation.transform(data1, show);
             /*ColorRangeOperator minMax2 = new ColorRangeOperator();
             UnaryPointAnalyzer analyzer2 = new UnaryPointAnalyzer(show, minMax2);
             analyzer2.analyze();
@@ -121,16 +121,16 @@ public class Test {
             System.out.println("Punkt: 500 -500 - 0: " +  erg[0] + ", " + erg[1] + ", " + erg[2]);*/
             
             //System.out.println((AffineTransformation)transformation.getScaleTransformation());
-	        TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg/"));   
-	        rwriter.write();         
+            TIFFWriter rwriter = new TIFFWriter(show, new File(path + "erg/"));   
+            rwriter.write();         
         } catch (Exception re) {
             System.out.println("Mist");
             re.printStackTrace();
         }
         
         /*try {
-	        TIFFWriter rwriter = new TIFFWriter(data1, new File("E:/temp/img/erg2"));   
-	        rwriter.write();         
+            TIFFWriter rwriter = new TIFFWriter(data1, new File("E:/temp/img/erg2"));   
+            rwriter.write();         
         } catch (Exception re) {
             System.out.println("Mist");
             re.printStackTrace();

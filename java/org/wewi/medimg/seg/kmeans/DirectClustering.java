@@ -40,13 +40,13 @@ public final class DirectClustering extends ObservableAlgorithm
             iteration();           
         }
         
-		/**
-		 * @see org.wewi.medimg.alg.AlgorithmIterator#getInterimResult()
-		 */
-		public Object getInterimResult() throws UnsupportedOperationException {
+        /**
+         * @see org.wewi.medimg.alg.AlgorithmIterator#getInterimResult()
+         */
+        public Object getInterimResult() throws UnsupportedOperationException {
             Clusterer clusterer = new Clusterer(clusterCenter);
-			return clusterer.getCluster(data);
-		}
+            return clusterer.getCluster(data);
+        }
 
     }
     

@@ -13,21 +13,21 @@ import org.wewi.medimg.image.Image;
  */
 public class ColorSwapFilter extends ImageFilter {
 
-	/**
-	 * Constructor for ColorSwapFilter.
-	 * @param image
-	 */
-	public ColorSwapFilter(Image image) {
-		super(image);
-	}
+    /**
+     * Constructor for ColorSwapFilter.
+     * @param image
+     */
+    public ColorSwapFilter(Image image) {
+        super(image);
+    }
 
-	/**
-	 * Constructor for ColorSwapFilter.
-	 * @param component
-	 */
-	public ColorSwapFilter(ImageFilter component) {
-		super(component);
-	}
+    /**
+     * Constructor for ColorSwapFilter.
+     * @param component
+     */
+    public ColorSwapFilter(ImageFilter component) {
+        super(component);
+    }
     
     protected void componentFilter() {  
     }

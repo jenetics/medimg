@@ -13,33 +13,33 @@ import java.awt.LayoutManager;
  */
 public class Link extends Item {
 
-	/**
-	 * @param layout
-	 * @param isDoubleBuffered
-	 */
-	public Link(LayoutManager layout, boolean isDoubleBuffered) {
-		super(layout, isDoubleBuffered);
-	}
+    /**
+     * @param layout
+     * @param isDoubleBuffered
+     */
+    public Link(LayoutManager layout, boolean isDoubleBuffered) {
+        super(layout, isDoubleBuffered);
+    }
 
-	/**
-	 * @param layout
-	 */
-	public Link(LayoutManager layout) {
-		super(layout);
-	}
+    /**
+     * @param layout
+     */
+    public Link(LayoutManager layout) {
+        super(layout);
+    }
 
-	/**
-	 * @param isDoubleBuffered
-	 */
-	public Link(boolean isDoubleBuffered) {
-		super(isDoubleBuffered);
-	}
+    /**
+     * @param isDoubleBuffered
+     */
+    public Link(boolean isDoubleBuffered) {
+        super(isDoubleBuffered);
+    }
 
-	/**
-	 * 
-	 */
-	public Link() {
-		super();
-	}
+    /**
+     * 
+     */
+    public Link() {
+        super();
+    }
 
 }

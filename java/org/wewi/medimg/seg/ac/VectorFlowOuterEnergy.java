@@ -13,19 +13,19 @@ import org.wewi.medimg.image.geom.Point;
  */
 public class VectorFlowOuterEnergy extends OuterEnergyFunction {
 
-	/**
-	 * Constructor for VectorFlowOuterEnergy.
-	 * @param image
-	 */
-	public VectorFlowOuterEnergy(Image image) {
-		super(image);
-	}
+    /**
+     * Constructor for VectorFlowOuterEnergy.
+     * @param image
+     */
+    public VectorFlowOuterEnergy(Image image) {
+        super(image);
+    }
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.OuterEnergyFunction#energy(Point[])
-	 */
-	public double energy(Point[] ac) {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.seg.ac.OuterEnergyFunction#energy(Point[])
+     */
+    public double energy(Point[] ac) {
+        return 0;
+    }
 
 }

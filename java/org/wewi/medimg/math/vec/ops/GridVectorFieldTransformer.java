@@ -15,14 +15,14 @@ public final class GridVectorFieldTransformer {
     private GridVectorField field;
     private GridVectorFunction transformer;
 
-	/**
-	 * Constructor for GridVectorFieldTransformer.
-	 */
-	public GridVectorFieldTransformer(GridVectorField field, GridVectorFunction transformer) {
-		super();
+    /**
+     * Constructor for GridVectorFieldTransformer.
+     */
+    public GridVectorFieldTransformer(GridVectorField field, GridVectorFunction transformer) {
+        super();
         this.field = field;
         this.transformer = transformer;
-	}
+    }
     
     public void transform() {
         double[] v = new double[3];

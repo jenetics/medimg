@@ -15,12 +15,12 @@ import java.awt.Graphics;
 public abstract class ImageCanvasDecorator implements ImageCanvas {
     private ImageCanvas component;
 
-	/**
-	 * Constructor for ImageCanvasDecorator.
-	 */
-	public ImageCanvasDecorator(ImageCanvas component) {
-		this.component = component;
-	}
+    /**
+     * Constructor for ImageCanvasDecorator.
+     */
+    public ImageCanvasDecorator(ImageCanvas component) {
+        this.component = component;
+    }
 
     
     public void draw(Graphics graph, ImagePanel panel) {

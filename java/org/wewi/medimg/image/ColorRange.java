@@ -46,10 +46,10 @@ public class ColorRange implements Immutable {
     }
     
     public int hashCode() {
-    	int result = 17;
-    	result = 37*result + minColor;
-    	result = 37*result + maxColor;
-    	return result;	
+        int result = 17;
+        result = 37*result + minColor;
+        result = 37*result + maxColor;
+        return result;    
     }
     
     public boolean equals(Object obj) {
@@ -58,7 +58,7 @@ public class ColorRange implements Immutable {
         }
         if (!(obj instanceof ColorRange)) {
             return false;
-        }    		
+        }            
         
         ColorRange cr = (ColorRange)obj;
         return cr.minColor == minColor && cr.maxColor == maxColor;

@@ -18,12 +18,12 @@ package org.wewi.medimg.util.param;
  */
 public class Test {
 
-	/**
-	 * Constructor for Test.
-	 */
-	public Test() {
-		super();
-	}
+    /**
+     * Constructor for Test.
+     */
+    public Test() {
+        super();
+    }
     
     
     public static void main(String[] args) {

@@ -34,11 +34,11 @@ public final class Main {
         SAXBuilder builder = new SAXBuilder();
         Document doc = null;
         try {
-			doc = builder.build(new File(todo));
-		} catch (JDOMException e) {
+            doc = builder.build(new File(todo));
+        } catch (JDOMException e) {
             System.err.println("Can't create SaxBuilder: " + e);
             return;
-		} 
+        } 
         
         Element batch = doc.getRootElement(); 
         List tasks = batch.getChildren("Task");
@@ -100,10 +100,10 @@ public final class Main {
         validator.validate();        
     }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
         
-	}
+    }
 }
 
 

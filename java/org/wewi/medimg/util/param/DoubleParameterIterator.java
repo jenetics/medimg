@@ -18,40 +18,40 @@ public class DoubleParameterIterator implements ParameterIterator {
     
     private double current;
 
-	/**
-	 * Constructor for DoubleParameterIterator.
-	 */
-	public DoubleParameterIterator(String name, double start, double stop, double stride) {
-		this.start = start;
+    /**
+     * Constructor for DoubleParameterIterator.
+     */
+    public DoubleParameterIterator(String name, double start, double stop, double stride) {
+        this.start = start;
         this.stop = stop;
         this.stride = stride;
         this.name = name;
         
         current = start;
-	}
+    }
 
-	/**
-	 * @see java.util.Iterator#hasNext()
-	 */
-	public boolean hasNext() {
-		return current <= stop;
-	}
+    /**
+     * @see java.util.Iterator#hasNext()
+     */
+    public boolean hasNext() {
+        return current <= stop;
+    }
 
-	/**
-	 * @see java.util.Iterator#next()
-	 */
-	public Object next() {
+    /**
+     * @see java.util.Iterator#next()
+     */
+    public Object next() {
         DoubleParameter value = new DoubleParameter(name, current);
         current += stride;
-		return value;
-	}
+        return value;
+    }
 
-	/**
-	 * @see java.util.Iterator#remove()
-	 */
-	public void remove() {
+    /**
+     * @see java.util.Iterator#remove()
+     */
+    public void remove() {
         throw new UnsupportedOperationException();
-	}
+    }
     
     public Object clone() {
         return new DoubleParameterIterator(name, start, stop, stride);    

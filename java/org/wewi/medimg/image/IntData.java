@@ -13,20 +13,20 @@ import java.util.Arrays;
 public final class IntData implements DiscreteData {
     private int[] data;
 
-	/**
-	 * Constructor for IntData.
-	 */
-	public IntData(int size) {
-		super();
+    /**
+     * Constructor for IntData.
+     */
+    public IntData(int size) {
+        super();
         data = new int[size];
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.DiscreteData#get(int)
-	 */
-	public int get(int pos) {
-		return data[pos];
-	}
+    /**
+     * @see org.wewi.medimg.image.DiscreteData#get(int)
+     */
+    public int get(int pos) {
+        return data[pos];
+    }
     
     public int getInt(int pos) {
         return data[pos];
@@ -36,12 +36,12 @@ public final class IntData implements DiscreteData {
         return data[pos];
     }
 
-	/**
-	 * @see org.wewi.medimg.image.DiscreteData#set(int, int)
-	 */
-	public void set(int pos, int value) {
+    /**
+     * @see org.wewi.medimg.image.DiscreteData#set(int, int)
+     */
+    public void set(int pos, int value) {
         data[pos] = value;
-	}
+    }
     
     public void set(int pos, double value) {
         data[pos] = (int)value;
@@ -59,10 +59,10 @@ public final class IntData implements DiscreteData {
     }
 
 
-	/**
-	 * @see org.wewi.medimg.image.DiscreteData#copy(DiscreteData)
-	 */
-	public void copy(DiscreteData target) {
+    /**
+     * @see org.wewi.medimg.image.DiscreteData#copy(DiscreteData)
+     */
+    public void copy(DiscreteData target) {
         if (!(target instanceof IntData)) {
             return;    
         }
@@ -70,6 +70,6 @@ public final class IntData implements DiscreteData {
         IntData t = (IntData)target;
         
         System.arraycopy(data, 0, t.data, 0, t.data.length);
-	}
+    }
 
 }

@@ -19,27 +19,27 @@ public abstract class Item extends JPanel {
     
     protected Blackboard blackboard;
     
-	/**
-	 * @param layout
-	 * @param isDoubleBuffered
-	 */
-	public Item(LayoutManager layout, boolean isDoubleBuffered) {
-		super(layout, isDoubleBuffered);
-	}
+    /**
+     * @param layout
+     * @param isDoubleBuffered
+     */
+    public Item(LayoutManager layout, boolean isDoubleBuffered) {
+        super(layout, isDoubleBuffered);
+    }
 
-	/**
-	 * @param layout
-	 */
-	public Item(LayoutManager layout) {
-		super(layout);
-	}
+    /**
+     * @param layout
+     */
+    public Item(LayoutManager layout) {
+        super(layout);
+    }
 
-	/**
-	 * @param isDoubleBuffered
-	 */
-	public Item(boolean isDoubleBuffered) {
-		super(isDoubleBuffered);
-	}
+    /**
+     * @param isDoubleBuffered
+     */
+    public Item(boolean isDoubleBuffered) {
+        super(isDoubleBuffered);
+    }
     
     public Item() {
         super();

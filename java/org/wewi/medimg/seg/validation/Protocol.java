@@ -38,24 +38,24 @@ public class Protocol {
     
     
 
-	/**
-	 * Constructor for Protocol.
-	 */
-	public Protocol(File file) {
-		super();
+    /**
+     * Constructor for Protocol.
+     */
+    public Protocol(File file) {
+        super();
         this.file = file;
         init();
-	}
+    }
     
     private void init() {
         SAXBuilder builder = new SAXBuilder();
         Document doc = null; 
         try {
-			doc = builder.build(file);
-		} catch (JDOMException e) {
+            doc = builder.build(file);
+        } catch (JDOMException e) {
             System.err.println("Protocol.init: " + e);
             return;
-		}
+        }
         
         Element root = doc.getRootElement();
         
@@ -87,12 +87,12 @@ public class Protocol {
         Element algResult = alg.getChild("Result");
         Element executionTime = algResult.getChild("ExecutionTime");
         try {
-			startTime = executionTime.getAttribute("start").getLongValue();
+            startTime = executionTime.getAttribute("start").getLongValue();
             stopTime = executionTime.getAttribute("stop").getLongValue();
-		} catch (DataConversionException e) {
+        } catch (DataConversionException e) {
             startTime = 0;
             stopTime = 0;
-		}
+        }
         Element iter = algResult.getChild("Iterations");
         iterations = Integer.parseInt(iter.getText());
         meanValues = new double[k];
@@ -108,7 +108,7 @@ public class Protocol {
         Element fm = result.getChild("FrequencyMatrix");
         int rows, cols;
         try {
-			rows = fm.getAttribute("rows").getIntValue();
+            rows = fm.getAttribute("rows").getIntValue();
             cols = fm.getAttribute("cols").getIntValue();
             
             accu = new AccumulatorArray(rows, cols);
@@ -125,9 +125,9 @@ public class Protocol {
                 ++posx;    
             }            
             
-		} catch (Exception e) {
+        } catch (Exception e) {
             rows = -1; cols = -1;
-		}
+        }
 
         
         //Füllen der Fehler
@@ -151,53 +151,53 @@ public class Protocol {
         }
     }
 
-	/**
-	 * Returns the accu.
-	 * @return AccumulatorArray
-	 */
-	public AccumulatorArray getAccu() {
-		return accu;
-	}
+    /**
+     * Returns the accu.
+     * @return AccumulatorArray
+     */
+    public AccumulatorArray getAccu() {
+        return accu;
+    }
 
-	/**
-	 * Returns the algorithmName.
-	 * @return String
-	 */
-	public String getAlgorithmName() {
-		return algorithmName;
-	}
+    /**
+     * Returns the algorithmName.
+     * @return String
+     */
+    public String getAlgorithmName() {
+        return algorithmName;
+    }
 
-	/**
-	 * Returns the featureError.
-	 * @return double[]
-	 */
-	public double[] getFeatureError() {
-		return featureError;
-	}
+    /**
+     * Returns the featureError.
+     * @return double[]
+     */
+    public double[] getFeatureError() {
+        return featureError;
+    }
 
-	/**
-	 * Returns the imageProperties.
-	 * @return Properties
-	 */
-	public Properties getImageProperties() {
-		return imageProperties;
-	}
+    /**
+     * Returns the imageProperties.
+     * @return Properties
+     */
+    public Properties getImageProperties() {
+        return imageProperties;
+    }
 
-	/**
-	 * Returns the iterations.
-	 * @return int
-	 */
-	public int getIterations() {
-		return iterations;
-	}
+    /**
+     * Returns the iterations.
+     * @return int
+     */
+    public int getIterations() {
+        return iterations;
+    }
 
-	/**
-	 * Returns the k.
-	 * @return int
-	 */
-	public int getK() {
-		return k;
-	}
+    /**
+     * Returns the k.
+     * @return int
+     */
+    public int getK() {
+        return k;
+    }
     
     public double getBeta() {
         return beta;    
@@ -207,37 +207,37 @@ public class Protocol {
         return mutualInformation;    
     }
 
-	/**
-	 * Returns the meanValues.
-	 * @return double[]
-	 */
-	public double[] getMeanValues() {
-		return meanValues;
-	}
+    /**
+     * Returns the meanValues.
+     * @return double[]
+     */
+    public double[] getMeanValues() {
+        return meanValues;
+    }
 
-	/**
-	 * Returns the overallError.
-	 * @return double
-	 */
-	public double getOverallError() {
-		return overallError;
-	}
+    /**
+     * Returns the overallError.
+     * @return double
+     */
+    public double getOverallError() {
+        return overallError;
+    }
 
-	/**
-	 * Returns the startTime.
-	 * @return long
-	 */
-	public long getStartTime() {
-		return startTime;
-	}
+    /**
+     * Returns the startTime.
+     * @return long
+     */
+    public long getStartTime() {
+        return startTime;
+    }
 
-	/**
-	 * Returns the stopTime.
-	 * @return long
-	 */
-	public long getStopTime() {
-		return stopTime;
-	}
+    /**
+     * Returns the stopTime.
+     * @return long
+     */
+    public long getStopTime() {
+        return stopTime;
+    }
 
 }
 

@@ -43,7 +43,7 @@ public class PseudoColorConversion implements ColorConversion {
     }
     
     public Object clone() {
-    	return new PseudoColorConversion();	
+        return new PseudoColorConversion();    
     }
     
 }

@@ -22,8 +22,8 @@ public class RegistratorEnumeration extends Enumeration {
     public static final RegistratorEnumeration MC_METHOD = 
                       new RegistratorEnumeration("Monte Carlo Method");
 
-	public static final RegistratorEnumeration[] ENUMERATION = 
-	                          {PCA_METHOD_RIGID, PCA_METHOD_NONRIGID, MC_METHOD};
+    public static final RegistratorEnumeration[] ENUMERATION = 
+                              {PCA_METHOD_RIGID, PCA_METHOD_NONRIGID, MC_METHOD};
     
     private String name;
     private static int refCount = 0;  
@@ -33,6 +33,6 @@ public class RegistratorEnumeration extends Enumeration {
     }
     
     public String toString() {
-    	return name;	
+        return name;    
     }
 }

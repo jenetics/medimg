@@ -26,21 +26,21 @@ final class Rastergon {
         setSpanY(new Span());
     }
 
-	public void setSpanY(Span spanY) {
-		this.spanY = spanY;
-	}
+    public void setSpanY(Span spanY) {
+        this.spanY = spanY;
+    }
 
-	public Span getSpanY() {
-		return spanY;
-	}
+    public Span getSpanY() {
+        return spanY;
+    }
 
-	public void setSpans(Span[] spans) {
-		this.spans = spans;
-	}
+    public void setSpans(Span[] spans) {
+        this.spans = spans;
+    }
 
-	public Span[] getSpans() {
-		return spans;
-	}
+    public Span[] getSpans() {
+        return spans;
+    }
 
     public void addLine(Line3D line) {
         Vector bottom = line.getPosition();

@@ -20,11 +20,11 @@ public class ErrorMeasure {
     private double[] featureError;
     private double overallError;
 
-	/**
-	 * Constructor for ErrorMeasure.
-	 */
-	public ErrorMeasure(Image am, Image s, T3 t3) {
-		super();
+    /**
+     * Constructor for ErrorMeasure.
+     */
+    public ErrorMeasure(Image am, Image s, T3 t3) {
+        super();
         this.am = am;
         this.s = s;
         this.t3 = t3;
@@ -32,7 +32,7 @@ public class ErrorMeasure {
         featureError = new double[t3.getAbstractFeatures()];
         overallError = 0;
         Arrays.fill(featureError, 0);
-	}
+    }
     
     public void measure() {
         int[] abstractFeatureVoxels = new int[t3.getAbstractFeatures()];

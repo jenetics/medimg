@@ -18,31 +18,31 @@ public final class LinearNormalizeFilter extends ImageFilter {
     private int minColor;
     private int maxColor;
 
-	/**
-	 * Constructor for LinearNormalizeFilter.
-	 * @param image
-	 */
-	public LinearNormalizeFilter(Image image, int minColor, int maxColor) {
-		super(image);
+    /**
+     * Constructor for LinearNormalizeFilter.
+     * @param image
+     */
+    public LinearNormalizeFilter(Image image, int minColor, int maxColor) {
+        super(image);
         this.minColor = minColor;
         this.maxColor = maxColor;
-	}
+    }
 
-	/**
-	 * Constructor for LinearNormalizeFilter.
-	 * @param component
-	 */
-	public LinearNormalizeFilter(ImageFilter component, int minColor, int maxColor) {
-		super(component);
+    /**
+     * Constructor for LinearNormalizeFilter.
+     * @param component
+     */
+    public LinearNormalizeFilter(ImageFilter component, int minColor, int maxColor) {
+        super(component);
         this.minColor = minColor;
         this.maxColor = maxColor;        
-	}
+    }
     
 
-	/**
-	 * @see org.wewi.medimg.image.filter.ImageFilter#filter()
-	 */
-	protected void componentFilter() {
+    /**
+     * @see org.wewi.medimg.image.filter.ImageFilter#filter()
+     */
+    protected void componentFilter() {
         
         //Feststellen der minimalen und maximalen Farbe
         ColorRangeOperator op = new ColorRangeOperator();
@@ -57,7 +57,7 @@ public final class LinearNormalizeFilter extends ImageFilter {
         UnaryPointTransformer transformer = new UnaryPointTransformer(image, functor);
         transformer.transform();
     
-	}
+    }
     
     public String toString() {
         return getClass().getName() + ":\n" +

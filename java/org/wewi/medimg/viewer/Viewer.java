@@ -209,10 +209,10 @@ public class Viewer extends JFrame implements Singleton,
             this.className = className;  
             this.frame = frame;  
         }
-		public void actionPerformed(ActionEvent arg0) {            
+        public void actionPerformed(ActionEvent arg0) {            
             setLookAndFeel(className, frame); 
             viewerPrefs.setLookAndFeelClassName(className);                 
-		}
+        }
 
     }
     
@@ -302,12 +302,12 @@ public class Viewer extends JFrame implements Singleton,
         openCommand = command;
     }
     
-	/**
-	 * Diese Methode liefert das aktuelle Öffnen-Kommando
+    /**
+     * Diese Methode liefert das aktuelle Öffnen-Kommando
      * der Menüzeile wieder.
      * 
-	 * @return Öffnene-Kommando
-	 */
+     * @return Öffnene-Kommando
+     */
     public Command getOpenCommand() {
         synchronized (openCommand) {
             return openCommand;

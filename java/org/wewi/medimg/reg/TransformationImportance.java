@@ -7,7 +7,7 @@ package org.wewi.medimg.reg;
  * @version 0.1
  */
 public interface TransformationImportance {
-	
+    
     public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints);
     
 

@@ -19,52 +19,52 @@ public class MutableDouble extends MutableNumber {
         value = 0;
     }
 
-	/**
-	 * @see org.wewi.medimg.math.MutableNumber#setValue(byte)
-	 */
-	public void setValue(byte n) {
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#setValue(byte)
+     */
+    public void setValue(byte n) {
         value = n;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.math.MutableNumber#setValue(short)
-	 */
-	public void setValue(short n) {
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#setValue(short)
+     */
+    public void setValue(short n) {
         value = n;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.math.MutableNumber#setValue(int)
-	 */
-	public void setValue(int n) {
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#setValue(int)
+     */
+    public void setValue(int n) {
         value = n;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.math.MutableNumber#setValue(long)
-	 */
-	public void setValue(long n) {
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#setValue(long)
+     */
+    public void setValue(long n) {
         value = n;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.math.MutableNumber#setValue(float)
-	 */
-	public void setValue(float n) {
-        value = n;		
-	}
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#setValue(float)
+     */
+    public void setValue(float n) {
+        value = n;        
+    }
 
-	/**
-	 * @see org.wewi.medimg.math.MutableNumber#setValue(double)
-	 */
-	public void setValue(double n) {
-        value = n;	
-	}
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#setValue(double)
+     */
+    public void setValue(double n) {
+        value = n;    
+    }
     
     /**
-     * @see org.wewi.medimg.math.MutableNumber#setValue(org.wewi.medimg.math.MutableNumber)
+     * @see org.wewi.medimg.math.MutableNumber#setValue(org.wewi.medimg.math.Number)
      */
-    public void setValue(MutableNumber n) {
+    public void setValue(Number n) {
         value = n.doubleValue();
     }
     
@@ -96,11 +96,11 @@ public class MutableDouble extends MutableNumber {
         return value;
     }    
 
-	/**
-	 * @see org.wewi.medimg.math.MutableNumber#clone()
-	 */
-	public Object clone() {
-		return new MutableDouble(value);
-	}
+    /**
+     * @see org.wewi.medimg.math.MutableNumber#clone()
+     */
+    public Object clone() {
+        return new MutableDouble(value);
+    }
 
 }

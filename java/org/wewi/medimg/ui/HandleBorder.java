@@ -25,10 +25,10 @@ public class HandleBorder extends JComponent {
     private Color handleColor = Color.BLUE;
     private Stroke lineStroke = new BasicStroke();
 
-	public HandleBorder(Component component) {
-		child = component;
+    public HandleBorder(Component component) {
+        child = component;
         add(child);
-	}
+    }
 
 
     private void paintBorder(Graphics2D g) {

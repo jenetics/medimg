@@ -38,24 +38,24 @@ public class Batch {
     private Image currentModelImage;
     private Image currentSourceImage;
     
-	/**
-	 * Constructor for Batch.
-	 */
-	public Batch() {
-		super();
-	}
+    /**
+     * Constructor for Batch.
+     */
+    public Batch() {
+        super();
+    }
     
     private void updateBatchFile() { 
         XMLOutputter out = new XMLOutputter("    ", true);
         try {
-			out.output(doc, new FileOutputStream(batchFile));
-		} catch (FileNotFoundException e) {
+            out.output(doc, new FileOutputStream(batchFile));
+        } catch (FileNotFoundException e) {
             System.err.println("Can't write back BatchFile \"" + batchFile + "\" " + e);
             System.exit(0);
-		} catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("Can't write back BatchFile \"" + batchFile + "\" " + e);
             System.exit(0);            
-		}      
+        }      
     }    
     
     public void batch(String[] args) {
@@ -89,12 +89,12 @@ public class Batch {
         int iterations = 0, iterationsDone = 0;
         try {
             id = task.getAttribute("id").getValue();
-			iterations = task.getAttribute("iterations").getIntValue();
+            iterations = task.getAttribute("iterations").getIntValue();
             iterationsDone  = task.getAttribute("iterations.done").getIntValue();
-		} catch (DataConversionException e) {
+        } catch (DataConversionException e) {
             System.err.println("Can't convert data: " + e);
             System.exit(0);
-		}
+        }
         
         if (iterations <= iterationsDone) {
             return;    
@@ -126,12 +126,12 @@ public class Batch {
             ImageReader reader = new TIFFReader(ShortImageDataFactory.getInstance(), 
                                                    new File(currentSourceImageFileName)); 
             try {
-				reader.read();
-			} catch (ImageIOException e) {
+                reader.read();
+            } catch (ImageIOException e) {
                 System.err.println("Kann Bild \"" + currentSourceImage + "\" nicht laden.\n" + e);
                 System.err.println("Fahre mit dem nächsten Task fort.");
                 return;
-			}
+            }
             currentSourceImage = reader.getImage();  
         } 
         if (!currentModelImageFileName.equals(modelName)) {

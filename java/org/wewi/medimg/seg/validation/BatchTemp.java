@@ -11,12 +11,12 @@ package org.wewi.medimg.seg.validation;
 public class BatchTemp {
     private String batchFile;
 
-	/**
-	 * Constructor for BatchTemp.
-	 */
-	public BatchTemp(String batchFile) {
-		super();
+    /**
+     * Constructor for BatchTemp.
+     */
+    public BatchTemp(String batchFile) {
+        super();
         this.batchFile = batchFile;
-	}
+    }
 
 }

@@ -28,13 +28,13 @@ public class ScriptGenerator {
     private List parameterIteratorList;
     private int iterations = 1;
 
-	/**
-	 * Constructor for ScriptGenerator.
-	 */
-	public ScriptGenerator(Validator validator) {
-		this.validator = validator;
+    /**
+     * Constructor for ScriptGenerator.
+     */
+    public ScriptGenerator(Validator validator) {
+        this.validator = validator;
         parameterIteratorList = new ArrayList();
-	}
+    }
     
     public void addParameterIterator(ParameterIterator parameter) {
         parameterIteratorList.add(parameter);    
@@ -115,10 +115,10 @@ public class ScriptGenerator {
         //gen.addParameterIterator(it4);
         
         //try {
-		//	gen.writeScript("X:/out.xml");
-		//} catch (IOException e) {
+        //    gen.writeScript("X:/out.xml");
+        //} catch (IOException e) {
         //    System.err.println("ScriptGenerator.main: " + e);
-		//}     
+        //}     
         
     }
 

@@ -10,21 +10,21 @@ final class Line3D {
         setDirection(p2.minus(p1));
     }
 
-	public void setPosition(Vector position) {
-		this.position = position;
-	}
+    public void setPosition(Vector position) {
+        this.position = position;
+    }
 
-	public Vector getPosition() {
-		return position;
-	}
+    public Vector getPosition() {
+        return position;
+    }
 
-	public void setDirection(Vector direction) {
-		this.direction = direction;
-	}
+    public void setDirection(Vector direction) {
+        this.direction = direction;
+    }
 
-	public Vector getDirection() {
-		return direction;
-	}
+    public Vector getDirection() {
+        return direction;
+    }
 
     /**
      * Return if, and where, this line intersects the plane z=0.

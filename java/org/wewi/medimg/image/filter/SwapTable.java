@@ -14,13 +14,13 @@ public class SwapTable {
     
     private Hashtable table;
 
-	/**
-	 * Constructor for SwapTable.
-	 */
-	public SwapTable() {
-		super();
+    /**
+     * Constructor for SwapTable.
+     */
+    public SwapTable() {
+        super();
         table = new Hashtable();
-	}
+    }
     
     public void addSwapColor(int oldColor, int newColor) {
         table.put(new Integer(oldColor), new Integer(newColor));    

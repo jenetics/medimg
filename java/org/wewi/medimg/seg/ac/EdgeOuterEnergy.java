@@ -19,12 +19,12 @@ import org.wewi.medimg.math.MathUtil;
 public final class EdgeOuterEnergy extends OuterEnergyFunction {
     private Image gradient;
 
-	/**
-	 * Constructor for EdgeOuterEnergy.
-	 * @param image
-	 */
-	public EdgeOuterEnergy(Image image) {
-		super(image);
+    /**
+     * Constructor for EdgeOuterEnergy.
+     * @param image
+     */
+    public EdgeOuterEnergy(Image image) {
+        super(image);
         
         gradient = (Image)image.clone();
         
@@ -32,17 +32,17 @@ public final class EdgeOuterEnergy extends OuterEnergyFunction {
                              new ConvolutionFilter(gradient, Kernel.GAUSSIAN), 
                                   Kernel.SOBEL_HORIZONTAL, Kernel.SOBEL_VERTICAL);
         filter.filter();        
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.OuterEnergyFunction#energy(Point[])
-	 */
-	public double energy(Point[] ac) {
+    /**
+     * @see org.wewi.medimg.seg.ac.OuterEnergyFunction#energy(Point[])
+     */
+    public double energy(Point[] ac) {
         double g = 0;
         for (int i = 0, n = ac.length; i < n; i++) {
             g += gradient.getColor(ac[i].getOrdinate(0), ac[i].getOrdinate(1), 0);        
         }
         return -(double)MathUtil.sqr(g);
-	}
+    }
 
 }

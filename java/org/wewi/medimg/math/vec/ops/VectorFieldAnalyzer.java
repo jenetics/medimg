@@ -15,14 +15,14 @@ public final class VectorFieldAnalyzer {
     private VectorField field;
     private VectorOperator analyzer;
 
-	/**
-	 * Constructor for VectorFieldAnalyzer.
-	 */
-	public VectorFieldAnalyzer(VectorField field, VectorOperator analyzer) {
-		super();
+    /**
+     * Constructor for VectorFieldAnalyzer.
+     */
+    public VectorFieldAnalyzer(VectorField field, VectorOperator analyzer) {
+        super();
         this.field = field;
         this.analyzer = analyzer;
-	}
+    }
     
     
     public void analyze() {

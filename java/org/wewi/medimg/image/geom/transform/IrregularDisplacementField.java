@@ -19,29 +19,29 @@ public class IrregularDisplacementField extends DisplacementF {
     private VectorField field;
 
 
-	public IrregularDisplacementField() {
-		field = new DoubleVectorField();
-	}
+    public IrregularDisplacementField() {
+        field = new DoubleVectorField();
+    }
 
-	public Transformation scale(double alpha) {
-		return null;
-	}
+    public Transformation scale(double alpha) {
+        return null;
+    }
 
-	public Transformation concatenate(Transformation trans) {
-		return null;
-	}
+    public Transformation concatenate(Transformation trans) {
+        return null;
+    }
 
-	public Transformation createInverse() {
-		return null;
-	}
+    public Transformation createInverse() {
+        return null;
+    }
 
-	public void addVector(double[] startPoint, double[] endPoint) {
+    public void addVector(double[] startPoint, double[] endPoint) {
         field.addVector(startPoint, endPoint);
-	}
+    }
 
-	public VectorIterator getVectorIterator() {
-		return field.getVectorIterator();
-	}
+    public VectorIterator getVectorIterator() {
+        return field.getVectorIterator();
+    }
 
 
 }

@@ -23,14 +23,14 @@ public class ColorConversionEnum extends Enumeration {
                                                          
     private String name;
 
-	/**
-	 * Constructor for ColorConversionEnumeration.
-	 * @param t
-	 */
-	private ColorConversionEnum(int t, String name) {
-		super(t);
+    /**
+     * Constructor for ColorConversionEnumeration.
+     * @param t
+     */
+    private ColorConversionEnum(int t, String name) {
+        super(t);
         this.name = name;
-	}
+    }
     
     public String toString() {
         return name;    

@@ -53,11 +53,11 @@ public class Kernel implements Immutable {
     protected Kernel() {
     }
 
-	/**
-	 * Constructor for Kernel.
-	 */
-	public Kernel(int[] rawKernel, int dim, int divisor, int bias) {
-		super();
+    /**
+     * Constructor for Kernel.
+     */
+    public Kernel(int[] rawKernel, int dim, int divisor, int bias) {
+        super();
         
         raw = new int[rawKernel.length];
         System.arraycopy(rawKernel, 0, raw, 0, raw.length);
@@ -67,7 +67,7 @@ public class Kernel implements Immutable {
         this.bias = bias;
         
         margin = dim/2;
-	}
+    }
     
     public int getMargin() {
         return margin;    

@@ -13,11 +13,11 @@ import org.wewi.medimg.image.geom.Point3D;
  */
 public abstract class AbstractGridVectorField implements GridVectorField {
 
-	/**
-	 * @author Franz Wilhelmstötter
-	 * @version 0.1
-	 */
-	private final class RegularVectorIterator implements VectorIterator {
+    /**
+     * @author Franz Wilhelmstötter
+     * @version 0.1
+     */
+    private final class RegularVectorIterator implements VectorIterator {
         private int pos;
         private int[] xyz;
         
@@ -25,27 +25,27 @@ public abstract class AbstractGridVectorField implements GridVectorField {
         private int sizeXY = grid[0]*grid[1];
         
 
-		/**
-		 * Constructor for RegularVectorIterator.
-		 */
-		public RegularVectorIterator() {
-			super();
+        /**
+         * Constructor for RegularVectorIterator.
+         */
+        public RegularVectorIterator() {
+            super();
             pos = 0;
             xyz = new int[3];
-		}
+        }
 
-		public boolean hasNext() {
-			return pos < SIZE;
-		}
+        public boolean hasNext() {
+            return pos < SIZE;
+        }
 
-		public void next(double[] start, double[] end) {
+        public void next(double[] start, double[] end) {
             getCoordinates(pos, xyz);
             
             getGridStartPoint(xyz[0], xyz[1], xyz[2], start);
             getGridEndPoint(xyz[0], xyz[1], xyz[2], end);
             
             pos++;
-		}
+        }
         
         private void getCoordinates(int pos, int[] coordinate) {
             coordinate[2] = pos / (sizeXY);
@@ -55,7 +55,7 @@ public abstract class AbstractGridVectorField implements GridVectorField {
             coordinate[0] = pos; 
         }
 
-	}
+    }
     
     
     private Point3D origin;
@@ -72,10 +72,10 @@ public abstract class AbstractGridVectorField implements GridVectorField {
     }
 
 
-	/**
-	 * Constructor for AbstractGridVectorField.
-	 */
-	public AbstractGridVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
+    /**
+     * Constructor for AbstractGridVectorField.
+     */
+    public AbstractGridVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
         this.origin = origin;
         grid = new int[3];
         stride = new int[3];
@@ -84,7 +84,7 @@ public abstract class AbstractGridVectorField implements GridVectorField {
         
         data = createRealDataArray(grid[0], grid[1], grid[2]);
         SIZE = grid[0]*grid[1]*grid[2];
-	}
+    }
     
     protected abstract RealDataArray createRealDataArray(int sizeX, int sizeY, int sizeZ);
     
@@ -155,9 +155,9 @@ public abstract class AbstractGridVectorField implements GridVectorField {
         
     }
 
-	public VectorIterator getVectorIterator() {
-		return new RegularVectorIterator();
-	}
+    public VectorIterator getVectorIterator() {
+        return new RegularVectorIterator();
+    }
     
     public abstract Object clone();
     

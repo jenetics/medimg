@@ -14,13 +14,13 @@ import org.wewi.medimg.image.geom.Point;
 public abstract class OuterEnergyFunction {
     protected Image image;
 
-	/**
-	 * Constructor for OuterEnergyFunction.
-	 */
-	public OuterEnergyFunction(Image image) {
-		super();
+    /**
+     * Constructor for OuterEnergyFunction.
+     */
+    public OuterEnergyFunction(Image image) {
+        super();
         this.image = image;
-	}
+    }
     
     public abstract double energy(Point[] ac);
 

@@ -12,18 +12,18 @@ import org.wewi.medimg.image.geom.Point3D;
  */
 public class DoubleGridVectorFieldFactory implements GridVectorFieldFactory {
 
-	/**
-	 * Constructor for DoubleGridVectorFieldFactory.
-	 */
-	public DoubleGridVectorFieldFactory() {
-		super();
-	}
+    /**
+     * Constructor for DoubleGridVectorFieldFactory.
+     */
+    public DoubleGridVectorFieldFactory() {
+        super();
+    }
 
-	/**
-	 * @see org.wewi.medimg.math.GridVectorFieldFactory#createGridVectorField(Point3D, int[], int[])
-	 */
-	public GridVectorField createGridVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
-		return new DoubleGridVectorField(origin, gridsXYZ, strideXYZ);
-	}
+    /**
+     * @see org.wewi.medimg.math.GridVectorFieldFactory#createGridVectorField(Point3D, int[], int[])
+     */
+    public GridVectorField createGridVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
+        return new DoubleGridVectorField(origin, gridsXYZ, strideXYZ);
+    }
 
 }

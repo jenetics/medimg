@@ -27,19 +27,19 @@ public abstract class MorphologicalOperation extends ImageFilter {
         b.resetColor(0);             
     }
 
-	/**
-	 * Constructor for MorphologicalOperation.
-	 * @param image
-	 */
-	public MorphologicalOperation(Image image, Image b) throws IllegalArgumentException {
-		super(image);
+    /**
+     * Constructor for MorphologicalOperation.
+     * @param image
+     */
+    public MorphologicalOperation(Image image, Image b) throws IllegalArgumentException {
+        super(image);
         
         if (!checkSymetrie(b.getDimension())) {
             throw new IllegalArgumentException("Illegal Image b");    
         }
         
         this.b = b;        
-	}
+    }
     
     public MorphologicalOperation(ImageFilter component) {
         super(component);  
@@ -48,19 +48,19 @@ public abstract class MorphologicalOperation extends ImageFilter {
         b.resetColor(0);          
     }
 
-	/**
-	 * Constructor for MorphologicalOperation.
-	 * @param component
-	 */
-	public MorphologicalOperation(ImageFilter component, Image b) throws IllegalArgumentException {
-		super(component);
+    /**
+     * Constructor for MorphologicalOperation.
+     * @param component
+     */
+    public MorphologicalOperation(ImageFilter component, Image b) throws IllegalArgumentException {
+        super(component);
         
         if (!checkSymetrie(b.getDimension())) {
             throw new IllegalArgumentException();    
         }        
         
         this.b = b;
-	}
+    }
     
     private boolean checkSymetrie(Dimension dim) {
         if ((dim.getSizeX() % 2) == 0 || (dim.getSizeX() != dim.getSizeY())) {

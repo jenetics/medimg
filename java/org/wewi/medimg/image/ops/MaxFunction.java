@@ -11,22 +11,22 @@ package org.wewi.medimg.image.ops;
 public class MaxFunction implements UnaryFunction {
     private int max;
 
-	/**
-	 * Constructor for MaxFunction.
-	 */
-	public MaxFunction(int max) {
-		super();
+    /**
+     * Constructor for MaxFunction.
+     */
+    public MaxFunction(int max) {
+        super();
         this.max = max;
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ops.UnaryFunction#process(int)
-	 */
-	public int process(int color) {
+    /**
+     * @see org.wewi.medimg.image.ops.UnaryFunction#process(int)
+     */
+    public int process(int color) {
         if (color > max) {
             return max;    
         }
-		return color;
-	}
+        return color;
+    }
 
 }

@@ -27,44 +27,44 @@ public class BoundingBox {
  
     /** Creates new BoundingBox */
     public BoundingBox(double[][] bb) {
-	// 8 x 3 Matrix 
+    // 8 x 3 Matrix 
         firstInit(bb);
-	initialize();
+    initialize();
     }
 
     public BoundingBox(BoundingBox bb) {
-	double[][] vertices = new double[8][3];
-	//bb->getVertices(vertices);
-	vertices = bb.getVertices();
-	firstInit(vertices);
-	initialize();
+    double[][] vertices = new double[8][3];
+    //bb->getVertices(vertices);
+    vertices = bb.getVertices();
+    firstInit(vertices);
+    initialize();
     }
     
     public void firstInit(double[][] bb) {
-	// 8 x 3 Matrix
+    // 8 x 3 Matrix
         int i, j;
-	for (i = 0; i < 8; i++) {
-		for (j = 0; j < 8; j++) {
-			ADJ[i][j] = false;
-		}
-	}
-	ADJ[0][1] = true;
-	ADJ[0][3] = true;
-	ADJ[0][4] = true;
-	ADJ[1][2] = true;
-	ADJ[1][5] = true;
-	ADJ[2][3] = true;
-	ADJ[2][6] = true;
-	ADJ[3][7] = true;
-	ADJ[4][5] = true;
-	ADJ[4][7] = true;
-	ADJ[5][6] = true;
-	ADJ[6][7] = true;
-	for (i = 0; i < 8; i++) {
-		for (j = 0; j < 3; j++) {
-			vertices[i][j] = bb[i][j];
-		}
-	}
+    for (i = 0; i < 8; i++) {
+        for (j = 0; j < 8; j++) {
+            ADJ[i][j] = false;
+        }
+    }
+    ADJ[0][1] = true;
+    ADJ[0][3] = true;
+    ADJ[0][4] = true;
+    ADJ[1][2] = true;
+    ADJ[1][5] = true;
+    ADJ[2][3] = true;
+    ADJ[2][6] = true;
+    ADJ[3][7] = true;
+    ADJ[4][5] = true;
+    ADJ[4][7] = true;
+    ADJ[5][6] = true;
+    ADJ[6][7] = true;
+    for (i = 0; i < 8; i++) {
+        for (j = 0; j < 3; j++) {
+            vertices[i][j] = bb[i][j];
+        }
+    }
     }    
 
     public void copyRow(double[][] m1, int row1, double[][] m2, int row2) {
@@ -174,7 +174,7 @@ public class BoundingBox {
                     trans.transform(s, t);
                     for (j = 0; j < 3; j++) {
                             vertices[i][j] = t[j];
-                    }		
+                    }        
             }
             initialize();
     }
@@ -421,7 +421,7 @@ public class BoundingBox {
                                     /*end[0] = 0; end[1] = 0; end[2] = 0;
                                     end = (DoubleDataPoint)intersectingPoints.elementAt(j);
                                     position = std::remove(intersectingPoints.begin(), intersectingPoints.end(), end);
-                                    intersectingPoints.erase(position, intersectingPoints.end());			
+                                    intersectingPoints.erase(position, intersectingPoints.end());            
                                     //delete [] *position;*/
                                     j--;
                             }

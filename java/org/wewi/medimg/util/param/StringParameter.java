@@ -28,25 +28,25 @@ public class StringParameter extends Parameter {
         this.value = value;        
     }
 
-	public Element createParameterElement() {
+    public Element createParameterElement() {
         Element e = new Element("Parameter");
         e.setAttribute("name", name);
         e.setAttribute("class", clazz);
         e.setText(value);
         
         return e;
-	}
+    }
 
 
-	public Object getParameterObject() {
-		return new String(value);
-	}
+    public Object getParameterObject() {
+        return new String(value);
+    }
 
-	public Parameter initParameter(Element xml) {
+    public Parameter initParameter(Element xml) {
         name = xml.getAttribute("name").getValue();
         value = xml.getText();
         
         return this;
-	}
+    }
 
 }

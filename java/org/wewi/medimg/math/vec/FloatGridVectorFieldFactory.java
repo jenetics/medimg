@@ -12,18 +12,18 @@ import org.wewi.medimg.image.geom.Point3D;
  */
 public class FloatGridVectorFieldFactory implements GridVectorFieldFactory {
 
-	/**
-	 * Constructor for FloatGridVectorFieldFactory.
-	 */
-	public FloatGridVectorFieldFactory() {
-		super();
-	}
+    /**
+     * Constructor for FloatGridVectorFieldFactory.
+     */
+    public FloatGridVectorFieldFactory() {
+        super();
+    }
 
-	/**
-	 * @see org.wewi.medimg.math.GridVectorFieldFactory#createGridVectorField(Point3D, int[], int[])
-	 */
-	public GridVectorField createGridVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
-		return new FloatGridVectorField(origin, gridsXYZ, strideXYZ);
-	}
+    /**
+     * @see org.wewi.medimg.math.GridVectorFieldFactory#createGridVectorField(Point3D, int[], int[])
+     */
+    public GridVectorField createGridVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
+        return new FloatGridVectorField(origin, gridsXYZ, strideXYZ);
+    }
 
 }

@@ -12,12 +12,12 @@ import org.wewi.medimg.image.Image;
  */
 public final class FilterFactory {
 
-	/**
-	 * Constructor for FilterFactory.
-	 */
-	private FilterFactory() {
-		super();
-	}
+    /**
+     * Constructor for FilterFactory.
+     */
+    private FilterFactory() {
+        super();
+    }
     
     public static ImageFilter createGaussianFilter(Image image, int dim, double stddev) {
         return new ConvolutionFilter(image, new GaussianKernel(dim, stddev));    

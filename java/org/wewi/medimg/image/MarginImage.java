@@ -31,20 +31,20 @@ public class MarginImage extends AbstractImage {
     }
     
 
-	/**
-	 * Constructor for MarginImage.
-	 */
-	public MarginImage(Image image, int margin) {
+    /**
+     * Constructor for MarginImage.
+     */
+    public MarginImage(Image image, int margin) {
         this(image, image.getMinZ(), margin);              
-	}
+    }
 
-	/**
-	 * Constructor for MarginImage.
-	 * @param id
-	 */
-	private MarginImage(MarginImage id) {
-		super(id);
-	}
+    /**
+     * Constructor for MarginImage.
+     * @param id
+     */
+    private MarginImage(MarginImage id) {
+        super(id);
+    }
     
     protected void initMargin(Image image, int margin) {
         //"Einfärben" des oberen Randes durch Spiegeln an der Kante
@@ -90,19 +90,19 @@ public class MarginImage extends AbstractImage {
         }         
     }
 
-	/**
-	 * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
-	 */
-	protected DiscreteData createDiscreteData(int size) {
-		return new IntData(size);
-	}
+    /**
+     * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
+     */
+    protected DiscreteData createDiscreteData(int size) {
+        return new IntData(size);
+    }
 
-	/**
-	 * @see java.lang.Object#clone()
-	 */
-	public Object clone() {
-		return new MarginImage(this);
-	}
+    /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+        return new MarginImage(this);
+    }
     
     
     
@@ -112,11 +112,11 @@ public class MarginImage extends AbstractImage {
                                            new File("../../data/nhead/t1.n3.rf20/image.0045.tif")); 
                                            
         try {
-			reader.read();
-		} catch (ImageIOException e) {
+            reader.read();
+        } catch (ImageIOException e) {
             System.out.println("MarginImage: " + e); 
             return;
-		}    
+        }    
         
         Image image = reader.getImage();
         MarginImage mimage = new MarginImage(image, 50);
@@ -124,9 +124,9 @@ public class MarginImage extends AbstractImage {
         
         ImageWriter writer = new TIFFWriter(mimage, new File("X:/margin.image.tif"));
         try {
-			writer.write();
-		} catch (ImageIOException e) {
-		}
+            writer.write();
+        } catch (ImageIOException e) {
+        }
         
         
         

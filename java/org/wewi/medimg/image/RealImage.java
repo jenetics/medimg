@@ -12,12 +12,12 @@ package org.wewi.medimg.image;
 public class RealImage {
     private float[] data = new float[100];
 
-	/**
-	 * 
-	 */
-	public RealImage() {
-		super();
-	}
+    /**
+     * 
+     */
+    public RealImage() {
+        super();
+    }
     
     public double getDoubleColor(int pos) {
         return data[pos];

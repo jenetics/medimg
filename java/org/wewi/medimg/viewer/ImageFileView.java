@@ -18,19 +18,19 @@ final class ImageFileView extends FileView {
     
     private ImageIcon icon;
 
-	/**
-	 * Constructor for ImageFileView.
-	 */
-	public ImageFileView(ImageFileChooser parent) {
-		super();
+    /**
+     * Constructor for ImageFileView.
+     */
+    public ImageFileView(ImageFileChooser parent) {
+        super();
         icon = new ImageIcon(getClass().getResource("/org/wewi/medimg/viewer/icons/logo_seg_small.gif"));
         this.parent = parent;
-	}
+    }
 
-	/**
-	 * @see javax.swing.filechooser.FileView#getIcon(File)
-	 */
-	public Icon getIcon(File file) {       
+    /**
+     * @see javax.swing.filechooser.FileView#getIcon(File)
+     */
+    public Icon getIcon(File file) {       
         FileFilter filter = parent.getFileFilter();
         if (!(filter instanceof ImageFileFilter)) {
             return super.getIcon(file);    
@@ -81,8 +81,8 @@ final class ImageFileView extends FileView {
             }                       
         }
         
-		return super.getIcon(file);
-	}
+        return super.getIcon(file);
+    }
     
     private boolean endsWith(String[] files, String pattern) {
         if (files == null) {
@@ -96,26 +96,26 @@ final class ImageFileView extends FileView {
         return false; 
     }
 
-	/**
-	 * @see javax.swing.filechooser.FileView#getName(File)
-	 */
-	public String getName(File file) {
-		return super.getName(file);
-	}
+    /**
+     * @see javax.swing.filechooser.FileView#getName(File)
+     */
+    public String getName(File file) {
+        return super.getName(file);
+    }
 
-	/**
-	 * @see javax.swing.filechooser.FileView#getTypeDescription(File)
-	 */
-	public String getTypeDescription(File file) {
-		return super.getTypeDescription(file);
-	}
+    /**
+     * @see javax.swing.filechooser.FileView#getTypeDescription(File)
+     */
+    public String getTypeDescription(File file) {
+        return super.getTypeDescription(file);
+    }
 
-	/**
-	 * @see javax.swing.filechooser.FileView#isTraversable(File)
-	 */
-	public Boolean isTraversable(File file) {
-		return super.isTraversable(file);
-	}
+    /**
+     * @see javax.swing.filechooser.FileView#isTraversable(File)
+     */
+    public Boolean isTraversable(File file) {
+        return super.isTraversable(file);
+    }
     
     /**
      * @see javax.swing.filechooser.FileView#getDescription(File)

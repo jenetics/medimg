@@ -24,12 +24,12 @@ public class ImageGrid implements ImageCanvas {
     }
     
     
-	/**
-	 * @see org.wewi.medimg.viewer.image.ImageCanvas#draw(java.awt.Graphics, org.wewi.medimg.viewer.image.ImagePanel)
-	 */
-	public void draw(Graphics graph, ImagePanel panel) {
+    /**
+     * @see org.wewi.medimg.viewer.image.ImageCanvas#draw(java.awt.Graphics, org.wewi.medimg.viewer.image.ImagePanel)
+     */
+    public void draw(Graphics graph, ImagePanel panel) {
         
-	}
+    }
 
 
 }

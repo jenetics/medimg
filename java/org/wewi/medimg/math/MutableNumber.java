@@ -29,7 +29,7 @@ public abstract class MutableNumber extends Number implements Mutable, Cloneable
     
     public abstract void setValue(double n);
     
-    public abstract void setValue(MutableNumber n);
+    public abstract void setValue(Number n);
 
     public abstract Object clone();
 }

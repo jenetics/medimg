@@ -15,48 +15,48 @@ public final class DoubleVectorVector {
     private class DoubleVectorIterator implements VectorIterator {
         private int pos = 0;
         
-		/**
-		 * @see org.wewi.medimg.math.vec.VectorIterator#hasNext()
-		 */
-		public boolean hasNext() {
-			return pos < vectorCount;
-		}
-		/**
-		 * @see org.wewi.medimg.math.vec.VectorIterator#next(double[], double[])
-		 */
-		public void next(double[] start, double[] end) {
+        /**
+         * @see org.wewi.medimg.math.vec.VectorIterator#hasNext()
+         */
+        public boolean hasNext() {
+            return pos < vectorCount;
+        }
+        /**
+         * @see org.wewi.medimg.math.vec.VectorIterator#next(double[], double[])
+         */
+        public void next(double[] start, double[] end) {
             int p = pos*2*DIM;
             System.arraycopy(data, p, start, 0, DIM);
             System.arraycopy(data, p + DIM, end, 0, DIM);
             pos++;
-		}
+        }
     }
     
-	private double[] data;
-	private int vectorCount = 0;
+    private double[] data;
+    private int vectorCount = 0;
 
     private final int DIM = 3;
-	private int initialCapacity = 8;
-	private int capacityIncrement = 0;
+    private int initialCapacity = 8;
+    private int capacityIncrement = 0;
 
-	/**
-	 * Constructor for DoubleVectorVector.
-	 */
-	public DoubleVectorVector() {
-	}
+    /**
+     * Constructor for DoubleVectorVector.
+     */
+    public DoubleVectorVector() {
+    }
 
-	public DoubleVectorVector(int initialCapacity) {
-		this(initialCapacity, 0);
-	}
+    public DoubleVectorVector(int initialCapacity) {
+        this(initialCapacity, 0);
+    }
 
-	public DoubleVectorVector(int initialCapacity, int capacityIncrement) {
-		this.initialCapacity = initialCapacity;
-		this.capacityIncrement = capacityIncrement;
+    public DoubleVectorVector(int initialCapacity, int capacityIncrement) {
+        this.initialCapacity = initialCapacity;
+        this.capacityIncrement = capacityIncrement;
         
         data = new double[initialCapacity*2*DIM];
-	}
+    }
 
-	public void add(double[] start, double[] end) {
+    public void add(double[] start, double[] end) {
         ensureCapacity(vectorCount + 1);
         
         int pos = vectorCount*2*DIM;
@@ -65,23 +65,23 @@ public final class DoubleVectorVector {
         System.arraycopy(end, 0, data, pos + DIM, DIM);
 
         vectorCount++;
-	}
+    }
 
-	private void ensureCapacity(int minCapacity) {
-		int oldCapacity = data.length/(DIM*2);
+    private void ensureCapacity(int minCapacity) {
+        int oldCapacity = data.length/(DIM*2);
         
-		if (minCapacity > oldCapacity) {
-			double oldData[] = data;
-			int newCapacity = (capacityIncrement > 0)
-					                  ? (oldCapacity + capacityIncrement)
-					                  : (oldCapacity*2);
-			if (newCapacity < minCapacity) {
-				newCapacity = minCapacity;
-			}
-			data = new double[newCapacity*2*DIM];
-			System.arraycopy(oldData, 0, data, 0, vectorCount*DIM*2);
-		}
-	}
+        if (minCapacity > oldCapacity) {
+            double oldData[] = data;
+            int newCapacity = (capacityIncrement > 0)
+                                      ? (oldCapacity + capacityIncrement)
+                                      : (oldCapacity*2);
+            if (newCapacity < minCapacity) {
+                newCapacity = minCapacity;
+            }
+            data = new double[newCapacity*2*DIM];
+            System.arraycopy(oldData, 0, data, 0, vectorCount*DIM*2);
+        }
+    }
     
     public void addElementAt(int index, double[] start, double[] end) {
         if (index >= vectorCount + 1) {

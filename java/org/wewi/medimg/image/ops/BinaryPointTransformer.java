@@ -15,15 +15,15 @@ public class BinaryPointTransformer {
     private Image img2;
     private BinaryFunction function;
 
-	/**
-	 * Constructor for BinaryPointTransformer.
-	 */
-	public BinaryPointTransformer(Image img1, Image img2, BinaryFunction function) {
-		super();
+    /**
+     * Constructor for BinaryPointTransformer.
+     */
+    public BinaryPointTransformer(Image img1, Image img2, BinaryFunction function) {
+        super();
         this.img1 = img1;
         this.img2 = img2;
         this.function = function;
-	}
+    }
     
     public void transform() {
         int minX = Math.max(img1.getMinX(), img2.getMinX());

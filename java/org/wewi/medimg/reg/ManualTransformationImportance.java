@@ -29,8 +29,8 @@ public class ManualTransformationImportance extends AbstractTransformationImport
         importanceVector = new Vector();
     }
     
-	public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints) {
-		
+    public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints) {
+        
         double sumImportance = 0;
         double alpha = 0.0;
         double[] erg = new double[features.length];
@@ -47,10 +47,10 @@ public class ManualTransformationImportance extends AbstractTransformationImport
                 alpha = 0.0;
             }
             erg[i] = alpha;
-        }		
+        }        
         return erg;
-	} 
-	    
+    } 
+        
     public void setImportance(int t, double i) {
         featureVector.addElement(new Integer(t));
         importanceVector.addElement(new Double(i));

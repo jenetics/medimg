@@ -67,15 +67,15 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
     private double currentEnergy = Double.MAX_VALUE;
     private int iterationCount;
 
-	/**
-	 * Constructor for NewGreedySnakeMinimizer.
-	 */
-	public NewGreedySnakeMinimizer(ActiveContour contour, OuterEnergy outerEnergy, Dimension dim) {
-		super();
+    /**
+     * Constructor for NewGreedySnakeMinimizer.
+     */
+    public NewGreedySnakeMinimizer(ActiveContour contour, OuterEnergy outerEnergy, Dimension dim) {
+        super();
         this.contour = contour;
         this.outerEnergy = outerEnergy;
         this.dim = dim;
-	}
+    }
     
     
     private void iteration() {
@@ -173,68 +173,68 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
         return alpha*d1 + beta*d2;
     }       
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.ContourMinimizer#minimize()
-	 */
-	public ActiveContour minimize() {
+    /**
+     * @see org.wewi.medimg.seg.ac.ContourMinimizer#minimize()
+     */
+    public ActiveContour minimize() {
         for (AlgorithmIterator it = getAlgorithmIterator(); it.hasNext();) {
             it.next();    
         }
         
         return contour;
-	}
+    }
     
     public AlgorithmIterator getAlgorithmIterator() {
         return new GreedyMinimizerIterator();    
     }    
 
-	/**
-	 * Returns the a.
-	 * @return double
-	 */
-	public double getAlpha() {
-		return alpha;
-	}
+    /**
+     * Returns the a.
+     * @return double
+     */
+    public double getAlpha() {
+        return alpha;
+    }
 
-	/**
-	 * Returns the b.
-	 * @return double
-	 */
-	public double getBeta() {
-		return beta;
-	}
+    /**
+     * Returns the b.
+     * @return double
+     */
+    public double getBeta() {
+        return beta;
+    }
 
-	/**
-	 * Returns the gamma.
-	 * @return double
-	 */
-	public double getGamma() {
-		return gamma;
-	}
+    /**
+     * Returns the gamma.
+     * @return double
+     */
+    public double getGamma() {
+        return gamma;
+    }
 
-	/**
-	 * Sets the a.
-	 * @param a The a to set
-	 */
-	public void setAlpha(double alpha) {
-		this.alpha = alpha;
-	}
+    /**
+     * Sets the a.
+     * @param a The a to set
+     */
+    public void setAlpha(double alpha) {
+        this.alpha = alpha;
+    }
 
-	/**
-	 * Sets the b.
-	 * @param b The b to set
-	 */
-	public void setBeta(double beta) {
-		this.beta = beta;
-	}
+    /**
+     * Sets the b.
+     * @param b The b to set
+     */
+    public void setBeta(double beta) {
+        this.beta = beta;
+    }
 
-	/**
-	 * Sets the gamma.
-	 * @param gamma The gamma to set
-	 */
-	public void setGamma(double gamma) {
-		this.gamma = gamma;
-	}
+    /**
+     * Sets the gamma.
+     * @param gamma The gamma to set
+     */
+    public void setGamma(double gamma) {
+        this.gamma = gamma;
+    }
 
 }
 

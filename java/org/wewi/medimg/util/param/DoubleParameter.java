@@ -29,25 +29,25 @@ public class DoubleParameter extends Parameter {
         this.value = value;    
     }
 
-	public Parameter initParameter(Element xml) {
+    public Parameter initParameter(Element xml) {
         name = xml.getAttribute("name").getValue();
         value = Double.parseDouble(xml.getText());
         
-		return this;
-	}
+        return this;
+    }
 
-	public Element createParameterElement() {
+    public Element createParameterElement() {
         Element e = new Element("Parameter");
         e.setAttribute("name", name);
         e.setAttribute("class", clazz);
         e.setText(Double.toString(value));
         
-		return e;
-	}
+        return e;
+    }
 
-	public Object getParameterObject() {
-		return new Double(value);
-	}
+    public Object getParameterObject() {
+        return new Double(value);
+    }
     
     
     public static void main(String[] args) {

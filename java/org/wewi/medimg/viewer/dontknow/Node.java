@@ -13,33 +13,33 @@ import java.awt.LayoutManager;
  */
 public class Node extends Item {
 
-	/**
-	 * @param layout
-	 * @param isDoubleBuffered
-	 */
-	public Node(LayoutManager layout, boolean isDoubleBuffered) {
-		super(layout, isDoubleBuffered);
-	}
+    /**
+     * @param layout
+     * @param isDoubleBuffered
+     */
+    public Node(LayoutManager layout, boolean isDoubleBuffered) {
+        super(layout, isDoubleBuffered);
+    }
 
-	/**
-	 * @param layout
-	 */
-	public Node(LayoutManager layout) {
-		super(layout);
-	}
+    /**
+     * @param layout
+     */
+    public Node(LayoutManager layout) {
+        super(layout);
+    }
 
-	/**
-	 * @param isDoubleBuffered
-	 */
-	public Node(boolean isDoubleBuffered) {
-		super(isDoubleBuffered);
-	}
+    /**
+     * @param isDoubleBuffered
+     */
+    public Node(boolean isDoubleBuffered) {
+        super(isDoubleBuffered);
+    }
 
-	/**
-	 * 
-	 */
-	public Node() {
-		super();
-	}
+    /**
+     * 
+     */
+    public Node() {
+        super();
+    }
 
 }

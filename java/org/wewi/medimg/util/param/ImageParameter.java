@@ -49,7 +49,7 @@ public class ImageParameter extends Parameter {
 
 
 
-	public Element createParameterElement() {
+    public Element createParameterElement() {
         Element e = new Element("Parameter");
         e.setAttribute("name", name);
         e.setAttribute("class", clazz);
@@ -57,11 +57,11 @@ public class ImageParameter extends Parameter {
         e.setAttribute("image.reader", readerClass.getName());
         e.setText(name);
         
-		return e;
-	}
+        return e;
+    }
 
 
-	public Object getParameterObject() {
+    public Object getParameterObject() {
         if (image != null) {
             return image;            
         }
@@ -69,12 +69,12 @@ public class ImageParameter extends Parameter {
         ImageReader reader = null;
         
         try {
-			Constructor c = readerClass.getConstructor(new Class[]{ImageFactory.class, String.class});
-		    reader = (ImageReader)c.newInstance(new Object[]{factory, file});
-		} catch (NoSuchMethodException e) {
+            Constructor c = readerClass.getConstructor(new Class[]{ImageFactory.class, String.class});
+            reader = (ImageReader)c.newInstance(new Object[]{factory, file});
+        } catch (NoSuchMethodException e) {
             System.err.println("ImageParameter.getParameterObject:" + e);
             return null;
-		} catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             System.err.println("ImageParameter.getParameterObject:" + e);
             return null;            
         } catch (IllegalAccessException e) {
@@ -88,17 +88,17 @@ public class ImageParameter extends Parameter {
         
         
         try {
-			reader.read();
-		} catch (ImageIOException e) {
+            reader.read();
+        } catch (ImageIOException e) {
             System.err.println("ImageParameter.getParameterObject(): " + e);
-		}
+        }
         image = reader.getImage();
         
-		return image;
-	}
+        return image;
+    }
 
 
-	public Parameter initParameter(Element xml) {
+    public Parameter initParameter(Element xml) {
         name = xml.getAttribute("name").getValue();
         String factoryName = xml.getAttribute("image.factory").getValue();
         String readerName = xml.getAttribute("image.reader").getValue();
@@ -126,8 +126,8 @@ public class ImageParameter extends Parameter {
             reader = new TIFFReader(factory, file);
         }
         
-		return this;
-	}
+        return this;
+    }
     
     
     public static void main(String[] args) {

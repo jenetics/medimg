@@ -16,12 +16,12 @@ import java.util.Vector;
 public abstract class ObservableAlgorithm {
     private Vector iterationListener = new Vector();
 
-	/**
-	 * Constructor for ObservableAlgorithm.
-	 */
-	public ObservableAlgorithm() { 
-		super();
-	}
+    /**
+     * Constructor for ObservableAlgorithm.
+     */
+    public ObservableAlgorithm() { 
+        super();
+    }
     
     public synchronized void addIterationListener(AlgorithmIterationListener il) {
         iterationListener.add(il);   

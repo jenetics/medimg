@@ -20,24 +20,24 @@ public class KMeansClusterer implements IterateableAlgorithm {
     private Collection data;
     private int k;
 
-	/**
-	 * Constructor for KMeansClusterer.
-	 */
-	public KMeansClusterer(Collection data, int k) {
-		this.data = data;
+    /**
+     * Constructor for KMeansClusterer.
+     */
+    public KMeansClusterer(Collection data, int k) {
+        this.data = data;
         this.k = k;
-	}
-	/**
-	 * @see org.wewi.medimg.alg.IterateableAlgorithm#iterator()
-	 */
-	public AlgorithmIterator iterator() {
-		return null;
-	}
-	/**
-	 * @see org.wewi.medimg.alg.IterateableAlgorithm#getIterations()
-	 */
-	public int getIterations() {
-		return 0;
-	}
+    }
+    /**
+     * @see org.wewi.medimg.alg.IterateableAlgorithm#iterator()
+     */
+    public AlgorithmIterator iterator() {
+        return null;
+    }
+    /**
+     * @see org.wewi.medimg.alg.IterateableAlgorithm#getIterations()
+     */
+    public int getIterations() {
+        return 0;
+    }
 
 }

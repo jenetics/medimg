@@ -15,12 +15,12 @@ import org.jdom.Element;
 public abstract class Validator {
     protected List parameterList;
 
-	/**
-	 * Constructor for Validator.
-	 */
-	public Validator() {
-		super();
-	}
+    /**
+     * Constructor for Validator.
+     */
+    public Validator() {
+        super();
+    }
     
     public void setParameterList(List pl) {
         parameterList = pl;    

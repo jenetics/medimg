@@ -28,13 +28,13 @@ public class ActivePolygon implements ActiveContour {
         //polygonCanvas = new ActivePolygonCanvasAdapter(this);  
     }
 
-	/**
-	 * Constructor for ActivePolygon.
-	 */
-	public ActivePolygon() {
+    /**
+     * Constructor for ActivePolygon.
+     */
+    public ActivePolygon() {
         basePoints = new Vector();
         //polygonCanvas = new ActivePolygonCanvasAdapter(this);
-	}
+    }
     
     //public ImagePanel.ImageCanvas getImageCanvas() {
     //    return polygonCanvas;    
@@ -61,10 +61,10 @@ public class ActivePolygon implements ActiveContour {
         }
     }    
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.ActiveContour#replaceBasePoint(Point, Point)
-	 */
-	public synchronized void replaceBasePoint(Point oldPoint, Point newPoint) {
+    /**
+     * @see org.wewi.medimg.seg.ac.ActiveContour#replaceBasePoint(Point, Point)
+     */
+    public synchronized void replaceBasePoint(Point oldPoint, Point newPoint) {
         if (oldPoint == null || newPoint == null) {
             return;    
         }
@@ -76,14 +76,14 @@ public class ActivePolygon implements ActiveContour {
             basePoints.remove(index);     
             basePoints.add(index, newPoint);
         }
-	}
+    }
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.ActiveContour#getBasePoints()
-	 */
-	public List getBasePoints() {
+    /**
+     * @see org.wewi.medimg.seg.ac.ActiveContour#getBasePoints()
+     */
+    public List getBasePoints() {
         return basePoints;
-	}
+    }
     
     public int getNBasePoints() {
         synchronized (basePoints) {
@@ -91,10 +91,10 @@ public class ActivePolygon implements ActiveContour {
         }   
     }
 
-	/**
-	 * @see org.wewi.medimg.seg.ac.ActiveContour#getContourPoints()
-	 */
-	public synchronized List getContourPoints() {
+    /**
+     * @see org.wewi.medimg.seg.ac.ActiveContour#getContourPoints()
+     */
+    public synchronized List getContourPoints() {
         Vector result = new Vector();
         Point p = null, q = null;
         Point first = null;
@@ -124,7 +124,7 @@ public class ActivePolygon implements ActiveContour {
                
 
         return result;
-	}
+    }
     
     /**
      * Linescanning nach Bresenham
@@ -208,11 +208,11 @@ public class ActivePolygon implements ActiveContour {
         return result; 
     }    
 
-	/**
-	 * @see java.lang.Object#clone()
-	 */
-	public Object clone() {
-		return new ActivePolygon(this);
-	}
+    /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+        return new ActivePolygon(this);
+    }
 
 }

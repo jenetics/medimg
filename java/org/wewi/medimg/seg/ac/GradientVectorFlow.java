@@ -37,14 +37,14 @@ public class GradientVectorFlow extends ObservableAlgorithm
     private final double dt = dx*dy/(25*MU);
 
 
-	/**
-	 * Constructor for GradientVectorFlow.
-	 */
-	public GradientVectorFlow(Image edgeMap) {
-		super();
+    /**
+     * Constructor for GradientVectorFlow.
+     */
+    public GradientVectorFlow(Image edgeMap) {
+        super();
         this.edgeMap = edgeMap;
         init();
-	}
+    }
     
     private void init() {
         
@@ -141,18 +141,18 @@ public class GradientVectorFlow extends ObservableAlgorithm
         return gvf;    
     }
 
-	/**
-	 * @see org.wewi.medimg.alg.IterateableAlgorithm#getAlgorithmIterator()
-	 */
-	public AlgorithmIterator iterator() {
-		return null;
-	}
+    /**
+     * @see org.wewi.medimg.alg.IterateableAlgorithm#getAlgorithmIterator()
+     */
+    public AlgorithmIterator iterator() {
+        return null;
+    }
 
-	/**
-	 * @see org.wewi.medimg.alg.IterateableAlgorithm#getIterations()
-	 */
-	public int getIterations() {
-		return 0;
-	}
+    /**
+     * @see org.wewi.medimg.alg.IterateableAlgorithm#getIterations()
+     */
+    public int getIterations() {
+        return 0;
+    }
 
 }

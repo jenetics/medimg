@@ -20,8 +20,8 @@ public class WeightPointTransformationImportance extends AbstractTransformationI
     public WeightPointTransformationImportance() {
     }
     
-	public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints) {
-		
+    public double[] transformationWeights(int[] features, double[] similarity, int[] featureNPoints) {
+        
         double sumPoints = 0;
         double alpha = 0.0;
         double[] erg = new double[features.length];
@@ -38,9 +38,9 @@ public class WeightPointTransformationImportance extends AbstractTransformationI
                 alpha = 0.0;
             }
             erg[i] = alpha;
-        }		
+        }        
         return erg;
-	}    
+    }    
 
 
     

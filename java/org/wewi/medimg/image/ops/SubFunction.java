@@ -10,18 +10,18 @@ package org.wewi.medimg.image.ops;
  */
 public final class SubFunction implements BinaryFunction {
 
-	/**
-	 * Constructor for SubFunction.
-	 */
-	public SubFunction() {
-		super();
-	}
+    /**
+     * Constructor for SubFunction.
+     */
+    public SubFunction() {
+        super();
+    }
 
-	/**
-	 * @see org.wewi.medimg.image.ops.BinaryFunction#process(int, int)
-	 */
-	public int process(int value1, int value2) {
-		return value1 - value2;
-	}
+    /**
+     * @see org.wewi.medimg.image.ops.BinaryFunction#process(int, int)
+     */
+    public int process(int value1, int value2) {
+        return value1 - value2;
+    }
 
 }
