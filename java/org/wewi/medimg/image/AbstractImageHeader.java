@@ -24,8 +24,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
-import org.wewi.medimg.image.ops.ColorRangeOperator;
-import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
+import org.wewi.medimg.image.ops.AnalyzerUtils;
 import org.wewi.medimg.util.StringInputStream;
 import org.wewi.medimg.util.StringOutputStream;
 
@@ -37,63 +36,171 @@ import org.wewi.medimg.util.StringOutputStream;
  * @version 0.2
  */
 class AbstractImageHeader implements ImageHeader {
-    private AbstractImage image;
+    private static Logger logger = Logger.getLogger("org.wewi.medimg.image");
     
+    private AbstractImage image;   
     private Dimension dim;
     private Properties properties;
-    
-    private Logger logger;
 
     public AbstractImageHeader(AbstractImage image) {
         this.image = image;
         properties = new Properties();
-        
-        logger = Logger.getLogger(getClass().getName());
     }
     
     /**
-     * Schreiben des Headers als XML
+     * Method for converting a Dimension to a XML-Element (jdom)
+     * 
+     * @param dim Dimension to convert
+     * @return Element converted Dimension
+     */
+    private Element toXML(Dimension dim) {
+        Element element = new Element("Dimension");
+        
+        element.addContent((new Element("MinX")).addContent(Integer.toString(dim.getMinX())));
+        element.addContent((new Element("MaxX")).addContent(Integer.toString(dim.getMaxX())));
+        element.addContent((new Element("MinY")).addContent(Integer.toString(dim.getMinY())));
+        element.addContent((new Element("MaxY")).addContent(Integer.toString(dim.getMaxY())));
+        element.addContent((new Element("MinZ")).addContent(Integer.toString(dim.getMinZ())));
+        element.addContent((new Element("MaxZ")).addContent(Integer.toString(dim.getMaxZ())));
+        
+        return element;
+    }
+    
+    /**
+     * Method for converting a XML-Element to a Dimension-Object
+     * 
+     * @param element
+     * @return Dimension
+     */
+    private Dimension toDimension(Element element) {
+        if (element == null) {
+            return new Dimension(0, 0, 0);
+        }
+        
+        Dimension dim = null;
+        try {
+            dim = new Dimension(Integer.parseInt(element.getChildText("MinX")),
+                              Integer.parseInt(element.getChildText("MaxX")),
+                              Integer.parseInt(element.getChildText("MinY")),
+                              Integer.parseInt(element.getChildText("MaxY")),
+                              Integer.parseInt(element.getChildText("MinZ")),
+                              Integer.parseInt(element.getChildText("MaxZ")));             
+        } catch (Exception e) {
+            dim = new Dimension(0, 0, 0);
+        }
+       
+        return dim;
+    }
+    
+    /**
+     * Method for converting a ColorConversion to a XML-Element
+     * 
+     * @param cc
+     * @return Element
+     */
+    private Element toXML(ColorConversion cc) {
+        Element element = new Element("ColorConversion");
+        element.setAttribute("class", image.getColorConversion().getClass().getName());
+        
+        StringOutputStream sout = new StringOutputStream();
+        ObjectOutputStream oout;
+		try {
+			oout = new ObjectOutputStream(sout);
+            oout.writeObject(cc);
+            oout.close(); 
+            element.addContent(sout.getOutputString());
+		} catch (IOException e) {
+            //do nothing here
+		}      
+        
+        return element;
+    }
+    
+    /**
+     * Method for convering a XML-Element to a ColorConversion-Object
+     * 
+     * @param element
+     * @return ColorConversion
+     */
+    private ColorConversion toColorConversion(Element element) {
+        if (element == null) {
+            return new GreyColorConversion();
+        }
+        
+        ColorConversion cc = null;
+		try {
+            StringInputStream sin = new StringInputStream(element.getText());          
+            ObjectInputStream oin = new ObjectInputStream(sin);
+            cc = (ColorConversion)oin.readObject();
+		} catch (Exception e) {
+            //Plan B
+            String clazz = element.getAttributeValue("class");
+            try {
+    			cc = (ColorConversion)Class.forName(clazz).newInstance();
+    		} catch (Exception ce) {
+    		    cc = new GreyColorConversion();
+            }
+		}
+        
+        
+        return cc;
+    }
+    
+    /**
+     * Method for converting a ColorRange to a XML-Element
+     * 
+     * @param cr
+     * @return Element
+     */
+    private Element toXML(ColorRange cr) {
+        Element element = new Element("ColorRange");
+        
+        element.addContent((new Element("MinColor")).addContent(Integer.toString(cr.getMinColor())));
+        element.addContent((new Element("MaxColor")).addContent(Integer.toString(cr.getMaxColor())));   
+              
+        return element;
+    }
+    
+    /**
+     * Method for converting a XML-Element to a ColorRange-Object
+     * 
+     * @param element
+     * @return ColorRange
+     */
+    private ColorRange toColorRange(Element element) {
+        if (element == null) {
+            return new ColorRange(0,0);
+        }
+        
+        int min, max;
+        try {
+            min = Integer.parseInt(element.getChildText("MinColor"));
+            max = Integer.parseInt(element.getChildText("MaxColor"));
+        } catch (NumberFormatException e) {
+            min = 0; max = 0;
+        }
+         
+        return new ColorRange(min, max);
+    }
+    
+    /**
+     * Writing the Header in XML format.	
      */
     private void writeXML(OutputStream out) throws IOException {
         Element root = new Element("ImageHeader");
         root.setAttribute("class", getClass().getName());
-        Document doc = new Document(root);
         
-        //Schreiben der Abmessungen
-        Dimension dim = image.getDimension();
-        Element dimension = new Element("Dimension");
-        dimension.addContent((new Element("MinX")).addContent(Integer.toString(dim.getMinX())));
-        dimension.addContent((new Element("MaxX")).addContent(Integer.toString(dim.getMaxX())));
-        dimension.addContent((new Element("MinY")).addContent(Integer.toString(dim.getMinY())));
-        dimension.addContent((new Element("MaxY")).addContent(Integer.toString(dim.getMaxY())));
-        dimension.addContent((new Element("MinZ")).addContent(Integer.toString(dim.getMinZ())));
-        dimension.addContent((new Element("MaxZ")).addContent(Integer.toString(dim.getMaxZ())));
-        root.addContent(dimension);
-
-                
-        //Schreiben der Art der ColorConversion
-        Element cc = new Element("ColorConversion");
-        cc.setAttribute("class", image.getColorConversion().getClass().getName());
-        StringOutputStream sout = new StringOutputStream();
-        ObjectOutputStream oout = new ObjectOutputStream(sout);
-        oout.writeObject(image.getColorConversion());
-        oout.close();
-        cc.addContent(sout.getOutputString());
-        root.addContent(cc);
+        //Writing the dimension of the image
+        root.addContent(toXML(image.getDimension()));
+          
+        //Writing the ColorConversion
+        root.addContent(toXML(image.getColorConversion()));
         
-        //Schreiben des Farbbereichs (ColorRange)
-        ColorRangeOperator op = new ColorRangeOperator();
-        UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
-        analyzer.analyze(); 
-        ColorRange colorRange = new ColorRange(op.getMinimum(), op.getMaximum());        
-
-        Element cr = new Element("ColorRange");
-        cr.addContent((new Element("MinColor")).addContent(Integer.toString(colorRange.getMinColor())));
-        cr.addContent((new Element("MaxColor")).addContent(Integer.toString(colorRange.getMaxColor()))); 
-        root.addContent(cr);  
+        //Writing the ColorRange
+        root.addContent(toXML(AnalyzerUtils.getColorRange(image)));  
         
-        //Schreiben der ImageProperties
-        root.addContent(new Comment("Die ImageProperties können beliebig verwendet werden"));
+        //Writing the ImageProperties
+        root.addContent(new Comment("Putting arbitrary values to the ImageProperties"));
         Element prop = new Element("ImageProperties");
         for (Enumeration e = properties.propertyNames(); e.hasMoreElements();) {
             String name = (String)e.nextElement();
@@ -102,12 +209,13 @@ class AbstractImageHeader implements ImageHeader {
         root.addContent(prop);            
         
         
+        //Writing the header to the OutputStream
         XMLOutputter outputter = new XMLOutputter("    ", true);
-        outputter.output(doc, out);
+        outputter.output(new Document(root), out);
     }
     
     /**
-     * Lesen des Headers aus dem InputStream
+     * Reading the ImageHeader from an InputStream
      */
     private void readXML(InputStream in) throws IOException {
         SAXBuilder builder = new SAXBuilder();
@@ -120,35 +228,11 @@ class AbstractImageHeader implements ImageHeader {
         
         Element root = doc.getRootElement();
         
-        //Auslesen der Dimension
-        Element dimension = root.getChild("Dimension");
-        Dimension dim = new Dimension(Integer.parseInt(dimension.getChildText("MinX")),
-                                      Integer.parseInt(dimension.getChildText("MaxX")),
-                                      Integer.parseInt(dimension.getChildText("MinY")),
-                                      Integer.parseInt(dimension.getChildText("MaxY")),
-                                      Integer.parseInt(dimension.getChildText("MinZ")),
-                                      Integer.parseInt(dimension.getChildText("MaxZ")));
-        
-                                      
-                                      
-        //Einlesen und Erzeugen der ColorConverion
-        ColorConversion cc = new GreyColorConversion();
-        Element ccElement = root.getChild("ColorConversion");
-        String ccString = root.getChildText("ColorConversion");
-        StringInputStream sin = new StringInputStream(ccString);
-        ObjectInputStream oin = new ObjectInputStream(sin);
-        try {
-			cc = (ColorConversion)oin.readObject();
-		} catch (IOException e) {
-            logger.log(Level.WARNING, "Can't read ColorConversion");
-            throw new IOException("" + e);
-		} catch (ClassNotFoundException e) {
-            logger.log(Level.WARNING, "Can't read ColorConversion");
-            throw new IOException("" + e);
-		} finally {
-            //cc = new GreyColorConversion();    
-        }
- 
+        //Reading the Dimension
+        Dimension dim = toDimension(root.getChild("Dimension"));
+                                                                      
+        //Reading the ColorConversion
+        ColorConversion cc = toColorConversion(root.getChild("ColorConversion"));
         
         //Einlesen der ImageProperties
         Element prop = root.getChild("ImageProperties");
@@ -162,10 +246,7 @@ class AbstractImageHeader implements ImageHeader {
             properties.setProperty(element.getName(), element.getText());
         }
         
-        
-        //"Aufblasen" des Image auf die richtige Größe.
-        //System.out.println(dim);
-        //System.out.println(cc);
+        //"Blowing up" the image to the right size.
         image.init(dim, this); 
         image.setColorConversion(cc);
     }
