@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-import org.wewi.medimg.util.*;
+import org.wewi.medimg.util.IntHashtable;
 
 /**
  * Write out an image as a GIF.
