@@ -28,6 +28,7 @@ import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.VoxelSelectorListener;
+import org.wewi.medimg.viewer.tools.ImagePropertiesDialog;
 
 
 /**
@@ -96,9 +97,12 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
          
         setSlice(slice);
         
-        //Aufbau des Popupnemüs///////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        //Building the pop up menus////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        //Popup the ColorConversion-menu
         popup = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem("ColorConversion");
+        JMenuItem menuItem = new JMenuItem("Colorconversion");
         menuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         menuItem.addActionListener(new ActionListener() {
                                        public void actionPerformed(ActionEvent evt) {
@@ -107,7 +111,8 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
                                });
         popup.add(menuItem);
         
-        JMenuItem saveImageMenuItem = new JMenuItem("Speichern...");
+        //Popup the save-dialog
+        JMenuItem saveImageMenuItem = new JMenuItem("Save");
         saveImageMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         saveImageMenuItem.addActionListener(new ActionListener() {
                                            public void actionPerformed(ActionEvent evt) {
@@ -116,14 +121,26 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
                                });
         popup.add(saveImageMenuItem);  
         
-        JMenuItem printImageMenuItem = new JMenuItem("Drucken...");
+        //Popup the print-dialog
+        JMenuItem printImageMenuItem = new JMenuItem("Print");
         printImageMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         printImageMenuItem.addActionListener(new ActionListener() {
                                            public void actionPerformed(ActionEvent evt) {
                                                printCommand.execute();
                                            }
                                });
-        popup.add(printImageMenuItem);         
+        popup.add(printImageMenuItem); 
+        
+        //Popup the ImageProperty-dialog
+        JMenuItem imagePropertiesImageMenuItem = new JMenuItem("Imageproperties");
+        imagePropertiesImageMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        imagePropertiesImageMenuItem.addActionListener(new ActionListener() {
+                           public void actionPerformed(ActionEvent evt) {
+                               new ImagePropertiesDialog(image.getHeader().getImageProperties(), 
+                                                         Viewer.getInstance(), true).show();
+                           }
+                               });
+        popup.add(imagePropertiesImageMenuItem);        
         
         
              
