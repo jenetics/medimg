@@ -12,9 +12,17 @@ public interface DiscreteData {
     
     public int get(int pos);
     
+    public int getInt(int pos);
+    
+    public double getDouble(int pos);
+    
     public void set(int pos, int value);
     
+    public void set(int pos, double value);
+    
     public void fill(int value);
+    
+    public void fill(double value);
     
     public void copy(DiscreteData target);
 }

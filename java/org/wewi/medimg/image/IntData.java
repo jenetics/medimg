@@ -27,6 +27,14 @@ public final class IntData implements DiscreteData {
 	public int get(int pos) {
 		return data[pos];
 	}
+    
+    public int getInt(int pos) {
+        return data[pos];
+    }
+    
+    public double getDouble(int pos) {
+        return data[pos];
+    }
 
 	/**
 	 * @see org.wewi.medimg.image.DiscreteData#set(int, int)
@@ -35,12 +43,20 @@ public final class IntData implements DiscreteData {
         data[pos] = value;
 	}
     
+    public void set(int pos, double value) {
+        data[pos] = (int)value;
+    }
+    
     /**
      * @see org.wewi.medimg.image.DiscreteData#fill(int)
      */
     public void fill(int value) {
         Arrays.fill(data, value);
-    }    
+    } 
+    
+    public void fill(double value) {
+        Arrays.fill(data, (int)value);   
+    }
 
 
 	/**

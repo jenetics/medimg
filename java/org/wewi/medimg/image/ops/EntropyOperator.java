@@ -47,7 +47,7 @@ public class EntropyOperator implements UnaryOperator {
      *         wobei p(c) die relative Häufigkeit der Farbe c ist.
      * </pre>
      * 
-     * @return E
+     * @return E 
      */
     public double getEntropy() {
         double entropy = 0;
@@ -59,7 +59,7 @@ public class EntropyOperator implements UnaryOperator {
             key = keys.nextElement();
             
             //Berechnen der relativen Häufigkeit aus dem Histogram
-            p = (double)((MutableInteger)hist.get(key)).getValue() / (double)size; 
+            p = (double)((MutableInteger)hist.get(key)).intValue() / (double)size; 
             
             entropy += p*MathUtil.log2(p);           
         }

@@ -8,6 +8,7 @@ package org.wewi.medimg.image;
 import org.wewi.medimg.math.MutableDouble;
 import org.wewi.medimg.math.MutableInteger;
 import org.wewi.medimg.math.MutableNumber;
+import org.wewi.medimg.util.Timer;
 
 
 /**
@@ -16,14 +17,14 @@ import org.wewi.medimg.math.MutableNumber;
  */
 public class NumberImage extends RowMajorImageGeometry {
     
-    private static final class NumberType {
+    public static final class NumberType {
         private int type;
         
-        public NumberType(int t) {
+        private NumberType(int t) {
             type = t;
         }
         
-        public MutableNumber create() {
+        private MutableNumber create() {
             switch (type) {
                 case 0:
                     //return new MutableByte();
@@ -196,4 +197,55 @@ public class NumberImage extends RowMajorImageGeometry {
         
         return img;    
     }
+    
+    
+    public static void main(String[] args) {
+        Integer s = new Integer(0);
+        synchronized(s) {
+            try {
+                s.wait(2000);
+                
+                
+                Image img = new IntImageData(200, 200, 200); 
+                Timer timer = new Timer("IntImage");
+                timer.start();
+                for (int i = 0, n = img.getNVoxels(); i < n; i++) {
+                    img.getColor(i);
+                }
+                timer.stop();
+                timer.print();
+                System.out.println("Speicher: " + Runtime.getRuntime().totalMemory()/1000);
+                System.gc();
+                
+                s.wait(2000);
+                
+                NumberImage nimg = new NumberImage(200, 200, 200);
+                timer = new Timer("NumberImage");
+                timer.start();
+                for (int i = 0, n = nimg.getNVoxels(); i < n; i++) {
+                    nimg.getColor(i).intValue();
+                }
+                timer.stop();
+                timer.print();
+                System.out.println("Speicher: " + Runtime.getRuntime().totalMemory()/1000);
+                
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+               
+        }
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+

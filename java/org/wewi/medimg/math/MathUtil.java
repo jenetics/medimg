@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author  Franz Wilhelmstï¿½tter
+ * @author  Franz Wilhelmstötter
  * @version 0.1
  */
 public final class MathUtil {
