@@ -35,9 +35,8 @@ public final class SobelFilter extends ImageFilter {
         super(component);
     }
     
-    public void filter() {
-        super.filter();
-        
+    protected void imageFiltering() {
+
         Image tempImage = (Image)image.clone();
         for (int i = image.getMinX()+1, n = image.getMaxX(); i < n; i++) {
             for (int j = image.getMinY()+1, m = image.getMaxY(); j < m; j++) {

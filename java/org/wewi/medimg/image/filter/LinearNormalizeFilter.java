@@ -42,13 +42,14 @@ public final class LinearNormalizeFilter extends ImageFilter {
 	/**
 	 * @see org.wewi.medimg.image.filter.ImageFilter#filter()
 	 */
-	public void filter() {
-        super.filter();
+	protected void imageFiltering() {
         
         //Feststellen der minimalen und maximalen Farbe
         MinMaxOperator op = new MinMaxOperator();
         UnaryPointAnalyzer analyzer = new UnaryPointAnalyzer(image, op);
         analyzer.analyze();
+        
+        //System.out.println("min: " + op.getMinimum() + ", max: " + op.getMaximum());
         
         //Normalisieren des Bildes
         LinearNormalizeFunction functor = new LinearNormalizeFunction(op.getMinimum(), op.getMaximum(),
@@ -57,6 +58,11 @@ public final class LinearNormalizeFilter extends ImageFilter {
         transformer.transform();
     
 	}
+    
+    public String toString() {
+        return getClass().getName() + ":\n" +
+                "min: " + minColor + ", max: " + maxColor;    
+    }
 
 }
 

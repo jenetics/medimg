@@ -23,10 +23,17 @@ import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.RGBColorConversion;
 import org.wewi.medimg.image.VoxelIterator;
+import org.wewi.medimg.image.filter.BlurFilter;
 import org.wewi.medimg.image.filter.ConvolutionFilter;
+import org.wewi.medimg.image.filter.DilationFilter;
 import org.wewi.medimg.image.filter.EdgeDetectionFilter;
+import org.wewi.medimg.image.filter.ErosionFilter;
 import org.wewi.medimg.image.filter.GradientFilter;
+import org.wewi.medimg.image.filter.ImageFilter;
 import org.wewi.medimg.image.filter.Kernel;
+import org.wewi.medimg.image.filter.LinearNormalizeFilter;
+import org.wewi.medimg.image.filter.MorphologicalOperation;
+import org.wewi.medimg.image.filter.TresholdFilter;
 import org.wewi.medimg.image.filter.UnaryPointTransformerFilter;
 import org.wewi.medimg.image.io.ImageIOException;
 import org.wewi.medimg.image.io.ImageReader;
@@ -35,8 +42,11 @@ import org.wewi.medimg.image.io.JPEGReader;
 import org.wewi.medimg.image.io.JPEGWriter;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.image.ops.BinaryPointTransformer;
+import org.wewi.medimg.image.ops.LinearNormalizeFunction;
 import org.wewi.medimg.image.ops.MaxFunction;
 import org.wewi.medimg.image.ops.MinMaxFunction;
+import org.wewi.medimg.image.ops.SubFunction;
 import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
 import org.wewi.medimg.math.GridVectorField;
 import org.wewi.medimg.math.GridVectorFieldTransformer;
@@ -228,7 +238,7 @@ public class Test {
         try {
             
             ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-                                                 new File("C:/Workspace/kappa/kappa.3.tif"));
+                                                 new File("C:/Workspace/kappa/test.02.100x100.tif"));
             reader.read();
             Image image = reader.getImage();
             /*JFrame frame = new JFrame("HelloWorldSwing");
@@ -295,13 +305,58 @@ public class Test {
         }    
     }
     
+    public static void test11() {         
+        try {
+            ImageReader reader = new JPEGReader(ImageDataFactory.getInstance(),
+                                           new File("C:/Workspace/kappa/cube40016.jpg"));
+            reader.read();
+            Image image = reader.getImage();
+            
+            Image b = new ImageData(5, 5, 1);
+            for (int i = 0; i < b.getNVoxels(); i++) {
+                b.setColor(i, 0);    
+            }
+            
+            /*
+            ImageFilter op = new EdgeDetectionFilter(image, Kernel.SOBEL_HORIZONTAL, Kernel.SOBEL_VERTICAL);
+            op = new TresholdFilter(op, 150, 255);
+            //op = new DilationFilter(op, b);
+            op = new LinearNormalizeFilter(op, 0, 255);
+            //op = new ErosionFilter(op, b);
+            op.filter();
+            */
+            
+            ImageFilter dilation = new DilationFilter((Image)image.clone(), b);
+            dilation.filter();
+            ImageFilter erosion = new ErosionFilter(image, b);
+            erosion.filter();
+            
+            BinaryPointTransformer sub = new BinaryPointTransformer(dilation.getImage(),
+                                                                     erosion.getImage(),
+                                                                     new SubFunction());
+            sub.transform();
+            image = sub.getImage();
+            ImageFilter op = new TresholdFilter(image, 30, 255);
+            op.filter();
+            
+            ImageWriter writer = new TIFFWriter(image, new File("C:/Workspace/kappa/test11.erg"));
+            writer.write();            
+            
+            
+        } catch (Exception e) {
+            System.out.println("MarginImage: " + e); 
+            e.printStackTrace();
+            return;
+        }        
+    }
+    
 
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        test10();
+        test11();
     }
     
 }

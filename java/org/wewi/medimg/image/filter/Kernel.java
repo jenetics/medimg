@@ -44,11 +44,11 @@ public class Kernel implements Immutable {
     
     
     
-    private int[] raw;
-    private int dim;
-    private int divisor;
-    private int bias;
-    private int margin;
+    protected int[] raw;
+    protected int dim;
+    protected int divisor;
+    protected int bias;
+    protected int margin;
     
     protected Kernel() {
     }
@@ -75,6 +75,10 @@ public class Kernel implements Immutable {
     
     public int getValue(int x, int y) {
         return raw[(y+margin)*dim+(x+margin)];    
+    }
+    
+    protected void setValue(int x, int y, int value) {
+        raw[(y+margin)*dim+(x+margin)] = value;    
     }
     
     public int getDivisor() {
