@@ -14,6 +14,36 @@ import java.util.Arrays;
  * @version 0.2
  */
 public final class ImageData implements Image {
+    
+    private class ImageDataVoxelIterator implements VoxelIterator {
+        private short[] data;
+        private int size;
+        private int pos;
+        
+        public ImageDataVoxelIterator(short[] data) {
+            this.data = data;
+            size = data.length;
+            pos = 0;
+        }
+        
+        public boolean hasNext() {
+            return pos < size;
+        }
+        
+        public int next() {
+            return data[pos++];
+        }
+        
+        public int size() {
+            return size;
+        }
+        
+        public Object clone() {
+            return new ImageDataVoxelIterator(data);
+        }
+    }
+    
+    
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int sizeX, sizeY, sizeZ;
@@ -124,7 +154,16 @@ public final class ImageData implements Image {
         pos = pos - (erg[1] * sizeX);
         erg[0] = pos;
         return erg;
-    }  
+    } 
+    
+    
+    public void getCoordinates(int pos, int[] coordinate) {
+        coordinate[2] = pos / (sizeXY);
+        pos = pos - (coordinate[2] * sizeXY);
+        coordinate[1] = pos / (sizeX);
+        pos = pos - (coordinate[1] * sizeX);
+        coordinate[0] = pos;        
+    }     
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -140,9 +179,11 @@ public final class ImageData implements Image {
     
     public ImageHeader getHeader() {
         return header;
-    }
-    
+    }   
 
+    public VoxelIterator getVoxelIterator() {
+        return new ImageDataVoxelIterator(data);
+    }    
     
 }
 
