@@ -8,14 +8,6 @@ package org.wewi.medimg.image;
 
 import java.util.Arrays;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.DataOutputStream;
-import java.io.DataInputStream;
-
-
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -25,13 +17,14 @@ public final class FeatureImage implements Image {
     private byte[] features;
     private byte[] featuresOld;
     
-    private int maxX, maxY, maxZ, size;
+    private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
-    private int sizeX, sizeY, sizeZ, sizeXY;
+    private int size, sizeX, sizeY, sizeZ, sizeXY;
     private int nfeatures;
     private double[] meanValues;
     private int[] n6 = new int[6];
     private int[] n12 = new int[12];
+    private int[] n18 = new int[18];
     
     private FeatureImageHeader header;
 
@@ -92,7 +85,7 @@ public final class FeatureImage implements Image {
     }
 
     public byte getOldFeature(int x, int y, int z) {
-        return featuresOld[(sizeXY*z + sizeX*y + x)];
+        return featuresOld[sizeXY*z + sizeX*y + x];
     }
     
     public byte getOldFeature(int pos) {
@@ -100,7 +93,7 @@ public final class FeatureImage implements Image {
     }
 
     public void setFeature(int x, int y, int z, byte f) {
-        int pos = (sizeXY*z + sizeX*y + x);
+        int pos = sizeXY*z + sizeX*y + x;
         featuresOld[pos] = features[pos];
         features[pos] = f;
     } 
@@ -134,6 +127,28 @@ public final class FeatureImage implements Image {
         n12[10] = pos + sizeX - sizeXY;
         n12[11] = pos + sizeX + sizeXY;
         return n12;
+    }
+    
+    public int[] getNeighbor3D18Positions(int pos) {
+        n18[0] = pos - 1;
+        n18[1] = pos + 1;
+        n18[2] = pos - sizeX;
+        n18[3] = pos + sizeX;
+        n18[4] = pos - sizeXY;
+        n18[5] = pos + sizeXY;  
+        n18[6] = pos - 1 - sizeXY;
+        n18[7] = pos - 1 + sizeXY;
+        n18[8] = pos - 1 - sizeX;
+        n18[9] = pos - 1 + sizeX;
+        n18[10] = pos + 1 - sizeXY;
+        n18[11] = pos + 1 + sizeXY;
+        n18[12] = pos + 1 - sizeX;
+        n18[13] = pos + 1 + sizeX;
+        n18[14] = pos - sizeX - sizeXY;
+        n18[15] = pos - sizeX + sizeXY;
+        n18[16] = pos + sizeX - sizeXY;
+        n18[17] = pos + sizeX + sizeXY;        
+        return n18;
     }
     
     public void setMeanValues(double[] mv) {

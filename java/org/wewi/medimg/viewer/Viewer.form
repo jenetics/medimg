@@ -27,6 +27,10 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save As ..."/>
               </Properties>
+
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveAsMenuItemActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
               <Properties>
@@ -196,8 +200,8 @@
             <Container class="javax.swing.JDesktopPane" name="desktopPane">
 
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Viewer_desktopPane"/>
                 <AuxValue name="JavaCodeGenerator_CodeGeneration" type="java.lang.Integer" value="0"/>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Viewer_desktopPane"/>
               </AuxValues>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout"/>

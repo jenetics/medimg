@@ -16,6 +16,8 @@ import javax.swing.event.InternalFrameEvent;
 
 import java.awt.Cursor;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 
 import org.wewi.medimg.image.Image;
@@ -38,7 +40,7 @@ import java.io.File;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class ImageViewer extends ViewerDesktopFrame {
+public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     private Image image;
     private int slice;
     private ImagePanel imagePanel;
@@ -143,8 +145,8 @@ public class ImageViewer extends ViewerDesktopFrame {
         np.setNextNextCommand(new NullCommand());         
     }
    
-    ///////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////  
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void focusGained(FocusEvent focusEvent) {
         setCommands();
     }
@@ -153,15 +155,42 @@ public class ImageViewer extends ViewerDesktopFrame {
         setCommands();
     }
     
-    public void internalFrameClosing(InternalFrameEvent internalFrameEvent) {
-    }
-    
     public void internalFrameClosed(InternalFrameEvent internalFrameEvent) {
         imagePanel = null;
         image = null;
         setNullCommands();
-    }    
+    }   
     
+    public void keyPressed(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        
+        switch (keyCode) {
+            case KeyEvent.VK_PAGE_UP:
+                nextNextCommand.execute();
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                prevPrevCommand.execute();
+                break;
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_SPACE:
+                nextCommand.execute();
+                break;               
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_DOWN:
+                prevCommand.execute();
+                break;
+            case KeyEvent.VK_END:
+                lastCommand.execute();
+                break;
+            case KeyEvent.VK_HOME:
+                firstCommand.execute();
+                break;
+            default:
+                //Nothing
+        }
+
+    }
     
     
     

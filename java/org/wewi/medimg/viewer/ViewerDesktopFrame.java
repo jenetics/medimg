@@ -59,22 +59,22 @@ public abstract class ViewerDesktopFrame extends JInternalFrame
     
     protected void addListeners() {
         //Anmelden der Listener
-        addFocusListener(this);
-        addMouseListener(this);
-        addMouseMotionListener(this);
-        addKeyListener(this);
+        getContentPane().addFocusListener(this);
+        getContentPane().addMouseListener(this);
+        getContentPane().addMouseMotionListener(this);
+        getContentPane().addKeyListener(this);
         addInternalFrameListener(this);
-        addComponentListener(this);        
+        getContentPane().addComponentListener(this);        
     }
     
     protected void removeListeners() {
         //Abmelden der Listener
-        removeFocusListener(this);
-        removeMouseListener(this);
-        removeMouseMotionListener(this);
-        removeKeyListener(this);
+        getContentPane().removeFocusListener(this);
+        getContentPane().removeMouseListener(this);
+        getContentPane().removeMouseMotionListener(this);
+        getContentPane().removeKeyListener(this);
         removeInternalFrameListener(this);
-        removeComponentListener(this);
+        getContentPane().removeComponentListener(this);
     }
     
     /*

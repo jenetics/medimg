@@ -16,24 +16,33 @@ import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.NavigationPanel;
 import org.wewi.medimg.viewer.Command;
 import org.wewi.medimg.viewer.NullCommand;
+import org.wewi.medimg.viewer.ImageContainer;
 
 import org.wewi.medimg.viewer.wizard.WizardListener;
 import org.wewi.medimg.viewer.wizard.WizardEvent;
 
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JMenuItem;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class TwinImageViewer extends ViewerDesktopFrame implements WizardListener {
+public final class TwinImageViewer extends ViewerDesktopFrame implements WizardListener,
+                                                                         ImageContainer {
     private Image image1;
     private Image image2;
     private JPanel rootPanel;
@@ -42,6 +51,9 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     private ColorConversion conversion1;
     private ColorConversion conversion2;
     private int slice = 0;
+    
+    private JPopupMenu popUpMenu;
+    private JMenuItem saveImageMenuItem;
     
     //Navigation-Commands
     private Command firstCommand;
@@ -70,12 +82,26 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         imagePanel2 = new ImagePanel(image2);
         conversion1 = imagePanel1.getColorConversion();
         conversion2 = imagePanel2.getColorConversion();
+        imagePanel2.addMouseListener(new MouseAdapter() {
+                                        public void mouseClicked(MouseEvent event) {
+                                            imagePanel2MouseClicked(event);
+                                        }
+                                     });
         
         getContentPane().add(imagePanel1);
         getContentPane().add(imagePanel2);
-        int sizeX = image1.getMaxX() - image1.getMinX();
-        int sizeY = image1.getMaxY() - image1.getMinY();
+        int sizeX = image1.getMaxX() - image1.getMinX() + 1;
+        int sizeY = image1.getMaxY() - image1.getMinY() + 1;
         setPreferredSize(new Dimension(2*sizeX, sizeY));
+        
+        popUpMenu = new JPopupMenu();
+        saveImageMenuItem = new JMenuItem("Speichern als...");
+        saveImageMenuItem.addActionListener(new ActionListener() {
+                                                public void actionPerformed(ActionEvent event) {
+                                                    saveImageMenuItemActionPerformed(event);
+                                                }
+                                            });
+        popUpMenu.add(saveImageMenuItem);
         
         addListeners();
         
@@ -86,6 +112,12 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         nextNextCommand = new NextNextCommand(this, 10);
         prevPrevCommand = new PrevPrevCommand(this, 10);
         setCommands();
+    }
+    
+    private void imagePanel2MouseClicked(MouseEvent event) {
+    }
+    
+    private void saveImageMenuItemActionPerformed(ActionEvent event) {
     }
     
     private void setCommands() {
@@ -113,6 +145,10 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     }
     
     public Image getImage2() {
+        return image2;
+    }
+    
+    public Image getImage() {
         return image2;
     }
     
@@ -153,6 +189,36 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         setCommands();
     }
     
+    public void keyPressed(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        
+        switch (keyCode) {
+            case KeyEvent.VK_PAGE_UP:
+                nextNextCommand.execute();
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                prevPrevCommand.execute();
+                break;
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_SPACE:
+                nextCommand.execute();
+                break;               
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_DOWN:
+                prevCommand.execute();
+                break;
+            case KeyEvent.VK_END:
+                lastCommand.execute();
+                break;
+            case KeyEvent.VK_HOME:
+                firstCommand.execute();
+                break;
+            default:
+                //Nothing
+        }
+    }
+    
     
     public void wizardEventOccurred(WizardEvent wizardEvent) {
         imagePanel1.repaint();
@@ -166,5 +232,5 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         image2 = null;
         setNullCommands();
     }    
-    
+        
 }

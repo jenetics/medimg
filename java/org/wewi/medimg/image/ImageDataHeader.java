@@ -29,6 +29,7 @@ class ImageDataHeader implements ImageHeader {
         this.minY = minY;
         this.minZ = minZ;
         this.maxX = maxX;
+        this.maxY = maxY;
         this.maxZ = maxZ;
         this.image = image;
     }
