@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project basedir="." default="build" name="build">
     <!--Setzen einiger Variablen-->
     <target name="init">
       <property name="dir.src" value="."/>
-      <property name="dir.build" value="../seg/build"/>
-      <property name="dir.source" value="../seg/source"/>
-      <property name="dir.javadoc" value="../seg/javadoc"/>
+      <property name="dir.build" value="C:/Workspace/fwilhelm/Projekte/DIPLOM/build/dist"/>
+      <property name="dir.source" value="C:/Workspace/fwilhelm/Projekte/DIPLOM/build/source"/>
+      <property name="dir.javadoc" value="C:/Workspace/fwilhelm/Projekte/DIPLOM/build/javadoc"/>
       
       <delete dir="${dir.source}"/>
       <mkdir dir="${dir.source}"/>
@@ -34,17 +33,23 @@
 
     <!--Compilieren-->
     <target depends="init" name="compile">
-        <javac debug="true" deprecation="true" optimize="on" destdir="${dir.build}" srcdir="${dir.src}"/>
+        <javac debug="true" deprecation="true" destdir="${dir.build}" optimize="on" srcdir="${dir.src}"/>
     </target>
 
     <target depends="init,compile" name="jar.class">
-        <jar basedir="${dir.build}" compress="true" jarfile="${dir.build}/seg.jar" includes="**/*.class"/>
+        <jar basedir="${dir.build}" compress="true" jarfile="${dir.build}/segreg.jar">
+            <include name="**/*.class"/>
+            <manifest>
+                <attribute name="Main-Class" value="org.wewi.medimg.viewer.Viewer"/>
+            </manifest>
+            
+        </jar>
     </target>
 
    <!-- Generieren der Dokumentation-->
     <target depends="init" description="Javadoc" name="javadoc">
         <mkdir dir="${dir.javadoc}"/>
-        <javadoc destdir="${dir.javadoc}" packagenames="fwilhelm.*">
+        <javadoc destdir="${dir.javadoc}" packagenames="org.*">
             <sourcepath>
                 <pathelement location="."/>
             </sourcepath>
