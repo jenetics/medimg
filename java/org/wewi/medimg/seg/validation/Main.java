@@ -5,16 +5,18 @@
 package org.wewi.medimg.seg.validation;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
-
-import org.wewi.medimg.image.FeatureColorConversion;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.io.ImageReader;
-import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.RawImageReader;
-import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
@@ -24,9 +26,41 @@ import org.wewi.medimg.seg.stat.MLKMeansClusterer;
  */
 public final class Main {
     
+    public void batch(String[] args) {
+        String todo = args[0];
+        String done = args[1];
+        
+        
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = null;
+        try {
+			doc = builder.build(new File(todo));
+		} catch (JDOMException e) {
+            System.err.println("Can't create SaxBuilder: " + e);
+            return;
+		} 
+        
+        Element batch = doc.getRootElement(); 
+        List tasks = batch.getChildren("Task");
+        
+        //Abarbeiten der einzelnen Tasks
+        for (Iterator it = tasks.iterator(); it.hasNext();) {
+            Element task = (Element)it.next();
+            task(task);     
+        }
+    }
     
-
-	public static void main(String[] args) {
+    
+    private void task(Element task) {
+        
+    }
+    
+    
+    
+    
+    
+    
+    public static void test() {
         Image oimg = new NullImage();
         Image mimg = new NullImage();
         Image simg = new NullImage();
@@ -35,41 +69,39 @@ public final class Main {
         seg = new MLKMeansClusterer(5);
         //seg.addLoggerHandler(new ConsoleHandler());
         
+        //Einlesen der Bilder
         try {
             System.out.println("Lesen des Modells");
-            ImageReader reader = new RawImageReader(ImageDataFactory.getInstance(),
-                                            new File("X:/images/nbrain.model.rid"));
-            //reader.read();
+            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
+                                            new File("X:/medimages/nhead/seg.model"));
+            reader.read();
             mimg = reader.getImage();
             System.out.println("Lesen des Bildes");
-            reader = new RawImageReader(ImageDataFactory.getInstance(),
-                                            new File("X:/images/nbrain.t1.n3.rf20.rid"));
+            reader = new TIFFReader(ImageDataFactory.getInstance(),
+                                            new File("X:/medimages/nhead/t1.n3.rf20"));
             reader.read();
             oimg = reader.getImage();
+            
+            System.out.println(oimg.getHeader().toString());
             
         } catch (Exception e) {
             e.printStackTrace(); 
             return;   
         }
         
-        System.out.println("Segmentieren");
-        simg = seg.segment(oimg);
-        System.out.println(simg.getColorRange());
+        MLValidator validator = new MLValidator();
+        validator.setProtocolFile("C:/Workspace/fwilhelm/Projekte/Diplom/validation/" +
+                                   "protocol." + 
+                                   Long.toString(System.currentTimeMillis()) + ".xml");                                                            
+        validator.setK(4);
+        validator.setAnatomicalModel(mimg);
+        validator.setSourceImage(oimg);
         
-        try {
-            simg.setColorConversion(new FeatureColorConversion());
-            ImageWriter writer = new TIFFWriter(simg, new File("X:/images/segimg"));
-            writer.write();
-        } catch (Exception e) {
-            e.printStackTrace();    
-        }
-        
-        
-        System.out.println("Validieren");
-        //Validator val = new Validator(simg, mimg);
-        //val.validate();
-        
-        //System.out.println(val);
+        validator.validate();        
+    }
+
+	public static void main(String[] args) {
+
         
 	}
 }

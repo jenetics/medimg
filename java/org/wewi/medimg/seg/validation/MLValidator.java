@@ -6,7 +6,6 @@
 
 package org.wewi.medimg.seg.validation;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,11 +34,14 @@ public class MLValidator {
     private long startTime;
     private long stopTime;
     
-    private File protocolFile;
+    private String protocolFile;
     
-    public MLValidator(File protocolFile) {
-        this.protocolFile = protocolFile;
-    }      
+    public MLValidator() {
+    } 
+    
+    public void setProtocolFile(String fileName) {
+        protocolFile = fileName;
+    }     
     
     public void setSourceImage(Image source) {
         this.source = source;    
@@ -60,15 +62,20 @@ public class MLValidator {
         target = clusterer.segment(source);
         stopTime = System.currentTimeMillis();
         
+        System.out.println("Erstellen des Akkus");
         AccumulatorArray accu = new AccumulatorArray(anatomicalModel.getColorRange().getNColors(), k);
         for (int i = 0, n = source.getNVoxels(); i < n; i++) {
             accu.inc(anatomicalModel.getColor(i), target.getColor(i));   
         }
         
+        System.out.println("Berechnene von T3");
         T3 t3 = new T3(accu);
+        System.out.println("Berechnen des Fehlers");
         ErrorMeasure error = new ErrorMeasure(anatomicalModel,target, t3);
         error.measure();
           
+          
+        System.out.println("Erstellen des Protokolls");  
         Element protocol = new Element("Protocol");
         
         //Daten zum Algorithmus
@@ -78,13 +85,20 @@ public class MLValidator {
         param.setAttribute("name", "k");
         param.setAttribute("type", Integer.class.getName());
         param.addContent(Integer.toString(k));
+        alg.addContent(param);
+        param = new Element("Parameter");
         param.addContent(Util.transform(source));
         alg.addContent(param);
+        //Ergebnisse des Algorithmus
         Element algResult = new Element("Result");
         Element exeTime = new Element("ExecutionTime");
         exeTime.setAttribute(new Attribute("start", Long.toString(startTime)));
         exeTime.setAttribute(new Attribute("stop", Long.toString(stopTime)));
         algResult.addContent(exeTime);
+        Element itCount = new Element("Iterations");
+        itCount.addContent(Integer.toString(clusterer.getIterations()));
+        algResult.addContent(itCount);
+        
         Element mean = new Element("MeanValues");
         Element value;
         double[] mv = clusterer.getMeanValues();
@@ -94,6 +108,7 @@ public class MLValidator {
             mean.addContent(value); 
         }
         algResult.addContent(mean);
+        alg.addContent(algResult);
         protocol.addContent(alg);
         
         //Ergebnis
@@ -105,6 +120,7 @@ public class MLValidator {
         
         Document doc = new Document(protocol);
         
+        System.out.println("Schreiben des Protokolls");
         XMLOutputter out = new XMLOutputter("    ", true);
         try {
 			out.output(doc, new FileOutputStream(protocolFile));
@@ -113,6 +129,7 @@ public class MLValidator {
 		} catch (IOException e) {
             System.err.println("MLValidator: " + e);
 		}
+        System.out.println("Fertig");
         
     }
     
