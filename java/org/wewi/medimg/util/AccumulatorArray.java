@@ -13,14 +13,26 @@ public class AccumulatorArray {
     private final int cols;
     private int[][] accu;
     
-    
+    /**
+     * Constructs an <code>AccumulatorArray</code> with the
+     * specified numbers of rows and cols.
+     * 
+     * @param rows number of rows of the array.
+     * @param cols number of columns of the array.
+     */
     public AccumulatorArray(int rows, int cols) {
         this(rows, cols, 0);    
     }
 
-	/**
-	 * Constructor for AccumulatorArray.
-	 */
+    /**
+     * Constructs an <code>AccumulatorArray</code> with the
+     * specified numbers of rows and cols and initializes
+     * with the default value <code>value</code>.
+     * 
+     * @param rows  number of rows of the array.
+     * @param cols  number of columns of the array.
+     * @param value default value of the array elements.
+     */
 	public AccumulatorArray(int rows, int cols, int value) {
         if (rows <= 0 || cols <= 0) {
             throw new IllegalArgumentException("Rows and cols must be positive!");
@@ -39,19 +51,40 @@ public class AccumulatorArray {
         
 	}
     
+    /**
+     * Incrementing the specified array element by one.
+     * 
+     * @param row 
+     * @param col
+     */
     public void inc(int row, int col) {
         ++accu[row][col];  
     }
     
+    /**
+     * Getting the number of rows.
+     * 
+     * @return int the number of rows of this array.
+     */
     public int getRows() {
         return rows;    
     }
     
+    /**
+     * Getting the number of cols.
+     * 
+     * @return int the number of columns of this array.
+     */
     public int getCols() {
         return cols;    
     }
     
-    public long getSum() {
+    /**
+     * Calculates the sum of the current element values.
+     * 
+     * @return long sum of the current element values.
+     */
+    public long elementSum() {
         long sum = 0;
         
         for (int i = 0; i < cols; i++) {
@@ -63,10 +96,24 @@ public class AccumulatorArray {
         return sum;    
     }
     
+    /**
+     * Gets the element value.
+     * 
+     * @param row
+     * @param col
+     * @return int current value of the element.
+     */
     public int getValue(int row, int col) {
         return accu[row][col];    
     }
     
+    /**
+     * Sets the element value
+     * 
+     * @param row
+     * @param col
+     * @param value value to be set.
+     */
     public void setValue(int row, int col, int value) {
         accu[row][col] = value;    
     }

@@ -1,24 +1,30 @@
 /**
- * Sort.java
+ * Arrays.java
  * 
  * Created on 17.02.2003, 22:26:46
  *
  */
 package org.wewi.medimg.util;
 
-import java.util.Random;
-
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class Sort {
+public final class Arrays {
 
-	private Sort() {
+	private Arrays() {
 		super();
 	}
     
+    /**
+     * Insertion sort algorithm. Instead of the <code>data</code> array, the
+     * <code>pivot</code> array is changed so that the "array" <code>data[pivot
+     * [i]]</code> is sorted. The <code>data</code> array will not be touched.
+     * 
+     * @param data
+     * @param pivot
+     */
     public static void sort(int[] data, int[] pivot) {
         for (int i = 0, n = data.length; i < n; i++) {
             pivot[i] = i;
@@ -39,23 +45,5 @@ public final class Sort {
             pivot[i + 1] = j;
         }
     }
-    
-    
-    public static void main(String[] args) {
-        Random rand = new Random(System.currentTimeMillis());
-        
-        int[] data = new int[20];
-        int[] pivot = new int[20];
-        for(int i = 0; i < data.length; i++) {
-            data[i] = rand.nextInt(1000);
-        }
-        
-        sort(data, pivot);
-        
-        for (int i = 0; i < data.length; i++) {
-            System.out.println("" + data[i] + " : " + data[pivot[i]]);
-        }
-        
-    }
-
+ 
 }

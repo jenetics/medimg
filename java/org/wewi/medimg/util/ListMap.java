@@ -193,10 +193,26 @@ public class ListMap implements Map {
         return set;
 	}
     
+    /**
+     * Returns a list view of the values contained in this listmap. The
+     * collection is backed by the listmap, so changes to the listmap are
+     * reflected in the list, and vice-versa. If the listmap is modified while
+     * an iteration over the list is in progress, the results of the iteration
+     * are undefined. </p>
+     * The elements of the list are <code>Map.Entry</code>
+     * 
+     * @return List a list view of the current listmap content.
+     */
     public List entryList() {
         return entries;
     }
     
+    /**
+     * Returns an iterator of the current content of the listmap. The type of
+     * the returned iterator object is <code>Map.Entry</code>.
+     * 
+     * @return Iterator an iterator of the current listmap.
+     */
     public Iterator iterator() {
         return entryList().iterator();    
     }
