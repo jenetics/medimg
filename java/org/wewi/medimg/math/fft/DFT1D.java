@@ -15,8 +15,10 @@ import org.wewi.medimg.math.Complex;
 public interface DFT1D {
     
     /**
-     * In Place Transformation
+     * In Place Transformation.
+     * 
+     * @param a Komplexer Eingabevektor.
      */
-    public void dft(Complex[] a);
+    public void transform(Complex[] a);
     
 }

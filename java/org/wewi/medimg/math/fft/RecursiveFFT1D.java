@@ -13,7 +13,7 @@ import org.wewi.medimg.math.MathUtil;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class RecursiveFFT1D implements DFT1D {
+public final class RecursiveFFT1D extends DFT implements DFT1D {
 
     /**
      * Constructor for RecursiveFFT1D.
@@ -29,12 +29,17 @@ public final class RecursiveFFT1D implements DFT1D {
      * 
      * @see org.wewi.medimg.math.fft.DFT1D#dft(Complex[])
      */
-    public void dft(Complex[] a) throws IllegalArgumentException {
-        Complex[] ffta = recursiveFFT(a);
+    public void transform(Complex[] a) throws IllegalArgumentException {
+        if (!isPowerOfTwo(a.length)) {
+            throw new IllegalArgumentException("The length of the given array is not a power of two: " +
+                                            "a.length = " + a.length + " != 2^n"); 
+        }
+        
+        Complex[] ffta = rfft(a);
         System.arraycopy(ffta, 0, a, 0, ffta.length);        
     }
     
-    private Complex[] recursiveFFT(Complex[] a) {
+    private Complex[] rfft(Complex[] a) {
         int n = a.length;
         if (n == 1) {
             return a;    
@@ -50,8 +55,8 @@ public final class RecursiveFFT1D implements DFT1D {
             a1[i] = a[i*2+1];    
         }
         
-        Complex[] y0 = recursiveFFT(a0);
-        Complex[] y1 = recursiveFFT(a1);
+        Complex[] y0 = rfft(a0);
+        Complex[] y1 = rfft(a1);
         
         Complex[] y = new Complex[n];
         for (int k = 0; k < n/2; k++) {

@@ -23,108 +23,17 @@ public class DFT {
         super();
     }
     
-    
-
-    /**
-     * Fouriertransformation für komplexe 1D Daten. O(n^2)
-     */
-    public static Complex[] naiveDFT1D(Complex[] data) {
-        final int N = data.length;
-        final Complex Wn = MathUtil.exp(new Complex(0, 2*Math.PI/(double)N));
+    public boolean isPowerOfTwo(int n) {
+        double ldn = MathUtil.log2(n);
         
-        Complex[] result = new Complex[N];                             
-        final double MULT = 1d/Math.sqrt(N);                                     
-                                     
-        for (int n = 0; n < N; n++) {
-            Complex z = new Complex(0, 0);
-            for (int k = 0; k < N; k++) {
-                z = z.add(MathUtil.mult(data[k], MathUtil.pow(Wn, new Complex(k*n))));      
-            }
-            result[n] = MathUtil.mult(MULT, z);    
-        }
-        
-        return result;    
-    }
-     
-    
-    public static Complex[] recursiveFFT(Complex[] a) {
-        int n = a.length;
-        if (n == 1) {
-            return a;    
-        }
-        
-        Complex Wn = MathUtil.exp(new Complex(0, 2*Math.PI/(double)n));
-        Complex W = new Complex(1);
-        
-        Complex[] a0 = new Complex[n/2];
-        Complex[] a1 = new Complex[n/2];
-        for (int i = 0, ii = n/2; i < ii; i++) {
-            a0[i] = a[i*2];
-            a1[i] = a[i*2+1];    
-        }
-        
-        Complex[] y0 = recursiveFFT(a0);
-        Complex[] y1 = recursiveFFT(a1);
-        
-        Complex[] y = new Complex[n];
-        for (int k = 0; k < n/2; k++) {
-            y[k] = y0[k].add(W.mult(y1[k]));
-            y[k+(n/2)] = y0[k].sub(W.mult(y1[k]));
-            W = W.mult(Wn);
-        }            
-        
-        return y;
-    }      
-       
-    
-    private static final int rev(int k, int bits) {
-        int rev = 0;
-        for (int i = rev = 0; i < bits; i++) {
-            rev = (rev << 1) | (k & 1);
-            k >>= 1;    
-        }                                                                               
-        
-        return rev;    
-    }
-    private static void bitReverseCopy(Complex[] a, Complex[] A, int bits) {
-        for (int i = 0, n = a.length; i < n; i++) {
-            A[rev(i, bits)] = a[i];       
-        }    
-    }
-    public static Complex[] iterativeFFT(Complex[] a) {        
-        int n = a.length;
-        int ldn = (int)MathUtil.log2(n);
-        
-        Complex[] A = new Complex[a.length];
-        bitReverseCopy(a, A, ldn);        
-        
-        int m = 0;
-        Complex W = null;
-        Complex Wm = null;
-        Complex t = null;
-        Complex u = null;
-        for (int s = 1; s <= ldn; s++) {
-            m = (int)MathUtil.pow(2, s);
-            Wm = MathUtil.exp(new Complex(0, 2*Math.PI/(double)m));
-            
-            for (int k = 0; k < n; k += m) {
-                W = new Complex(1);
-                
-                for (int j = 0; j < m/2; j++) {
-                    t = W.mult(A[k + j + m/2]);
-                    u = A[k + j];
-                    A[k +j] = u.add(t);
-                    A[k + j + m/2] = u.sub(t);
-                    W = W.mult(Wm);
-                }        
-            }
-        }
+        return false;    
+    }    
          
-        return A;    
-    } 
     
     
     public static Complex[][] naiveFFT(Complex[][] a) {
+        DFT1D dft = new NaiveDFT1D();
+        
         Complex[][] A = new Complex[a.length][a[0].length];
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[0].length; j++) {
@@ -134,7 +43,7 @@ public class DFT {
         
         //Zeilentransformation
         for (int i = 0; i < a.length; i++) {
-            A[i] = naiveDFT1D(A[i]);   
+            dft.transform(A[i]);   
         }
         
         
@@ -145,7 +54,7 @@ public class DFT {
                 col[j] = A[j][i];    
             }    
             
-            col = naiveDFT1D(col);
+            dft.transform(col);
             
             for (int j = 0; j < a.length; j++) {
                 A[j][i] = col[j];    

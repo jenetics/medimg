@@ -13,7 +13,7 @@ import org.wewi.medimg.math.MathUtil;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class IterativeFFT1D implements DFT1D {
+public final class IterativeFFT1D extends DFT implements DFT1D {
 
     /**
      * Constructor for IterativeFFT1D.
@@ -25,7 +25,7 @@ public final class IterativeFFT1D implements DFT1D {
     /**
      * @see org.wewi.medimg.math.fft.DFT1D#dft(Complex[])
      */
-    public void dft(Complex[] a) {
+    public void transform(Complex[] a) {
         Complex[] ffta = iterativeFFT(a);
         System.arraycopy(ffta, 0, a, 0, a.length);
     }
