@@ -93,7 +93,7 @@ public class Evaluate {
     
     
     public String mathematicaFormat(double value) {
-            
+        return null;    
     }
     
     

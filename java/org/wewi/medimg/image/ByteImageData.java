@@ -6,6 +6,8 @@
 
 package org.wewi.medimg.image;
 
+import java.util.Arrays;
+
 
 /**
  *
@@ -44,5 +46,13 @@ public final class ByteImageData extends ImageData {
     protected int getData(int pos) {
         return data[pos];    
     }
+    
+    public void resetColor(int color) {
+        Arrays.fill(data, (byte)color);
+    }    
+    
+    public Object clone() {
+        return new ByteImageData(this);
+    }    
     
 }

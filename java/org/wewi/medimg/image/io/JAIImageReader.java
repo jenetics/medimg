@@ -158,15 +158,17 @@ abstract class JAIImageReader extends ImageReader {
         assert(slices == null);
         
         //Einlesen des Headers, falls vorhanden
-        String[] fileList = source.list();
+        File[] fileList = source.listFiles();
         for (int i = 0; i < fileList.length; i++) {
-            if (fileList[i].endsWith("header.xml")) {
+            if (fileList[i].toString().endsWith("header.xml")) {
                 try {
                     FileInputStream in = new FileInputStream(fileList[i]);
                     image = imageFactory.createImage(1, 1, 1);
                     image.getHeader().read(in);
+                    colorConversion = image.getColorConversion();
                     break;  
                 } catch (Exception e) {
+                    System.err.println(getClass().getName() + ":" + e);
                     //nichts    
                 }  
             }    
@@ -174,6 +176,9 @@ abstract class JAIImageReader extends ImageReader {
         
                
         if (!image.equals(NullImage.IMAGE_INSTANCE)) {
+            System.out.println("JAIImageReader: Bild mit Header");
+            
+            
             RenderedImage rimage = null;
             Raster raster = null;
             int[] pixel = new int[3];
@@ -200,6 +205,7 @@ abstract class JAIImageReader extends ImageReader {
                 notifyProgressListener(new ImageIOProgressEvent(this, ((double)count/(double)dim.getSizeZ()), false));          
             }        
         } else {
+            System.out.println("JAIImageReader: Bild ohne Header");
             readWithoutHeader(); 
         }
         

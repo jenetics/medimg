@@ -17,8 +17,8 @@ import org.wewi.medimg.image.Image;
 public class MAPKMeansClusterer extends MLKMeansClusterer {
     private static final String SEGMENTER_NAME = "MAP-Kmeans-Clusterer";
     
-    private static double BETA = 0.35;
-    private static double BETA_SQRT2 = Math.sqrt(BETA);  
+    private double BETA = 0.35;
+    private double BETA_SQRT2 = Math.sqrt(BETA);  
     
     private Image segimgOld;
     private int size;
@@ -32,6 +32,12 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
 	 */
     public MAPKMeansClusterer(int k) {
         super(k);
+    }
+    
+    public MAPKMeansClusterer(int k, double BETA) {
+        this(k);
+        this.BETA = BETA;
+        BETA_SQRT2 = Math.sqrt(BETA); 
     }
     
 	/**

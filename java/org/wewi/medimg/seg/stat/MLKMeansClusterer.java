@@ -31,8 +31,8 @@ public class MLKMeansClusterer extends ObservableSegmenter
         
     private static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
     
-    protected final static int MAX_ITERATION = 50;
-    protected final static double ERROR_LIMIT = 0.001;
+    protected final static int MAX_ITERATION = 150;
+    protected final static double ERROR_LIMIT = 0.1;
     
     protected final int k;
     protected double[] mean;
@@ -54,6 +54,16 @@ public class MLKMeansClusterer extends ObservableSegmenter
         meanOld = new double[k];
         Arrays.fill(mean, 0);
         Arrays.fill(meanOld, 0);
+    }
+    
+    public double[] getMeanValues() {
+        double[] mv = new double[k];
+        System.arraycopy(mean, 0, mv, 0, k);
+        return mv;    
+    }
+    
+    public int getIterations() {
+        return iterationCount;    
     }
     
 	/**
@@ -138,7 +148,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
             
             m1Step(mrt, segimg);
             m2Step(mrt, segimg);
-            iterationCount++;
+            ++iterationCount;
             
             notifyIterationFinished(new AlgorithmIterationEvent(this));
             
