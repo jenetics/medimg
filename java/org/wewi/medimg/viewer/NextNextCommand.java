@@ -23,7 +23,7 @@ final class NextNextCommand implements Command {
 
     public void execute() {
         int slice = imageViewer.getSlice();
-        if (imageViewer.getImage().getMaxZ()-1 > slice+stride) {
+        if (imageViewer.getImage().getMaxZ() >= slice+stride) {
             imageViewer.setSlice(slice+stride);
         }
     }

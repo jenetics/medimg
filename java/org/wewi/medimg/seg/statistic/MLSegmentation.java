@@ -12,7 +12,7 @@ import org.wewi.medimg.seg.SegmentationEvent;
 import org.wewi.medimg.image.io.*;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.image.FeatureData;
+import org.wewi.medimg.image.FeatureImage;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
@@ -42,7 +42,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     public MLSegmentation(Image image, int nf) {
         super(image);
         nfeatures = nf;
-        featureData = null;
+        featureImage = null;
 
         meanValues = new double[nfeatures];
         meanValuesOld = new double[nfeatures];
@@ -61,7 +61,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         }
     }
 
-    protected double neighbourhoodWeight(int x, int y, int z, int f) {
+    protected double neighbourhoodWeight(int pos, int f) {
         return 0;
     }
 
@@ -97,46 +97,35 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     protected void initM1Iteration() {
     }
 
-    protected double getMeanValue(int f, int x, int y, int z) {
+    protected double getMeanValue(int pos, int f) {
         return meanValues[f];
     }
-
+ 
     private void m1Step() {
-        int minX = image.getMinX();
-        int minY = image.getMinY();
-        int minZ = image.getMinZ();
-        int maxX = image.getMaxX();
-        int maxY = image.getMaxY();
-        int maxZ = image.getMaxZ();
+        int size = image.getNVoxels();
         int minFeatureIndex;
         int color;
-        double nw;
-        double minFeature, minFeatureTemp;
+        double nw, minFeature, minFeatureTemp;
 
         initM1Iteration();
-        int count = 0;
         do {
-            count = 0;
-            for (int i = minX; i <= maxX; i++) {
-                for (int j = minY; j <= maxY; j++) {
-                    for (int k = minZ; k <= maxZ; k++) {
-                        color = image.getColor(i, j, k);
-                        minFeature = Integer.MAX_VALUE;
-                        minFeatureIndex = 0;
-                        for (int l = 0; l < nfeatures; l++) {
-                            nw = neighbourhoodWeight(i, j, k, l);
-                            minFeatureTemp = Math.abs((double)color-getMeanValue(l, i, j, k));
-                            minFeatureTemp += nw;
+            for (int i = 0; i < size; i++) {
+                color = image.getColor(i);
+                minFeature = Integer.MAX_VALUE;
+                minFeatureIndex = 0;
+                for (int f = 0; f < nfeatures; f++) {
+                    nw = neighbourhoodWeight(i, f);   
+                    minFeatureTemp = Math.abs((double)color-getMeanValue(i, f));
+                    minFeatureTemp += nw;
 
-                            if (minFeatureTemp < minFeature) {
-                                minFeatureIndex = l;
-                                minFeature = minFeatureTemp;
-                            }
-                        }
-                        featureData.setFeature(i, j, k, (byte)minFeatureIndex);
+                    if (minFeatureTemp < minFeature) {
+                        minFeatureIndex = f;
+                        minFeature = minFeatureTemp;
                     }
-                }
+                } 
+                featureImage.setFeature(i, (byte)minFeatureIndex);
             }
+            
         } while (!isM1Ready());        
     }
     
@@ -149,7 +138,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         byte feat;
         int npixel = image.getNVoxels();
         for (int i = 0; i < npixel; i++) {
-            feat = featureData.getFeature(i);
+            feat = featureImage.getFeature(i);
             meanTemp[feat] += (long)image.getColor(i);
             meanNoTemp[feat]++;
         }
@@ -163,7 +152,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         }
         Arrays.sort(meanValues);
 
-        featureData.setMeanValues(meanValues);
+        featureImage.setMeanValues(meanValues);
 
         //Debuging/////////////////////////////////////////////////////////////
         SegmentationEvent state = new SegmentationEvent(this, m1m2Count, meanValues);
@@ -173,7 +162,8 @@ public class MLSegmentation extends ImageSegmentationStrategy {
     }
     
     public void doSegmentation() {
-        featureData = new FeatureData(image.getMaxX()+1, image.getMaxY()+1, image.getMaxZ()+1, nfeatures);
+        System.out.println(image);
+        featureImage = new FeatureImage(image.getMaxX()+1, image.getMaxY()+1, image.getMaxZ()+1, nfeatures);
 
         initMeanValues();
         notifySegmentationStarted(new SegmentationEvent(this, m1m2Count, meanValues));
@@ -217,7 +207,7 @@ public class MLSegmentation extends ImageSegmentationStrategy {
         byte f;
         int c;
         for (int i = 0; i < size; i++) {
-            f = featureData.getFeature(i);
+            f = featureImage.getFeature(i);
             c = image.getColor(i);
             variance[f] += Math.pow(meanValues[f]-c, 2);
             count[f]++;

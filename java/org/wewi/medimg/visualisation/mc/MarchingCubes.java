@@ -121,9 +121,9 @@ public class MarchingCubes  {
         ImageSegmentationStrategy iss = new MLSegmentation(image, 4);
         iss.doSegmentation();
         
-        FeatureData fd = iss.getFeatureData();
+        FeatureImage fi = iss.getFeatureImage();
         
-        CubeIterator cit = new CubeIterator(fd);
+        CubeIterator cit = new CubeIterator(fi);
         MarchingCubes mc = new MarchingCubes(cit);
         TriangleArray ta = mc.march();
         

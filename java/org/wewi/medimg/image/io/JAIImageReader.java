@@ -30,7 +30,7 @@ import com.sun.media.jai.codec.FileSeekableStream;
  * @version 0.2
  */
 abstract class JAIImageReader extends ImageReader {
-    private Image image = NullImage.getInstance();
+    private Image image = new NullImage();
     protected FileExtentionFilter fileFilter;
 
     public JAIImageReader(ImageFactory imageFactory, File source) {
@@ -76,49 +76,57 @@ abstract class JAIImageReader extends ImageReader {
             }            
         }
         
+        //Wenn ein Bereich festgelegt wurde, wird dies hier berücksichtigt
+        int minSlice = 0;
+        int maxSlice = slices.length-1;
+        if (range.getMinSlice() > maxSlice) {
+            image = new NullImage();
+            return;
+        }
+        minSlice = range.getMinSlice();
+        maxSlice = Math.min(range.getMaxSlice(), maxSlice);
+        System.out.println("JAIImageReader(88): min: " + minSlice + ",  max: " + maxSlice); 
+        
         //Lesen des ersten Bildes
         RenderedImage rimage = null;
         Raster raster = null;
         try {
-            rimage = readRenderedImage(slices[0].toString());
+            rimage = readRenderedImage(slices[minSlice].toString());
             raster = rimage.getData();
-            //raster = PlanarImage.wrapRenderedImage(rimage).getData();
         } catch (IOException e) {
-            System.out.println("JAIImageReader.read: " + e);
-            image = NullImage.getInstance();
+            System.err.println("JAIImageReader.read: " + e);
+            image = new NullImage();
             throw new ImageIOException("Can't read JAI Image; Slice 0");
         }
         
-        int maxX = raster.getWidth();
-        int maxY = raster.getHeight();
-        int maxZ = slices.length;
+        int sizeX = raster.getWidth();
+        int sizeY = raster.getHeight();
+        int sizeZ = maxSlice - minSlice + 1;
         int[] pixel = new int[3];
-        image = imageFactory.createImage(maxX, maxY, maxZ);
+        image = imageFactory.createImage(sizeX, sizeY, sizeZ);
         
-        for (int i = 0; i < maxX; i++) {
-            for (int j = 0; j < maxY; j++) {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
                 raster.getPixel(i, j, pixel);
                 image.setColor(i, j, 0, colorConversion.convert(pixel));
-                //image.setColor(i, j, 0, pixel[0]);
             }
         }
 
         //Einlesen der restlichen Bilder
-        for (int k = 1; k < slices.length; k++) {
+        int stride = range.getStride();
+        for (int k = minSlice+1; k <= maxSlice; k += stride) {
             try {
                 rimage = readRenderedImage(slices[k].toString());
                 raster = rimage.getData();
-                //raster = PlanarImage.wrapRenderedImage(rimage).getData();
             } catch (Exception e) {
-                System.out.println("JAIImageReader.read: " + e);
-                image = NullImage.getInstance();
+                System.err.println("JAIImageReader.read: " + e);
+                image = new NullImage();
                 throw new ImageIOException("Can't read JAI Image; Slice " + k);
             }
-            for (int i = 0; i < maxX; i++) {
-                for (int j = 0; j < maxY; j++) {
+            for (int i = 0; i < sizeX; i++) {
+                for (int j = 0; j < sizeY; j++) {
                     raster.getPixel(i, j, pixel);
-                    image.setColor(i, j, k, colorConversion.convert(pixel));
-                    //image.setColor(i, j, k, pixel[0]);
+                    image.setColor(i, j, k-minSlice, colorConversion.convert(pixel));
                 }
             }            
         }        

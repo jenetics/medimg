@@ -25,4 +25,5 @@ public abstract class CompressedImageReaderFactory implements ImageReaderFactory
     public ImageReader createImageReader(ImageFactory imageFactory, File file) {
         return component.createImageReader(imageFactory, file);
     }
+    
 }

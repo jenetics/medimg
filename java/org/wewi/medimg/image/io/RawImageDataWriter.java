@@ -24,7 +24,7 @@ public class RawImageDataWriter extends ImageWriter {
         super(image, target);
     }
     
-    public void write() {
+    public void write() throws ImageIOException {
         DataOutputStream out = null;
         int size = image.getNVoxels();
         
@@ -36,18 +36,19 @@ public class RawImageDataWriter extends ImageWriter {
             }
             out.close();
         } catch (IOException ioe) {
-            System.out.println("RawImageDataWriter.write: " + ioe);
-            //Löschen der bereits geschriebenen Datei
+            System.err.println("RawImageDataWriter.write: " + ioe);
+            target.delete();
+            throw new ImageIOException("Can't write Image: " + ioe);
         }
     }
     
     private void writeHeader(DataOutputStream out) throws IOException {
-        int maxX = image.getMaxX();
-        int maxY = image.getMaxY();
-        int maxZ = image.getMaxZ();
-        out.writeInt(maxX);
-        out.writeInt(maxY);
-        out.writeInt(maxZ);
+        out.writeInt(image.getMinX());
+        out.writeInt(image.getMinY());
+        out.writeInt(image.getMinZ());
+        out.writeInt(image.getMaxX());
+        out.writeInt(image.getMaxY());
+        out.writeInt(image.getMaxZ());
     }
    
     

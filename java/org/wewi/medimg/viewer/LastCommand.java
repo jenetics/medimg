@@ -20,7 +20,7 @@ final class LastCommand implements Command {
     }
 
     public void execute() {
-        int slice = imageViewer.getImage().getMaxZ()-1;
+        int slice = imageViewer.getImage().getMaxZ();
         imageViewer.setSlice(slice);
     }
     

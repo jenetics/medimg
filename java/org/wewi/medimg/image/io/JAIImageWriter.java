@@ -45,11 +45,11 @@ abstract class JAIImageWriter extends ImageWriter {
         
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
-        BufferedImage bufferedImage = new BufferedImage(maxX, maxY, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage bufferedImage = new BufferedImage(maxX+1, maxY+1, BufferedImage.TYPE_3BYTE_BGR);
         
         int[] pixel = new int[3];
-        for (int i = 0; i < maxX; i++) {
-            for (int j = 0; j < maxY; j++) { 
+        for (int i = 0; i <= maxX; i++) {
+            for (int j = 0; j <= maxY; j++) { 
                 colorConversion.convert(image.getColor(i, j, slice), pixel);        
                 // take lower 8 bits
                 pixel[0] = 0x00FF & pixel[0];
@@ -86,7 +86,7 @@ abstract class JAIImageWriter extends ImageWriter {
             }
 
             StringBuffer buffer;
-            for (int k = 0; k < image.getMaxZ(); k++) {
+            for (int k = image.getMinZ(); k <= image.getMaxZ(); k++) {
                 buffer = new StringBuffer();
                 buffer.append(target.getPath()).append(File.separator);
                 buffer.append("image.").append(Util.format(k, 4));
@@ -95,6 +95,7 @@ abstract class JAIImageWriter extends ImageWriter {
             }  
         } catch (IOException ioe) {
             dispose();
+            System.err.println("Can't write Image");
             throw new ImageIOException("Can't write Image");
         }
         
