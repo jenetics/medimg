@@ -19,6 +19,11 @@ public class AlgorithmIterationEvent extends EventObject {
         this.iteration = iteration;   
     }
     
+    /**
+     * Gets the number of the iterations so far.
+     * 
+     * @param number of iterations.
+     */
     public int getIteration() {
         return iteration;    
     }
