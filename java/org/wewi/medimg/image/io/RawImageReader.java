@@ -14,6 +14,7 @@ import org.wewi.medimg.image.NullImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.DataInputStream;
 
 /**
@@ -33,9 +34,10 @@ public class RawImageReader extends ImageReader {
         return image;
     }
     
-    public void read() {
+    public void read() throws ImageIOException {
+        FileInputStream fin = null;
         try {
-            FileInputStream fin = new FileInputStream(source);
+            fin = new FileInputStream(source);  
             DataInputStream in = new DataInputStream(fin);
             image = imageFactory.createImage(1, 1, 1);
             image.getHeader().read(fin);
@@ -43,12 +45,13 @@ public class RawImageReader extends ImageReader {
             for (int i = 0; i < size; i++) {
                 image.setColor(i, in.readShort());
             }
-            in.close();
-        } catch (Exception e) {
-            System.out.println("RawImageReader.read: " + e);
-            e.printStackTrace();
+            in.close();            
+        } catch (FileNotFoundException fnfe) {
             image = NullImage.getInstance();
-            return;
+            throw new ImageIOException("" + fnfe);
+        } catch (IOException ioe) {
+            image = NullImage.getInstance();
+            throw new ImageIOException("" + ioe);            
         }
     }
     
