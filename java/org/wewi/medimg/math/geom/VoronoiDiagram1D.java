@@ -1,4 +1,4 @@
-/*
+/**
  * VoronoiDiagram1D.java
  *
  * Created on 4. Juni 2002, 19:16

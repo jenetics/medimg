@@ -1,4 +1,4 @@
-/*
+/**
  * Point3D.java
  *
  * Created on 31. Mai 2002, 12:11
@@ -9,13 +9,15 @@ package org.wewi.medimg.math.geom;
 
 import java.util.Arrays;
 
+import org.wewi.medimg.util.Immutable;
+
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
-public class DoubleDataPoint implements DataPoint {
+public class DoubleDataPoint implements DataPoint, Immutable {
 
         protected double[] point;
         

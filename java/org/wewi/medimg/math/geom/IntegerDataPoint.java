@@ -8,6 +8,8 @@ package org.wewi.medimg.math.geom;
 
 import java.util.Arrays;
 
+import org.wewi.medimg.util.Immutable;
+
 /**
  * Diese Klasse ist eine konkrete Erweiterung eines Datenpunktes.
  * Aufgenommen werden Integerwerte bzw. Integervektoren.
@@ -20,7 +22,7 @@ import java.util.Arrays;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class IntegerDataPoint implements DataPoint {
+public final class IntegerDataPoint implements DataPoint, Immutable {
 
 	private class IntegerDataPointNumber extends Number {
 		private int number;
@@ -91,9 +93,7 @@ public final class IntegerDataPoint implements DataPoint {
 
 	public int[] getValue() {
 		int[] ret = new int[point.length];
-		for (int i = 0; i < point.length; i++) {
-			ret[i] = point[i];
-		}
+        System.arraycopy(point, 0, ret, 0, point.length);
 		return ret;
 	}
 
