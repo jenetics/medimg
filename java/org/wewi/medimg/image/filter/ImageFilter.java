@@ -1,4 +1,4 @@
-/*
+/**
  * ImageFilter.java
  *
  * Created on 25. Jänner 2002, 17:32
