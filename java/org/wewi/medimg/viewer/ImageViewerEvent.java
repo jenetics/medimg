@@ -19,5 +19,4 @@ public class ImageViewerEvent extends EventObject {
     public ImageViewerEvent(Object source) {
         super(source);
     }
-    
 }

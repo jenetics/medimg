@@ -4,7 +4,7 @@
  * Created on 5. Februar 2002, 13:45
  */
 
-package org.wewi.medimg.seg.kmeans;
+package org.wewi.medimg.math.geom;
 
 
 

@@ -77,7 +77,6 @@ public abstract class ImageReader {
         return range;
     }
     
-    public abstract int getSlices() throws ImageIOException;
     
     public void setRange(Range range) {
         this.range = range;

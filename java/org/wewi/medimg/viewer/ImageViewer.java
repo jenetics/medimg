@@ -17,7 +17,7 @@ import javax.swing.event.InternalFrameEvent;
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImagePanel;
-import org.wewi.medimg.image.geom.Transformation;
+import org.wewi.medimg.image.VoxelSelectorListener;
 
 
 /**
@@ -42,6 +42,9 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     private Command prevPrevCommand;
     private Command nextNextCommand;
     
+    //Menü-Kommandos
+    private Command saveCommand;
+    
     public ImageViewer(String title, Image image) {
         super(title, true, true, true, true);
         this.image = image;
@@ -65,9 +68,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     private void initFrame() {
         imagePanel = new ImagePanel(image);
         getContentPane().add(imagePanel);
-        if ( cc != null) {
-            setColorConversion(cc);
-        }
+
         imagePanel.setSlice(slice);
         imagePanel.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
         
@@ -81,28 +82,34 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         lastCommand = new LastCommand(this);
         prevPrevCommand = new PrevPrevCommand(this, 10);
         nextNextCommand = new NextNextCommand(this, 10);
+        
+        saveCommand = new SaveCommand(Viewer.getInstance(), image);
          
         setSlice(0);
     }
     
-    public synchronized void addImageViewerObserver(ImageViewerObserver o) {
+    public synchronized void addImageViewerListener(ImageViewerListener o) {
         observers.add(o);
     }
     
-    public synchronized void removeImageViewerObserver(ImageViewerObserver o) {
+    public synchronized void removeImageViewerListener(ImageViewerListener o) {
         observers.remove(o);
     }
     
     protected void viewerEventOccurred(ImageViewerEvent event) {
         Vector o = (Vector)observers.clone();
-        ImageViewerObserver observer;
+        ImageViewerListener observer;
         for (Iterator it = o.iterator(); it.hasNext();) {
-            observer = (ImageViewerObserver)it.next();
+            observer = (ImageViewerListener)it.next();
             observer.update(event);
         }
     }
     
     public void setSlice(int s) {
+        if (s != slice) {
+            viewerEventOccurred(new ImageViewerEvent(this));    
+        }
+        
         slice = s;
         imagePanel.setSlice(slice);
         
@@ -113,23 +120,24 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         return slice;
     }
     
-    public void setImageTransform(Transformation trans) {
-        //image.setTransform(trans);
-        ColorConversion cc = imagePanel.getColorConversion();
-        imagePanel = new ImagePanel(image);
-        imagePanel.setColorConversion(cc);
+    public void repaintImage() {
+        setSlice(getSlice());    
     }
     
     public Image getImage() {
         return image;
     }
     
-    public void setColorConversion(ColorConversion cc) {
-        imagePanel.setColorConversion(cc);
+    public void setImageCanvas(ImagePanel.ImageCanvas canvas) {
+        imagePanel.setImageCanvas(canvas);    
     }
     
-    public ColorConversion getColorConversion() {
-        return imagePanel.getColorConversion();
+    public void addVoxelSelectorListener(VoxelSelectorListener listener) {
+        imagePanel.addVoxelSelectorListener(listener);
+    }
+    
+    public void removeVoxelSelectorListener(VoxelSelectorListener listener) {
+        imagePanel.removeVoxelSelectorListener(listener);    
     }
     
     private void setCommands() {
@@ -139,7 +147,10 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         np.setFirstCommand(firstCommand);
         np.setLastCommand(lastCommand);
         np.setPrevPrevCommand(prevPrevCommand);
-        np.setNextNextCommand(nextNextCommand);        
+        np.setNextNextCommand(nextNextCommand); 
+        
+        Viewer v = Viewer.getInstance();
+        v.setSaveCommand(saveCommand);       
     }
     
     private void setNullCommands() {
@@ -149,7 +160,10 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         np.setFirstCommand(new NullCommand());
         np.setLastCommand(new NullCommand());
         np.setPrevPrevCommand(new NullCommand());
-        np.setNextNextCommand(new NullCommand());         
+        np.setNextNextCommand(new NullCommand()); 
+        
+        Viewer v = Viewer.getInstance();
+        v.setSaveCommand(saveCommand);        
     }
    
     ////////////////////////////////////////////////////////////////////////////

@@ -9,11 +9,13 @@ package org.wewi.medimg.image.io;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.media.jai.JAI;
 
 import org.wewi.medimg.image.ColorConversion;
+import org.wewi.medimg.image.Dimension;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.NullImage;
@@ -30,6 +32,8 @@ import com.sun.media.jai.codec.SeekableStream;
  */
 abstract class JAIImageReader extends ImageReader {
     private Image image = new NullImage();
+    private File[] slices = null;
+    
     protected FileExtentionFilter fileFilter;
 
     public JAIImageReader(ImageFactory imageFactory, File source) {
@@ -65,50 +69,10 @@ abstract class JAIImageReader extends ImageReader {
         }
     } 
     
-    public int getSlices() throws ImageIOException {
-        File[] slices = null;
-        if (source.isFile()) {
-            return 1;
-        } else {
-            slices = source.listFiles(fileFilter);
-            if (slices == null) {
-                return 0;
-            }
-            if (slices.length <= 0) {
-                return 0;
-            } 
-            return slices.length;           
-        }
-    }   
-    
-    public void read() throws ImageIOException {
-        File[] slices = null;
-        //Wenn die Quelle kein Verzeichnis ist, sondern
-        //eine einzelne Datei, wird nur diese Schicht eingelesen.
-        if (source.isFile()) {
-            if (fileFilter.accept(source)) {
-                slices = new File[1];
-                slices[0] = source;
-            } else {
-                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-                return;
-            }
-        } else {
-            slices = source.listFiles(fileFilter);
-            if (slices == null) {
-                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-                return;
-            }
-            if (slices.length <= 0) {
-                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-                return;
-            }            
-        }
+    private void readWithoutHeader() throws ImageIOException {
+        RenderedImage rimage = null;
+        Raster raster = null;         
         
-        //ASSERT: Ab hier muß das Array der Schichten gefüllt sein.
-        assert(slices == null);
-        
-        //Wenn ein Bereich festgelegt wurde, wird dies hier berücksichtigt
         int minSlice = 0;
         int maxSlice = slices.length-1;
         if (range.getMinSlice() > maxSlice) {
@@ -119,8 +83,6 @@ abstract class JAIImageReader extends ImageReader {
         maxSlice = Math.min(range.getMaxSlice(), maxSlice); 
         
         //Lesen des ersten Bildes
-        RenderedImage rimage = null;
-        Raster raster = null;
         try {
             rimage = readRenderedImage(slices[minSlice].toString());
             raster = rimage.getData();
@@ -128,7 +90,7 @@ abstract class JAIImageReader extends ImageReader {
             image = new NullImage();
             throw new ImageIOException("Can't read JAI Image; Slice 0", e);
         }
-        
+    
         //Lesen des ersten Bildes ist beendet und
         //die ProgressListener werden übber den
         //Fortschritt informiert.
@@ -170,7 +132,76 @@ abstract class JAIImageReader extends ImageReader {
             //Informieren der Listener über den Fortschritt
             count++;
             notifyProgressListener(new ImageIOProgressEvent(this, ((double)count/(double)maxSlice), false));          
-        } 
+        }        
+    }   
+    
+    public void read() throws ImageIOException {
+        slices = null;
+        
+        //Wenn die Quelle kein Verzeichnis ist, ist das Einlesen beendet.
+        if (source.isFile()) {
+            notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
+            return;
+        } else {
+            slices = source.listFiles(fileFilter);
+            if (slices == null) {
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
+                return;
+            }
+            if (slices.length <= 0) {
+                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
+                return;
+            }            
+        }
+        
+        //ASSERT: Ab hier muß das Array der Schichten gefüllt sein.
+        assert(slices == null);
+        
+        //Einlesen des Headers, falls vorhanden
+        String[] fileList = source.list();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].endsWith("header.xml")) {
+                try {
+                    FileInputStream in = new FileInputStream(fileList[i]);
+                    image = imageFactory.createImage(1, 1, 1);
+                    image.getHeader().read(in);
+                    break;  
+                } catch (Exception e) {
+                    //nichts    
+                }  
+            }    
+        }
+        
+               
+        if (!image.equals(NullImage.IMAGE_INSTANCE)) {
+            RenderedImage rimage = null;
+            Raster raster = null;
+            int[] pixel = new int[3];
+            Dimension dim = image.getDimension();
+            //Einlesen der Bilder
+            int count = 0;
+            int stride = range.getStride();
+            for (int k = dim.getMinZ(); k <= dim.getMaxZ(); k++) {
+                try {
+                    rimage = readRenderedImage(slices[count].toString());
+                    raster = rimage.getData();
+                } catch (Exception e) {
+                    image = new NullImage();
+                    throw new ImageIOException("Can't read JAI Image; Slice " + k, e);
+                }
+                for (int i = 0; i < dim.getSizeX(); i++) {
+                    for (int j = 0; j < dim.getSizeY(); j++) {
+                        raster.getPixel(i, j, pixel);
+                        image.setColor(i, j, k, colorConversion.convert(pixel));
+                    }
+                }  
+                //Informieren der Listener über den Fortschritt
+                count++;
+                notifyProgressListener(new ImageIOProgressEvent(this, ((double)count/(double)dim.getSizeZ()), false));          
+            }        
+        } else {
+            readWithoutHeader(); 
+        }
         
         notifyProgressListener(new ImageIOProgressEvent(this, 1, true));       
     } 

@@ -12,6 +12,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.wewi.medimg.alg.*;
+
 /**
  *
  * @author  Franz Wilhelmstötter

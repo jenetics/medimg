@@ -13,6 +13,8 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
+import org.wewi.medimg.math.geom.*;
+
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;

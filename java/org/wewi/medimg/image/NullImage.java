@@ -48,6 +48,7 @@ public final class NullImage implements Image, Nullable {
 		}
     }
     
+    public static final NullImage IMAGE_INSTANCE = new NullImage();
     
     private NullImageHeader header;
 
@@ -158,6 +159,13 @@ public final class NullImage implements Image, Nullable {
     }
     
     public void getNeighbor3D6Positions(int pos, int[] n6) {
+    }
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NullImage)) {
+            return false;
+        } 
+        return true;  
     }
     
 }

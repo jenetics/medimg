@@ -181,24 +181,6 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         return image2;
     }
     
-    public void setColorConversion1(ColorConversion cc) {
-        conversion1 = cc;
-        imagePanel1.setColorConversion(conversion1);
-    }
-    
-    public ColorConversion getColorConversion1() {
-        return conversion1;
-    }
-    
-    public void setColorConversion2(ColorConversion cc) {
-        conversion2 = cc;
-        imagePanel2.setColorConversion(conversion2);
-    }
-    
-    public ColorConversion getColorConversion2() {
-        return conversion2;
-    }
-    
     public void setSlice(int s) {
         slice = s;
         imagePanel1.setSlice(slice);

@@ -52,7 +52,7 @@ import org.wewi.medimg.visualisation.mc.wizard.MarchingCubeWizard;
  * Objekte der Menüzeile auszutauschen. 
  */
 public class Viewer extends JFrame implements Singleton,
-                                              ImageViewerObserver,
+                                              ImageViewerListener,
                                               InternalFrameListener,
                                               ImageIOProgressListener {
                                                   
@@ -339,6 +339,13 @@ public class Viewer extends JFrame implements Singleton,
         return NavigationPanel.getInstance();
     }
     
+    /**
+     * Liefert den aktuell gewählten Frame
+     */
+    public JInternalFrame getSelectedFrame() {
+        return desktopPane.getSelectedFrame();    
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -393,7 +400,6 @@ public class Viewer extends JFrame implements Singleton,
         scrollPane.setDoubleBuffered(true);
         scrollPane.setAutoscrolls(true);
         scrollPane.setViewportView(desktopPane);
-        desktopPane.getAccessibleContext().setAccessibleName("null");
 
         rightSplitPanel.add(scrollPane);
 
@@ -649,7 +655,6 @@ public class Viewer extends JFrame implements Singleton,
     
     public void internalFrameClosed(javax.swing.event.InternalFrameEvent internalFrameEvent) {
         removeViewerDesktopFrame((ViewerDesktopFrame)internalFrameEvent.getSource());
-        System.out.println("" + desktopPane.getAllFrames().length);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

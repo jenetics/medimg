@@ -8,6 +8,8 @@
  */
 package org.wewi.medimg.image;
 
+import java.util.EventListener;
+
 /**
  * @author Franz Wilhelmstötter
  *
@@ -16,6 +18,6 @@ package org.wewi.medimg.image;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public interface VoxelSelectorListener {
+public interface VoxelSelectorListener extends EventListener {
     public void voxelSelected(VoxelSelectorEvent event);
 }

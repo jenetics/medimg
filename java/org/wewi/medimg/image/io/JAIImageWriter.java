@@ -77,13 +77,10 @@ abstract class JAIImageWriter extends ImageWriter {
     
     public void write() throws ImageIOException {
         try {
-            if (image.getMaxZ() == 0) {
-                writeSlice(0, target);
-                notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
-                return;
-            } else {
-                target.mkdirs();
-            }
+            target.mkdirs();
+            FileOutputStream out = new FileOutputStream(target.getPath() + File.separator + "header.xml");
+            image.getHeader().write(out);
+            out.close();
 
             StringBuffer buffer;
             double progress = 0;

@@ -8,6 +8,8 @@ package org.wewi.medimg.image;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -20,6 +22,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
+import org.wewi.medimg.util.StringInputStream;
+import org.wewi.medimg.util.StringOutputStream;
 
 
 
@@ -59,7 +63,12 @@ class ImageDataHeader implements ImageHeader {
                 
         //Schreiben der Art der ColorConversion
         Element cc = new Element("ColorConversion");
-        cc.addContent(image.getColorConversion().getClass().getName());
+        cc.setAttribute("class", image.getColorConversion().getClass().getName());
+        StringOutputStream sout = new StringOutputStream();
+        ObjectOutputStream oout = new ObjectOutputStream(sout);
+        oout.writeObject(image.getColorConversion());
+        oout.close();
+        cc.addContent(sout.getOutputString());
         root.addContent(cc);
         
         //Schreiben des Farbbereichs (ColorRange)
@@ -70,7 +79,7 @@ class ImageDataHeader implements ImageHeader {
         root.addContent(cr);  
         
         //Schreiben der Properties
-        root.addContent(new Comment("Diese ImageProperties können beliebig verwendet werden"));
+        root.addContent(new Comment("Die ImageProperties können beliebig verwendet werden"));
         Element prop = new Element("ImageProperties");
         for (Enumeration e = properties.propertyNames(); e.hasMoreElements();) {
             String name = (String)e.nextElement();
@@ -82,6 +91,7 @@ class ImageDataHeader implements ImageHeader {
         XMLOutputter outputter = new XMLOutputter("    ", true);
         outputter.output(doc, out);
     }
+    
     
     private void readXML(InputStream in) throws IOException {
         SAXBuilder builder = new SAXBuilder();
@@ -107,9 +117,24 @@ class ImageDataHeader implements ImageHeader {
                                       
                                       
         //Erzeugen der ColorConverion
-        ColorConversion cc = new GreyColorConversion();
+        ColorConversion cc = null;//new GreyColorConversion();
+        Element ccElement = root.getChild("ColorConversion");
+        String ccString = root.getChildText("ColorConversion");
+        StringInputStream sin = new StringInputStream(ccString);
+        ObjectInputStream oin = new ObjectInputStream(sin);
         try {
-			cc = (ColorConversion)Class.forName(root.getChildText("ColorConversion")).newInstance();
+			cc = (ColorConversion)oin.readObject();
+		} catch (IOException e) {
+            System.out.println("" + e);
+            throw new IOException("" + e);
+		} catch (ClassNotFoundException e) {
+            System.out.println("" + e);
+            throw new IOException("" + e);
+		}
+        /*
+        try {
+            Element ccElement = root.getChild("ColorConversion");
+			cc = (ColorConversion)Class.forName(ccElement.getAttribute("class").getValue()).newInstance();
 		} catch (InstantiationException e) {
             throw new IOException("" + e);
 		} catch (IllegalAccessException e) {
@@ -117,6 +142,7 @@ class ImageDataHeader implements ImageHeader {
 		} catch (ClassNotFoundException e) {
             throw new IOException("" + e);
 		}
+        */
         image.setColorConversion(cc); 
         
         //Einlesen der Properties
@@ -193,7 +219,10 @@ class ImageDataHeader implements ImageHeader {
 	 * @see org.wewi.medimg.image.ImageHeader#setImageProperties(Properties)
 	 */
 	public void setImageProperties(Properties prop) {
-        properties = prop;
+        for (Enumeration enum = prop.keys(); enum.hasMoreElements();) {
+            Object key = enum.nextElement();
+            properties.put(key, prop.get(key)); 
+        }
 	}
 
 }
