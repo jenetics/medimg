@@ -13,12 +13,32 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Iterator;
 
-/**
+/** 
+ * Diese Klasse enthält die, beim Marchin Cube
+ * Algorithmus erzeugten, Dreiecke ({@link Triangle }) und
+ * Knoten ({@link Vertex }). </p>
+ * Dabei können entweder Knoten oder Dreiecke ---
+ * ein Dreieck wird durch seine drei Eckpunkte
+ * definiert --- in den Graph eingefügt werden.
+ * Ein Knoten wird nur dann eingefügt, wenn er
+ * noch nicht enthalten ist. Das gleiche gilt beim
+ * Einfügen eines Dreiecks. Wird ein Dreieck engefügt,
+ * werden zuerst die drei Knoten, aus denen das Dreieck
+ * besteht, eingefügt. </p>
+ * Wird ein Dreieck aus dem Graph entfernt, so werden auch
+ * gleichzeitig die dazugehörigen Knoten entfernt. Ebenso wird
+ * beim Entfernen eines Punktes alle jene Dreiecke entfernt,
+ * zu denene der Knoten insident ist.
  *
- * @author  Franz Wilhelmstötter
+ * @author Franz Wilhelmstötter
  * @version 0.1
  */
 public class Graph {
+    /**
+     * Hilfsdatenstruktur, die zu einem Knoten
+     * die Dreiecke speichert, zu denen der 
+     * Knoten gehört.
+     */
     private class VertexTriangles {
         private HashSet triangles = new HashSet();
         
@@ -47,26 +67,55 @@ public class Graph {
         public int size() {
             return triangles.size();
         }
-        
     }
     
-    
+    /**
+     * Container, der die Knoten aufnimmt
+     */
     private Hashtable vertices;
+    /**
+     * Container, der die Dreieck aufnimmt
+     */
     private HashSet triangles;
     
-    /** Creates a new instance of Graph */
+    /**
+     * Ein neuer Graph wird erzeugt.
+     */
     public Graph() {
-        vertices = new Hashtable(3000);
-        triangles = new HashSet(1000);
+        this(1000, 1000);
     }
     
-    public void addVertex(Vertex v) {
+    /**
+     * Erzeugen eines neuen Graphen.
+     * @param vsize die initiale Größe des Containers, der die
+     *              Knoten aufnimmt.
+     * @param tsize die initiale Größe des Containders, der die
+     *              Dreiecke aufnimmt.
+     */
+    public Graph(int vsize, int tsize) {
+        vertices = new Hashtable(vsize);
+        triangles = new HashSet(tsize);
+    }
+    
+    /**
+     * Einfügen eines Knotens in den Graphen. Es werden
+     * nur Knoten eingefügt, die noch nicht im Graphen
+     * enthalten sind, d.h. bereits enthaltene Knoten werden
+     * nicht übberschrieben.
+     *
+     * @param v Knoten der Eingefügt wird
+     * @return true, wenn der Knoten eingefügt wurde,
+     *               d.h. wenn der Knoten noch nicht im
+     *               Graph enthalten war.
+     */
+    public boolean addVertex(Vertex v) {
         //Ein Knoten wird nur dann eingefügt, wenn er noch nicht 
         //im Hashtable vorhanden ist.
         if (vertices.containsKey(v)) {
-            return;
+            return false;
         }
         vertices.put(v, new VertexTriangles());
+        return true;
     }
     
     public boolean removeVertex(Vertex v) {
@@ -82,16 +131,11 @@ public class Graph {
         //entfernt werden, zu denen dieser Knoten gehört.        
         for (Iterator it = ((VertexTriangles)vertices.get(v)).getTriangles(); it.hasNext();) {
             t = (Triangle)it.next();
-            //Die Dreiecke können nicht gleich entfert werden, da sonst 
-            //dieser Iterator nicht mehr gültig ist. Die zu entfernenden
-            //Dreicke werden deshalb zunächst in einem Vector gespeichert,
-            //um danach entfernt zu werden.
-            trianglesToRemove.add(t);
+            //Zuerst aus dem Iterator entfernen, sonst wird er Ungültig.
+            it.remove();
+            removeTriangle(t);
         }
-        //Eigentliches Entfernen der Dreiecke
-        for (Iterator it = trianglesToRemove.iterator(); it.hasNext();) {
-            removeTriangle((Triangle)it.next());
-        }
+
         //Ganz am Schluß kann der Knoten entfernt werden.
         return (vertices.remove(v) != null);
     }
@@ -104,11 +148,11 @@ public class Graph {
         return vertices.keySet().iterator();
     }
     
-    public void addTriangle(Triangle t) {
+    public boolean addTriangle(Triangle t) {
         //Ein Dreieck wird nur eingefügt, wenn es noch nicht 
         //vorhanden ist.
         if (triangles.contains(t)) {
-            return;
+            return false;
         }
         addVertex(t.a);
         addVertex(t.b);
@@ -119,11 +163,13 @@ public class Graph {
         ((VertexTriangles)vertices.get(t.a)).addTriangle(t);
         ((VertexTriangles)vertices.get(t.b)).addTriangle(t);
         ((VertexTriangles)vertices.get(t.c)).addTriangle(t);
+        
+        return true;
     }
     
-    public void removeTriangle(Triangle t) {
+    public boolean removeTriangle(Triangle t) {
         if (!(triangles.contains(t))) {
-            return;
+            return false;
         }
         
         triangles.remove(t);
@@ -131,6 +177,8 @@ public class Graph {
         ((VertexTriangles)vertices.get(t.a)).removeTriangle(t);
         ((VertexTriangles)vertices.get(t.b)).removeTriangle(t);
         ((VertexTriangles)vertices.get(t.c)).removeTriangle(t);
+        
+        return true;
     } 
     
     public boolean contains(Triangle t) {
@@ -183,7 +231,7 @@ public class Graph {
             }
             e.add(new Edge(v1, v2));
         }        
-//System.out.println("Ecken: " + e.size());        
+      
         Edge[] edges = new Edge[e.size()];
         e.toArray(edges);
         

@@ -9,6 +9,7 @@ package org.wewi.medimg.visualisation.mc;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class Vertex extends Point {
     
