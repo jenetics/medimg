@@ -22,15 +22,19 @@ import cern.colt.matrix.linalg.Algebra;
  * @version 0.1
  */
 public class AffineTransformation implements Transformation {
-    public double[] matrix;
-    public double[] inverseMatrix;
+    private double[] matrix;
+    private double[] inverseMatrix;
     
     private AffineTransformation(double[] matrix, double[] inverseMatrix) {
+    	matrix = new double[12];
+    	inverseMatrix = new double[12];
         System.arraycopy(matrix, 0, this.matrix, 0, 12);
         System.arraycopy(inverseMatrix, 0, this.inverseMatrix, 0, 12);
     }
     
     public AffineTransformation(AffineTransformation transform) {
+    	matrix = new double[12];
+    	inverseMatrix = new double[12];    	
         System.arraycopy(transform.matrix, 0, matrix, 0, 12);
         System.arraycopy(transform.inverseMatrix, 0, inverseMatrix, 0, 12);
     }
