@@ -117,7 +117,7 @@ public final class IntegerDataPoint implements DataPoint {
 		return new IntegerDataPoint(temp);
 	}
 
-	public DataPoint div(double d) {
+	public DataPoint scale(double d) {
 		int[] temp = new int[point.length];
 		for (int i = 0; i < point.length; i++) {
 			temp[i] = (int) Math.rint(((double) point[i] / d));
