@@ -101,6 +101,8 @@ public interface Image extends ImageGeometry, ImageAccess, Nullable, Cloneable, 
     
     public void fill(double color);
     
+    public ImageGeometry getImageGeometry();
+    
     ////////////////////////////////////////////////////////////////////////////
     
 }

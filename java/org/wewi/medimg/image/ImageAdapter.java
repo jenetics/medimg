@@ -320,4 +320,11 @@ public abstract class ImageAdapter implements Image {
         image.fill(color);
     }
 
+    /**
+     * @see org.wewi.medimg.image.Image#getImageGeometry()
+     */
+    public ImageGeometry getImageGeometry() {
+        return image.getImageGeometry();
+    }
+
 }

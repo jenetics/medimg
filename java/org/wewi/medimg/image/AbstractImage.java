@@ -214,6 +214,10 @@ public abstract class AbstractImage extends RowMajorImageGeometry
         data.fill(color);  
     }
     
+    public ImageGeometry getImageGeometry() {
+        return this;
+    }
+    
     
     ////////////////////////////////////////////////////////////////////////////
     

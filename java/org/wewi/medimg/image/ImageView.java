@@ -271,4 +271,12 @@ public class ImageView extends RowMajorImageGeometry implements Image {
     public void fill(double color) {
     }
 
+
+    /**
+     * @see org.wewi.medimg.image.Image#getImageGeometry()
+     */
+    public ImageGeometry getImageGeometry() {
+        return null;
+    }
+
 }

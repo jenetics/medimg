@@ -309,5 +309,12 @@ public final class NullImage implements Image, Nullable {
      */
     public void fill(double color) {
     }
+
+    /**
+     * @see org.wewi.medimg.image.Image#getImageGeometry()
+     */
+    public ImageGeometry getImageGeometry() {
+        return null;
+    }
     
 }
