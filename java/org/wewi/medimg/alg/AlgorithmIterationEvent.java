@@ -12,7 +12,14 @@ import java.util.EventObject;
  *
  */
 public class AlgorithmIterationEvent extends EventObject {
-    public AlgorithmIterationEvent(Object source) {
-        super(source);    
+    private int iteration;
+    
+    public AlgorithmIterationEvent(Object source, int iteration) {
+        super(source); 
+        this.iteration = iteration;   
+    }
+    
+    public int getIteration() {
+        return iteration;    
     }
 }

@@ -133,7 +133,6 @@ public class MLKMeansClusterer extends ObservableSegmenter
     
     private void iterate(Image mrt, Image segimg) {
         notifySegmenterStarted(new SegmenterEvent(this));
-        notifyIterationStarted(new AlgorithmIterationEvent(this));
         
         iterationCount = 0;
         
@@ -144,13 +143,13 @@ public class MLKMeansClusterer extends ObservableSegmenter
             if (cancelled) {
                 break;    
             }
-            notifyIterationStarted(new AlgorithmIterationEvent(this));
+            notifyIterationStarted(new AlgorithmIterationEvent(this, iterationCount));
             
             m1Step(mrt, segimg);
             m2Step(mrt, segimg);
             ++iterationCount;
             
-            notifyIterationFinished(new AlgorithmIterationEvent(this));
+            notifyIterationFinished(new AlgorithmIterationEvent(this, iterationCount));
             
             /**************************************************************/
             logger.info("" + iterationCount + ": " + formatMeanValues());
@@ -158,8 +157,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
         } while(ERROR_LIMIT < error() &&
                 MAX_ITERATION >= iterationCount); 
                 
-        notifySegmenterFinished(new SegmenterEvent(this)); 
-        notifyIterationFinished(new AlgorithmIterationEvent(this));        
+        notifySegmenterFinished(new SegmenterEvent(this));        
     }
     
 	/**

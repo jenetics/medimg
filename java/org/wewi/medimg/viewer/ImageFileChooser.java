@@ -15,7 +15,7 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.wewi.medimg.image.io.BMPReaderFactory;
 import org.wewi.medimg.image.io.BMPWriterFactory;
-import org.wewi.medimg.image.io.ImageFormatTypes;
+import org.wewi.medimg.image.io.ImageFormatEnum;
 import org.wewi.medimg.image.io.ImageReaderFactory;
 import org.wewi.medimg.image.io.ImageWriterFactory;
 import org.wewi.medimg.image.io.JPEGReaderFactory;
@@ -68,8 +68,8 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
     }   
     
     private void init() {
-        for (int i = 0; i < ImageFormatTypes.TYPES.length; i++) {
-            addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.TYPES[i]));    
+        for (int i = 0; i < ImageFormatEnum.TYPES.length; i++) {
+            addChoosableFileFilter(new ImageFileFilter(ImageFormatEnum.TYPES[i]));    
         }
         setCurrentDirectory(new File(ViewerPreferences.getInstance().getMostRecentFile()));
         
@@ -101,26 +101,26 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
     
     public void actionPerformed(ActionEvent actionEvent) {       
         
-        ImageFormatTypes type = ((ImageFileFilter)getFileFilter()).getImageFormatType();
+        ImageFormatEnum type = ((ImageFileFilter)getFileFilter()).getImageFormatType();
         if (getDialogType() == OPEN_DIALOG) {
-            if (ImageFormatTypes.TIFF_IMAGES.equals(type)) {
+            if (ImageFormatEnum.TIFF_IMAGES.equals(type)) {
                 imageReaderFactory = new TIFFReaderFactory();
-            } else if (ImageFormatTypes.BMP_IMAGES.equals(type)) {
+            } else if (ImageFormatEnum.BMP_IMAGES.equals(type)) {
                 imageReaderFactory = new BMPReaderFactory();
-            } else if (ImageFormatTypes.RAW_IMAGE.equals(type)) {
+            } else if (ImageFormatEnum.RAW_IMAGE.equals(type)) {
                 imageReaderFactory = new RawImageReaderFactory();
-            } else if (ImageFormatTypes.JPEG_IMAGES.equals(type)) {
+            } else if (ImageFormatEnum.JPEG_IMAGES.equals(type)) {
                 imageReaderFactory = new JPEGReaderFactory();
             }
             imageReaderFactory.setRange(rangePanel.getRange());
         } else {
-            if (ImageFormatTypes.TIFF_IMAGES.equals(type)) {
+            if (ImageFormatEnum.TIFF_IMAGES.equals(type)) {
                 imageWriterFactory = new TIFFWriterFactory();
-            } else if (ImageFormatTypes.BMP_IMAGES.equals(type)) {
+            } else if (ImageFormatEnum.BMP_IMAGES.equals(type)) {
                 imageWriterFactory = new BMPWriterFactory();
-            } else if (ImageFormatTypes.JPEG_IMAGES.equals(type)) {
+            } else if (ImageFormatEnum.JPEG_IMAGES.equals(type)) {
                 imageWriterFactory = new JPEGWriterFactory();
-            } else if (ImageFormatTypes.RAW_IMAGE.equals(type)) {
+            } else if (ImageFormatEnum.RAW_IMAGE.equals(type)) {
                 imageWriterFactory = new RawImageWriterFactory();
             }
             imageWriterFactory.setRange(rangePanel.getRange());

@@ -7,13 +7,16 @@
 package org.wewi.medimg.viewer;
 
 import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -32,7 +35,8 @@ import org.wewi.medimg.image.VoxelSelectorListener;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
+public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
+                                                                   Printable {
         
     private Vector listener;
 
@@ -53,6 +57,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     
     //Menü-Kommandos
     private Command saveCommand;
+    private Command printCommand;
     
     private final long id = System.currentTimeMillis();
     
@@ -87,12 +92,14 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
         nextNextCommand = new NextNextCommand(this, 10);
         
         saveCommand = new SaveCommand(Viewer.getInstance(), image);
+        printCommand = new PrintCommand(this);
          
         setSlice(0);
         
         //Aufbau des Popupnemüs///////////////////////////////////////
         popup = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem("Bearbeiten der ColorConversion");
+        JMenuItem menuItem = new JMenuItem("ColorConversion");
+        menuItem.setFont(new java.awt.Font("Dialog", 0, 12));
         menuItem.addActionListener(new ActionListener() {
                                        public void actionPerformed(ActionEvent evt) {
                                            colorConversionMenuItemActionPerformed(evt);
@@ -100,31 +107,44 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
                                });
         popup.add(menuItem);
         
-        //Add listener to components that can bring up popup menus.
-        MouseListener popupListener = new PopupListener();
-        imagePanel.addMouseListener(popupListener);  
+        JMenuItem saveImageMenuItem = new JMenuItem("Speichern...");
+        saveImageMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        saveImageMenuItem.addActionListener(new ActionListener() {
+                                           public void actionPerformed(ActionEvent evt) {
+                                               saveCommand.execute();
+                                           }
+                               });
+        popup.add(saveImageMenuItem);  
+        
+        JMenuItem printImageMenuItem = new JMenuItem("Drucken...");
+        printImageMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        printImageMenuItem.addActionListener(new ActionListener() {
+                                           public void actionPerformed(ActionEvent evt) {
+                                               printCommand.execute();
+                                           }
+                               });
+        popup.add(printImageMenuItem);         
+        
+        
+             
+        imagePanel.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                maybeShowPopup(e);
+            }
+            public void mouseReleased(MouseEvent e) {
+                maybeShowPopup(e);
+            }
+            private void maybeShowPopup(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    popup.show(e.getComponent(),
+                               e.getX(), e.getY());
+                }
+            }            
+        });  
         ///////////////////////////////////////////////////////////////      
     }
     
-    private class PopupListener extends MouseAdapter {
-        public void mousePressed(MouseEvent e) {
-            maybeShowPopup(e);
-        }
-
-        public void mouseReleased(MouseEvent e) {
-            maybeShowPopup(e);
-        }
-
-        private void maybeShowPopup(MouseEvent e) {
-            if (e.isPopupTrigger()) {
-                popup.show(e.getComponent(),
-                           e.getX(), e.getY());
-            }
-        }
-    }
-    
-    private void colorConversionMenuItemActionPerformed(ActionEvent evt) {
-        
+    private void colorConversionMenuItemActionPerformed(ActionEvent evt) { 
     }    
     
     private void setCommands() {
@@ -216,6 +236,22 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer {
     public synchronized void setImageCanvas(ImagePanel.ImageCanvas canvas) {
         imagePanel.setImageCanvas(canvas);    
     }
+    
+    public int print(Graphics g, PageFormat pf, int pageIndex) {
+
+        if (pageIndex!=0) {
+            return NO_SUCH_PAGE;
+        }
+        Graphics2D g2 = (Graphics2D)g;
+        double x = pf.getImageableX();
+        double y = pf.getImageableY();
+        double w = pf.getImageableWidth();
+        double h = pf.getImageableHeight();
+        imagePanel.printAll(g);
+        
+        return PAGE_EXISTS;
+
+    }    
     
    
     ////////////////////////////////////////////////////////////////////////////

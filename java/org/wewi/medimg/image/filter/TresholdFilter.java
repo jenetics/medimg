@@ -10,7 +10,7 @@ import org.wewi.medimg.image.Image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class TresholdFilter extends ImageFilter {
+public final class TresholdFilter extends ImageFilter {
     private int upperBound;
     private int lowerBound;
 

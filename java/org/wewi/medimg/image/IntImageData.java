@@ -19,6 +19,10 @@ public final class IntImageData extends AbstractImage {
         super(id);
     }
     
+    public IntImageData(Dimension dim) {
+        super(dim);    
+    }
+    
     public IntImageData(int sizeX, int sizeY, int sizeZ) {
         super(sizeX, sizeY, sizeZ);
     }
