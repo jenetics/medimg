@@ -107,7 +107,7 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
                                             });
         popUpMenu.add(saveImageMenuItem);
         
-        addListeners();
+        addListeners(this);
         
         firstCommand = new FirstCommand(this);
         lastCommand = new LastCommand(this);
