@@ -19,23 +19,15 @@ public interface Transform {
     
     public void transform(float[] source, float[] target);
     
-    public void transform(double[] source, double[] target);  
+    public void transform(double[] source, double[] target); 
     
-    public void transformBackward(int[] source, int[] target);
-    
-    public void transformBackward(float[] source, float[] target);
-    
-    public void transformBackward(double[] source, double[] target);
-    
-    public Image transform(Image source); 
-    
-    public void transform(Image source, Image target);
+    public void transform(Image source, Image target);    
     
     public Transform scale(double alpha);
     
     public Transform concatenate(Transform trans);
     
-    public Transform invert();
+    public Transform createInverse();
     
 
 }

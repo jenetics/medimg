@@ -23,68 +23,23 @@ import java.util.Arrays;
  * @version 0.1
  */
 public class AffineTransform implements Transform {
-    private double[] rotMatrix = new double[9];
-    private double[] transScaleMatrix = new double[12];
     public double[] matrix = new double[12];
     public double[] inverseMatrix = new double[12];
     
+    private AffineTransform(double[] matrix, double[] inverseMatrix) {
+        System.arraycopy(matrix, 0, this.matrix, 0, 12);
+        System.arraycopy(inverseMatrix, 0, this.inverseMatrix, 0, 12);
+    }
     
     public AffineTransform(AffineTransform transform) {
-        System.arraycopy(transform.rotMatrix, 0, rotMatrix, 0, 9);
-        System.arraycopy(transform.transScaleMatrix, 0, transScaleMatrix, 0, 12);
         System.arraycopy(transform.matrix, 0, matrix, 0, 12);
-        inverseMatrix = invert(matrix);
+        System.arraycopy(transform.inverseMatrix, 0, inverseMatrix, 0, 12);
     }
      
     public AffineTransform(double[] matrix) {
         System.arraycopy(matrix, 0, this.matrix, 0, 12);
-        Arrays.fill(rotMatrix, 0);
-        Arrays.fill(transScaleMatrix, 0);
         inverseMatrix = invert(matrix);
         
-    }
-    
-    public AffineTransform(double[] rotMatrix, double[] transScaleMatrix) {
-        System.arraycopy(rotMatrix, 0, this.rotMatrix, 0, 9);
-        System.arraycopy(transScaleMatrix, 0, this.transScaleMatrix, 0, 9);
-      
-        DoubleMatrix2D rm = new DenseDoubleMatrix2D(4, 4);
-        DoubleMatrix2D tm = new DenseDoubleMatrix2D(4, 4);
-        rm.assign(0);
-        int pos = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                rm.setQuick(i, j, rotMatrix[pos++]);
-            }
-        }
-        rm.setQuick(3, 3, 1);
-        pos = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 4; j++) {
-                rm.setQuick(i, j, transScaleMatrix[pos++]);
-            }
-        } 
-        tm.setQuick(3, 3, 1);
-        DoubleMatrix2D c = rm.zMult(tm, null, 1, 0, false, false);
-        
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                matrix[pos++] = c.getQuick(i, j);
-            }
-        }
-        inverseMatrix = invert(matrix);
-    }    
-
-    public double[] getRotationMatrix() {
-        double[] rot = new double[9];
-        System.arraycopy(rotMatrix, 0, rot, 0, 9);
-        return rot;
-    }
-    
-    public double[] getTransScaleMatrix() {
-        double[] tsm = new double[12];
-        System.arraycopy(transScaleMatrix, 0, tsm, 0, 12);
-        return tsm;
     }
 
     public double[] getMatrix() {
@@ -94,14 +49,45 @@ public class AffineTransform implements Transform {
     }
 
     public Transform scale(double alpha) {
-        AffineTransform t = new AffineTransform(this);
-        for (int i = 0; i < 12; i++) {
-            t.matrix[i] *= alpha;
-        }
-        return t;
+        matrix[0] *= alpha;
+        matrix[5] *= alpha;
+        matrix[10] *= alpha;
+        inverseMatrix = invert(matrix);
+        
+        return this;
     }
 
     public Transform concatenate(Transform transform) {
+        //transform*this
+        DoubleMatrix2D A = new DenseDoubleMatrix2D(4, 4);
+        DoubleMatrix2D B = new DenseDoubleMatrix2D(4, 4);
+        A.assign(0);
+        B.assign(0);
+        A.setQuick(3, 3, 1);
+        B.setQuick(3, 3, 1);
+        int pos = 0;
+        
+        AffineTransform t = (AffineTransform)transform;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                A.setQuick(i, j, matrix[pos]);
+                B.setQuick(i, j, t.matrix[pos]);
+                pos++;
+            }
+        }
+        
+        B.zMult(A, A, 1, 0, false, false);
+        
+        pos = 0;
+        for (int i  = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                matrix[pos] = A.getQuick(i, j);
+                pos++;
+            }
+        }
+        
+        inverseMatrix = invert(matrix);
+        
         return this;
     }
 
@@ -128,15 +114,44 @@ public class AffineTransform implements Transform {
         return inverse;
     }
     
-    public Transform invert() {
-        return new AffineTransform(inverseMatrix);
-    }
-    
-    public Image transform(Image source) {
-        return source;
+    public Transform createInverse() {
+        return new AffineTransform(inverseMatrix, matrix);
     }
     
     public void transform(Image source, Image target) {
+        int tminX = target.getMinX();
+        int tminY = target.getMinY();
+        int tminZ = target.getMinZ();
+        int tmaxX = target.getMaxX();
+        int tmaxY = target.getMaxY();
+        int tmaxZ = target.getMaxZ();
+        
+        int sminX = source.getMinX();
+        int sminY = source.getMinY();
+        int sminZ = source.getMinZ();
+        int smaxX = source.getMaxX();
+        int smaxY = source.getMaxY();
+        int smaxZ = source.getMaxZ();
+        
+        int[] p = new int[3];
+        int[] q = new int[3];
+        int x, y, z;
+        for (int i = tminX; i <= tmaxX; i++) {
+            for (int j = tminY; j <= tmaxY; j++) {
+                for (int k = tminZ; k <= tmaxZ; k++) {
+                    p[0] = i; p[1] = j; p[2] = k;
+                    transformBackward(p, q);
+                    x = (int)q[0];
+                    y = (int)q[1];
+                    z = (int)q[2];
+                    if (x <= smaxX && x >= sminX &&
+                        y <= smaxY && y >= sminY &&
+                        z <= smaxZ && z >= sminZ) {
+                            target.setColor(i, j, k, source.getColor(x, y, z));
+                    }
+                }
+            }
+        }
     }    
     
     public void transform(double[] source, double[] target) {
@@ -202,7 +217,7 @@ public class AffineTransform implements Transform {
         target[2] = (int)Math.round(z);        
     }    
    
-    public void transformBackward(double[] source, double[] target) {
+    private void transformBackward(double[] source, double[] target) {
         double x = inverseMatrix[0] * source[0] + 
                    inverseMatrix[1] * source[1] +
                    inverseMatrix[2] * source[2] +
@@ -223,7 +238,7 @@ public class AffineTransform implements Transform {
         target[2] = z;        
     }
     
-    public void transformBackward(float[] source, float[] target) {
+    private void transformBackward(float[] source, float[] target) {
         float x = (float)inverseMatrix[0] * source[0] + 
                   (float)inverseMatrix[1] * source[1] +
                   (float)inverseMatrix[2] * source[2] +
@@ -244,7 +259,7 @@ public class AffineTransform implements Transform {
         target[2] = z;        
     }
     
-    public void transformBackward(int[] source, int[] target) {
+    private void transformBackward(int[] source, int[] target) {
         float x = (float)inverseMatrix[0] * (float)source[0] + 
                   (float)inverseMatrix[1] * (float)source[1] +
                   (float)inverseMatrix[2] * (float)source[2] +
@@ -263,12 +278,12 @@ public class AffineTransform implements Transform {
         target[0] = (int)Math.round(x);
         target[1] = (int)Math.round(y);
         target[2] = (int)Math.round(z);        
-    }
+    }   
     
 
     private String format(double number, int length) {
         String string = Double.toString(number);
-        string += "0000000000000000000000000000000000000000000000000000000000";
+        string += "00000000000000000000";
         if (string.length() >= length) {
             string = string.substring(0, length-1);
         }
