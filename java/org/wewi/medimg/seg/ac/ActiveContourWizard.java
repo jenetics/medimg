@@ -47,7 +47,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
 
     private ActiveContour contour;
     private ActiveContour originalContour;
-    private SnakeGreedyMinimizer minimizer;
+    private GreedySnakeMinimizer minimizer;
     private double minimizerAlpha;
     private double minimizerBeta;
     private double minimizerOuterEnergyWeight;
@@ -282,7 +282,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
     private void resetContourButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetContourButtonActionPerformed
         if (originalContour != null) {
             contour = (ActiveContour)originalContour.clone();
-            minimizer = new SnakeGreedyMinimizer(image, contour);
+            minimizer = new GreedySnakeMinimizer(image, contour);
             minimizer.setALPHA(minimizerAlpha);
             minimizer.setBETA(minimizerBeta);
             minimizer.setGAMMA(minimizerOuterEnergyWeight);
@@ -343,7 +343,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
     private void newContourButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newContourButtonActionPerformed
         contour = new ActivePolygon();
         originalContour = null;
-        minimizer = new SnakeGreedyMinimizer(image, contour);
+        minimizer = new GreedySnakeMinimizer(image, contour);
         minimizer.setALPHA(minimizerAlpha);
         minimizer.setBETA(minimizerBeta);
         minimizer.setGAMMA(minimizerOuterEnergyWeight);

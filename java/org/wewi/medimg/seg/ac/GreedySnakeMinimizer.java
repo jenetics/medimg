@@ -12,17 +12,10 @@ import org.wewi.medimg.alg.AlgorithmIterator;
 import org.wewi.medimg.alg.IterateableAlgorithm;
 import org.wewi.medimg.alg.ObservableAlgorithm;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.filter.BlurFilter;
-import org.wewi.medimg.image.filter.ImageFilter;
-import org.wewi.medimg.image.filter.LinearNormalizeFilter;
-import org.wewi.medimg.image.filter.SobelFilter;
-import org.wewi.medimg.image.filter.TresholdFilter;
 import org.wewi.medimg.image.geom.Neighborhood;
 import org.wewi.medimg.image.geom.Neighborhood2D8;
 import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.math.MathUtil;
-import org.wewi.medimg.viewer.ImageViewer;
-import org.wewi.medimg.viewer.Viewer;
 
 /**
  * @author Franz Wilhelmstötter
@@ -69,8 +62,9 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
     public double BETA = 1;
     public double GAMMA = 1;
     
+    private OuterEnergyFunction outerEnergyFunction;
+    
     protected Image image;
-    protected Image gradImage;
     protected ActiveContour contour;
     protected Neighborhood neighbor;
     
@@ -90,25 +84,10 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         neighbor = new Neighborhood2D8(image.getMinX(), image.getMinY(),
                                         image.getMaxX(), image.getMaxY());
         
-        gradImage = (Image)image.clone();
-        ImageFilter filter = new TresholdFilter(
-                             new LinearNormalizeFilter(
-                             new SobelFilter(
-                             new BlurFilter(gradImage)), 0, 255), 50, 255);
 
-        filter.filter(); 
-        
-        ///////////////////////////////////////////////////////////////777
-        ImageViewer imageViewer = new ImageViewer("Gradientenbild", gradImage);
-        imageViewer.pack();
-        imageViewer.show();
-        
-        java.awt.Point pos = new java.awt.Point(0, 300);
-        java.awt.Dimension size = new java.awt.Dimension(300, 300);
-        
-        Viewer.getInstance().addViewerDesktopFrame(imageViewer, pos, size);        
-        //////////////////////////////////////////////////////////////////
+        outerEnergyFunction = new EdgeOuterEnergy(image);
 	}
+    
     
     protected double innerEnergy(Point[] cp) {
         int size = cp.length;
@@ -143,66 +122,10 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         d2 /= MathUtil.sqr(h);
         
         return ALPHA*d1 + BETA*d2;
-        
-        
-        
-        /* Funktioniert nicht ordentlich. Sollte eigentlich
-         * Verhindern, daß die Abstände zweier benachbarte Punkte
-         * zu weit auseinanderlaufen.
-        int size = cp.length;
-        double d = 0;
-        //Berechnung des mittleren Abstandes d zweier benachbarte Punkte
-        for (int i = 0; i < size; i++) {
-            d += Math.sqrt(MathUtil.sqr(cp[i].getOrdinate(0) - cp[(i+1)%size].getOrdinate(0)) +
-                           MathUtil.sqr(cp[i].getOrdinate(1) - cp[(i+1)%size].getOrdinate(1)));    
-        }
-        d /= (double)size;
-        
-        //Berechnen des Stetikeitsterms der inneren Energie
-        double vix, viy, vimx, vimy, length;
-        double d1 = 0;
-        for (int i = 1, n = size+1; i < n; i++) {
-            vix = cp[i%size].getOrdinate(0);
-            viy = cp[i%size].getOrdinate(1);
-            vimx = cp[i-1].getOrdinate(0);
-            vimy = cp[i-1].getOrdinate(1);
-            
-            length = Math.sqrt(MathUtil.sqr(vix-vimx) + MathUtil.sqr(viy-vimy));
-            d1 += (d - length) / length;      
-        }
-        d1 = MathUtil.sqr(d1);
-
-        //Berechnung des Glattheitstern der inneren Energie
-        double d2 = 0, vipx, vipy, norm, x1, y1, x2, y2;
-        for (int i = 1, n = size+2; i < n; i++) {
-            vix = cp[i%size].getOrdinate(0);
-            viy = cp[i%size].getOrdinate(1);
-            vimx = cp[(i-1)%size].getOrdinate(0);
-            vimy = cp[(i-1)%size].getOrdinate(1);
-            vipx = cp[(i+1)%size].getOrdinate(0);
-            vipy = cp[(i+1)%size].getOrdinate(1);
-            
-            norm = Math.sqrt(MathUtil.sqr(vipx - vix) + MathUtil.sqr(vipy - viy));
-            x1 = (vipx - vix) / norm;
-            y1 = (vipy - viy) / norm;
-            
-            norm = Math.sqrt(MathUtil.sqr(vix - vimx) + MathUtil.sqr(viy - vimy));
-            x2 = (vix - vimx) / norm;
-            y2 = (viy - vimy) / norm;
-            
-            d2 += MathUtil.sqr(x1 - x2) + MathUtil.sqr(y1 - y2);   
-        }
-
-        return (ALPHA*d1 + BETA*d2);
-        */
     }
     
-    protected double outerEnergy(Point[] cp) {
-        double g = 0;
-        for (int i = 0, n = cp.length; i < n; i++) {
-            g += gradImage.getColor(cp[i].getOrdinate(0), cp[i].getOrdinate(1), 0);        
-        }
-        return -GAMMA*(double)MathUtil.sqr(g);    
+    private double outerEnergy(Point[] cp) {
+        return GAMMA*outerEnergyFunction.energy(cp);    
     }
     
     private double energy(ActiveContour ac) {
@@ -260,6 +183,14 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         
         return contour;              
 	}
+    
+    /**
+     * Sets the outerEnergyFunction.
+     * @param outerEnergyFunction The outerEnergyFunction to set
+     */
+    public void setOuterEnergyFunction(OuterEnergyFunction outerEnergyFunction) {
+        this.outerEnergyFunction = outerEnergyFunction;
+    }    
 
 	/**
 	 * @see org.wewi.medimg.seg.ac.Minimizer#getActiveContour()
