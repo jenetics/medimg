@@ -196,8 +196,8 @@
             <Container class="javax.swing.JDesktopPane" name="desktopPane">
 
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CodeGeneration" type="java.lang.Integer" value="0"/>
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Viewer_desktopPane"/>
+                <AuxValue name="JavaCodeGenerator_CodeGeneration" type="java.lang.Integer" value="0"/>
               </AuxValues>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout"/>
