@@ -11,8 +11,8 @@ import org.wewi.medimg.image.geom.transform.Transformation;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class BBAffinityMetric implements AffinityMetric {
     
