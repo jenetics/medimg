@@ -34,7 +34,6 @@ import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.RGBColorConversion;
-import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.filter.DilationFilter;
 import org.wewi.medimg.image.filter.EdgeFilter;
 import org.wewi.medimg.image.filter.ErosionFilter;

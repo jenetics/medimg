@@ -8,6 +8,7 @@ package org.wewi.medimg.viewer.tools;
 
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.swing.table.TableModel;
 
 import org.wewi.medimg.image.ImageProperties;

@@ -14,7 +14,7 @@ import org.wewi.medimg.image.ROI;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ImageLoop {
+public class ImageLoop {
     
     public static abstract class Task {
         /**
@@ -43,7 +43,7 @@ public final class ImageLoop {
     
     
     
-    private Image image;
+    protected Image image;
     private Task task;
     
     /** Creates a new instance of ImageLoop */
@@ -52,6 +52,9 @@ public final class ImageLoop {
         this.task = task;
         
         task.setImage(image);
+    }
+    
+    protected ImageLoop() {
     }
     
     /**
