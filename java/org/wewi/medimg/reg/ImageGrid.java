@@ -12,8 +12,8 @@ import org.wewi.medimg.image.Image;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class ImageGrid {
     

@@ -8,8 +8,10 @@ import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
 import org.wewi.medimg.reg.MultipleFeatureRegistrator;
 
 import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.doublealgo.Sorting;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.colt.matrix.linalg.EigenvalueDecomposition;
@@ -22,6 +24,9 @@ import cern.colt.matrix.linalg.LUDecomposition;
  * @version 0.1
  */
 public class PCARegistration extends MultipleFeatureRegistrator {
+	
+	private static final double epsilon = 0.05;
+	
 
 	/**
 	 * Constructor for PCARegistration.
@@ -40,8 +45,12 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         //Berechnung der Schwerpunkte und Hauptachsen und Mediane
         double[] cog1 = new double[3];
         double[] cog2 = new double[3];
-        centreOfGravityAndMedian((VoxelIterator)source.clone(), cog1);
-        centreOfGravityAndMedian((VoxelIterator)target.clone(), cog2);   
+        
+        double[] median1 = new double[3];
+        double[] median22 = new double[3];  
+              
+        centreOfGravity((VoxelIterator)source.clone(), cog1);
+        centreOfGravity((VoxelIterator)target.clone(), cog2);   
         
         //Berechnung der Kovarianzmatrix
         double[] eigenValues1 = new double[3];
@@ -132,6 +141,7 @@ public class PCARegistration extends MultipleFeatureRegistrator {
     private double[][] getHotellingTransform(VoxelIterator data, double[] cog, double[] eigenValues) {
 
         //Berechnen der Kovarianzmatrix
+        VoxelIterator _data = (VoxelIterator)data.clone();
         double[] point = new double[3];
         double[][] matrix = new double[3][3];
         for (int i = 0; i < 3; i++) {
@@ -181,7 +191,20 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         }        
        
         
-        A = A.zMult(At, null);         
+        A = A.zMult(At, null);  
+        
+		//Korrektur der Hauptachsen
+		double[] median = new double[3];
+		getMedian(_data, A, median);
+		//Bestimmen der richtigen Ausrichtung der Hauptachse,
+		//durch Vorzeichenvergleich der Komponenten des Medians
+		for (int i = 0; i < 3; i++) {
+			if (median[i] < -epsilon) {
+				for (int j = 0; j < 3; j++) {
+					A.setQuick(i, j, (-1) * A.getQuick(i, j));
+				}
+			}
+		}               
 
         return A.toArray();
     }    
@@ -192,7 +215,7 @@ public class PCARegistration extends MultipleFeatureRegistrator {
      * Die einzelnen Datenpunkte sind reihenweise angeordnet; in einer n * 3 Matrix
      * @return Schwerpunkt der Datenpunkte
      */
-    private void centreOfGravityAndMedian(VoxelIterator data, double[] cog) {
+    private void centreOfGravity(VoxelIterator data, double[] cog) {
         double[] result = new double[3];
         Arrays.fill(result, 0);
         int[] point = new int[3];
@@ -210,6 +233,60 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         }
 
     }
+    
+	/**
+	 * Berechnung des Medians der Punkte in der Matrix data, nach
+	 * der Transformation durch die Matrix transform. Die Transformation
+	 * ist eine 4*4 Matrix. Die Datenpunkte in data sind Zeilenweise angeordnet, mit 3 Spalten für die 3 Dimensionen
+	 * @param data Datenmatrix, aus dem der Median berechnet werden soll (n * 3)
+	 * @param transform Mit dieser Transformation werden die Datenpunkte vor
+	 * der Berechnung des Medians transformiert. transform ist eine 4*4 Matrix. Bei transform == 0 wird keine
+	 * Transformation durchgeführt.
+	 * @return der Median der Transformierten Datenmatrix.
+	 */
+	private void getMedian(VoxelIterator data, DoubleMatrix2D transform, double[] median) {
+		int rows = data.size();
+		Algebra alg = new Algebra();
+		double[] point = new double[4];
+		DoubleMatrix2D _data = DoubleFactory2D.dense.make(rows, 3);
+		DoubleMatrix1D row;
+		DoubleMatrix1D _row;
+		int count = 0;
+
+		//Transformation der Datenpunkte, falls Transformationsmatrix
+		//vorhanden
+		if (transform != null) {
+			while (data.hasNext()) {
+				data.next(point);
+				point[3] = 1.0;
+				row = new DenseDoubleMatrix1D(point);
+				_row = alg.mult(transform, row);
+				for (int i = 0; i < 3; i++) {
+					_data.setQuick(count, i, _row.getQuick(i));
+				}
+				count++;
+			}
+		} else {
+			while (data.hasNext()) {
+				data.next(point);
+				for (int i = 0; i < 3; i++) {
+					_data.setQuick(count, i, point[i]);
+				}
+				count++;
+			}			
+		}
+		double erg;
+		for (int i = 0; i < 3; i++) {
+			DoubleMatrix1D sortVec = _data.viewColumn(i);
+			DoubleMatrix1D sortVec1 = sortVec.viewSorted();
+			if (rows % 2 == 0) {
+				erg = sortVec1.getQuick((rows / 2) - 1)
+					  + sortVec1.getQuick((rows / 2)) / 2.0;
+			} else {
+				erg = sortVec1.getQuick((rows / 2));
+			}
+			median[i] = erg;		}
+	}    
     
         
 

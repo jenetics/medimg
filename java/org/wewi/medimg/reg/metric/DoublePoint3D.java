@@ -8,8 +8,8 @@ package org.wewi.medimg.reg.metric;
 
 /**
  *
- * @author  werner weiser
- * @version 
+ * @author  Werner Weiser
+ * @version 0.1
  */
 public class DoublePoint3D {
 
