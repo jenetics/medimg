@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.image;
 
-import org.wewi.medimg.util.Singleton;
+import org.wewi.medimg.util.Nullable;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,18 +17,11 @@ import java.io.IOException;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class NullImageHeader implements ImageHeader, Singleton {
+public class NullImageHeader implements ImageHeader, Nullable {
     private static NullImageHeader singleton = null;
     
     
-    private NullImageHeader() {
-    }
-    
-    public static NullImageHeader getInstance() {
-        if (singleton == null) {
-            singleton = new NullImageHeader();
-        }
-        return singleton;
+    public NullImageHeader() {
     }
 
     public void read(InputStream in) throws IOException {
