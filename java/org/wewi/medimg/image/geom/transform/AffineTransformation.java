@@ -335,6 +335,7 @@ public class AffineTransformation implements InterpolateableTransformation,
         return true;    
     }
     
+    
     ////////////////////////////////////////////////////////////////////////////
     
     
@@ -508,11 +509,8 @@ public class AffineTransformation implements InterpolateableTransformation,
                Math.cos(rotXYZ[2])*Math.sin(rotXYZ[0]);
         m[10] = Math.cos(rotXYZ[0])*Math.cos(rotXYZ[1]);
         
-        
         return new AffineTransformation(m); 
     }
-    
-   
     
     public static AffineTransformation getScaleInstance(double[] scaleXYZ) {
         double[] m = new double[12];  
@@ -567,7 +565,7 @@ public class AffineTransformation implements InterpolateableTransformation,
 
     public void transform(Image source, Image target) {
         target.resetColor(0);
-        
+        target.setColorConversion(source.getColorConversion());
         int tminX = target.getMinX();
         int tminY = target.getMinY();
         int tminZ = target.getMinZ();
@@ -593,6 +591,7 @@ public class AffineTransformation implements InterpolateableTransformation,
                     x = (int)q[0];
                     y = (int)q[1];
                     z = (int)q[2];
+                    //System.out.println("Punkt: x: " + x + " y: " + y + " z: " + z);
                     if (x <= smaxX && x >= sminX &&
                         y <= smaxY && y >= sminY &&
                         z <= smaxZ && z >= sminZ) {

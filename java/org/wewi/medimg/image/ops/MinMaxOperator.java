@@ -49,5 +49,9 @@ public class MinMaxOperator implements UnaryOperator {
     public int getCalls() {
         return calls;    
     }
+    
+    public String toString() {
+        return "MinColor: " + min + ", MaxColor: " + max;    
+    }
 
 }

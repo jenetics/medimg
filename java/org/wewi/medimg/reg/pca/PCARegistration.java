@@ -125,6 +125,11 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         return new AffineTransformation(A2.toArray());
 	}
     
+    
+    protected void calculateScaling() {
+        
+    }
+    
     /**
      * Berechnet die sogenannte Hotelling Transformation. Diese Transformation
      * dreht die Hauptachsen des Bildes so, dass sie achsenparallel zum Weltkoordinatensystem
@@ -141,7 +146,7 @@ public class PCARegistration extends MultipleFeatureRegistrator {
     private double[][] getHotellingTransform(VoxelIterator data, double[] cog, double[] eigenValues) {
 
         //Berechnen der Kovarianzmatrix
-        VoxelIterator _data = (VoxelIterator)data.clone();
+        VoxelIterator vit = (VoxelIterator)data.clone();
         double[] point = new double[3];
         double[][] matrix = new double[3][3];
         for (int i = 0; i < 3; i++) {
@@ -195,13 +200,13 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         
 		//Korrektur der Hauptachsen
 		double[] median = new double[3];
-		getMedian(_data, A, median);
+		getMedian(vit, A, median);
 		//Bestimmen der richtigen Ausrichtung der Hauptachse,
 		//durch Vorzeichenvergleich der Komponenten des Medians
 		for (int i = 0; i < 3; i++) {
 			if (median[i] < -epsilon) {
-				for (int j = 0; j < 3; j++) {
-					A.setQuick(i, j, (-1) * A.getQuick(i, j));
+				for (int j = 0; j < 4; j++) {
+					A.setQuick(i, j, -A.getQuick(i, j));
 				}
 			}
 		}               
@@ -248,9 +253,9 @@ public class PCARegistration extends MultipleFeatureRegistrator {
 		int rows = data.size();
 		Algebra alg = new Algebra();
 		double[] point = new double[4];
-		DoubleMatrix2D _data = DoubleFactory2D.dense.make(rows, 3);
+		DoubleMatrix2D tempMatrix = DoubleFactory2D.dense.make(rows, 3);
 		DoubleMatrix1D row;
-		DoubleMatrix1D _row;
+		DoubleMatrix1D transRow;
 		int count = 0;
 
 		//Transformation der Datenpunkte, falls Transformationsmatrix
@@ -260,9 +265,9 @@ public class PCARegistration extends MultipleFeatureRegistrator {
 				data.next(point);
 				point[3] = 1.0;
 				row = new DenseDoubleMatrix1D(point);
-				_row = alg.mult(transform, row);
+				transRow = alg.mult(transform, row);
 				for (int i = 0; i < 3; i++) {
-					_data.setQuick(count, i, _row.getQuick(i));
+					tempMatrix.setQuick(count, i, transRow.getQuick(i));
 				}
 				count++;
 			}
@@ -270,14 +275,14 @@ public class PCARegistration extends MultipleFeatureRegistrator {
 			while (data.hasNext()) {
 				data.next(point);
 				for (int i = 0; i < 3; i++) {
-					_data.setQuick(count, i, point[i]);
+					tempMatrix.setQuick(count, i, point[i]);
 				}
 				count++;
 			}			
 		}
 		double erg;
 		for (int i = 0; i < 3; i++) {
-			DoubleMatrix1D sortVec = _data.viewColumn(i);
+			DoubleMatrix1D sortVec = tempMatrix.viewColumn(i);
 			DoubleMatrix1D sortVec1 = sortVec.viewSorted();
 			if (rows % 2 == 0) {
 				erg = sortVec1.getQuick((rows / 2) - 1)

@@ -57,6 +57,22 @@ public abstract class ImageReader {
     }
     
     /**
+     * Returns the colorConversion.
+     * @return ColorConversion
+     */
+    public ColorConversion getColorConversion() {
+        return colorConversion;
+    }
+
+    /**
+     * Sets the colorConversion.
+     * @param colorConversion The colorConversion to set
+     */
+    public void setColorConversion(ColorConversion colorConversion) {
+        this.colorConversion = colorConversion;
+    }    
+    
+    /**
      * Liefert die Quelle von der gelesen werden soll
      *
      * @return Datei von der das Bild gelesen wird.
@@ -118,6 +134,6 @@ public abstract class ImageReader {
     public String toString() {
         return getSource().toString();    
     }
-    
+
 }
 
