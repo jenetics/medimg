@@ -6,22 +6,21 @@
 
 package org.wewi.medimg.image.geom;
 
-import org.wewi.medimg.util.KDTreePoint;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public interface Point extends KDTreePoint, Cloneable {
+public interface Point extends Cloneable {
+    
+    public int getDimensions();
     
     public int getOrdinate(int i);
     
     public boolean equals(Object o);
     
     public Object clone();
-
-    public Comparable getComparableOrdinate(int dimension);
     
 }
 

@@ -29,7 +29,7 @@ public interface DataPoint extends Cloneable {
     
     public DataPoint getOneInstance();
     
-    public int getDim();
+    public int getDimension();
     
     public Number getOrdinateNumber(int dim);
     
