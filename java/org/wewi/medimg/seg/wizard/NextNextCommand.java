@@ -27,7 +27,7 @@ final class NextNextCommand implements Command {
         int slice = viewer.getSlice();
         int maxSlice = Math.min(viewer.getImage1().getMaxZ(),
                                 viewer.getImage2().getMaxZ());
-        if (maxSlice > slice+stride) {
+        if (maxSlice >= slice+stride) {
             viewer.setSlice(slice+stride);
         }
     }
