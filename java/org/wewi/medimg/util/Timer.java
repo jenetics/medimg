@@ -36,17 +36,21 @@ public final class Timer {
         return stopTime - startTime;
     }
     
-    public void print(PrintStream out) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(timerName).append(": ");
-        buffer.append(Double.toString((double)duration()/1000d));
-        buffer.append("sec");
-        
-        out.println(buffer.toString());
+    public void print(PrintStream out) {       
+        out.println(toString());
     }
     
     public void print() {
         print(System.out);
+    }
+    
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(timerName).append(": ");
+        buffer.append(Double.toString((double)duration()/1000d));
+        buffer.append("sec");  
+        
+        return buffer.toString();
     }
 
 }
