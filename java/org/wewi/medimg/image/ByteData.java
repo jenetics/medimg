@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-final class ByteData implements DiscreteData {
+public final class ByteData implements DiscreteData {
     private byte[] data;
 
 	/**

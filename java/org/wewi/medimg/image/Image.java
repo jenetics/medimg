@@ -27,6 +27,7 @@ import org.wewi.medimg.util.Nullable;
  * 
  * @see org.wewi.medimg.image.ColorConversion
  * @see org.wewi.medimg.image.VoxelIterator
+ * @see org.wewi.medimg.image.Dimension
  * 
  */
 public interface Image extends Nullable, Cloneable, Mutable {
