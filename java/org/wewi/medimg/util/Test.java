@@ -646,10 +646,10 @@ public class Test {
             
             Image image = reader.getImage();
             
-            AffineTransformation affine = AffineTransformation.getRotateInstance(new double[]{0, 0, 0.9});
+            AffineTransformation affine = AffineTransformation.getRotateInstance(new double[]{0, 0, 0.1});
             Image affineImage = affine.transform(image);
             
-            int g = 20;
+            int g = 10;
             GlobalInterpolator interpol = new GlobalInterpolator();
             interpol.setWeightFunction(new GlobalInterpolator.ExponentialWeightFunction(50.0));
             

@@ -710,7 +710,9 @@ public class Viewer extends JFrame implements Singleton,
     }//GEN-LAST:event_segmentaionWizardMenuItemActionPerformed
     
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        AboutDialog about = new AboutDialog(this, true);
+        //AboutDialog about = new AboutDialog(this, true);
+        //about.show();
+        About about = new About(this, true);
         about.show();
      }//GEN-LAST:event_aboutMenuItemActionPerformed
                                                   

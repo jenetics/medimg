@@ -8,13 +8,14 @@ package org.wewi.medimg.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Stack;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class KDTree {
+public class KDTree implements Collection {
     
     public static interface Point {
        public Comparable getOrdinate(int dimension);
@@ -142,6 +143,8 @@ public class KDTree {
         
     }
     
+ 
+    
     
     /**
      * Determines if a point is contained within a given
@@ -211,6 +214,96 @@ public class KDTree {
         
         return result;
     }
+    
+	/**
+	 * @see java.util.Collection#size()
+	 */
+	public int size() {
+		return 0;
+	}
+    
+	/**
+	 * @see java.util.Collection#isEmpty()
+	 */
+	public boolean isEmpty() {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#contains(java.lang.Object)
+	 */
+	public boolean contains(Object o) {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#iterator()
+	 */
+	public Iterator iterator() {
+		return null;
+	}
+    
+	/**
+	 * @see java.util.Collection#toArray()
+	 */
+	public Object[] toArray() {
+		return null;
+	}
+    
+	/**
+	 * @see java.util.Collection#toArray(java.lang.Object[])
+	 */
+	public Object[] toArray(Object[] a) {
+		return null;
+	}
+    
+	/**
+	 * @see java.util.Collection#add(java.lang.Object)
+	 */
+	public boolean add(Object o) {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#remove(java.lang.Object)
+	 */
+	public boolean remove(Object o) {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#containsAll(java.util.Collection)
+	 */
+	public boolean containsAll(Collection c) {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#addAll(java.util.Collection)
+	 */
+	public boolean addAll(Collection c) {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 */
+	public boolean removeAll(Collection c) {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 */
+	public boolean retainAll(Collection c) {
+		return false;
+	}
+    
+	/**
+	 * @see java.util.Collection#clear()
+	 */
+	public void clear() {
+	}
 }
 
 
