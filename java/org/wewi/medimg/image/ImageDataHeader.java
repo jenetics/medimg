@@ -19,24 +19,29 @@ import java.io.IOException;
  * @version 0.1
  */
 class ImageDataHeader implements ImageHeader {
-    private int maxX;
-    private int maxY;
-    private int maxZ;
+    private int minX, minY, minZ;
+    private int maxX, maxY, maxZ;
     private ImageData image;
 
-    public ImageDataHeader(int x, int y, int z, ImageData image) {
-        maxX = x;
-        maxY = y;
-        maxZ = z;
+    public ImageDataHeader(int minX, int minY, int minZ,
+                           int maxX, int maxY, int maxZ, ImageData image) {
+        this.minX = minX;
+        this.minY = minY;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxZ = maxZ;
         this.image = image;
     }
     
     public void read(InputStream in) throws IOException {
         DataInputStream din = new DataInputStream(in);
+        minX = din.readInt();
+        minY = din.readInt();
+        minZ = din.readInt();
         maxX = din.readInt();
         maxY = din.readInt();
         maxZ = din.readInt();
-        image.init(maxX, maxY, maxZ);
+        image.init(minX, minY, minZ, maxX, maxY, maxZ);
     }
     
     public boolean isNull() {
@@ -45,6 +50,9 @@ class ImageDataHeader implements ImageHeader {
     
     public void write(OutputStream out) throws IOException {
         DataOutputStream dout = new DataOutputStream(out);
+        dout.writeInt(minX);
+        dout.writeInt(minY);
+        dout.writeInt(minZ);
         dout.writeInt(maxX);
         dout.writeInt(maxY);
         dout.writeInt(maxZ);
