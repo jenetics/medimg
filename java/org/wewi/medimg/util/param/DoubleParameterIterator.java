@@ -25,6 +25,7 @@ public class DoubleParameterIterator implements ParameterIterator {
 		this.start = start;
         this.stop = stop;
         this.stride = stride;
+        this.name = name;
         
         current = start;
 	}

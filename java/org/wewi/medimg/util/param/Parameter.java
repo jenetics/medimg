@@ -12,11 +12,11 @@ import org.jdom.Element;
  * @version 0.1
  */
 public abstract class Parameter {
-    protected String name;
+    protected String name = "";
     protected String clazz;
     
     protected Parameter() {
-        this("");
+        this("empty");
     }
     
     protected Parameter(String name) {
