@@ -1,5 +1,5 @@
 /**
- * ImageDataHeader.java
+ * AbstractImageHeader.java
  *
  * Created on 22. Februar 2002, 10:42
  */
@@ -34,7 +34,7 @@ import org.wewi.medimg.util.StringOutputStream;
  * @author  Franz Wilhelmsötter
  * @version 0.2
  */
-class ImageDataHeader implements ImageHeader {
+class AbstractImageHeader implements ImageHeader {
     private AbstractImage image;
     
     private Dimension dim;
@@ -42,7 +42,7 @@ class ImageDataHeader implements ImageHeader {
     
     private Logger logger;
 
-    public ImageDataHeader(AbstractImage image) {
+    public AbstractImageHeader(AbstractImage image) {
         this.image = image;
         properties = new Properties();
         
@@ -109,7 +109,7 @@ class ImageDataHeader implements ImageHeader {
         try {
 			doc = builder.build(in);
 		} catch (JDOMException e) {
-            throw new IOException("ImageDataHeader: " + e.toString()); 
+            throw new IOException("AbstractImageHeader: " + e.toString()); 
 		}
         
         Element root = doc.getRootElement();
