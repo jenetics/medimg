@@ -22,7 +22,7 @@ public final class ByteImageData extends ImageData {
     }     
      
     ByteImageData(ByteImageData id) {
-        super(id.maxX + 1, id.maxY + 1, id.maxZ + 1);
+        super(id.sizeX, id.sizeY, id.sizeZ);
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
@@ -34,8 +34,8 @@ public final class ByteImageData extends ImageData {
         super(sizeX, sizeY, sizeZ);
     }
     
-    public ByteImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-        super(minX, minY, minZ, maxX, maxY, maxZ);
+    public ByteImageData(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+        super(minX, maxX, minY, maxY, minZ, maxZ);
     }    
      
 

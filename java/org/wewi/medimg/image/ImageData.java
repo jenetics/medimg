@@ -92,7 +92,7 @@ public class ImageData implements Image, RandomAccess {
     }
      
     public ImageData(int sizeX, int sizeY, int sizeZ) {
-        init(0, 0, 0, sizeX-1, sizeY-1, sizeZ-1, new ImageDataHeader(this));
+        init(0, sizeX-1, 0, sizeY-1, 0, sizeZ-1, new ImageDataHeader(this));
     }
     
     void init(Dimension dim, ImageDataHeader h) {
