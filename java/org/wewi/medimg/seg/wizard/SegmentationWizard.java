@@ -40,6 +40,7 @@ import org.wewi.medimg.viewer.ImageFileChooser;
 import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
 
+
 /**
  *
  * @author  Franz Wilhelmstötter
@@ -66,8 +67,10 @@ public class SegmentationWizard extends Wizard implements Observer,
 	        ImageReaderThread readerThread = new ImageReaderThread(imageReader);
 	        readerThread.addReaderThreadListener(this);
 	        readerThread.setPriority(Thread.MIN_PRIORITY);
-	        readerThread.start();        	
-        }                                              	
+	        readerThread.start();       	
+        } 
+        
+                                                     	
     		
     	
         /**
