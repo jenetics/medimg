@@ -4,23 +4,20 @@
  */
 package org.wewi.medimg.image;
 
-import java.util.Arrays;
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ShortImageData extends ImageData {
-    private short[] data;   
+public final class ShortImageData extends AbstractImage {   
      
     ShortImageData() {
         super();
     }     
      
     ShortImageData(ShortImageData id) {
-        super(id.sizeX, id.sizeY, id.sizeZ);
-        System.arraycopy(id.data, 0, data, 0, size);
+        super(id);
     }
     
     public ShortImageData(Dimension dim) {
@@ -35,25 +32,17 @@ public final class ShortImageData extends ImageData {
         super(minX, maxX, minY, maxY, minZ, maxZ);
     }    
      
-
-    protected void initData() {
-        data = new short[size];    
-    }
-    
-    protected void setData(int pos, int color) {
-        data[pos] = (short)color;    
-    }
-    
-    protected int getData(int pos) {
-        return data[pos];    
-    }
-    
-    public void resetColor(int color) {
-        Arrays.fill(data, (short)color);
+   
+    /**
+     * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
+     */
+    protected DiscreteData createDiscreteData(int size) {
+        return new ShortData(size);
     }    
-    
     
     public Object clone() {
         return new ShortImageData(this);
     }    
+
+
 }

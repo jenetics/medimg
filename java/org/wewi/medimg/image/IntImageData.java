@@ -9,7 +9,7 @@ package org.wewi.medimg.image;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class IntImageData extends ImageData {
+public final class IntImageData extends AbstractImage {
     
     IntImageData() {
         super();
@@ -30,5 +30,13 @@ public final class IntImageData extends ImageData {
     
     public Object clone() {
         return new IntImageData(this);
-    }    
+    } 
+       
+	/**
+	 * @see org.wewi.medimg.image.AbstractImage#createDiscreteData(int)
+	 */
+	protected DiscreteData createDiscreteData(int size) {
+		return new IntData(size);
+	}
+
 }
