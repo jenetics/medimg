@@ -39,6 +39,7 @@ import org.wewi.medimg.seg.statistic.MAPSegmentation;
 
 import org.wewi.medimg.viewer.wizard.Wizard;
 import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.ImageFileChooser;
 
 import java.util.Observer;
 import java.util.Observable;
@@ -59,6 +60,7 @@ public class SegmentationWizard extends Wizard implements Observer,
                                                           ReaderThreadListener,
                                                           WriterThreadListener,
                                                           SegmentationListener {
+                                                              
     private static final String MENU_NAME = "Segmentierungs-Wizard";
     private static SegmentationWizard singleton = null;
     
@@ -92,11 +94,6 @@ public class SegmentationWizard extends Wizard implements Observer,
     } 
     
     private void init() {
-        int ntypes = ImageFormatTypes.TYPES.length;
-        for (int i = 0; i < ntypes; i++) {
-            imageFormatComboBox.addItem(ImageFormatTypes.TYPES[i]);
-        }
-        imageFormatComboBox.setSelectedItem(ImageFormatTypes.TIFF_IMAGES);
     }
     
     public void dispose() {
@@ -106,6 +103,7 @@ public class SegmentationWizard extends Wizard implements Observer,
     
     private void onClose() {
         try {
+            //imageViewer.setClosed(true);
             setClosed(true);
             dispose();
             Viewer.getInstance().removeWizard(this);
@@ -190,7 +188,6 @@ public class SegmentationWizard extends Wizard implements Observer,
         jPanel24 = new javax.swing.JPanel();
         imageDataSourceTextField = new javax.swing.JTextField();
         imageDataSearchButton = new javax.swing.JButton();
-        imageFormatComboBox = new javax.swing.JComboBox();
         jPanel28 = new javax.swing.JPanel();
         wizardStep2 = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
@@ -251,14 +248,6 @@ public class SegmentationWizard extends Wizard implements Observer,
         });
 
         jPanel24.add(imageDataSearchButton);
-
-        imageFormatComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                imageFormatComboBoxItemStateChanged(evt);
-            }
-        });
-
-        jPanel24.add(imageFormatComboBox);
 
         wizardStep1.add(jPanel24);
 
@@ -464,49 +453,23 @@ public class SegmentationWizard extends Wizard implements Observer,
         }        
     }//GEN-LAST:event_mlNFeaturesTextFieldFocusLost
 
-    private void imageFormatComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_imageFormatComboBoxItemStateChanged
-        // Add your handling code here:
-        imageReader = null;
-        imageDataSourceTextField.setText("");
-    }//GEN-LAST:event_imageFormatComboBoxItemStateChanged
-
     private void imageDataSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageDataSearchButtonActionPerformed
         // Add your handling code here:
-        String fileName = null;
-        ImageReaderFactory readerFactory = null;
-        
-        int selectMode = JFileChooser.FILES_AND_DIRECTORIES;
-        int dialogType = JFileChooser.OPEN_DIALOG;
-        
-        //Richtiges Initialisieren des JFileChooser
-        ImageFormatTypes imageFormat = (ImageFormatTypes)imageFormatComboBox.getSelectedItem();
-        if (imageFormat.equals(ImageFormatTypes.RAW_IMAGE)) {
-            selectMode = JFileChooser.FILES_ONLY;
-            readerFactory = RawImageDataReaderFactory.getInstance();
-        } else if (imageFormat.equals(ImageFormatTypes.TIFF_IMAGES)) {
-            selectMode = JFileChooser.DIRECTORIES_ONLY;
-            readerFactory = TIFFReaderFactory.getInstance();
-        } else if (imageFormat.equals(ImageFormatTypes.BMP_IMAGES)) {
-            selectMode = JFileChooser.DIRECTORIES_ONLY;
-            readerFactory = BMPReaderFactory.getInstance();
-        } else if (imageFormat.equals(ImageFormatTypes.RAW_IMAGE)) {
-            selectMode = JFileChooser.FILES_ONLY;
-            readerFactory = RawImageDataReaderFactory.getInstance();
-        }
-        
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileSelectionMode(selectMode);
-        chooser.setDialogType(dialogType);
+        ImageFileChooser chooser = new ImageFileChooser();
         chooser.setDialogTitle("Datensatz auswählen");
-        //chooser.setCurrentDirectory(new File("C:\\Workspace\\fwilhelm\\Projekte\\SRS\\pic\\seg\\heads\\001"));
-        //chooser.changeToParentDirectory();
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
         
         int returnVal = chooser.showOpenDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-            fileName = chooser.getSelectedFile().getAbsolutePath();
-            imageReader = readerFactory.createImageReader(ImageDataFactory.getInstance(), new File(fileName));
-            imageDataSourceTextField.setText(fileName);
-        }        
+        if(returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        
+        ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
+        String fileName = chooser.getSelectedFile().getAbsolutePath();
+        imageReader = readerFactory.createImageReader(ImageDataFactory.getInstance(),
+                                                                  new File(fileName));
+        imageDataSourceTextField.setText(fileName);
     }//GEN-LAST:event_imageDataSearchButtonActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -518,11 +481,10 @@ public class SegmentationWizard extends Wizard implements Observer,
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel wizardStep2;
     private javax.swing.JPanel wizardStep1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel southPanel;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel40;
-    private javax.swing.JComboBox imageFormatComboBox;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JTabbedPane wizardTappedPanel;
     private javax.swing.JPanel jPanel39;

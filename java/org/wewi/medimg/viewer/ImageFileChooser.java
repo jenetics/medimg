@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 
@@ -47,13 +48,39 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
     
     /** Creates a new instance of ImageFileChooser */
     public ImageFileChooser() {
+        super();
+        init();
+    }
+    
+    public ImageFileChooser(File file) {
+        super(file);
+        init();
+    }
+    
+    public ImageFileChooser(File file, FileSystemView fsv) {
+        super(file, fsv);
+        init();
+    }
+    
+    public ImageFileChooser(FileSystemView fsv) {
+        super(fsv);
+        init();
+    }
+    
+    public ImageFileChooser(String file) {
+        super(file);
+        init();
+    }
+    
+    public ImageFileChooser(String file, FileSystemView fsv) {
+        super(file, fsv);
         init();
     }
     
     private void init() {
-        addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.TIFF_IMAGES));
-        addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.BMP_IMAGES));
         addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.RAW_IMAGE));
+        addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.BMP_IMAGES));
+        addChoosableFileFilter(new ImageFileFilter(ImageFormatTypes.TIFF_IMAGES));
         
         addActionListener(this);
     }
@@ -63,8 +90,8 @@ public class ImageFileChooser extends JFileChooser implements ActionListener {
         return imageReaderFactory;
     }
     
-    public ImageWriter getImageWriter() {
-        return null;
+    public ImageWriterFactory getImageWriterFactory() {
+        return imageWriterFactory;
     }
     
     public void actionPerformed(ActionEvent actionEvent) {
