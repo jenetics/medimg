@@ -12,11 +12,11 @@ import org.wewi.medimg.util.Mutable;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class MutableInteger extends Number implements Mutable {
+public class MutableInteger extends java.lang.Number implements Mutable {
     private int value;
 
 	/**
-	 * Constructor for MutableInteger.
+	 * Constructor for MutableInteger. 
 	 */
 	public MutableInteger(int value) {
         this.value = value;

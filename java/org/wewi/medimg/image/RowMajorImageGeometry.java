@@ -13,8 +13,8 @@ public abstract class RowMajorImageGeometry implements ImageGeometry {
     protected Dimension dimension;
     protected int maxX, maxY, maxZ;
     protected int minX, minY, minZ;
-    protected int sizeX, sizeY, sizeZ;
-    protected int sizeXY;
+    private int sizeX, sizeY, sizeZ;
+    private int sizeXY;
     protected int size;
     
     protected RowMajorImageGeometry() {

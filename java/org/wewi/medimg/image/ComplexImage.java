@@ -17,7 +17,7 @@ public class ComplexImage extends RowMajorImageGeometry implements Cloneable {
 
     
     public ComplexImage(int sizeX, int sizeY, int sizeZ) {
-        this(new Dimension(sizeX, sizeZ, sizeZ));    
+        this(new Dimension(sizeX, sizeY, sizeZ));    
     }
 
     /**

@@ -26,7 +26,7 @@ public class DFT {
     public boolean isPowerOfTwo(int n) {
         double ldn = MathUtil.log2(n);
         
-        return false;    
+        return true;    
     }    
          
     

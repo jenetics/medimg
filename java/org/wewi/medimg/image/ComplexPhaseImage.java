@@ -26,7 +26,7 @@ public class ComplexPhaseImage extends ImageAdapter {
     
     private void init(ComplexImage cimage) {
         for (int i = 0, n = image.getNVoxels(); i < n; i++) {
-            image.setColor(i, (int)MathUtil.argument(cimage.getColor(i))*1000);    
+            image.setColor(i, (int)Math.log(MathUtil.argument(cimage.getColor(i)))*1000);    
         }    
     }
 }

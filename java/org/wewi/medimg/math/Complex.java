@@ -6,18 +6,25 @@
  */
 package org.wewi.medimg.math;
 
+import java.text.NumberFormat;
+
 import org.wewi.medimg.util.Immutable;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class Complex implements Immutable {
+public class Complex implements Immutable, Cloneable {
     double re;
     double im;
     
-    Complex() {
+    public Complex() {
         re = 0;
+        im = 0;    
+    }
+    
+    public Complex(double re) {
+        this.re = re;
         im = 0;    
     }
     
@@ -86,9 +93,26 @@ public class Complex implements Immutable {
     }        
     
     public String toString() {
-        return "(" + re + "," + im + ")";    
+        NumberFormat format = NumberFormat.getInstance();
+        format.setMaximumFractionDigits(5);
+        format.setMinimumFractionDigits(5);
+        
+        return "(" + format.format(re) + "; " + format.format(im) + ")";    
     }
 
-
+    public Object clone() {
+        return new Complex(this);    
+    }
     
 }
+
+
+
+
+
+
+
+
+
+
+
