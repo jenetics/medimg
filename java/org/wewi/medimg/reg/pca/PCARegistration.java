@@ -23,7 +23,7 @@ import cern.colt.matrix.linalg.LUDecomposition;
  * 
  * @version 0.1
  */
-public class PCARegistration extends MultipleFeatureRegistrator {
+public abstract class PCARegistration extends MultipleFeatureRegistrator {
 	
 	private static final double epsilon = 0.05;
 	
@@ -61,46 +61,13 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         
         DoubleMatrix2D A1 = new DenseDoubleMatrix2D(a1);
         DoubleMatrix2D A2 = new DenseDoubleMatrix2D(a2);
-       
-        //Bei der Transformation A2 wird die Skalierung in
-        //Richtung der Hauptachsen berechnet und in die Transformation eingefügt.
-        //   As = |sx  0  0 |
-        //        |0   sy 0 |
-        //        |0   0  sz|
-        //
-        //   sx = sqrt(eigen1X / eigen2X)
-        //   sy = sqrt(eigen1Y / eigen2Y)
-        //   sz = sqrt(eigen1Z / eigen2Z)
+        
+        double[] scalingFactors = new double[3];
+        calculateScaling(scalingFactors, eigenValues1, eigenValues2);
         DoubleMatrix2D As = DoubleFactory2D.dense.make(4, 4);
-        As.setQuick(3, 3, 1);
-
-        //Prüfen auf unzulässige Eigenwerte
-        double sx = 1, sy = 1, sz = 1;
-        if (eigenValues1[0] == 0 && eigenValues2[0] == 0) {
-            sx = 1;
-        } else if (eigenValues1[0] != 0 && eigenValues2[0] != 0) {
-            sx = Math.sqrt(eigenValues1[0] / eigenValues2[0]);
-        } else {
-            //throw new RegistrationException("Invalid Transformation: eigenvalue x = zero \n");
-        }
-        if (eigenValues1[1] == 0 && eigenValues2[1] == 0) {
-            sy = 1;
-        } else if (eigenValues1[1] != 0 && eigenValues2[1] != 0) {
-            sy = Math.sqrt(eigenValues1[1] / eigenValues2[1]);
-        } else {
-            //throw new RegistrationException("Invalid Transformation: eigenvalue y = zero \n");
-        }
-        if (eigenValues1[2] == 0 && eigenValues2[2] == 0) {
-            sz = 1;
-        } else if (eigenValues1[2] != 0 && eigenValues2[2] != 0) {
-            sz = Math.sqrt(eigenValues1[2] / eigenValues2[2]);
-        } else {
-            //throw new RegistrationException("Invalid Transformation: eigenvalue z = zero \n");
-        }
-
-        As.setQuick(0, 0, sx);
-        As.setQuick(1, 1, sy);
-        As.setQuick(2, 2, sz);
+        for(int i = 0; i < 3; i++) {
+        	As.setQuick(i, i, scalingFactors[i]);
+        } 
         As.setQuick(3, 3, 1.0);
         
         //Die neue Transformationsmatrix A2 ergibt sich folgendermaßen:
@@ -125,10 +92,8 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         return new AffineTransformation(A2.toArray());
 	}
     
-    
-    protected void calculateScaling() {
-        
-    }
+    protected abstract void calculateScaling(double[] scalingFactors, double[] eigenValues1, double[] eigenValues2);      
+
     
     /**
      * Berechnet die sogenannte Hotelling Transformation. Diese Transformation
@@ -152,7 +117,9 @@ public class PCARegistration extends MultipleFeatureRegistrator {
         for (int i = 0; i < 3; i++) {
             Arrays.fill(matrix[i], 0);
         }
+        int count = 0;
         while (data.hasNext()) {
+        	count++;
             data.next(point);
             for (int i = 0; i < 3; i++) {
                 point[i] -= cog[i];
@@ -164,8 +131,8 @@ public class PCARegistration extends MultipleFeatureRegistrator {
             }
         
         }
-        
         DoubleMatrix2D covarianceMatrix = new DenseDoubleMatrix2D(matrix);
+        covarianceMatrix.assign(cern.jet.math.Functions.mult(1.0 / count));        
         EigenvalueDecomposition eigen = new EigenvalueDecomposition(covarianceMatrix);        
         DoubleMatrix2D eigenValues2D = eigen.getD();        
         DoubleMatrix2D eigenVectors = eigen.getV();
@@ -180,7 +147,10 @@ public class PCARegistration extends MultipleFeatureRegistrator {
             sortMatrix.setQuick(i, 3, eigenValues2D.getQuick(i, i));    
         }
         eigenVectors = Sorting.quickSort.sort(sortMatrix, 3).viewPart(0, 0, 3, 3).viewRowFlip();
-
+        for (int i = 0; i < 3; i++) {
+            eigenValues[i] = sortMatrix.getQuick((2 - i), 3);
+        }        
+		
         DoubleMatrix2D A = DoubleFactory2D.dense.make(4, 4);
         A.assign(0); A.setQuick(3, 3, 1);
         A.viewPart(0, 0, 3, 3).assign(eigenVectors);
@@ -291,8 +261,9 @@ public class PCARegistration extends MultipleFeatureRegistrator {
 				erg = sortVec1.getQuick((rows / 2));
 			}
 			median[i] = erg;		}
-	}    
-    
+	} 
+	
+ 
         
 
 }

@@ -18,6 +18,4 @@ public interface RegistratorListener extends EventListener {
     public void registratorStarted(RegistratorEvent event);
     
     public void registratorFinished(RegistratorEvent event);
-    
-    //public void iterationFinished(RegistrationEvent event);
 }
