@@ -18,6 +18,7 @@ import org.wewi.medimg.seg.ObservableSegmenter;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer {
     protected final static int MAX_ITERATION = 50;
@@ -28,6 +29,10 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
     protected double[] meanOld;
     
 
+	/**
+	 *
+	 * @param k Anzahl der zu segmentierenden Merkmalen.
+	 */
     public MLKMeansClusterer(int k) {
         this.k = k;
         mean = new double[k];
@@ -36,6 +41,10 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         Arrays.fill(meanOld, 0);
     }
     
+	/**
+	 * Method initMeans.
+	 * @param cr
+	 */
     protected void initMeans(ColorRange cr) {
         Random random = new Random(System.currentTimeMillis());
         
@@ -48,9 +57,22 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         Arrays.sort(meanOld);        
     }
     
+	/**
+	 * Method createSegimgOld.
+	 * Diese Methode wird von der Klasse
+	 * MAPKMeansClusterer überschrieben. Dies 
+	 * ermöglicht der Klasse, vor Begin des 
+	 * Segmentiervorgangs eine Kopie des segmentierten
+	 * Bildes zu erzeugen.
+	 * 
+	 * @param segimg Image das kopiert wird.
+	 */
     protected void createSegimgOld(Image segimg) {
     }
     
+	/**
+	 * @see org.wewi.medimg.seg.Segmenter#segment(Image)
+	 */
     public Image segment(Image mrt) {
         Image segimg = (Image)mrt.clone();
         segimg.resetColor(0);
@@ -58,6 +80,9 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         return segimg;
     }
     
+	/**
+	 * @see org.wewi.medimg.seg.Segmenter#segment(Image, Image)
+	 */
     public void segment(Image mrt, Image segimg) {
         int iterationCount = 0;
         
@@ -71,6 +96,12 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
                 MAX_ITERATION >= iterationCount);        
     }
     
+	/**
+	 * Method m1Step, wie im Algorithmus berschrieben.
+	 * 
+	 * @param mrt
+	 * @param segimg
+	 */
     private void m1Step(Image mrt, Image segimg) {
         int size = mrt.getNVoxels();
         int minDistanceFeature;
@@ -82,6 +113,8 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
             minDistance = Integer.MAX_VALUE;
             minDistanceFeature = 0;
             
+            //Suchen jenes Merkmals mit geringstem 
+            //Abstand zum Merkmalsmittelwert.
             for (int f = 0; f < k; f++) {
                 distance = mean[f] - (double)color;
                 distance *= distance;
@@ -99,7 +132,7 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
     }
     
 	/**
-	 * Method m2Step.
+	 * Method m2Step, wie im Algorithmus beschrieben.
      * 
 	 * @param mrt das zu segmentierende Bild
 	 * @param segimg das segmentierte Bild
@@ -133,6 +166,7 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
 	/**
 	 * Methode error. Berechnet den Fehler zwischen zwei Iterationen.
      * Dies dient als Abbruchkriterium.
+     * 
 	 * @return double
 	 */
     protected double error() {
@@ -143,9 +177,27 @@ public class MLKMeansClusterer extends ObservableSegmenter implements Clusterer 
         return err;
     }
     
+	/**
+	 * Method saveOldFeatureColor.
+	 * Diese Methode wird von der Klasse MAPKMeansClusterer
+	 * überschrieben, da bei diesem Algorithmus notwendig ist,
+	 * sich das Merkmalsbild der vorigen Iteration zu merken.
+	 * 
+	 * @param pos
+	 * @param color
+	 */
     protected void saveOldFeatureColor(int pos, int color) {
     }
     
+	/**
+	 * Method getCliquesPotential.
+	 * Diese Methode liefert in dieser Klasse null zurück.
+	 * Wird von der Klasse MAPKMeansClusterer überschrieben.
+	 * 
+	 * @param pos Position des Bildpunktes
+	 * @param f Numer des Merkmals
+	 * @return double das berechnete Cliquenpotential Vc.
+	 */
     protected double getCliquesPotential(int pos, int f) {
         return 0;
     }
