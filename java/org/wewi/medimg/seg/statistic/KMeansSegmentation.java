@@ -81,6 +81,10 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
         return result;
     }
     
+    public int getK() {
+        return k;
+    }
+    
     private void calculateVariance() {
         int[] count = new int[k];
         double[] sum = new double[k];
@@ -100,7 +104,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
     }
     
     /**
-     * Lazy evaluation of the variance
+     * Lazy evaluation of the variances
      */
     public double[] getVariance() {
         if (variance == null) {

@@ -81,10 +81,11 @@ public class MLSegmentation extends ImageSegmentationStrategy {
             meanValuesOld[i] = meanValues[i];
         }
         */
-        RandomEngine random = new MersenneTwister((int)(System.currentTimeMillis()%1000000));
+        RandomEngine random = new MersenneTwister((int)(System.currentTimeMillis()%Integer.MAX_VALUE));
         //RandomEngine random = new MersenneTwister();
+        final int COLORS = 256;
         for (int i = 0; i < nfeatures; i++) {
-            meanValues[i] = random.nextDouble()*(256-1);
+            meanValues[i] = random.nextDouble()*(COLORS-1);
             meanValuesOld[i] = meanValues[i];
         }
         Arrays.sort(meanValues);  
