@@ -1,4 +1,4 @@
-/*
+/**
  * Command.java
  *
  * Created on 11. Jänner 2002, 20:14
