@@ -13,7 +13,7 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import org.wewi.medimg.math.geom.*;
+import org.wewi.medimg.math.geom.DataPoint;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
@@ -146,7 +146,7 @@ public class DataPointViewer extends JPanel {
     
     private String mathematicaPoint(DataPoint point) {
         StringBuffer buffer = new StringBuffer();
-        int dim = point.getDim();
+        int dim = point.getDimension();
         buffer.append("Point[{");
         for (int i = 0; i < dim; i++) {
             buffer.append(point.getOrdinateNumber(i).doubleValue());
@@ -160,7 +160,7 @@ public class DataPointViewer extends JPanel {
     
     private String mathematicaDisc(DataPoint point) {
         StringBuffer buffer = new StringBuffer();
-        int dim = point.getDim();
+        int dim = point.getDimension();
         buffer.append("Disc[{");
         for (int i = 0; i < dim; i++) {
             buffer.append(point.getOrdinateNumber(i).doubleValue());
