@@ -6,11 +6,8 @@
 
 package org.wewi.medimg.reg;
 
-import org.wewi.medimg.reg.metric.TissueIterator;
-import org.wewi.medimg.reg.metric.TissueData;
-
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.Tissue;
+import org.wewi.medimg.reg.metric.TissueData;
 
 /**
  *

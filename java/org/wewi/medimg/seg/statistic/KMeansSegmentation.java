@@ -6,22 +6,18 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.math.geom.VoronoiDiagram1D;
-
-import org.wewi.medimg.image.VoxelIterator;
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.NullImage;
-
-import org.wewi.medimg.seg.ImageSegmentationStrategy;
-import org.wewi.medimg.seg.SegmentationEvent;
-import org.wewi.medimg.seg.ModelBasedSegmentation;
-import org.wewi.medimg.seg.SimpleSegmentationImage;
-import org.wewi.medimg.seg.FeatureImage;
-
 import java.util.Arrays;
 
-import cern.jet.random.engine.RandomEngine;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.NullImage;
+import org.wewi.medimg.image.VoxelIterator;
+import org.wewi.medimg.math.geom.VoronoiDiagram1D;
+import org.wewi.medimg.seg.ImageSegmentationStrategy;
+import org.wewi.medimg.seg.ModelBasedSegmentation;
+import org.wewi.medimg.seg.SegmentationEvent;
+
 import cern.jet.random.engine.MersenneTwister;
+import cern.jet.random.engine.RandomEngine;
 
 /**
  *

@@ -6,11 +6,11 @@
 
 package org.wewi.medimg.viewer;
 
-import org.wewi.medimg.image.ImageFormatTypes;
-
 import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
+
+import org.wewi.medimg.image.ImageFormatTypes;
 
 /**
  *

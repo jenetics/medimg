@@ -29,8 +29,8 @@
  */
 package org.wewi.medimg.visualisation;
 
-import javax.media.j3d.*;
-import javax.vecmath.*;
+import javax.media.j3d.CompressedGeometry;
+import javax.media.j3d.CompressedGeometryHeader;
 
 class GullCG extends CompressedGeometry {
 

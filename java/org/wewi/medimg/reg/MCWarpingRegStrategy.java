@@ -6,11 +6,9 @@
 
 package org.wewi.medimg.reg;
 
-import org.wewi.medimg.reg.interpolation.InterpolStrategy;
-
-import org.wewi.medimg.reg.metric.AffinityMetric;
-
 import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.reg.interpolation.InterpolStrategy;
+import org.wewi.medimg.reg.metric.AffinityMetric;
 /**
  *
  * @author  werner weiser

@@ -6,65 +6,34 @@
 
 package org.wewi.medimg.reg.wizard;
 
-import java.util.Observable;
-
-import org.wewi.medimg.util.Singleton;
-
 import java.awt.Dimension;
+import java.beans.PropertyVetoException;
+import java.io.File;
+import java.util.Observer;
 
-import org.wewi.medimg.seg.wizard.TwinImageViewer;
+import javax.swing.JFileChooser;
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.NullImage;
-import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.ImageFormatTypes;
-import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.TissueColorConversion;
-import org.wewi.medimg.image.Tissue;
-
 import org.wewi.medimg.image.io.ImageReader;
-import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ImageReaderFactory;
-import org.wewi.medimg.image.io.TIFFReaderFactory;
-import org.wewi.medimg.image.io.BMPReaderFactory;
-import org.wewi.medimg.image.io.RawImageReaderFactory;
-import org.wewi.medimg.image.io.ReaderThreadListener;
-import org.wewi.medimg.image.io.WriterThreadListener;
+import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
+import org.wewi.medimg.image.io.ReaderThreadListener;
 import org.wewi.medimg.image.io.WriterThreadEvent;
-import org.wewi.medimg.image.io.Range;
-
-
-import org.wewi.medimg.reg.metric.AffinityMetric;
-import org.wewi.medimg.reg.metric.TissueIterator;
-import org.wewi.medimg.reg.metric.TissueData;
-import org.wewi.medimg.reg.RegisterParameter;
+import org.wewi.medimg.image.io.WriterThreadListener;
 import org.wewi.medimg.reg.PCARegStrategy;
-import org.wewi.medimg.reg.Registrate;
 import org.wewi.medimg.reg.RegStrategy;
-import org.wewi.medimg.reg.interpolation.InterpolStrategy;
+import org.wewi.medimg.reg.RegisterParameter;
+import org.wewi.medimg.reg.Registrate;
 import org.wewi.medimg.reg.interpolation.WeightPointStrategy;
-import org.wewi.medimg.reg.interpolation.FittnessStrategy;
-import org.wewi.medimg.reg.interpolation.ImportanceStrategy;
-
-import org.wewi.medimg.reg.metric.ConstantAffinityMetric;
 import org.wewi.medimg.reg.metric.BBAffinityMetric;
-
-import org.wewi.medimg.viewer.wizard.Wizard;
-import org.wewi.medimg.viewer.Viewer;
-import org.wewi.medimg.viewer.ImageViewer;
+import org.wewi.medimg.seg.wizard.TwinImageViewer;
 import org.wewi.medimg.viewer.ImageFileChooser;
-
-import java.util.Observer;
-import java.util.Observable;
-
-import java.io.File;
-
-import java.beans.PropertyVetoException;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JFileChooser;
+import org.wewi.medimg.viewer.ImageViewer;
+import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.wizard.Wizard;
 
 /**
  *

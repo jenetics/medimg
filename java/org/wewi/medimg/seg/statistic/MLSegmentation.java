@@ -6,28 +6,21 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import org.wewi.medimg.seg.ImageSegmentationStrategy;
-import org.wewi.medimg.seg.SegmentationEvent;
-import org.wewi.medimg.seg.ModelBasedSegmentation;
-import org.wewi.medimg.seg.FeatureImage;
+import java.io.File;
+import java.util.Arrays;
 
-import org.wewi.medimg.math.GaussianDistribution;
-
-import org.wewi.medimg.image.io.*;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.math.GaussianDistribution;
+import org.wewi.medimg.seg.FeatureImage;
+import org.wewi.medimg.seg.ImageSegmentationStrategy;
+import org.wewi.medimg.seg.ModelBasedSegmentation;
+import org.wewi.medimg.seg.SegmentationEvent;
 
-import org.wewi.medimg.util.Timer;
-
-import java.util.Arrays;
-
-import java.io.File;
-
-import cern.jet.random.engine.RandomEngine;
 import cern.jet.random.engine.MersenneTwister;
+import cern.jet.random.engine.RandomEngine;
 
 
 /**

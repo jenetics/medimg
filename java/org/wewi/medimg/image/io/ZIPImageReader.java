@@ -6,16 +6,11 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.ImageData;
-
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileOutputStream;
-
 import java.util.Enumeration;
-
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 

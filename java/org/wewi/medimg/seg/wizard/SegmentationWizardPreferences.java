@@ -6,9 +6,9 @@
 
 package org.wewi.medimg.seg.wizard;
 
-import org.wewi.medimg.util.Singleton;
-
 import java.util.prefs.Preferences;
+
+import org.wewi.medimg.util.Singleton;
 
 /**
  *

@@ -6,39 +6,22 @@
 
 package org.wewi.medimg.viewer;
 
-import org.wewi.medimg.image.TissueColorConversion;
-
-import org.wewi.medimg.util.Singleton;
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
-
-import org.wewi.medimg.viewer.wizard.Wizard;
-import org.wewi.medimg.seg.wizard.SegmentationWizard;
-import org.wewi.medimg.seg.wizard.TwinImageViewer;
-
-import org.wewi.medimg.reg.wizard.RegistrationWizard;
-
-import org.wewi.medimg.visualisation.mc.wizard.MarchingCubeWizard;
-
+import java.awt.Dimension;
 import java.io.File;
 
-import java.util.Properties;
-
-import java.awt.Component;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-
-import java.awt.Dimension;
-import java.awt.Point;
-import javax.swing.JFrame;
-import javax.swing.JDialog;
-import javax.swing.JInternalFrame;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameListener;
-import javax.swing.JMenuItem;
 
+import org.wewi.medimg.image.io.ImageWriter;
+import org.wewi.medimg.reg.wizard.RegistrationWizard;
+import org.wewi.medimg.seg.wizard.SegmentationWizard;
+import org.wewi.medimg.util.Singleton;
+import org.wewi.medimg.viewer.wizard.Wizard;
 import org.wewi.medimg.visualisation.Viewer3D;
+import org.wewi.medimg.visualisation.mc.wizard.MarchingCubeWizard;
 
 /**
  *

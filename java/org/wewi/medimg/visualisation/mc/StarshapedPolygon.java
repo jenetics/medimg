@@ -6,23 +6,20 @@
 
 package org.wewi.medimg.visualisation.mc;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Vector;
 
 import org.wewi.medimg.util.NullIterator;
 
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.colt.matrix.linalg.EigenvalueDecomposition;
-import cern.colt.matrix.linalg.LUDecomposition;
 
 
 /**

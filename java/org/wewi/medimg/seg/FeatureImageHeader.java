@@ -6,13 +6,13 @@
 
 package org.wewi.medimg.seg;
 
-import org.wewi.medimg.image.ImageHeader;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
+
+import org.wewi.medimg.image.ImageHeader;
 
 /**
  *

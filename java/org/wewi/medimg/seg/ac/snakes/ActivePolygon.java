@@ -6,14 +6,13 @@
 
 package org.wewi.medimg.seg.ac.snakes;
 
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.image.geom.Point2D;
 import org.wewi.medimg.image.geom.PointIterator;
-
 import org.wewi.medimg.seg.ac.ActiveContour;
-
-import java.util.Vector;
-import java.util.Iterator;
 
 /**
  *

@@ -6,11 +6,9 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.ImageFactory;
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.ImageData;
-
 import java.io.File;
+
+import org.wewi.medimg.image.ImageFactory;
 
 /**
  *

@@ -6,32 +6,23 @@
 
 package org.wewi.medimg.reg;
 
-import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.impl.DenseDoubleMatrix2D;
-import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.impl.DenseDoubleMatrix1D;
-import cern.colt.matrix.DoubleFactory2D;
-import cern.colt.matrix.linalg.Algebra;
-import cern.colt.matrix.linalg.EigenvalueDecomposition;
-import cern.colt.matrix.linalg.LUDecomposition;
-
-import org.wewi.medimg.util.Timer;
-
 import org.wewi.medimg.image.Tissue;
-
-import org.wewi.medimg.reg.interpolation.InterpolStrategy;
-
-import org.wewi.medimg.reg.metric.AffinityMetric;
-
-import org.wewi.medimg.reg.metric.TissueIterator;
-import org.wewi.medimg.reg.metric.TissueData;
-
 import org.wewi.medimg.image.geom.transform.AffineTransform3D;
 import org.wewi.medimg.image.geom.transform.Transform;
 import org.wewi.medimg.image.geom.transform.TransformVector;
+import org.wewi.medimg.reg.interpolation.InterpolStrategy;
+import org.wewi.medimg.reg.metric.AffinityMetric;
+import org.wewi.medimg.reg.metric.TissueData;
+import org.wewi.medimg.reg.metric.TissueIterator;
+import org.wewi.medimg.util.Timer;
 
-import org.wewi.medimg.reg.wizard.RegistrationEvent;
+import cern.colt.matrix.DoubleFactory1D;
+import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
+import cern.colt.matrix.linalg.EigenvalueDecomposition;
+import cern.colt.matrix.linalg.LUDecomposition;
 
 /**
  *

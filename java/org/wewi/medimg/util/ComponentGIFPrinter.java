@@ -6,18 +6,15 @@
 
 package org.wewi.medimg.util;
 
+import jas.util.encoder.GifEncoder;
 import java.awt.Component;
-import java.awt.Image;
 import java.awt.Graphics;
-
-import javax.swing.RepaintManager;
-
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
-import jas.util.encoder.GifEncoder;
+import javax.swing.RepaintManager;
 
 /**
  *

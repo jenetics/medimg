@@ -6,50 +6,34 @@
 
 package org.wewi.medimg.seg.wizard;
 
-import org.wewi.medimg.util.Singleton;
+import java.beans.PropertyVetoException;
+import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.NullImage;
-import org.wewi.medimg.image.ImageData;
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.ImageFormatTypes;
+import javax.swing.JFileChooser;
+
 import org.wewi.medimg.image.FeatureColorConversion;
-
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.NullImage;
 import org.wewi.medimg.image.io.ImageReader;
-import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ImageReaderFactory;
-import org.wewi.medimg.image.io.TIFFReaderFactory;
-import org.wewi.medimg.image.io.BMPReaderFactory;
-import org.wewi.medimg.image.io.RawImageReaderFactory;
-import org.wewi.medimg.image.io.ReaderThreadListener;
-import org.wewi.medimg.image.io.WriterThreadListener;
+import org.wewi.medimg.image.io.ImageReaderThread;
 import org.wewi.medimg.image.io.ReaderThreadEvent;
+import org.wewi.medimg.image.io.ReaderThreadListener;
 import org.wewi.medimg.image.io.WriterThreadEvent;
-import org.wewi.medimg.image.io.Range;
-
-import org.wewi.medimg.seg.FeatureImage;
-import org.wewi.medimg.seg.SegmentationStrategy;
+import org.wewi.medimg.image.io.WriterThreadListener;
+import org.wewi.medimg.seg.ImageSegmentationStrategy;
 import org.wewi.medimg.seg.SegmentationEvent;
 import org.wewi.medimg.seg.SegmentationKind;
-import org.wewi.medimg.seg.ImageSegmentationStrategy;
-import org.wewi.medimg.seg.SegmentationStrategyThread;
 import org.wewi.medimg.seg.SegmentationListener;
-import org.wewi.medimg.seg.statistic.MLSegmentation;
+import org.wewi.medimg.seg.SegmentationStrategyThread;
 import org.wewi.medimg.seg.statistic.MAPSegmentation;
-
-import org.wewi.medimg.viewer.wizard.Wizard;
-import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.seg.statistic.MLSegmentation;
 import org.wewi.medimg.viewer.ImageFileChooser;
-
-import java.util.Observer;
-import java.util.Observable;
-
-import java.io.File;
-
-import java.beans.PropertyVetoException;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JFileChooser;
+import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.wizard.Wizard;
 
 /**
  *

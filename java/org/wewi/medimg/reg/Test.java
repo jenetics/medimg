@@ -6,31 +6,16 @@
 
 package org.wewi.medimg.reg;
 
-import org.wewi.medimg.util.Timer;
-
-
 import java.io.File;
 
-import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.TissueColorConversion;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
-import org.wewi.medimg.image.Tissue;
-import org.wewi.medimg.image.TissueColorConversion;
-
-
-import org.wewi.medimg.reg.RegisterParameter;
-import org.wewi.medimg.reg.PCARegStrategy;
-import org.wewi.medimg.reg.Registrate;
-
 import org.wewi.medimg.reg.interpolation.WeightPointStrategy;
-import org.wewi.medimg.reg.interpolation.FittnessStrategy;
-import org.wewi.medimg.reg.interpolation.ImportanceStrategy;
-
-import org.wewi.medimg.reg.metric.ConstantAffinityMetric;
 import org.wewi.medimg.reg.metric.BBAffinityMetric;
+import org.wewi.medimg.util.Timer;
 
 /**
  *

@@ -6,19 +6,21 @@
 
 package org.wewi.medimg.seg.stat;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ColorRange;
-
-import org.wewi.medimg.seg.Segmenter;
-import org.wewi.medimg.seg.Estimator;
-
+import java.io.File;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
-import org.wewi.medimg.seg.*;
-import java.io.*;
+import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.FeatureColorConversion;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.io.ImageReader;
+import org.wewi.medimg.image.io.ImageWriter;
+import org.wewi.medimg.image.io.Range;
+import org.wewi.medimg.image.io.TIFFReader;
+import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.seg.Estimator;
+import org.wewi.medimg.seg.Segmenter;
 
 /**
  *

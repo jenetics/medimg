@@ -6,8 +6,6 @@
 
 package org.wewi.medimg.seg.statistic;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 

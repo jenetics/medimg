@@ -6,12 +6,12 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+
+import org.wewi.medimg.image.Image;
 
 /**
  *

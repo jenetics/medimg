@@ -6,13 +6,11 @@
 
 package org.wewi.medimg.image.io;
 
-import org.wewi.medimg.image.Image;
-
-import java.util.Vector;
-import java.util.Iterator;
-
 import java.io.File;
-import java.io.IOException;
+import java.util.Iterator;
+import java.util.Vector;
+
+import org.wewi.medimg.image.Image;
 
 /**
  *

@@ -6,33 +6,21 @@
 
 package org.wewi.medimg.viewer;
 
-import java.util.Vector;
-import java.util.Iterator;
-
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.event.InternalFrameEvent;
-
 import java.awt.Cursor;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-
-
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImagePanel;
-import org.wewi.medimg.image.ColorConversion;
-import org.wewi.medimg.image.GreyRGBConversion;
-import org.wewi.medimg.image.TransformableImage;
-import org.wewi.medimg.image.geom.Transform;
-
-
-////////////////////////////////////////////////////////////////////////////////
-import org.wewi.medimg.image.*;
-import org.wewi.medimg.image.io.*;
-
 import java.io.File;
+import java.util.Iterator;
+import java.util.Vector;
+
+import javax.swing.event.InternalFrameEvent;
+
+import org.wewi.medimg.image.ColorConversion;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.ImagePanel;
+import org.wewi.medimg.image.geom.Transform;
+import org.wewi.medimg.image.io.TIFFReader;
 ////////////////////////////////////////////////////////////////////////////////
 
 /**

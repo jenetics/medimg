@@ -6,11 +6,9 @@
 
 package org.wewi.medimg.seg.statistic;
 
+import org.wewi.medimg.image.Image;
 import org.wewi.medimg.math.GaussianDistribution;
 import org.wewi.medimg.math.geom.VoronoiDiagram1D;
-
-import org.wewi.medimg.image.Image;
-
 import org.wewi.medimg.seg.ModelBasedSegmentation;
 
 /**

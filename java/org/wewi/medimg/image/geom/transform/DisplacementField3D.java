@@ -6,7 +6,6 @@
 
 package org.wewi.medimg.image.geom.transform;
 
-import org.wewi.medimg.image.Image;
 /**
  *
  * @author  werner weiser

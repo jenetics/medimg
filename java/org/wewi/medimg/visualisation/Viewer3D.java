@@ -8,62 +8,42 @@ package org.wewi.medimg.visualisation;
 
 
 
-import javax.media.j3d.Canvas3D;
-import javax.swing.event.InternalFrameEvent;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
-import org.wewi.medimg.viewer.ViewerDesktopFrame;
-import org.wewi.medimg.viewer.Viewer;
-import org.wewi.medimg.viewer.NavigationPanel;
+import javax.media.j3d.Alpha;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.DirectionalLight;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.Group;
+import javax.media.j3d.Material;
+import javax.media.j3d.Morph;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.swing.event.InternalFrameEvent;
+import javax.vecmath.Color3f;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
+
 import org.wewi.medimg.viewer.Command;
+import org.wewi.medimg.viewer.NavigationPanel;
 import org.wewi.medimg.viewer.NullCommand;
-import org.wewi.medimg.viewer.ImageContainer;
+import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.ViewerDesktopFrame;
 
-import java.awt.GraphicsConfiguration;
-
-import com.sun.j3d.utils.universe.SimpleUniverse;
-import com.sun.j3d.utils.geometry.ColorCube;
+import com.sun.j3d.utils.picking.PickTool;
+import com.sun.j3d.utils.picking.behaviors.PickRotateBehavior;
 import com.sun.j3d.utils.picking.behaviors.PickTranslateBehavior;
 import com.sun.j3d.utils.picking.behaviors.PickZoomBehavior;
-import com.sun.j3d.utils.picking.behaviors.PickRotateBehavior;
-import com.sun.j3d.utils.picking.PickTool;
-
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.TransformGroup;
-import javax.media.j3d.Transform3D;
-import javax.media.j3d.Alpha;
-import javax.media.j3d.RotationInterpolator;
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.View;
-import javax.media.j3d.Group;
-import javax.media.j3d.DirectionalLight;
-import javax.media.j3d.Morph;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.Geometry;
-import javax.media.j3d.Appearance;
-import javax.media.j3d.QuadArray;
-import javax.media.j3d.Material;
-import javax.media.j3d.GeometryArray;
-import javax.media.j3d.PointAttributes;
-
-
-import java.awt.event.ActionEvent;
-import java.awt.Component;
-
-import javax.vecmath.Color3f;
-import javax.vecmath.Vector3f;
-import javax.vecmath.Vector3d;
-import javax.vecmath.Point3d;
-
-import javax.swing.JPanel;
-
-
-import org.wewi.medimg.viewer.ViewerDesktopFrame;
-
-import javax.media.j3d.Canvas3D;
+import com.sun.j3d.utils.universe.SimpleUniverse;
 
 public class Viewer3D extends ViewerDesktopFrame {
 

@@ -6,17 +6,13 @@
 
 package org.wewi.medimg.image;
 
-import org.wewi.medimg.image.io.*;
-import java.io.File;
 
-import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
-import java.awt.Graphics;
-import java.awt.Color;
 
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 
 /**
  *

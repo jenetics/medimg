@@ -6,35 +6,31 @@
 
 package org.wewi.medimg.seg.wizard;
 
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImagePanel;
-import org.wewi.medimg.image.ColorConversion;
-import org.wewi.medimg.image.GreyRGBConversion;
-
-import org.wewi.medimg.viewer.ViewerDesktopFrame;
-import org.wewi.medimg.viewer.Viewer;
-import org.wewi.medimg.viewer.NavigationPanel;
-import org.wewi.medimg.viewer.Command;
-import org.wewi.medimg.viewer.NullCommand;
-import org.wewi.medimg.viewer.ImageContainer;
-
-import org.wewi.medimg.viewer.wizard.WizardListener;
-import org.wewi.medimg.viewer.wizard.WizardEvent;
-
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.event.InternalFrameEvent;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JMenuItem;
+import javax.swing.event.InternalFrameEvent;
+
+import org.wewi.medimg.image.ColorConversion;
+import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImagePanel;
+import org.wewi.medimg.viewer.Command;
+import org.wewi.medimg.viewer.ImageContainer;
+import org.wewi.medimg.viewer.NavigationPanel;
+import org.wewi.medimg.viewer.NullCommand;
+import org.wewi.medimg.viewer.Viewer;
+import org.wewi.medimg.viewer.ViewerDesktopFrame;
+import org.wewi.medimg.viewer.wizard.WizardEvent;
+import org.wewi.medimg.viewer.wizard.WizardListener;
 
 /**
  *

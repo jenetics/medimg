@@ -7,11 +7,9 @@
 package org.wewi.medimg.seg.stat;
 
 import org.wewi.medimg.image.Image;
-
-import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.Classifier;
+import org.wewi.medimg.seg.ObservableSegmenter;
 
-import org.wewi.medimg.util.Timer;
 
 /**
  *
@@ -21,6 +19,7 @@ public class MLClassifier extends ObservableSegmenter implements Classifier {
     private double[] mean;
     private double[] var;
     private double[] deviation;
+    
     
     /**
      * Dieser Maximum-Likelihood-Klassifikator geht

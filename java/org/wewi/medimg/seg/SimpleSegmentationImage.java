@@ -6,12 +6,12 @@
 
 package org.wewi.medimg.seg;
 
-import org.wewi.medimg.image.Image;
+import java.util.Arrays;
+
 import org.wewi.medimg.image.ColorRange;
+import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageHeader;
 import org.wewi.medimg.image.VoxelIterator;
-
-import java.util.Arrays;
 
 /**
  *

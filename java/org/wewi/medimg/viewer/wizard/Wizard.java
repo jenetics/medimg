@@ -6,11 +6,10 @@
 
 package org.wewi.medimg.viewer.wizard;
 
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JInternalFrame;
-import javax.swing.JMenuItem;
 
 /**
  *

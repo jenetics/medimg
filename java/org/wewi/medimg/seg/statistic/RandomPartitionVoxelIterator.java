@@ -9,8 +9,8 @@ package org.wewi.medimg.seg.statistic;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.VoxelIterator;
 
-import cern.jet.random.engine.RandomEngine;
 import cern.jet.random.engine.MersenneTwister;
+import cern.jet.random.engine.RandomEngine;
 
 /**
  *

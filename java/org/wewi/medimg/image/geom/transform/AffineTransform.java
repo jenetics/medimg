@@ -9,7 +9,6 @@ package org.wewi.medimg.image.geom.transform;
 import org.wewi.medimg.image.Image;
 
 import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.linalg.Algebra;
 

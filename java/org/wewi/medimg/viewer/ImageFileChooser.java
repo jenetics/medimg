@@ -6,38 +6,23 @@
 
 package org.wewi.medimg.viewer;
 
-import org.wewi.medimg.image.ImageFormatTypes;
-import org.wewi.medimg.image.io.ImageReader;
-import org.wewi.medimg.image.io.TIFFReader;
-import org.wewi.medimg.image.io.BMPReader;
-import org.wewi.medimg.image.io.RawImageReader;
-import org.wewi.medimg.image.io.ImageReaderFactory;
-import org.wewi.medimg.image.io.TIFFReaderFactory;
-import org.wewi.medimg.image.io.BMPReaderFactory;
-import org.wewi.medimg.image.io.RawImageReaderFactory;
-import org.wewi.medimg.image.io.ImageWriter;
-import org.wewi.medimg.image.io.TIFFWriter;
-import org.wewi.medimg.image.io.BMPWriter;
-import org.wewi.medimg.image.io.RawImageWriter;
-import org.wewi.medimg.image.io.ImageWriterFactory;
-import org.wewi.medimg.image.io.TIFFWriterFactory;
-import org.wewi.medimg.image.io.BMPWriterFactory;
-import org.wewi.medimg.image.io.RawImageWriterFactory;
-import org.wewi.medimg.image.io.Range;
-
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileView;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
 
-import java.io.File;
+import org.wewi.medimg.image.ImageFormatTypes;
+import org.wewi.medimg.image.io.BMPReaderFactory;
+import org.wewi.medimg.image.io.BMPWriterFactory;
+import org.wewi.medimg.image.io.ImageReaderFactory;
+import org.wewi.medimg.image.io.ImageWriterFactory;
+import org.wewi.medimg.image.io.Range;
+import org.wewi.medimg.image.io.RawImageReaderFactory;
+import org.wewi.medimg.image.io.RawImageWriterFactory;
+import org.wewi.medimg.image.io.TIFFReaderFactory;
+import org.wewi.medimg.image.io.TIFFWriterFactory;
 
 /**
  *

@@ -7,21 +7,12 @@
 package org.wewi.medimg.reg;
 
 
-import org.wewi.medimg.image.geom.transform.Transform;
-import org.wewi.medimg.reg.RegisterParameter;
-import org.wewi.medimg.reg.RegStrategy;
-
-
-
-import org.wewi.medimg.image.Image;
-import org.wewi.medimg.reg.wizard.RegistrationListener;
-import org.wewi.medimg.reg.wizard.RegistrationEvent;
-
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
-
-
+import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.reg.wizard.RegistrationEvent;
+import org.wewi.medimg.reg.wizard.RegistrationListener;
 import org.wewi.medimg.util.Timer;
 
 /**

@@ -6,16 +6,14 @@
 
 package org.wewi.medimg.seg.kmeans;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import java.awt.Dimension;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.*;
 import java.awt.Stroke;
-import java.awt.Color;
-import java.awt.BasicStroke;
+import java.awt.geom.Ellipse2D;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
