@@ -41,4 +41,8 @@ public class PseudoColorConversion implements ColorConversion {
         rgb[2] = blueConversion(grey);
     }
     
+    public Object clone() {
+    	return new PseudoColorConversion();	
+    }
+    
 }

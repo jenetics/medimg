@@ -10,7 +10,7 @@ import java.io.File;
 
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.geom.AffineTransform;
+import org.wewi.medimg.image.geom.AffineTransformation;
 import org.wewi.medimg.image.io.Range;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
@@ -136,7 +136,7 @@ public class Test {
             double[] m = {-1,0,0,640,
                           0,1,0,0,
                           0,0,1,0};
-            AffineTransform t = new AffineTransform(m);
+            AffineTransformation t = new AffineTransformation(m);
             t.transform(image, target);
             
             TIFFWriter writer = new TIFFWriter(target, new File("C:/temp/target.tif"));

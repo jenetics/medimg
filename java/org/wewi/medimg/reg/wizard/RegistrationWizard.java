@@ -177,7 +177,7 @@ public class RegistrationWizard extends Wizard implements Observer, ReaderThread
     }*/ 
     
     public void registrationStarted(RegistrationEvent event) {
-        TissueColorConversion tcc = TissueColorConversion.getInstance();
+        TissueColorConversion tcc = new TissueColorConversion();
         imageViewer = new TwinImageViewer("Koregistriervorgang", imageData1, imageData2, tcc, tcc);
         //imageViewer.setColorConversion1(tcc);
         //imageViewer.setColorConversion2(tcc);
@@ -189,7 +189,7 @@ public class RegistrationWizard extends Wizard implements Observer, ReaderThread
     public void registrationFinished(RegistrationEvent event) {
         regStartButton.setText("Start");
         registrationStateTextField.setText(event.toString());
-        TissueColorConversion tcc = TissueColorConversion.getInstance(); 
+        TissueColorConversion tcc = new TissueColorConversion(); 
         ImageViewer iv = new ImageViewer("Koregistriervorgang beendet", param.getTargetImage(), tcc);
        
         //iv.setColorConversion(tcc);
@@ -420,7 +420,7 @@ public class RegistrationWizard extends Wizard implements Observer, ReaderThread
         imageReader2 = readerFactory.createImageReader(ImageDataFactory.getInstance(),
                                                                   new File(fileName));
         //imageReader2.setRange(new Range(100, 119)); 
-        TissueColorConversion tcc = TissueColorConversion.getInstance();
+        TissueColorConversion tcc = new TissueColorConversion();
         imageReader2.setColorConversion(tcc); 
         imageDataTargetTextField.setText(fileName);        
     }//GEN-LAST:event_targetImageDataSearchButtonActionPerformed
@@ -488,7 +488,7 @@ public class RegistrationWizard extends Wizard implements Observer, ReaderThread
         imageReader1 = readerFactory.createImageReader(ImageDataFactory.getInstance(),
                                                              new File(fileName));
         //reader.setRange(new Range(100, 119));     
-        TissueColorConversion tcc = TissueColorConversion.getInstance();
+        TissueColorConversion tcc = new TissueColorConversion();
         imageReader1.setColorConversion(tcc); 
         imageDataSourceTextField.setText(fileName);
     }//GEN-LAST:event_sourceImageDataSearchButtonActionPerformed

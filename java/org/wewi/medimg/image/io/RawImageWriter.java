@@ -43,19 +43,6 @@ public class RawImageWriter extends ImageWriter {
         }
     }
     
-    /*
-    public static void main(String[] args) {
-        File source = new File("C:/Workspace/fwilhelm/Projects/SRS/data/srsSEG/segTest/head.in.001");
-        TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(), source);
-        reader.read();
-        ImageData data = (ImageData)reader.getImage();
-        System.out.println(data);
-        
-        ImageWriter writer = new RawImageDataWriter(data, new File("c:/temp/out.rid"));
-        ZIPImageWriter zipWriter = new ZIPImageWriter(writer);
-        zipWriter.write();
-    }
-    */
 }
 
 

@@ -6,25 +6,18 @@
 
 package org.wewi.medimg.image;
 
-import org.wewi.medimg.util.Singleton;
 
 /**
  *
  * @author  werner weiser
  * @version 
  */
-public class TissueColorConversion implements ColorConversion, Singleton {
-    private static TissueColorConversion singleton = null;
+public class TissueColorConversion implements ColorConversion {
+
     /** Creates new TissueColorConversion */
     public TissueColorConversion() {
     }
     
-    public static TissueColorConversion getInstance() {
-        if (singleton == null) {
-            singleton = new TissueColorConversion();
-        }
-        return singleton; 
-    }
     
     public void convert(int grey, int[] rgb) {
         if (grey == Tissue.VENTRICLE.intValue()) {
@@ -104,5 +97,9 @@ public class TissueColorConversion implements ColorConversion, Singleton {
                 // nothing  mentionable 
                 return Tissue.UNDEFINED.intValue();
             }
+    }
+    
+    public Object clone() {
+    	return new TissueColorConversion();	
     }
 }

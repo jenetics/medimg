@@ -20,6 +20,7 @@ import javax.swing.JPanel;
  * @version 0.2
  */
 public class ImagePanel extends JPanel {
+	
     private org.wewi.medimg.image.Image image = null;
     private org.wewi.medimg.image.ColorConversion conversion = null;
     private BufferedImage bufferedImage = null;
@@ -35,12 +36,11 @@ public class ImagePanel extends JPanel {
         sizeX = image.getMaxX() - image.getMinX() + 1;
         sizeY = image.getMaxY() - image.getMinY() + 1;
         qxy = (double)sizeX/(double)sizeY;
-        //conversion = new TissueColorConversion();
-        conversion = new GreyRGBConversion();
+        conversion = image.getColorConversion();
         rawData = new int[sizeX*sizeY*3];      
         bufferedImage = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_3BYTE_BGR); 
         
-        setBackground(Color.white);
+        setBackground(Color.WHITE);
     }
       
     
@@ -79,9 +79,13 @@ public class ImagePanel extends JPanel {
             return;
         }
         int[] pixel = new int[3];
+        int minX = image.getMinX();
+        int maxX = image.getMaxX();
+        int minY = image.getMinY();
+        int maxY = image.getMaxY();
         int counter = 0;
-        for (int j = image.getMinY(); j <= image.getMaxY(); j++) {
-            for (int i = image.getMinX(); i <= image.getMaxX(); i++) {
+        for (int j = minY; j <= maxY; j++) {
+            for (int i = minX; i <= maxX; i++) {
                 conversion.convert(image.getColor(i, j, slice), pixel);
                 rawData[3*counter+0] = pixel[0];
                 rawData[3*counter+1] = pixel[1];
@@ -95,20 +99,4 @@ public class ImagePanel extends JPanel {
         this.repaint();
     }
     
-    
-  /*  
-    public static void main(String[] args) {
-        File source = new File("C:/Workspace/fwilhelm/Projekte/SRS/pic/seg/heads/001");
-        TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(), source);
-        reader.read();
-        ImageData data = (ImageData)reader.getImage();
-        System.out.println(data);        
-        ImagePanel viewer = new ImagePanel(data);
-        viewer.setSlice(120);
-        
-        JFrame frame = new JFrame();
-        frame.getContentPane().add(viewer);
-        frame.show();       
-    }
- */
 }

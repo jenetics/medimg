@@ -17,7 +17,7 @@ import org.wewi.medimg.util.Nullable;
  *
  *
  * @author Franz Wilhelmstötter
- * @version 0.2;
+ * @version 0.2
  */
 public interface Image extends Nullable, Cloneable {
        
@@ -32,6 +32,8 @@ public interface Image extends Nullable, Cloneable {
     public int getColor(int x, int y, int z);   
     
     public ColorRange getColorRange();
+    
+    public Dimension getDimension();
     
     public int getMinColor();
     
@@ -68,5 +70,9 @@ public interface Image extends Nullable, Cloneable {
     public Object clone();
     
     public ImageHeader getHeader();
+    
+    public ColorConversion getColorConversion();
+    
+    public void setColorConversion(ColorConversion cc);
 }
 

@@ -25,6 +25,7 @@ public final class TIFFWriter extends JAIImageWriter {
         super(image, destination);
         
         TIFFEncodeParam param = new TIFFEncodeParam();
+        param.setCompression(TIFFEncodeParam.COMPRESSION_PACKBITS);
         encodeParameter = param;
         imageExtention = ".tif";
     }
@@ -33,17 +34,4 @@ public final class TIFFWriter extends JAIImageWriter {
         encoder = ImageCodec.createImageEncoder("tiff", out, encodeParameter);
     }    
     
-    /*
-    public static void main(String[] args) {
-        File source = new File("C:/cygwin/home/fwilhelm/diplom/algorithms/data/head.in.001");
-        TIFFReader reader = new TIFFReader(ImageDataFactory.getInstance(), source);
-        reader.read();
-        ImageData data = (ImageData)reader.getImage();
-        System.out.println(data);
-     
-        ZIPImageWriter writer = new ZIPImageWriter(new TIFFWriter(data, new File("c:/temp/out")));
-        writer.write();
-     
-    }
-     */
 }

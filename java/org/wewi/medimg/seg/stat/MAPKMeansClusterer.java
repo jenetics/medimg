@@ -12,6 +12,7 @@ import org.wewi.medimg.image.Image;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public class MAPKMeansClusterer extends MLKMeansClusterer {
     private static double BETA = 0.35;
@@ -23,20 +24,32 @@ public class MAPKMeansClusterer extends MLKMeansClusterer {
     private int[] n6 = new int[6];
     private int[] n12 = new int[12];    
     
-    /** Creates a new instance of MAPKMeansClusterer */
+
+	/**
+	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#MLKMeansClusterer(int)
+	 */
     public MAPKMeansClusterer(int k) {
         super(k);
     }
     
+	/**
+	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#createSegimgOld(Image)
+	 */
     protected void createSegimgOld(Image segimg) {
         segimgOld = (Image)segimg.clone();
         size = segimgOld.getNVoxels();
     }
     
+	/**
+	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#saveOldFeatureColor(int, int)
+	 */
     protected void saveOldFeatureColor(int pos, int color) {
         segimgOld.setColor(pos, color);
     }
     
+	/**
+	 * @see org.wewi.medimg.seg.stat.MLKMeansClusterer#getCliquesPotential(int, int)
+	 */
     protected double getCliquesPotential(int pos, int f) {
         double Vc = 0.0;
 

@@ -13,10 +13,11 @@ import java.io.IOException;
 
 import javax.media.jai.JAI;
 
+import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.NullImage;
-import org.wewi.medimg.image.RGBGreyColorConversion;
+import org.wewi.medimg.image.RGBColorConversion;
 
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
@@ -49,7 +50,7 @@ abstract class JAIImageReader extends ImageReader {
             RenderedImage img =  JAI.create("fileload", filename);
             int comp = img.getColorModel().getColorSpace().getNumComponents();
             if (comp == 3) {
-                colorConversion = new RGBGreyColorConversion(65000);
+                colorConversion = new RGBColorConversion();
             }
             return img;
         } else {
@@ -86,7 +87,7 @@ abstract class JAIImageReader extends ImageReader {
             }            
         }
         
-        //Ab hier muß das Array der Schichten gefüllt sein.
+        //ASSERT: Ab hier muß das Array der Schichten gefüllt sein.
         assert(slices == null);
         
         //Wenn ein Bereich festgelegt wurde, wird dies hier berücksichtigt
@@ -97,8 +98,7 @@ abstract class JAIImageReader extends ImageReader {
             return;
         }
         minSlice = range.getMinSlice();
-        maxSlice = Math.min(range.getMaxSlice(), maxSlice);
-        //System.out.println("JAIImageReader(88): min: " + minSlice + ",  max: " + maxSlice); 
+        maxSlice = Math.min(range.getMaxSlice(), maxSlice); 
         
         //Lesen des ersten Bildes
         RenderedImage rimage = null;
@@ -115,7 +115,10 @@ abstract class JAIImageReader extends ImageReader {
         int sizeY = raster.getHeight();
         int sizeZ = maxSlice - minSlice + 1;
         int[] pixel = new int[3];
+        
+        //Erzeugen des Bildes, wenn alle Daten bekannt sind
         image = imageFactory.createImage(sizeX, sizeY, sizeZ);
+        image.setColorConversion((ColorConversion)colorConversion.clone());
         
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {

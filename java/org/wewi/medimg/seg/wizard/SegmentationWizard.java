@@ -29,6 +29,11 @@ import org.wewi.medimg.seg.SegmentationEvent;
 import org.wewi.medimg.seg.SegmentationKind;
 import org.wewi.medimg.seg.SegmentationListener;
 import org.wewi.medimg.seg.SegmentationStrategyThread;
+import org.wewi.medimg.seg.Segmenter;
+import org.wewi.medimg.seg.SegmenterEnumeration;
+import org.wewi.medimg.seg.SegmenterEvent;
+import org.wewi.medimg.seg.SegmenterObserver;
+import org.wewi.medimg.seg.SegmenterThread;
 import org.wewi.medimg.seg.statistic.MAPSegmentation;
 import org.wewi.medimg.seg.statistic.MLSegmentation;
 import org.wewi.medimg.viewer.ImageFileChooser;
@@ -44,6 +49,56 @@ public class SegmentationWizard extends Wizard implements Observer,
                                                           ReaderThreadListener,
                                                           WriterThreadListener,
                                                           SegmentationListener {
+                                                          	
+                                                          	
+    private class SegmenterWorker implements ReaderThreadListener,
+                                                SegmenterObserver {
+                                                	
+        private SegmentationWizard wizard;
+        
+        public SegmenterWorker(SegmentationWizard wizard) {
+        	this.wizard = wizard;
+        }  
+        
+        public void startSegmenter() {
+	        wizard.segStartButton.setText("Laden des Bildes...");
+	        
+	        ImageReaderThread readerThread = new ImageReaderThread(imageReader);
+	        readerThread.addReaderThreadListener(this);
+	        readerThread.setPriority(Thread.MIN_PRIORITY);
+	        readerThread.start();        	
+        }                                              	
+    		
+    	
+        /**
+		 * @see org.wewi.medimg.seg.SegmenterObserver#segmenterFinished(SegmenterEvent)
+		 */
+		public void segmenterFinished(SegmenterEvent event) {
+		}
+
+		/**
+		 * @see org.wewi.medimg.seg.SegmenterObserver#segmenterStarted(SegmenterEvent)
+		 */
+		public void segmenterStarted(SegmenterEvent event) {
+			wizard.segStartButton.setText("Segmentieren des Bildes...");
+		}
+
+		/**
+		 * @see org.wewi.medimg.image.io.ReaderThreadListener#imageRead(ReaderThreadEvent)
+		 */
+		public void imageRead(ReaderThreadEvent event) {
+			ImageReaderThread thread = (ImageReaderThread)event.getSource();
+			ImageReader reader = thread.getImageReader();
+	        wizard.mrtImage = reader.getImage();
+	        wizard.segmenter = wizard.segmenterArgumentPanel.getSegmenter();
+	        
+			SegmenterThread segmenterThread = new SegmenterThread(segmenter);
+			segmenterThread.addSegmenterObserver(this);
+			segmenterThread.setPriority(Thread.MIN_PRIORITY);
+			segmenterThread.start();			
+		}
+
+    }                                                          	
                                                               
     private static final String MENU_NAME = "Segmentierung";
     private static SegmentationWizard singleton = null;
@@ -53,8 +108,11 @@ public class SegmentationWizard extends Wizard implements Observer,
     private int nfeatures = 4;
     
     private ImageSegmentationStrategy segmentationStrategy = null;
-    private Image imageData = new NullImage();
-    private Image featureData = null;
+    private SegmenterArgumentPanel segmenterArgumentPanel;
+    private Segmenter segmenter;
+    private SegmenterThread segmenterThread;
+    private Image mrtImage = new NullImage();
+    private Image segImage = null;
     
     private SegmentationStrategyThread segmenationThread;
     private TwinImageViewer imageViewer;
@@ -74,6 +132,24 @@ public class SegmentationWizard extends Wizard implements Observer,
     
     private void init() {
         swPrefs = SegmentationWizardPreferences.getInstance();
+        for (int i = 0; i < SegmenterEnumeration.ENUMERATION.length; i++) {
+            segEnumComboBox.addItem(SegmenterEnumeration.ENUMERATION[i]);
+        }
+        
+        SegmenterEnumeration enum = (SegmenterEnumeration)segEnumComboBox.getSelectedItem();
+        if (enum.equals(SegmenterEnumeration.ML_CLUSTERER)) {
+            setSegmenterArgumentPanel(new MLKMeansClustererArgumentPanel());
+        } else if (enum.equals(SegmenterEnumeration.MAP_CLUSTERER)) {
+            setSegmenterArgumentPanel(new MAPKMeansClustererArgumentPanel());
+        }
+    }
+    
+    private void setSegmenterArgumentPanel(SegmenterArgumentPanel panel) {
+        segmenterArgumentPanel = panel;
+        segmenterPanel.removeAll();
+        segmenterPanel.add(panel);
+        
+        segmenterPanel.updateUI();
     }
     
     public void dispose() {
@@ -112,12 +188,16 @@ public class SegmentationWizard extends Wizard implements Observer,
     public void update(Observable observable, Object obj) {
     }   
     
+    /**
+     * Diese Methode wird nach dem Lesen vom ImageReaderThread aufgerufen
+     */
     public void imageRead(ReaderThreadEvent event) {
-        imageData = imageReader.getImage();
+    	
+        mrtImage = imageReader.getImage();
         if (segmentationKind.equals(SegmentationKind.ML)) {
-            segmentationStrategy = new MLSegmentation(imageData, nfeatures);
+            segmentationStrategy = new MLSegmentation(mrtImage, nfeatures);
         } else if (segmentationKind.equals(SegmentationKind.MAP)) {
-            segmentationStrategy = new MAPSegmentation(imageData, nfeatures, 20);
+            segmentationStrategy = new MAPSegmentation(mrtImage, nfeatures, 20);
         }
       
         segmentationStrategy.addSegmentationListener(this);
@@ -125,7 +205,12 @@ public class SegmentationWizard extends Wizard implements Observer,
         segmentationThread.setPriority(Thread.MIN_PRIORITY);
         segmentationThread.start();
         segStartButton.setText("Segmentieren des Bildes...");        
-    }    
+    } 
+    
+    public void imageRead_(ReaderThreadEvent event) {
+    	mrtImage = imageReader.getImage();
+    	segmenter = segmenterArgumentPanel.getSegmenter();	
+    }   
            
     public void imageWritten(WriterThreadEvent event) {
     }
@@ -136,7 +221,7 @@ public class SegmentationWizard extends Wizard implements Observer,
     } 
     
     public void segmentationStarted(SegmentationEvent event) {
-        imageViewer = new TwinImageViewer("Segmentiervorgang", imageData, segmentationStrategy.getSegmentedImage());
+        imageViewer = new TwinImageViewer("Segmentiervorgang", mrtImage, segmentationStrategy.getSegmentedImage());
         imageViewer.setColorConversion2(new FeatureColorConversion());
         imageViewer.pack();
         Viewer.getInstance().addViewerDesktopFrame(imageViewer); 
@@ -185,6 +270,10 @@ public class SegmentationWizard extends Wizard implements Observer,
         jPanel41 = new javax.swing.JPanel();
         segmentationStateTextField = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        comboBoxPanel = new javax.swing.JPanel();
+        segEnumComboBox = new javax.swing.JComboBox();
+        segmenterPanel = new javax.swing.JPanel();
         southPanel = new javax.swing.JPanel();
         jPanel30 = new javax.swing.JPanel();
         cancleButton = new javax.swing.JButton();
@@ -338,6 +427,26 @@ public class SegmentationWizard extends Wizard implements Observer,
 
         wizardTappedPanel.addTab("Starten", null, wizardStep3, "");
 
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        comboBoxPanel.setLayout(new java.awt.GridLayout());
+
+        segEnumComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                segEnumComboBoxItemStateChanged(evt);
+            }
+        });
+
+        comboBoxPanel.add(segEnumComboBox);
+
+        jPanel2.add(comboBoxPanel, java.awt.BorderLayout.NORTH);
+
+        segmenterPanel.setLayout(new java.awt.GridLayout());
+
+        jPanel2.add(segmenterPanel, java.awt.BorderLayout.CENTER);
+
+        wizardTappedPanel.addTab("tab4", jPanel2);
+
         centerPanel.add(wizardTappedPanel);
 
         getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
@@ -366,6 +475,17 @@ public class SegmentationWizard extends Wizard implements Observer,
 
         pack();
     }//GEN-END:initComponents
+
+    private void segEnumComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_segEnumComboBoxItemStateChanged
+        // Add your handling code here:
+        SegmenterEnumeration enum = (SegmenterEnumeration)segEnumComboBox.getSelectedItem();        
+        if (enum.equals(SegmenterEnumeration.ML_CLUSTERER)) {
+            setSegmenterArgumentPanel(new MLKMeansClustererArgumentPanel());
+        } else if (enum.equals(SegmenterEnumeration.MAP_CLUSTERER)) {
+            setSegmenterArgumentPanel(new MAPKMeansClustererArgumentPanel());
+        }   
+        
+    }//GEN-LAST:event_segEnumComboBoxItemStateChanged
 
     private void segStartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_segStartButtonActionPerformed
         // Add your handling code here:
@@ -462,12 +582,15 @@ public class SegmentationWizard extends Wizard implements Observer,
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel wizardStep2;
     private javax.swing.JPanel wizardStep1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel southPanel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel40;
+    private javax.swing.JComboBox segEnumComboBox;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JTabbedPane wizardTappedPanel;
+    private javax.swing.JPanel comboBoxPanel;
     private javax.swing.JPanel jPanel39;
     private javax.swing.JButton segStartButton;
     private javax.swing.JButton cancleButton;
@@ -478,6 +601,7 @@ public class SegmentationWizard extends Wizard implements Observer,
     private javax.swing.JTextField imageDataSourceTextField;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JButton closeButton;
+    private javax.swing.JPanel segmenterPanel;
     private javax.swing.JRadioButton mlSegKindRadioButton;
     private javax.swing.JTextField mlNFeaturesTextField;
     private javax.swing.JRadioButton mapSegKindRadioButton;
