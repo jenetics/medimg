@@ -133,8 +133,11 @@ public class AffineTransform implements Transform {
     }
     
     public Image transform(Image source) {
-        return null;
+        return source;
     }
+    
+    public void transform(Image source, Image target) {
+    }    
     
     public void transform(double[] source, double[] target) {
         double x = matrix[0] * source[0] + 
