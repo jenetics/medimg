@@ -12,10 +12,10 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.geom.Neighborhood3D18;
 import org.wewi.medimg.image.geom.Point3D;
 import org.wewi.medimg.image.geom.transform.DisplacementField3D;
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
+import org.wewi.medimg.math.geom.DoubleDataPoint;
 import org.wewi.medimg.reg.interpolation.InterpolStrategy;
 import org.wewi.medimg.reg.metric.AffinityMetric;
-import org.wewi.medimg.reg.metric.DoublePoint3D;
 
 import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
@@ -48,7 +48,7 @@ public class MCWarpingRegStrategy implements RegStrategy {
 
     }    
     
-    public Transform calculate(RegisterParameter param) throws RegistrationException {
+    public Transformation calculate(RegisterParameter param) throws RegistrationException {
         //DisplacementField3D erg = new 
         double[] point1;
         double[] point2;
@@ -98,7 +98,7 @@ public class MCWarpingRegStrategy implements RegStrategy {
                         point2[1] = point2[1] - point1[1];
                         point2[2] = point2[2] - point1[2];
                         System.out.println("{{" + point1[0] + "," + point1[1] + "},{" + point2[0] + "," + point2[1] + "}},");  
-                        retVal.addDisplacementVector(new DoublePoint3D(point2), new DoublePoint3D(point1));
+                        retVal.addDisplacementVector(new DoubleDataPoint(point2), new DoubleDataPoint(point1));
                         cou++;
                     }
                 }

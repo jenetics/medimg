@@ -7,8 +7,8 @@
 package org.wewi.medimg.image.geom.transform;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.math.geom.DoubleDataPoint;
 
-import org.wewi.medimg.reg.metric.DoublePoint3D;
 
 import org.wewi.medimg.util.Timer;
 
@@ -40,43 +40,43 @@ public class DisplacementField3D extends DisplacementField {
      * @return target Transformierter Punkt
      */
     public double[] transform_fw(double[] source) {
-        DoublePoint3D target = new DoublePoint3D(source);
+        DoubleDataPoint target = new DoubleDataPoint(source);
         //System.out.println(" target " + target.getValue(0) + " , " + target.getValue(1) +  " , " + target.getValue(2));
         //System.out.println(" size " + referencePoints.size() + " DIM " + DIM);
         double[] retVal = new double[DIM];
         double tempMetric = 0.0;
         double sumMetric = 0.0;
         Arrays.fill(retVal, (double) 0);
-        DoublePoint3D temp = new DoublePoint3D(retVal);
-        DoublePoint3D temp1;
-        DoublePoint3D temp2;
+        DoubleDataPoint temp = new DoubleDataPoint(retVal);
+        DoubleDataPoint temp1;
+        DoubleDataPoint temp2;
         if (displacementVectorExists(target)) {
             temp = getDisplacementVector(target);
-            temp2 = target.plus(temp);
-            retVal = temp2.toDouble();
+            temp2 = (DoubleDataPoint)target.add(temp);
+            retVal = temp2.getValue();
             //grenzen überprüfen
             return retVal;
         }
         for (int i = 0; i < referencePoints.size(); i++) {
-            temp1 = (DoublePoint3D)referencePoints.elementAt(i);
+            temp1 = (DoubleDataPoint)referencePoints.elementAt(i);
             temp2 = getDisplacementVector(temp1);
             tempMetric = cityBlockMetric(target, temp1);
             //tempMetric = euclidianMetric(target, temp1);            
-            temp2 = temp2.scale(tempMetric);
-            temp = temp.plus(temp2);
+            temp2 = (DoubleDataPoint)temp2.scale(tempMetric);
+            temp = (DoubleDataPoint)temp.add(temp2);
             sumMetric += tempMetric;
         }
         // keine Vektoren vorhanden
         if (sumMetric != 0) {
             sumMetric = 1 / sumMetric;
-            temp = temp.scale(sumMetric);
+            temp = (DoubleDataPoint)temp.scale(sumMetric);
         }
         //System.out.println(" target " + target.getValue(0) + " , " + target.getValue(1) +  " , " + target.getValue(2));
         //System.out.println(" retVal " + retVal[0] + " , " + retVal[0] +  " , " + retVal[0]);
         //System.out.println(" temp " + temp.getValue(0) + " , " + temp.getValue(1) +  " , " + temp.getValue(2));
         addNewDisplacementVector(temp, target);
-        temp2 = target.plus(temp);
-        retVal = temp2.toDouble();        
+        temp2 = (DoubleDataPoint)target.add(temp);
+        retVal = temp2.getValue();        
         return retVal;
     }     
 
@@ -88,36 +88,36 @@ public class DisplacementField3D extends DisplacementField {
      * @return target Transformierter Punkt
      */
     public double[] transform_bw(double[] source) {
-        DoublePoint3D target = new DoublePoint3D(source);
+        DoubleDataPoint target = new DoubleDataPoint(source);
         //System.out.println(" target " + target.getValue(0) + " , " + target.getValue(1) +  " , " + target.getValue(2));
         //System.out.println(" size " + referencePoints.size() + " DIM " + DIM);
         double[] retVal = new double[DIM];
         double tempMetric = 0.0;
         double sumMetric = 0.0;
         Arrays.fill(retVal, (double) 0);
-        DoublePoint3D temp = new DoublePoint3D(retVal);
-        DoublePoint3D temp1;
-        DoublePoint3D temp2;
+        DoubleDataPoint temp = new DoubleDataPoint(retVal);
+        DoubleDataPoint temp1;
+        DoubleDataPoint temp2;
         for (int i = 0; i < referencePoints.size(); i++) {
-            temp1 = (DoublePoint3D)referencePoints.elementAt(i);
+            temp1 = (DoubleDataPoint)referencePoints.elementAt(i);
             temp2 = getDisplacementVector(temp1);
-            tempMetric = cityBlockMetric(target, temp1.plus(temp2));
+            tempMetric = cityBlockMetric(target, (DoubleDataPoint)temp1.add(temp2));
             //tempMetric = euclidianMetric(target.plus(temp2), temp1);
-            temp2 = temp2.scale(-tempMetric);
-            temp = temp.plus(temp2);
+            temp2 = (DoubleDataPoint)temp2.scale(-tempMetric);
+            temp = (DoubleDataPoint)temp.add(temp2);
             sumMetric += tempMetric;
         }
         // keine Vektoren vorhanden
         if (sumMetric != 0) {
             sumMetric = 1 / sumMetric;
-            temp = temp.scale(sumMetric);
+            temp = (DoubleDataPoint)temp.scale(sumMetric);
         }
         //System.out.println(" target " + target.getValue(0) + " , " + target.getValue(1) +  " , " + target.getValue(2));
         //System.out.println(" retVal " + retVal[0] + " , " + retVal[0] +  " , " + retVal[0]);
         //System.out.println(" temp " + temp.getValue(0) + " , " + temp.getValue(1) +  " , " + temp.getValue(2));
         addNewDisplacementVector(temp, target);
-        temp2 = target.plus(temp);
-        retVal = temp2.toDouble();        
+        temp2 = (DoubleDataPoint)target.add(temp);
+        retVal = temp2.getValue();        
         return retVal;
     }         
     
@@ -170,7 +170,7 @@ public class DisplacementField3D extends DisplacementField {
         return target;
     }
     
-    private double cityBlockMetric(DoublePoint3D p1, DoublePoint3D p2) {
+    private double cityBlockMetric(DoubleDataPoint p1, DoubleDataPoint p2) {
         double retVal = 0.0;
         retVal = Math.abs(p1.getValue(0) - p2.getValue(0)) + Math.abs(p1.getValue(1) - p2.getValue(1)) + Math.abs(p1.getValue(2) - p2.getValue(2));
         retVal = 1.0 / retVal;
@@ -178,7 +178,7 @@ public class DisplacementField3D extends DisplacementField {
         return retVal;
     }
     
-    private double euclidianMetric(DoublePoint3D p1, DoublePoint3D p2) {
+    private double euclidianMetric(DoubleDataPoint p1, DoubleDataPoint p2) {
         double retVal = 0.0;
         retVal = Math.sqrt(((p1.getValue(0) - p2.getValue(0)) * (p1.getValue(0) - p2.getValue(0))) + 
                            ((p1.getValue(1) - p2.getValue(1)) * (p1.getValue(1) - p2.getValue(1))) + 

@@ -12,7 +12,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.VoxelIterator;
-import org.wewi.medimg.image.geom.AffineTransformation;
+//import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.RawImageWriter;
@@ -43,8 +43,8 @@ public class Test {
             double[] m = {-1,0,0,640,
                           0,1,0,0,
                           0,0,1,0};
-            AffineTransformation t = new AffineTransformation(m);
-            t.transform(image, target);
+            //AffineTransformation t = new AffineTransformation(m);
+            //t.transform(image, target);
             
             TIFFWriter writer = new TIFFWriter(target, new File("C:/temp/target.tif"));
             writer.write();

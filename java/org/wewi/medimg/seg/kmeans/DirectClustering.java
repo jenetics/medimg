@@ -9,7 +9,7 @@ package org.wewi.medimg.seg.kmeans;
 import java.util.Iterator;
 
 import org.wewi.medimg.alg.AlgorithmIterator;
-import org.wewi.medimg.math.geom.*;
+import org.wewi.medimg.math.geom.DataPoint;
 
 /**
  *
@@ -87,7 +87,7 @@ public final class DirectClustering implements DataPointClusterer {
         
         private void m2Step() {
             for (int i = 0; i < k; i++) {
-                clusterCenter[i] = clusterSum[i].div(clusterNo[i]);
+                clusterCenter[i] = clusterSum[i].scale(clusterNo[i]);
             }
         } 
         

@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.reg;
 
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
 /**
  *
  * @author  werner weiser
@@ -15,7 +15,7 @@ import org.wewi.medimg.image.geom.transform.Transform;
 public interface RegStrategy {
     
     // ITransform  calculate(CRegisterParameter& param) throw (ERegistrationException) = 0;
-    public Transform calculate(RegisterParameter param) throws RegistrationException; 
+    public Transformation calculate(RegisterParameter param) throws RegistrationException; 
 
 }
 

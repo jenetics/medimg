@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.reg.metric;
 
-import org.wewi.medimg.image.geom.transform.Transform;
+import org.wewi.medimg.image.geom.transform.Transformation;
 
 import java.util.Vector;
 
@@ -179,7 +179,7 @@ public class BoundingBox {
             }
     }    
 
-    public void transform(Transform trans) {
+    public void transform(Transformation trans) {
             int i, j;
             double[] s = new double[3];
             double[] t = new double[3];
@@ -187,7 +187,7 @@ public class BoundingBox {
                     for (j = 0; j < 3; j++) {
                             s[j] = vertices[i][j];
                     }
-                    t = trans.transform_fw(s);
+                    trans.transform(s, t);
                     for (j = 0; j < 3; j++) {
                             vertices[i][j] = t[j];
                     }		
