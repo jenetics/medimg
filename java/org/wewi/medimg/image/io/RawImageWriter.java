@@ -22,6 +22,7 @@
 
 package org.wewi.medimg.image.io;
 
+import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -95,7 +96,7 @@ public class RawImageWriter extends ImageWriter {
         
         try {
             fout = new FileOutputStream(target);
-            zout = new ZipOutputStream(fout);
+            zout = new ZipOutputStream(new BufferedOutputStream(fout));
             
             dout = new DataOutputStream(zout);
             
@@ -111,7 +112,7 @@ public class RawImageWriter extends ImageWriter {
                 }
                 dout.writeInt(image.getColor(i));    
             }
-            
+            dout.flush();
             dout.close();
             
         } catch (IOException ioe) {
