@@ -62,20 +62,17 @@ public class MLValidator {
         target = clusterer.segment(source);
         stopTime = System.currentTimeMillis();
         
-        System.out.println("Erstellen des Akkus");
         AccumulatorArray accu = new AccumulatorArray(anatomicalModel.getColorRange().getNColors(), k);
         for (int i = 0, n = source.getNVoxels(); i < n; i++) {
             accu.inc(anatomicalModel.getColor(i), target.getColor(i));   
         }
         
-        System.out.println("Berechnene von T3");
+
         T3 t3 = new T3(accu);
-        System.out.println("Berechnen des Fehlers");
         ErrorMeasure error = new ErrorMeasure(anatomicalModel,target, t3);
         error.measure();
           
           
-        System.out.println("Erstellen des Protokolls");  
         Element protocol = new Element("Protocol");
         
         //Daten zum Algorithmus
@@ -120,7 +117,6 @@ public class MLValidator {
         
         Document doc = new Document(protocol);
         
-        System.out.println("Schreiben des Protokolls");
         XMLOutputter out = new XMLOutputter("    ", true);
         try {
 			out.output(doc, new FileOutputStream(protocolFile));
@@ -129,7 +125,6 @@ public class MLValidator {
 		} catch (IOException e) {
             System.err.println("MLValidator: " + e);
 		}
-        System.out.println("Fertig");
         
     }
     

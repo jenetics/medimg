@@ -22,6 +22,8 @@ final class Util {
     
     static Element transform(AccumulatorArray accu) {
         Element table = new Element("FrequencyMatrix");
+        table.setAttribute("rows", Integer.toString(accu.getRows()));
+        table.setAttribute("cols", Integer.toString(accu.getCols()));
         
         Element td, tr;
         for (int i = 0, n = accu.getRows(); i < n; i++) {
@@ -75,10 +77,7 @@ final class Util {
         Element imageMetaData = new Element("Image"); 
         Properties prop = image.getHeader().getImageProperties();
         
-        System.out.println("IMAGE: " + prop.size());
-        
         for (Enumeration e = prop.propertyNames(); e.hasMoreElements();) {
-            System.out.println("Util: asdfasdfasd");
             String name = (String)e.nextElement();
             imageMetaData.addContent((new Element(name)).addContent(prop.getProperty(name)));
         }

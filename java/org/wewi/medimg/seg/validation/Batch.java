@@ -23,7 +23,6 @@ import org.wewi.medimg.image.ShortImageDataFactory;
 import org.wewi.medimg.image.io.ImageIOException;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.TIFFReader;
-import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
 /**
  * @author Franz Wilhelmstötter
@@ -82,8 +81,11 @@ public class Batch {
     
     
     protected void executeTask(Element task) { 
+        int id = 0;
+        
         int iterations = 0, iterationsDone = 0;
         try {
+            id = task.getAttribute("id").getIntValue();
 			iterations = task.getAttribute("iterations").getIntValue();
             iterationsDone  = task.getAttribute("iterations.done").getIntValue();
 		} catch (DataConversionException e) {
@@ -94,6 +96,8 @@ public class Batch {
         if (iterations <= iterationsDone) {
             return;    
         }
+        
+        
         
         
         //Auswerten der Parameter
@@ -113,7 +117,7 @@ public class Batch {
         }
         
         //Die Bilder werden nur dann geladen, wenn dies noch nicht 
-        //passiert ist.
+        //geschehen ist.
         if (!currentSourceImageFileName.equals(sourceName)) {
             currentSourceImageFileName = sourceName;
             ImageReader reader = new TIFFReader(ShortImageDataFactory.getInstance(), 
@@ -128,7 +132,7 @@ public class Batch {
             currentSourceImage = reader.getImage();  
         } 
         if (!currentModelImageFileName.equals(modelName)) {
-            currentSourceImageFileName = sourceName;
+            currentModelImageFileName = modelName;
             ImageReader reader = new TIFFReader(ByteImageDataFactory.getInstance(), 
                                                    new File(currentModelImageFileName)); 
             try {
@@ -140,23 +144,33 @@ public class Batch {
             }
             currentModelImage = reader.getImage();  
         }
+        ////////////////////////////////////////////////////////////////////////
         
-        
-        //Erzeugen des Segmenters
-        MLKMeansClusterer clusterer = new MLKMeansClusterer(k);
-        Image resultImage = clusterer.segment(currentSourceImage);
-        
-        
-        //Auswerten des Segmentierten Bildes
-        MLValidator validator = new MLValidator();
-        validator.setProtocolFile("C:/Workspace/fwilhelm/Projekte/Diplom/validation/" +
-                                   "protocol." + 
-                                   Long.toString(System.currentTimeMillis()) + ".xml");                                                            
-        validator.setK(4);
-        validator.setAnatomicalModel(currentModelImage);
-        validator.setSourceImage(currentSourceImage);
-        validator.validate();                 
-    }    
+
+        for (int i = iterationsDone; i < iterations; i++) {  
+            System.out.println("Task ID: " + id + " Iteration: " + i);            
+                     
+            //Auswerten des Segmentierten Bildes
+            MLValidator validator = new MLValidator();
+            validator.setProtocolFile("C:/Workspace/fwilhelm/Projekte/Diplom/validation/" +
+                                       "protocols/protocol." + System.currentTimeMillis() +
+                                       id + "." + i + "." + ".xml");                                                            
+            validator.setK(k);
+            validator.setAnatomicalModel(currentModelImage);
+            validator.setSourceImage(currentSourceImage);
+            validator.validate(); 
+            
+            task.setAttribute("iterations.done", Integer.toString(i+1));
+            updateBatchFile();
+        }                    
+    } 
+    
+    
+    
+    public static void main(String[] args) {
+        Batch batch = new Batch();
+        batch.batch(args);    
+    }   
 
 }
 
