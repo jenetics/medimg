@@ -24,6 +24,9 @@ public class AllTests {
 		suite.addTest(new TestSuite(IntImageDataTest.class));
 		suite.addTest(new TestSuite(ShortImageDataTest.class));
 		suite.addTest(new TestSuite(ByteImageDataTest.class));
+        
+        suite.addTest(new TestSuite(RGBColorConversionTest.class));
+        suite.addTest(new TestSuite(RGBAColorConversionTest.class));
 		//$JUnit-END$
 		return suite;
 	}
