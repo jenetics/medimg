@@ -6,9 +6,8 @@
  */
 package org.wewi.medimg.image.ops;
 
-import java.util.Comparator;
-
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ROI;
 import org.wewi.medimg.util.Sort;
 
@@ -102,13 +101,6 @@ public class ParallelImageLoop extends ImageLoop {
     }
     
     
-    private class ObjectComparator implements Comparator {
-		public int compare(Object o1, Object o2) {
-			return 0;
-		}
-    }
-    
-    
     public synchronized void loop(ROI roi, int strideX, int strideY, int strideZ) {
         threadsReady = 0;
         
@@ -134,6 +126,24 @@ public class ParallelImageLoop extends ImageLoop {
     
     private synchronized void ready() {
         threadsReady++;
+    }
+    
+    
+    public static void main(String[] args) {
+        Image image = new ImageData(100, 100, 100);
+        
+        ImageLoop loop = new ParallelImageLoop(image, 
+                     new TaskFactory() {
+                        public Task create() {
+                            return new Task() {
+                                public void execute(int x, int y, int z) {
+                                }
+                            };
+                        }
+                     }, 3);
+                     
+        loop.loop();
+        
     }
        
 

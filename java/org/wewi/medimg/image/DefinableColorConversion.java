@@ -88,6 +88,8 @@ public class DefinableColorConversion implements ColorConversion {
 		return new DefinableColorConversion();
 	}
     
+    
+    //Serializing
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         stream.defaultReadObject();
         
