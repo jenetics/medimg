@@ -25,4 +25,8 @@ public class StarshapedPolygon {
         return null;
     }
     
+    public boolean isClosed() {
+        return true;
+    }
+    
 }

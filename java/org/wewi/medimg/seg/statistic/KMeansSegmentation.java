@@ -44,10 +44,17 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
     private int sizeY;
     private int sizeZ;
     
+    private int[] colorCount;
+    private long[] colorSum;
+    private double[] centerTemp;
+    private double epsilon;  
+    private boolean allIntervalFull;
+    
     public KMeansSegmentation(Image image, int k) {
         super(image);
         this.k = k;
         imageVoxelIterator = image.getVoxelIterator();
+        
         init();
     }
     
@@ -58,15 +65,20 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
     }
     
     private void init() {
+        colorCount = new int[k];
+        colorSum = new long[k];
+        centerTemp = new double[k];        
+        
         center = new double[k];
         pi = new double[k];
         RandomEngine random = new MersenneTwister((int)(System.currentTimeMillis()%Integer.MAX_VALUE));
         for (int i = 0; i < k; i++) {
-            center[i] = random.nextDouble()*(COLORS-1);
+            center[i] = Math.rint(random.nextDouble()*(COLORS-1));
         }
         Arrays.sort(center);
             
         intervalTree = new IntervalTree(center);
+        allIntervalFull = true;
     }
     
     public double[] getCenter() {
@@ -115,13 +127,7 @@ public class KMeansSegmentation extends ImageSegmentationStrategy {
         return result;
     }
     
-    public void segmentate() {
-        int[] colorCount = new int[k];
-        long[] colorSum = new long[k];
-        double[] centerTemp = new double[k];
-        double epsilon;        
-        
-        notifySegmentationStarted(new SegmentationEvent(this));
+    private void iterate() {
         do {
             Arrays.fill(colorCount, 0);
             Arrays.fill(colorSum, 0);
@@ -157,13 +163,25 @@ System.out.println(buffer.toString());
             
             
             notifyIterationFinished(new SegmentationEvent(this));
-        } while (epsilon > CENTER_EPSILON);
+        } while (epsilon > CENTER_EPSILON);  
         
         //Calculation the a posterioi probability for the i-th feature
         int size = imageVoxelIterator.size();
         for (int i = 0; i < k; i++) {
+            if (colorCount[i] == 0) {
+                allIntervalFull = false;
+            }
             pi[i] = (double)colorCount[i] / (double)size;
-        }
+        }        
+    }
+    
+    public void segmentate() {        
+        
+        notifySegmentationStarted(new SegmentationEvent(this));
+        do {
+            init();
+            iterate();
+        } while (!allIntervalFull);
         
         notifySegmentationFinished(new SegmentationEvent(this));
     }

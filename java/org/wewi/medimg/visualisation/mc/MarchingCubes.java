@@ -41,13 +41,15 @@ public class MarchingCubes {
     
     public TriangleList march() {
         TriangleList tl = new TriangleList();
+        Graph graph = new Graph();
         TriangleFactory tf = new TriangleFactory();
         
         Cube cube;
         while (cubeIterator.hasNext()) {
             cube = cubeIterator.next();
             for (Iterator it = tf.createTriangles(cube); it.hasNext();) {
-                tl.add((Triangle)it.next());
+                //tl.add((Triangle)it.next());
+                graph.addTriangle((Triangle)it.next());
             }
         }
         tl = compactation(tl);        

@@ -29,10 +29,10 @@ import java.util.Arrays;
  */
 public class MCCVSegmentation extends ImageSegmentationStrategy {
     //Maximal number of features
-    private final int K_MAX = 10;
+    private final int K_MAX = 15;
     private final int K_MIN = 3;
     //Number of cross-validation runs
-    private int M = 30;
+    private int M = 100;
     
     private int bestK;
     
@@ -55,6 +55,8 @@ public class MCCVSegmentation extends ImageSegmentationStrategy {
         double[] averageLikelihood = new double[K_MAX-K_MIN+1];
         Arrays.fill(averageLikelihood, 0);
         
+        
+        MCCVStatisticWriter stat = new MCCVStatisticWriter("c:/Temp/mccv_1.stat");
         //Outer loop for the M ...
         for (int m = 0; m < M; m++) {
             //Generate train/test partitions
@@ -81,12 +83,21 @@ public class MCCVSegmentation extends ImageSegmentationStrategy {
                 }
                 MixtureModelDistribution mmd = new MixtureModelDistribution(distribution, pi);
                 LogLikelihoodFunction llf = new LogLikelihoodFunction(testImageVoxelIterator, mmd);
-                likelihood[k] = llf.eval();
-                System.out.println("asdf: " + likelihood[k]);
-                averageLikelihood[k] += likelihood[k];
+                likelihood[k-K_MIN] = llf.eval();
+                //System.out.println("asdf: " + likelihood[k]);
+                averageLikelihood[k-K_MIN] = likelihood[k-K_MIN];
                 
                 System.out.println("M: " + m + ", K: " + k);
+                
             }
+            
+            stat.write(m+1, K_MIN, averageLikelihood);
+        }
+        
+        stat.close();
+        
+        for (int i = 0; i < K_MAX-K_MIN+1; i++) {
+            System.out.println("" + (i+K_MIN) + " " + (averageLikelihood[i]/M));
         }
         
         //Average the cross-validated estimates for each k over all m.
@@ -94,9 +105,9 @@ public class MCCVSegmentation extends ImageSegmentationStrategy {
         double maxVal = Double.MIN_VALUE;
         int maxK = 0;
         for (int i = K_MIN; i <= K_MAX; i++) {
-            System.out.println("k: " + i + "   likelihood: " + averageLikelihood[i]);
-            if (averageLikelihood[i] > maxVal) {
-                maxVal = averageLikelihood[i];
+            System.out.println("k: " + i + "   likelihood: " + averageLikelihood[i-K_MIN]);
+            if (averageLikelihood[i-K_MIN] > maxVal) {
+                maxVal = averageLikelihood[i-K_MIN];
                 maxK = i;
             }
         }
@@ -115,7 +126,11 @@ public class MCCVSegmentation extends ImageSegmentationStrategy {
     }
     
     public QualityMeasure getQualityMeasure() {
-        return null;
+        return new QualityMeasure() {
+                        public double quality() {
+                            return 0;
+                        }
+                    };
     }
     
 }

@@ -65,14 +65,15 @@ public class TriangleList {
         int size = in.readInt();
         TriangleList triList = new TriangleList(size);
         float x = 0, y = 0, z = 0;
-        Point A, B, C, n;
+        Vertex A, B, C;
+        Point n;
         for (int i = 0; i < size; i++) {
             x = in.readFloat(); y = in.readFloat(); z = in.readFloat();
-            A = new Point(x, y, z);
+            A = new Vertex(x, y, z);
             x = in.readFloat(); y = in.readFloat(); z = in.readFloat();
-            B = new Point(x, y, z);
+            B = new Vertex(x, y, z);
             x = in.readFloat(); y = in.readFloat(); z = in.readFloat();
-            C = new Point(x, y, z);
+            C = new Vertex(x, y, z);
             x = in.readFloat(); y = in.readFloat(); z = in.readFloat();
             n = new Point(x, y, z);            
             triList.add(new Triangle(A, B, C, n));
