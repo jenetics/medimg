@@ -12,13 +12,13 @@ import java.awt.Graphics;
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public abstract class ImageCanvasDecorator implements ImagePanel.ImageCanvas {
-    private ImagePanel.ImageCanvas component;
+public abstract class ImageCanvasDecorator implements ImageCanvas {
+    private ImageCanvas component;
 
 	/**
 	 * Constructor for ImageCanvasDecorator.
 	 */
-	public ImageCanvasDecorator(ImagePanel.ImageCanvas component) {
+	public ImageCanvasDecorator(ImageCanvas component) {
 		this.component = component;
 	}
 
