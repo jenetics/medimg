@@ -30,9 +30,8 @@ public class ColorSwapFilter extends ImageFilter {
 	}
     
     public void filter() {
-        
-        
         super.filter();    
+        
     }
 
 }
