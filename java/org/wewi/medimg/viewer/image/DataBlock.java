@@ -47,8 +47,7 @@ final class DataBlock implements ImageObserver {
         double dx = 1, dy = 1, dz = 1;
         
         scale = new Vector(dx, dy, dz);
-        size = new Vector(dx * (nx - 1), dy * (ny - 1), dz * (nz - 1));
-        setInterpolationMethod(INTERP_NEAREST);        
+        size = new Vector(dx * (nx - 1), dy * (ny - 1), dz * (nz - 1));     
     }
 
 	/**
@@ -58,14 +57,7 @@ final class DataBlock implements ImageObserver {
 		return true;
 	}
 
-	//Universal Globals:
-	public static final int INTERP_NEAREST = 0;
-    public static final int INTERP_TRILINEAR = 1;
 
-	//Private state variables
-	private int interpolation = INTERP_NEAREST;
-	private Graphics graphics;
-    
     /**
      * Number of voxels in the x, y, and z directions. 
      */
@@ -81,42 +73,6 @@ final class DataBlock implements ImageObserver {
      * measured in mm.
      */
 	public Vector scale;
-    /**
-     * Intensity data for block-- 0=black, 255=white
-     */
-	//private byte data[]; 
-
-	/**
-     * Public initializing method.
-     * 
-	 * @param Nx Number of voxels in x-direction.
-	 * @param Ny Number of voxels in y-direction.
-	 * @param Nz Number of voxels in z-direction.
-	 * @param dx Size of voxels (in mm) along x.
-	 * @param dy Size of voxels (in mm) along y.
-	 * @param dz Size of voxels (in mm) along z.
-	 * @param Ndata Array of data: data length must equal nx*ny*nz
-	 */
-	/*
-    public void init(int nx, int ny, int nz, double dx, double dy, double dz, byte ndata[]) {
-		this.nx = nx;
-		this.ny = ny;
-		this.nz = nz;
-		scale = new Vector(dx, dy, dz);
-		size = new Vector(dx * (nx - 1), dy * (ny - 1), dz * (nz - 1));
-		//data = ndata;
-		setInterpolationMethod(INTERP_TRILINEAR);
-	}
-    */
-    /**
-     * Setting the interpolation method.
-     * 
-     * @param method
-     */
-	public void setInterpolationMethod(int method) {
-		interpolation = method;
-	}
-
 
 
 
@@ -167,7 +123,7 @@ final class DataBlock implements ImageObserver {
 					             (ny - 1) * (i & 0x02) / 0x02,
 					             (nz - 1) * (i & 0x04) / 0x04);
 			txPts[i] = new Vector(0, 0, 0);
-			txMatrix.transformVector(pts[i], txPts[i]);
+			txMatrix.transform(pts[i], txPts[i]);
 		}
 	}
 
@@ -218,7 +174,8 @@ final class DataBlock implements ImageObserver {
 	 * @param h
 	 * @param creator
 	 */
-	private void renderIntersection(Matrix3D txInverse, Rastergon raster, int w, int h, Component creator) {
+	private void renderIntersection(Graphics graphics, Matrix3D txInverse, 
+                                     Rastergon raster, int w, int h, Component creator) {
 		//Make sure our greyscale buffer is allocated.
 		byte[] backPixels = allocBackPixels(w, h);
 		if (lastRaster == null) {
@@ -227,11 +184,11 @@ final class DataBlock implements ImageObserver {
 
 		//Now fill in each line of the rasterized intersection between 
         //the cube and the slicing plane.
-		Span spanY = raster.spanY;
-		spanY.addSpan(lastRaster.spanY);
+		Span spanY = raster.getSpanY();
+		spanY.addSpan(lastRaster.getSpanY());
 		for (int y = spanY.getMin(); y < spanY.getMax(); y++) {
 			int pixelsOffset = y * w;
-			Span s = raster.spans[y], lastSpan = lastRaster.spans[y];
+			Span s = raster.getSpans()[y], lastSpan = lastRaster.getSpans()[y];
 			int xmin = s.getMin(), xmax = s.getMax();
 			int lastxmin = lastSpan.getMin(), lastxmax = lastSpan.getMax();
             
@@ -273,7 +230,7 @@ final class DataBlock implements ImageObserver {
      * @param screen
      * @param text
      */
-	private void vecString(Vector screen, String text) {
+	private void vecString(Graphics graphics, Vector screen, String text) {
 		graphics.drawString(text, (int)screen.getX(), (int)screen.getY());
 	}
 
@@ -283,7 +240,7 @@ final class DataBlock implements ImageObserver {
 	 * @param from
 	 * @param to
 	 */
-	private void vecLine(Vector from, Vector to) {
+	private void vecLine(Graphics graphics, Vector from, Vector to) {
 		graphics.drawLine((int) from.getX(), (int) from.getY(), (int) to.getX(), (int) to.getY());
 	}
     
@@ -296,8 +253,7 @@ final class DataBlock implements ImageObserver {
 	 * @param h
 	 * @param creator
 	 */
-	public void draw(Matrix3D txMatrix, Graphics Ng, int w, int h, Component creator) {
-		graphics = Ng;
+	public void draw(Matrix3D txMatrix, Graphics graphics, int w, int h, Component creator) {
 		Matrix3D txInverse = txMatrix.invert();
         
 		//Compute vertex locations; transform vertices.
@@ -312,22 +268,22 @@ final class DataBlock implements ImageObserver {
 		Rastergon raster = intersectWithSlice(w, h);
         
 		//Render (rasterized) intersection in shades of grey.
-		renderIntersection(txInverse, raster, w, h, creator);
+		renderIntersection(graphics, txInverse, raster, w, h, creator);
         
 		//Draw X,Y,Z axis lines in dark grey
-		graphics.setColor(Color.darkGray);
-		vecLine(txPts[0], txPts[1]);
-		vecLine(txPts[0], txPts[2]);
-		vecLine(txPts[0], txPts[4]);
+		graphics.setColor(Color.YELLOW);
+		vecLine(graphics, txPts[0], txPts[1]);
+		vecLine(graphics, txPts[0], txPts[2]);
+		vecLine(graphics, txPts[0], txPts[4]);
         
 		//Draw axis labels in green if they are above the 
         //slicing plane; grey if below.
 		graphics.setColor(txPts[1].getZ() > 0 ? Color.GREEN : Color.DARK_GRAY);
-		vecString(txPts[1], "X");
+		vecString(graphics, txPts[1], "X");
 		graphics.setColor(txPts[2].getZ() > 0 ? Color.GREEN : Color.DARK_GRAY);
-		vecString(txPts[2], "Y");
+		vecString(graphics, txPts[2], "Y");
 		graphics.setColor(txPts[4].getZ() > 0 ? Color.GREEN : Color.DARK_GRAY);
-		vecString(txPts[4], "Z");
+		vecString(graphics, txPts[4], "Z");
 	}
     
     
@@ -343,82 +299,41 @@ final class DataBlock implements ImageObserver {
      * @param backPixels
      * @param offset
      */
-	private void renderIntersectSpan(
-		int xmin,
-		int xmax,
-		int y,
-		Matrix3D txInverse,
-		byte[] backPixels,
-		int offset) {
+	private void renderIntersectSpan(int xmin, int xmax, int y, Matrix3D txInverse, byte[] backPixels, int offset) {
 		int nxy = nx * ny;
         
 		//Compute endpoints of this span in screen 3-space
 		Vector start = new Vector(0, 0, 0);
         Vector end = new Vector(0, 0, 0);
-		Vector left, right;
-		left = new Vector(xmin, y, 0);
-		right = new Vector(xmax - 1, y, 0);
+		Vector left = new Vector(xmin, y, 0);
+		Vector right = new Vector(xmax - 1, y, 0);
         
 		//Transform the endpoints back to dataBlock space:
-		txInverse.transformVector(left, start);
-		txInverse.transformVector(right, end);
+		txInverse.transform(left, start);
+		txInverse.transform(right, end);
         
 		//Convert endpoints to 16.16 fixed-point format
 		double fixScale = 65536.0;
         double invFixScale = 1.0 / fixScale;
 		double deltaScale = fixScale / (xmax - 1 - xmin);
-		int dx = (int) ((end.getX() - start.getX()) * deltaScale),
-			dy = (int) ((end.getY() - start.getY()) * deltaScale),
-			dz = (int) ((end.getZ() - start.getZ()) * deltaScale);
-		double finiteOffset = (interpolation == INTERP_NEAREST) ? -0.5 : 0;
-		int sx = (int) (fixScale * start.getX() + finiteOffset),
-			sy = (int) (fixScale * start.getY() + finiteOffset),
-			sz = (int) (fixScale * start.getZ() + finiteOffset);
+        
+		int dx = (int)((end.getX() - start.getX()) * deltaScale);
+	    int dy = (int)((end.getY() - start.getY()) * deltaScale);
+	    int dz = (int)((end.getZ() - start.getZ()) * deltaScale);
+        
+		double finiteOffset = -0.5;
+        
+		int sx = (int)(fixScale * start.getX() + finiteOffset);
+		int sy = (int)(fixScale * start.getY() + finiteOffset);
+		int sz = (int)(fixScale * start.getZ() + finiteOffset);
             
 		//Step through the 3D data, copying pixels as we go.
-		switch (interpolation) {
-			case INTERP_NEAREST :
-				for (int x = xmin; x < xmax; x++) {
-					backPixels[offset + x] =
-						(byte)image.getColor((sx >>> 16)
-							+ nx * (sy >>> 16)
-							+ nxy * (sz >>> 16));
-					sx += dx;
-					sy += dy;
-					sz += dz;
-				}
-				break;
-			case INTERP_TRILINEAR :
-				for (int x = xmin; x < xmax; x++) {
-					int frac_x = sx & 0xffff,
-						frac_y = sy & 0xffff,
-						frac_z = sz & 0xffff;
-					int datStart = (sx >>> 16) + nx * (sy >>> 16) + nxy * (sz >>> 16);
-                    
-					//Read in 8 surrounding voxels as unsigned 8-bit values.
-					int a = 0xff & ((int)image.getColor(datStart)),
-						b = 0xff & ((int)image.getColor(datStart + 1)),
-						c = 0xff & ((int)image.getColor(datStart + ny)),
-						d = 0xff & ((int)image.getColor(datStart + ny + 1)),
-						e = 0xff & ((int)image.getColor(datStart + nxy)),
-						f = 0xff & ((int)image.getColor(datStart + nxy + 1)),
-						g = 0xff & ((int)image.getColor(datStart + nxy + ny)),
-						h = 0xff & ((int)image.getColor(datStart + nxy + ny + 1));
-                        
-					//Interpolate these voxels in a trilinear fashion
-					int ab = a + ((b - a) * frac_x >> 16),
-						cd = c + ((d - c) * frac_x >> 16),
-						ef = e + ((f - e) * frac_x >> 16),
-						gh = g + ((h - g) * frac_x >> 16);
-                        
-					int abcd = ab + ((cd - ab) * frac_y >> 16),
-						efgh = ef + ((gh - ef) * frac_y >> 16);
-					backPixels[offset + x] = (byte)(abcd + ((efgh - abcd) * frac_z >> 16));
-					sx += dx;
-					sy += dy;
-					sz += dz;
-				}
-				break;
+        int pos = 0;
+		for (int x = xmin; x < xmax; x++) {
+            pos = (sx >>> 16) + nx * (sy >>> 16) + nxy * (sz >>> 16);
+			backPixels[offset + x] = (byte)image.getColor(pos);
+			sx += dx; sy += dy;sz += dz;
 		}
+
 	}
 }

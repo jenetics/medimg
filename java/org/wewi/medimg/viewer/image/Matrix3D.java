@@ -1,44 +1,8 @@
-/* Java Source File
-a part of SliceViewer
-  a program written in 2/98 by Orion Lawlor.
-Public domain source code.
-
-Send questions to fsosl@uaf.edu
-*/
-/*The Matrix3D class is my heavily modified version of
-Nicholas Wilt's C++ Matrix class, from his Object Oriented Ray Tracer.
-I began using his code back before I had taken Linear Algebra, and
-didn't yet know the ways of C++.
-
-The Matrix3D class defines a general 3x4 matrix.  This is a non-square
-matrix so translation can be represented without using homogenous coordinates.
-Matrix multiplication must then be slightly redefined, but quite similar to
-regular matrix multiplication.
-
-The real use of the Matrix3D is to transform vectors, using the
-transformVector() call.  The other matrix creation routines should
-be self-explanatory.
-*/
-
-/*
-Entry points:
-	public double e[][];
-	public Matrix3D()
-	public Matrix3D dup()
-	public Matrix3D invert()
-	public void transformVector(Vector in,Vector out)
-	public Matrix3D postMultBy(Matrix3D b)
-	public static Matrix3D translationMatrix(double tX,double tY,double tZ)
-	public static Matrix3D scaleMatrix(double scaleX,double scaleY,double scaleZ)
-	public static Matrix3D rotationXMatrix(double angle)
-	public static Matrix3D rotationYMatrix(double angle)
-	public static Matrix3D rotationZMatrix(double angle)
-*/
 
 package org.wewi.medimg.viewer.image;
 
 final class Matrix3D {
-	public double e[][];
+	private double e[][];
 
 	public Matrix3D() {
 		e = new double[4][];
@@ -51,22 +15,33 @@ final class Matrix3D {
 		e[2][2] = 1.0;
 	}
 
-	public Matrix3D dup() {
+    /**
+     * Creates a identical copy of the matrix.
+     * 
+     * @return Matrix3D
+     */
+	public Matrix3D copy() {
 		Matrix3D ret = new Matrix3D();
-		int i, j;
-		for (i = 0; i < 3; i++)
-			for (j = 0; j < 4; j++)
+        
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
 				ret.e[j][i] = e[j][i];
+			}
+		}
+        
 		return ret;
 	}
-	/*This is an incredibly ugly 3D matrix inversion routine.
-		It's just standard Gaussian elimination, but is complicated by
-		checks for zero-valued pivots, row-swapping, and too much
-		optimization.
-	
-		Of course, it's a pretty odd act to invert a non-square matrix!
-	
-		You have my apologies-- this should be rewritten soon.*/
+		
+        
+    /**
+     * This is an incredibly ugly 3D matrix inversion routine.
+     * It's just standard Gaussian elimination, but is complicated by
+     * checks for zero-valued pivots, row-swapping, and too much optimization.
+     * Of course, it's a pretty odd act to invert a non-square matrix!
+     * You have my apologies-- this should be rewritten soon.
+     * 
+     * @return Matrix3D
+     */    
 	public Matrix3D invert() {
 		int i, j, i3, j3;
 		double scratch[] = new double[4 * 3], oute[] = new double[4 * 3], temp;
@@ -83,8 +58,9 @@ final class Matrix3D {
 			if (scratch[pivot] == 0.0) {
 				//if the pivot is zero, then we have to swap rows so that it ain't.
 				int rowToSwap = i + 1;
-				while ((rowToSwap < 3) && (scratch[rowToSwap * 3 + i] == 0.0))
+				while ((rowToSwap < 3) && (scratch[rowToSwap * 3 + i] == 0.0)) {
 					rowToSwap++;
+				}
 				if (rowToSwap != 3) {
 					int newPivot = i * 3, oldPivot = rowToSwap * 3;
 					for (j = 0; j < 4; j++) {
@@ -132,96 +108,131 @@ final class Matrix3D {
 			}
 		return out;
 	}
-	//Here's where the rubber meets the road-- transforming vectors.
-	public void transformVector(Vector in, Vector out) {
-		out.setX(
-			e[3][0]
-				+ in.getX() * e[0][0]
-				+ in.getY() * e[1][0]
-				+ in.getZ() * e[2][0]);
-		out.setY(
-			e[3][1]
-				+ in.getX() * e[0][1]
-				+ in.getY() * e[1][1]
-				+ in.getZ() * e[2][1]);
-		out.setZ(
-			e[3][2]
-				+ in.getX() * e[0][2]
-				+ in.getY() * e[1][2]
-				+ in.getZ() * e[2][2]);
+    
+	
+    /**
+     * Here's where the rubber meets the road-- transforming vectors.
+     * 
+     * @param in
+     * @param out
+     */
+	public void transform(Vector in, Vector out) {
+		out.setX(e[3][0] + in.getX()*e[0][0] + in.getY()*e[1][0] + in.getZ()*e[2][0]);
+		out.setY(e[3][1] + in.getX()*e[0][1] + in.getY()*e[1][1] + in.getZ()*e[2][1]);
+		out.setZ(e[3][2] + in.getX()*e[0][2] + in.getY()*e[1][2] + in.getZ()*e[2][2]);
 	}
-	/*I've defined A.postMultBy(A) to create a matrix which
-		is equivalent to first transforming a vector by A, then transforming
-		the result by B.*/
+    
+    /**
+     * I've defined A.postMultBy(A) to create a matrix which
+     * is equivalent to first transforming a vector by A, then transforming
+     * the result by B.
+     * 
+     * @param b
+     * @return Matrix3D
+     */
 	public Matrix3D postMultBy(Matrix3D b) {
 		Matrix3D ret = new Matrix3D();
-		int x, y;
-		for (y = 0; y < 3; y++) {
-			for (x = 0; x < 3; x++)
-				ret.e[x][y] =
-					e[x][0] * b.e[0][y]
-						+ e[x][1] * b.e[1][y]
-						+ e[x][2] * b.e[2][y];
-			ret.e[3][y] =
-				e[3][0] * b.e[0][y]
-					+ e[3][1] * b.e[1][y]
-					+ e[3][2] * b.e[2][y]
-					+ b.e[3][y];
+
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 3; x++) {
+				ret.e[x][y] = e[x][0]*b.e[0][y] + e[x][1]*b.e[1][y] + e[x][2]*b.e[2][y];
+			}
+			ret.e[3][y] = e[3][0]*b.e[0][y] + e[3][1]*b.e[1][y] + e[3][2]*b.e[2][y] + b.e[3][y];
 		}
+        
 		return ret;
 	}
-	/*These routines are essentially just
-		gussied-up public constructors for the Matrix3D class.*/
+
+    /**
+     * These routines are essentially just
+     * gussied-up public constructors for the Matrix3D class.
+     * 
+     * @param tX
+     * @param tY
+     * @param tZ
+     * @return Matrix3D
+     */
 	public static Matrix3D translationMatrix(double tX, double tY, double tZ) {
 		Matrix3D m = new Matrix3D();
+        
 		m.e[3][0] = tX;
 		m.e[3][1] = tY;
 		m.e[3][2] = tZ;
+        
 		return m;
 	}
 
-	public static Matrix3D scaleMatrix(
-		double scaleX,
-		double scaleY,
-		double scaleZ) {
+    /**
+     * Creating a scale matrix.
+     * 
+     * @param scaleX
+     * @param scaleY
+     * @param scaleZ
+     * @return Matrix3D
+     */
+	public static Matrix3D scaleMatrix(double scaleX, double scaleY, double scaleZ) {
 		Matrix3D m = new Matrix3D();
+        
 		m.e[0][0] = scaleX;
 		m.e[1][1] = scaleY;
 		m.e[2][2] = scaleZ;
+        
 		return m;
 	}
-	/*These routines just create a matrix which rotates angle radians
-		about the specified axis.*/
+        
+    /**
+     * These routines just create a matrix which rotates angle radians
+     * about the specified axis.
+     * 
+     * @param angle
+     * @return Matrix3D
+     */    
 	public static Matrix3D rotationXMatrix(double angle) {
 		Matrix3D m = new Matrix3D();
+        
 		double cosine = Math.cos(angle);
 		double sine = Math.sin(angle);
 		m.e[1][1] = cosine;
 		m.e[2][1] = -sine;
 		m.e[1][2] = sine;
 		m.e[2][2] = cosine;
+        
 		return m;
 	}
 
+    /**
+     * 
+     * @param angle
+     * @return Matrix3D
+     */
 	public static Matrix3D rotationYMatrix(double angle) {
 		Matrix3D m = new Matrix3D();
+        
 		double cosine = Math.cos(angle);
 		double sine = Math.sin(angle);
 		m.e[0][0] = cosine;
 		m.e[2][0] = -sine;
 		m.e[0][2] = sine;
 		m.e[2][2] = cosine;
+        
 		return m;
 	}
 
+    /**
+     * 
+     * @param angle
+     * @return Matrix3D
+     */
 	public static Matrix3D rotationZMatrix(double angle) {
 		Matrix3D m = new Matrix3D();
+        
 		double cosine = Math.cos(angle);
 		double sine = Math.sin(angle);
 		m.e[0][0] = cosine;
 		m.e[1][0] = -sine;
 		m.e[0][1] = sine;
 		m.e[1][1] = cosine;
+        
 		return m;
 	}
 }
