@@ -26,6 +26,7 @@ package org.wewi.medimg.image;
  */
 public interface ImageGeometry {
     
+    
     /**
      * Returns the maximal valid x-coordinate.
      * 
@@ -96,6 +97,8 @@ public interface ImageGeometry {
      * @return the coresponnding voxel position.
      */
     public int getPosition(int x, int y, int z);
+    
+    public int getPosition(int[] corodinate);
     
     /**
      * This method calculates the voxel coordinates at

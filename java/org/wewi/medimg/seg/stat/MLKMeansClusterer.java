@@ -39,12 +39,11 @@ import org.wewi.medimg.seg.SegmenterEvent;
 
 
 /**
- *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
 public class MLKMeansClusterer extends ObservableSegmenter 
-                                implements Clusterer, InterruptableAlgorithm {
+                               implements Clusterer, InterruptableAlgorithm {
         
     public static final String SEGMENTER_NAME = "ML-Kmeans-Clusterer";
     
@@ -219,18 +218,18 @@ public class MLKMeansClusterer extends ObservableSegmenter
     private void m1Step(Image mrt, Image segimg) {
         int size = mrt.getNVoxels();
         int minDistanceFeature;
-        int color;
+        double color;
         double cp, distance, minDistance;
 
         for (int i = 0; i < size; i++) {
-            color = mrt.getColor(i);
+            color = mrt.getDoubleColor(i);
             minDistance = Double.MAX_VALUE;
             minDistanceFeature = 0;
             
             //Suchen jenes Merkmals mit geringstem 
             //Abstand zum Merkmalsmittelwert.
             for (int f = 0; f < k; f++) {
-                distance = mean[f] - (double)color;
+                distance = mean[f] - color;
                 distance *= distance;
                 cp = getCliquesPotential(i, f); 
                 distance += cp;

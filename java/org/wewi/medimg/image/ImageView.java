@@ -286,5 +286,9 @@ public class ImageView extends RowMajorImageGeometry implements Image {
      */
     public void fill(double color) {
     }
+    
+    public PixelIterator iterator() {
+        return null;
+    }
 
 }

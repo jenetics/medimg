@@ -16,8 +16,8 @@
 
 package org.wewi.medimg.image.ops;
 
-import org.wewi.medimg.util.AccumulatorArray;
 import org.wewi.medimg.math.MathUtil;
+import org.wewi.medimg.util.AccumulatorArray;
 
 /**
  * @author werner weiser

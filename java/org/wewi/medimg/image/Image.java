@@ -70,16 +70,7 @@ public interface Image extends ImageGeometry, ImageAccess, Nullable, Cloneable, 
      */
     public void setColorConversion(ColorConversion cc);     
     
-    /**
-     * For many algorithms it is necessary to create an identical
-     * copy of the current image. Therefore every implementation of the
-     * Image interface must implement the clone method.
-     * 
-     * @return An identical copy of the image.
-     */
-    public Object clone();
-    
-    //Additional Methods for refactoring////////////////////////////////////////
+    //Image access methods
     
     public void setColor(int pos, byte color);
     
@@ -117,7 +108,16 @@ public interface Image extends ImageGeometry, ImageAccess, Nullable, Cloneable, 
     
     public void fill(double color);
     
-    ////////////////////////////////////////////////////////////////////////////
+    public PixelIterator iterator();
+    
+    /**
+     * For many algorithms it is necessary to create an identical
+     * copy of the current image. Therefore every implementation of the
+     * Image interface must implement the clone method.
+     * 
+     * @return An identical copy of the image.
+     */
+    public Object clone();
     
 }
 

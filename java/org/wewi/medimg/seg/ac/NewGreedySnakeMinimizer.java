@@ -20,7 +20,6 @@
  */
 package org.wewi.medimg.seg.ac;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.wewi.medimg.alg.AlgorithmIterator;
@@ -128,13 +127,14 @@ public class NewGreedySnakeMinimizer implements ContourMinimizer {
             outer[0] = outerEnergy.energy(currentPoint);
             counter++;
             
+            /*
             for (Iterator it = nhood.getNeighbors(currentPoint); it.hasNext();) {
                 neighbors[counter] = (Point)it.next();
                 inner[counter] = innerEnergy(lastPoint, neighbors[counter], nextPoint, pointDistance);
                 outer[counter] = outerEnergy.energy(neighbors[counter]);
                 counter++;            
             } 
-            
+            */
             MathUtil.normalize(inner);
             MathUtil.normalize(outer);
             

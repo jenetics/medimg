@@ -17,7 +17,6 @@
 /**
  * PixelIterator.java
  * Created on 14.06.2003
- *
  */
 package org.wewi.medimg.image;
 
@@ -29,16 +28,16 @@ public interface PixelIterator {
     
     public boolean hasNext();
     
-    public byte getByteColor();
+    public byte nextByteColor();
     
-    public short getShortColor();
+    public short nextShortColor();
     
-    public int getIntColor();
+    public int nextIntColor();
     
-    public long getLongColor();
+    public long nextLongColor();
     
-    public float getFloatColor();
+    public float nextFloatColor();
     
-    public double getDoubleColor();
+    public double nextDoubleColor();
     
 }

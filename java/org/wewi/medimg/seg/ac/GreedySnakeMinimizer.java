@@ -20,7 +20,6 @@
  */
 package org.wewi.medimg.seg.ac;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.wewi.medimg.alg.AlgorithmIterationEvent;
@@ -173,7 +172,7 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
         l.toArray(points);
         
         for (int i = 0; i < points.length; i++) {
-            
+            /*
             Point basePoint = points[i];
             for (Iterator it2 = neighbor.getNeighbors(basePoint); it2.hasNext();) {
                 
@@ -186,7 +185,8 @@ public class GreedySnakeMinimizer extends ObservableAlgorithm
                 } else {
                     contour.replaceBasePoint(newBasePoint, basePoint);    
                 }
-            }            
+            } 
+            */           
         }
         
         newContourEnergy = energy; 

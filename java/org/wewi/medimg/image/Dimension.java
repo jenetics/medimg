@@ -14,9 +14,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/**
+/*
  * Created on 11.08.2002
- *
+ * 
+ * Dimension.java
  */
 package org.wewi.medimg.image;
 
@@ -34,6 +35,8 @@ public class Dimension implements Cloneable, Immutable {
     private final int minY, maxY;
     private final int minZ, maxZ;
     
+    private int dimensions;
+    
     /**
      * @todo Introduce variable stepsize (so far set the default value to one).
      */
@@ -49,10 +52,12 @@ public class Dimension implements Cloneable, Immutable {
         maxY = dim.maxY;
         minZ = dim.minZ;
         maxZ = dim.maxZ; 
+        
+        dimensions = dim.dimensions;
     }
     
     public Dimension(int sizeX, int sizeY, int sizeZ) throws IllegalArgumentException {
-        this(0, sizeX-1, 0, sizeY-1, 0, sizeZ-1);        
+        this(0, sizeX-1, 0, sizeY-1, 0, sizeZ-1);       
     }
     
     public Dimension(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) 
@@ -76,7 +81,13 @@ public class Dimension implements Cloneable, Immutable {
         this.minY = minY;
         this.maxY = maxY;
         this.minZ = minZ;
-        this.maxZ = maxZ;        
+        this.maxZ = maxZ;  
+     
+        dimensions = 3;    
+    }
+    
+    public int dimensions() {
+        return dimensions;
     }
     
     /**

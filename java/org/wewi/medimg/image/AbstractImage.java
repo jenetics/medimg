@@ -16,7 +16,7 @@
 
 /**
  * Created on 21.10.2002 23:42:26
- *
+ * AbstractImage.java
  */
 package org.wewi.medimg.image;
 
@@ -67,6 +67,39 @@ public abstract class AbstractImage extends RowMajorImageGeometry
             return new AbstractImageVoxelIterator();
         }
     } 
+    
+    private final class AbstractPixelIterator implements PixelIterator {
+        private int pos = 0;
+
+		public boolean hasNext() {
+			return pos < size;
+		}
+
+		public byte nextByteColor() {
+			return data.getByteValue(pos++);
+		}
+
+		public short nextShortColor() {
+			return data.getShortValue(pos++);
+		}
+
+		public int nextIntColor() {
+			return data.getIntValue(pos++);
+		}
+
+		public long nextLongColor() {
+			return data.getLongValue(pos++);
+		}
+
+		public float nextFloatColor() {
+			return data.getFloatValue(pos++);
+		}
+
+		public double nextDoubleColor() {
+			return data.getDoubleValue(pos++);
+		}
+
+    }
     /**************************************************************************/
     
     private ImageData data;
@@ -267,5 +300,9 @@ public abstract class AbstractImage extends RowMajorImageGeometry
 
     public VoxelIterator getVoxelIterator() {
         return new AbstractImageVoxelIterator();
+    }
+    
+    public PixelIterator iterator() {
+        return new AbstractPixelIterator();
     }
 }

@@ -26,8 +26,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.jdom.Element;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.ImageFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.io.BMPReader;
 import org.wewi.medimg.image.io.ImageIOException;
 import org.wewi.medimg.image.io.ImageReader;
