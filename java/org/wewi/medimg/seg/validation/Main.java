@@ -9,7 +9,6 @@
 package org.wewi.medimg.seg.validation;
 
 import java.io.File;
-import java.util.logging.ConsoleHandler;
 
 
 import org.wewi.medimg.image.FeatureColorConversion;
