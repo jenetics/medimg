@@ -6,9 +6,11 @@
 
 package org.wewi.medimg.seg.ac;
 
+import java.util.List;
+
+import org.wewi.medimg.image.ImagePanel;
 import org.wewi.medimg.image.geom.Point;
 
-import java.util.Iterator;
 
 /**
  *
@@ -17,11 +19,17 @@ import java.util.Iterator;
  */
 public interface ActiveContour extends Cloneable {
     
+    public ImagePanel.ImageCanvas getImageCanvas();
+    
+    public void addBasePoint(Point point);
+    
+    public void removePoint(Point point);
+    
     public void replaceBasePoint(Point oldPoint, Point newPoint);
 
-    public Iterator getBasePoints();
+    public List getBasePoints();
     
-    public Iterator getContourPoints();
+    public List getContourPoints();
     
     public Object clone();
     
