@@ -15,39 +15,30 @@
  */
 
 /**
- * Created on 15.11.2002 11:03:59
+ * Created on 08.11.2002 13:08:46
  *
  */
-package org.wewi.medimg.seg.ac;
-
-import junit.framework.TestCase;
+package org.wewi.medimg.image;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class GradientVectorFlowTest extends TestCase {
+public class IntImageTest extends AbstractImageTest {
 
 	/**
-	 * Constructor for GradientVectorFlowTest.
+	 * Constructor for IntImageTest.
 	 * @param arg0
 	 */
-	public GradientVectorFlowTest(String arg0) {
+	public IntImageTest(String arg0) {
 		super(arg0);
 	}
 
 	/**
-	 * @see TestCase#setUp()
+	 * @see junit.framework.TestCase#setUp()
 	 */
 	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	/**
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
+        image = new IntImage(2, 34, 543, 654, 3, 45);
 	}
 
 }
