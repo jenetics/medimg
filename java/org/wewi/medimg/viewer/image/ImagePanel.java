@@ -95,6 +95,7 @@ public class ImagePanel extends JPanel {
      */
     public ImagePanel(Image image) {
         this.image = image;
+        colorConversion = image.getColorConversion();
         init();    
     }
     
@@ -224,6 +225,7 @@ public class ImagePanel extends JPanel {
         int minY = image.getMinY();
         int maxY = image.getMaxY();
         int counter = 0;
+        
         for (int j = minY; j <= maxY; j++) {
             for (int i = minX; i <= maxX; i++) {
                 colorConversion.convert(image.getColor(i, j, slice), pixel);

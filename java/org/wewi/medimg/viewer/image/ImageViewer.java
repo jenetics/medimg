@@ -7,6 +7,7 @@
 package org.wewi.medimg.viewer.image;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -151,6 +152,18 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
         popup.add(imagePropertiesImageMenuItem);        
         
         
+        //Popup the slice viewer
+        JMenuItem sliceViewerImageMenuItem = new JMenuItem("Slice Viewer");
+        sliceViewerImageMenuItem.setFont(new java.awt.Font("Dialog", 0, 12));
+        sliceViewerImageMenuItem.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            Viewer v = Viewer.getInstance();
+                            SliceViewer sv = new SliceViewer(image, "Slice Viewer", true, true, true, true);
+                            sv.pack();
+                            v.addViewerDesktopFrame(sv, new Dimension(500, 550));    
+                        } 
+                 });
+        popup.add(sliceViewerImageMenuItem);        
              
         imagePanel.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {

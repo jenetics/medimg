@@ -2,40 +2,72 @@
 package org.wewi.medimg.viewer.image;
 
 
-import javax.swing.JFrame;
-
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.io.ImageReader;
-import org.wewi.medimg.image.io.TIFFReader;
+import org.wewi.medimg.viewer.ImageContainer;
+import org.wewi.medimg.viewer.ViewerDesktopFrame;
 
 
-public class SliceViewer extends JFrame {
+public class SliceViewer extends ViewerDesktopFrame implements ImageContainer {
+    private Image image;
+    
 
+	/**
+	 * Constructor for SliceViewer.
+	 */
 	public SliceViewer(Image image) {
+		this(image, "");
+	}
+
+	/**
+	 * Constructor for SliceViewer.
+	 * @param name
+	 */
+	public SliceViewer(Image image, String name) {
+		this(image, name, false);
+	}
+
+	/**
+	 * Constructor for SliceViewer.
+	 * @param name
+	 * @param resizeable
+	 */
+	public SliceViewer(Image image, String name, boolean resizeable) {
+		this(image, name, resizeable, false);
+	}
+
+	/**
+	 * Constructor for SliceViewer.
+	 * @param name
+	 * @param resizeable
+	 * @param closable
+	 */
+	public SliceViewer(Image image, String name, boolean resizeable, boolean closable) {
+		this(image, name, resizeable, closable, false);
+	}
+
+	/**
+	 * Constructor for SliceViewer.
+	 * @param name
+	 * @param resizeable
+	 * @param closable
+	 * @param maximizable
+	 */
+	public SliceViewer(Image image, String name, boolean resizeable, boolean closable, boolean maximizable) {
+		this(image, name, resizeable, closable, maximizable, false);
+	}
+
+
+	public SliceViewer(Image image, String name, boolean resizeable, boolean closable, boolean maximizable, boolean iconable) {
+        super(name, resizeable, closable, maximizable, iconable);
+        this.image = image;
         getContentPane().add(new SliceViewerPanel(image));
 	}
     
-
-    
-    public static void main(String[] args) {
-        try {
-            ImageReader reader = new TIFFReader(ImageDataFactory.getInstance(),
-                                              "C:/Workspace/Projekte/Diplom/validation/data/nhead/t1.n3.rf20");
-            reader.read();
-            
-            
-            SliceViewer viewer = new SliceViewer(reader.getImage());
-            viewer.show();
-            viewer.setSize(500, 500);
-            viewer.repaint();
-        } catch (Exception e) {
-            System.err.println("Fehler: " + e);
-            e.printStackTrace();
-        }
-        
-        
-        
-    }
+	/**
+	 * @see org.wewi.medimg.viewer.ImageContainer#getImage()
+	 */
+	public Image getImage() {
+		return image;
+	}
 
 }

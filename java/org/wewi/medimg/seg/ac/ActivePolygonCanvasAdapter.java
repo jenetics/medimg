@@ -6,13 +6,14 @@ package org.wewi.medimg.seg.ac;
 
 import java.awt.Graphics;
 
+import org.wewi.medimg.viewer.image.ImageCanvas;
 import org.wewi.medimg.viewer.image.ImagePanel;
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ActivePolygonCanvasAdapter implements ImagePanel.ImageCanvas {
+public final class ActivePolygonCanvasAdapter implements ImageCanvas {
     private ActivePolygon polygon;
 
 	/**

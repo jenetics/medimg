@@ -87,15 +87,15 @@ public interface ImageGeometry {
      * creates a new int[] array. Should only used for a view 
      * coordinate calculations.
      * 
-     * @param pos voxel position
-     * @return the coordinates of the position pos
+     * @param position voxel position
+     * @return the coordinates of the position position
      */
     public int[] getCoordinates(int pos);   
     
     /**
      * Calculates the voxel coordinates at the specified position.
      * 
-     * @param pos voxel position
+     * @param position voxel position
      * @param coordinate copies the voxel coordinates into this
      *         int[] array.
      */
@@ -105,7 +105,7 @@ public interface ImageGeometry {
      * Many algorithms in image segmentation need to know the
      * neighbor voxels.
      * 
-     * @param pos voxel position to calculate the neighbor voxels
+     * @param position voxel position to calculate the neighbor voxels
      * @param n12 copies the position of the neighbor voxels
      *             in this int[] array. The lenght of this 
      *             array must be 12. The voxel position must between zero and
@@ -117,7 +117,7 @@ public interface ImageGeometry {
      * Many algorithms in image segmentation need to know the
      * neighbor voxels.
      * 
-     * @param pos voxel position to calculate the neighbor voxels
+     * @param position voxel position to calculate the neighbor voxels
      * @param n6 copies the position of the neighbor voxels
      *             in this int[] array. The lenght of this 
      *             array must be 6. The voxel position must between zero and
@@ -129,7 +129,7 @@ public interface ImageGeometry {
      * Many algorithms in image segmentation need to know the
      * neighbor voxels.
      * 
-     * @param pos voxel position to calculate the neighbor voxels
+     * @param position voxel position to calculate the neighbor voxels
      * @param n18 copies the position of the neighbor voxels
      *             in this int[] array. The lenght of this 
      *             array must be 18. The voxel position must between zero and
