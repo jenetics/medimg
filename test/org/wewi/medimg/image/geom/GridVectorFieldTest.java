@@ -4,7 +4,7 @@
  */
 package org.wewi.medimg.image.geom;
 
-import org.wewi.medimg.math.DoubleGridVectorField;
+import org.wewi.medimg.math.vec.DoubleGridVectorField;
 
 import junit.framework.TestCase;
 

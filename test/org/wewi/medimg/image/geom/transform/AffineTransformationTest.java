@@ -40,11 +40,18 @@ public class AffineTransformationTest extends TestCase {
                              0, 0, 1, 12};
                              
         AffineTransformation at = new AffineTransformation(matrix);
-        double[] tm = at.getMatrix();
+        //System.out.println(at);
+        double[] tm = at.getMatrixArray();
+        
+        //for (int i = 0; i < tm.length; i++) {
+        //    System.out.println(tm[i]);
+        //}
         
         assertEquals(123, tm[3], 0); 
         assertEquals(234, tm[7], 0);
-        assertEquals(12, tm[11], 0);         
+        assertEquals(12, tm[11], 0);    
+        
+             
     }
     
     public void testTranslationUnMatrix() {
@@ -55,7 +62,7 @@ public class AffineTransformationTest extends TestCase {
         AffineTransformation at = new AffineTransformation(matrix);
         
         AffineTransformation t = at.getTranslateTransformation();
-        double[] tm = t.getMatrix();
+        double[] tm = t.getMatrixArray();
         
         assertEquals(123, tm[3], 0); 
         assertEquals(234, tm[7], 0);
@@ -67,9 +74,10 @@ public class AffineTransformationTest extends TestCase {
                                4, 0, 3, 54};
                              
         at = new AffineTransformation(matrix);
+        //System.out.println(at);
         
         t = at.getTranslateTransformation();
-        tm = t.getMatrix();
+        tm = t.getMatrixArray();
         
         assertEquals(45, tm[3], 0); 
         assertEquals(65, tm[7], 0);
@@ -87,7 +95,7 @@ public class AffineTransformationTest extends TestCase {
         AffineTransformation ar = new AffineTransformation(matrix);
         
         AffineTransformation r = ar.getRotationTransformation();
-        double[] rm = r.getMatrix();
+        double[] rm = r.getMatrixArray();
         
         assertEquals(1, rm[0], 0); 
         assertEquals(0, rm[1], 0);
@@ -100,9 +108,9 @@ public class AffineTransformationTest extends TestCase {
         assertEquals(1, rm[10], 0);
         
         
-        ar = AffineTransformation.getRotateInstance(new double[]{3,3*Math.PI/2,4});
-        double[] mr2 = ar.getRotationTransformation().getMatrix();
-        double[] mr1 = ar.getMatrix();
+        ar = AffineTransformation.getRotateInstance(3, 3*Math.PI/2, 4);
+        double[] mr2 = ar.getRotationTransformation().getMatrixArray();
+        double[] mr1 = ar.getMatrixArray();
         
         assertMatrix(mr1, mr2, EPSILON);
              
@@ -112,13 +120,13 @@ public class AffineTransformationTest extends TestCase {
         final double EPSILON = 0.00001;
         
         AffineTransformation as = AffineTransformation.getShearInstance(new double[]{3,3*Math.PI/2,4});
-        double[] ms2 = as.getShearTransformation().getMatrix();
-        double[] ms1 = as.getMatrix();
+        double[] ms2 = as.getShearTransformation().getMatrixArray();
+        double[] ms1 = as.getMatrixArray();
         
-System.out.println("----------------------------------------");
-System.out.println(as);
-System.out.println(as.getShearTransformation());
-System.out.println("----------------------------------------");
+//System.out.println("----------------------------------------");
+//System.out.println(as);
+//System.out.println(as.getShearTransformation());
+//System.out.println("----------------------------------------");
         
         assertMatrix(ms1, ms2, EPSILON);        
     }
@@ -145,8 +153,8 @@ System.out.println("----------------------------------------");
     public void testGetRotationInstance() {
         final double EPSILON = 0.00001;
         
-        AffineTransformation t = AffineTransformation.getRotateInstance(new double[]{1, 2, 3});
-        double[] m = t.getMatrix();
+        AffineTransformation t = AffineTransformation.getRotateInstance(1, 2, 3);
+        double[] m = t.getMatrixArray();
         
         assertEquals(0.411982, m[0], EPSILON);
         assertEquals(0.0587266, m[1], EPSILON);
