@@ -13,7 +13,7 @@ import org.wewi.medimg.util.Singleton;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class GreyRGBConversion extends ColorConversion {
+public class GreyRGBConversion implements ColorConversion {
     
     public GreyRGBConversion() {
     }
