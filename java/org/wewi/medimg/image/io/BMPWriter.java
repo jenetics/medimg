@@ -45,4 +45,8 @@ public final class BMPWriter extends JAIImageWriter {
         encoder = ImageCodec.createImageEncoder("bmp", out, encodeParameter);
     }
     
+    public String toString() {
+        return "BMPWriter: " + super.toString();    
+    }    
+    
 }

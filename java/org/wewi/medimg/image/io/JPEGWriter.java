@@ -42,5 +42,9 @@ public final class JPEGWriter extends JAIImageWriter {
     protected void initEncoder(OutputStream out) {
         encoder = ImageCodec.createImageEncoder("jpeg", out, encodeParameter);
     }
+    
+    public String toString() {
+        return "JPEGWriter: " + super.toString();    
+    }    
 
 }

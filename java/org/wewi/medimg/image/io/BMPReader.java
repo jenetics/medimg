@@ -40,5 +40,9 @@ public final class BMPReader extends JAIImageReader {
 
     private void init() {
         fileFilter = new FileExtentionFilter(".bmp");  
-    }   
+    } 
+    
+    public String toString() {
+        return "BMPReader: " + super.toString();    
+    }      
 }
