@@ -8,7 +8,9 @@ package org.wewi.medimg.viewer.image;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -273,8 +275,15 @@ public class ImagePanel extends JPanel {
     }
     
     public PointConverter getPointConverter() {
-        return new PointConverterImpl();
-        
+        return new PointConverterImpl();   
+    }
+    
+    public Dimension getDisplayedImageSize() {
+        return new Dimension(x - ox, y - oy);
+    }
+    
+    public Point getDisplayedImageOrigin() {
+        return new Point(ox, oy);
     }
     
     /**

@@ -13,11 +13,12 @@ package org.wewi.medimg.viewer.image;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MemoryImageSource;
+
+import org.wewi.medimg.image.Image;
 
 /**
  * Data block-- a 3D array of greyscale data points.
@@ -34,15 +35,26 @@ import java.awt.image.MemoryImageSource;
  * for eventual screen display.
  */
 
-public class DataBlock implements ImageObserver {
+final class DataBlock implements ImageObserver {
+    private Image image;
     
-    public DataBlock() {
+    public DataBlock(Image image) {
+        this.image = image;
+        nx = image.getDimension().getSizeX();
+        ny = image.getDimension().getSizeY();
+        nz = image.getDimension().getSizeZ();
+        
+        double dx = 1, dy = 1, dz = 1;
+        
+        scale = new Vector(dx, dy, dz);
+        size = new Vector(dx * (nx - 1), dy * (ny - 1), dz * (nz - 1));
+        setInterpolationMethod(INTERP_NEAREST);        
     }
 
 	/**
      * DataBlock basically ignores image updates.  Some AWT's keep sending them, tho'.
      */
-	public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+	public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
 		return true;
 	}
 
@@ -72,7 +84,7 @@ public class DataBlock implements ImageObserver {
     /**
      * Intensity data for block-- 0=black, 255=white
      */
-	private byte data[]; 
+	//private byte data[]; 
 
 	/**
      * Public initializing method.
@@ -85,16 +97,17 @@ public class DataBlock implements ImageObserver {
 	 * @param dz Size of voxels (in mm) along z.
 	 * @param Ndata Array of data: data length must equal nx*ny*nz
 	 */
-	public void init(int nx, int ny, int nz, double dx, double dy, double dz, byte ndata[]) {
+	/*
+    public void init(int nx, int ny, int nz, double dx, double dy, double dz, byte ndata[]) {
 		this.nx = nx;
 		this.ny = ny;
 		this.nz = nz;
 		scale = new Vector(dx, dy, dz);
 		size = new Vector(dx * (nx - 1), dy * (ny - 1), dz * (nz - 1));
-		data = ndata;
+		//data = ndata;
 		setInterpolationMethod(INTERP_TRILINEAR);
 	}
-    
+    */
     /**
      * Setting the interpolation method.
      * 
@@ -241,7 +254,7 @@ public class DataBlock implements ImageObserver {
 		//Save the rasterized polygon so we can erase it on the next frame.
 		lastRaster = raster;
 		//Copy the used portion of the greyscale buffer to screen
-		Image backImage = creator.createImage(
+		java.awt.Image backImage = creator.createImage(
                                     new MemoryImageSource(w, spanY.length(),
 					                                      colorMap, backPixels,
                                                           spanY.getMin()*w, w));
@@ -309,11 +322,11 @@ public class DataBlock implements ImageObserver {
         
 		//Draw axis labels in green if they are above the 
         //slicing plane; grey if below.
-		graphics.setColor(txPts[1].getZ() > 0 ? Color.green : Color.darkGray);
+		graphics.setColor(txPts[1].getZ() > 0 ? Color.GREEN : Color.DARK_GRAY);
 		vecString(txPts[1], "X");
-		graphics.setColor(txPts[2].getZ() > 0 ? Color.green : Color.darkGray);
+		graphics.setColor(txPts[2].getZ() > 0 ? Color.GREEN : Color.DARK_GRAY);
 		vecString(txPts[2], "Y");
-		graphics.setColor(txPts[4].getZ() > 0 ? Color.green : Color.darkGray);
+		graphics.setColor(txPts[4].getZ() > 0 ? Color.GREEN : Color.DARK_GRAY);
 		vecString(txPts[4], "Z");
 	}
     
@@ -340,7 +353,8 @@ public class DataBlock implements ImageObserver {
 		int nxy = nx * ny;
         
 		//Compute endpoints of this span in screen 3-space
-		Vector start = new Vector(0, 0, 0), end = new Vector(0, 0, 0);
+		Vector start = new Vector(0, 0, 0);
+        Vector end = new Vector(0, 0, 0);
 		Vector left, right;
 		left = new Vector(xmin, y, 0);
 		right = new Vector(xmax - 1, y, 0);
@@ -350,7 +364,8 @@ public class DataBlock implements ImageObserver {
 		txInverse.transformVector(right, end);
         
 		//Convert endpoints to 16.16 fixed-point format
-		double fixScale = 65536.0, invFixScale = 1.0 / fixScale;
+		double fixScale = 65536.0;
+        double invFixScale = 1.0 / fixScale;
 		double deltaScale = fixScale / (xmax - 1 - xmin);
 		int dx = (int) ((end.getX() - start.getX()) * deltaScale),
 			dy = (int) ((end.getY() - start.getY()) * deltaScale),
@@ -365,9 +380,9 @@ public class DataBlock implements ImageObserver {
 			case INTERP_NEAREST :
 				for (int x = xmin; x < xmax; x++) {
 					backPixels[offset + x] =
-						data[(sx >>> 16)
+						(byte)image.getColor((sx >>> 16)
 							+ nx * (sy >>> 16)
-							+ nxy * (sz >>> 16)];
+							+ nxy * (sz >>> 16));
 					sx += dx;
 					sy += dy;
 					sz += dz;
@@ -381,14 +396,14 @@ public class DataBlock implements ImageObserver {
 					int datStart = (sx >>> 16) + nx * (sy >>> 16) + nxy * (sz >>> 16);
                     
 					//Read in 8 surrounding voxels as unsigned 8-bit values.
-					int a = 0xff & ((int) data[datStart]),
-						b = 0xff & ((int) data[datStart + 1]),
-						c = 0xff & ((int) data[datStart + ny]),
-						d = 0xff & ((int) data[datStart + ny + 1]),
-						e = 0xff & ((int) data[datStart + nxy]),
-						f = 0xff & ((int) data[datStart + nxy + 1]),
-						g = 0xff & ((int) data[datStart + nxy + ny]),
-						h = 0xff & ((int) data[datStart + nxy + ny + 1]);
+					int a = 0xff & ((int)image.getColor(datStart)),
+						b = 0xff & ((int)image.getColor(datStart + 1)),
+						c = 0xff & ((int)image.getColor(datStart + ny)),
+						d = 0xff & ((int)image.getColor(datStart + ny + 1)),
+						e = 0xff & ((int)image.getColor(datStart + nxy)),
+						f = 0xff & ((int)image.getColor(datStart + nxy + 1)),
+						g = 0xff & ((int)image.getColor(datStart + nxy + ny)),
+						h = 0xff & ((int)image.getColor(datStart + nxy + ny + 1));
                         
 					//Interpolate these voxels in a trilinear fashion
 					int ab = a + ((b - a) * frac_x >> 16),
