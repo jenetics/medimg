@@ -64,25 +64,7 @@ public class VoronoiDiagram1D {
             return m; 
         }
     }
-    
-    public int getVoronoiCellNo(int point) {
-        int l = 0;
-        int u = ninterval-1;
-        int m;
-        while (true) {
-            //m = (int)Math.ceil((double)(u-l+1)/(double)2.0)+(l-1);
-            m = u-l+1; m = m >> 1; m += l; //Macht das Gleiche wie die obere Zeile
-            if (point < interval[m][0]) {
-                u = m-1;
-                continue;
-            }
-            if (point >= interval[m][1]) {
-                l = m+1;
-                continue;
-            }
-            return m; 
-        }
-    }
+
     
     public double[] getVoronoiCell(double point) {
         double[] cell = new double[2];
@@ -91,14 +73,5 @@ public class VoronoiDiagram1D {
         cell[1] = interval[cellNo][1];
         return cell;
     }
-    
-    public double[] getVoronoiCell(int point) {
-        double[] cell = new double[2];
-        int cellNo = getVoronoiCellNo(point);
-        cell[0] = interval[cellNo][0];
-        cell[1] = interval[cellNo][1];
-        return cell;
-    }
-    
-    
+        
 }
