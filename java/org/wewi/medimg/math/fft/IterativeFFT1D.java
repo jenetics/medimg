@@ -8,6 +8,7 @@ package org.wewi.medimg.math.fft;
 
 import org.wewi.medimg.math.Complex;
 import org.wewi.medimg.math.MathUtil;
+import org.wewi.medimg.util.Timer;
 
 /**
  * @author Franz Wilhelmstötter
@@ -29,27 +30,27 @@ public final class IterativeFFT1D extends DFT implements DFT1D {
     /**
      * @see org.wewi.medimg.math.fft.DFT1D#transform(Complex[])
      */
-    public void transform(Complex[] data) {
+    public void transform(Complex[] data) throws IllegalArgumentException {
         transform(data, +1);
     }
 
     /**
      * @see org.wewi.medimg.math.fft.DFT1D#transformInverse(Complex[])
      */
-    public void transformInverse(Complex[] data) {
+    public void transformInverse(Complex[] data) throws IllegalArgumentException {
         transform(data, -1);
     }
 
     private void transform(Complex[] data, double dir) {
         if (!isPowerOfTwo(data.length)) {
             throw new IllegalArgumentException("The length of the given array is not a power of two: " +
-                                                "a.length = " + data.length + " != 2^n");
+                                                "data.length = " + data.length + " != 2^n");
         }        
         
         final int N = data.length;
         final int LD_N = (int) Math.rint(MathUtil.log2(N));
 
-        bitReverse(data);       
+        bitReversal(data);       
 
         int m = 0;
         Complex W, Wm, t, u;
@@ -82,13 +83,13 @@ public final class IterativeFFT1D extends DFT implements DFT1D {
 
     }
 
-    private void bitReverse(Complex[] data) {
-        /* This is the Goldrader bit-reversal algorithm */
+    private void bitReversal(Complex[] data) {
+        //This is the Goldrader bit-reversal algorithm
         int j = 0;
-        int n = data.length;
+        final int N = data.length;
 
-        for (int i = 0; i < n - 1; i++) {
-            int k = n / 2;
+        for (int i = 0; i < N - 1; i++) {
+            int k = N / 2;
 
             if (i < j) {
                 Complex tmp = data[i];
@@ -104,5 +105,42 @@ public final class IterativeFFT1D extends DFT implements DFT1D {
             j += k;
         }
     }
+    
+    
+    
+    /**
+     * Für die Performancemessung
+     */
+    public static void main(String[] args) {
+        final int MAX = 18;
+        final int SIZE = (int)Math.rint(MathUtil.pow(2, MAX));
+        
+        Complex[] data = new Complex[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            data[i] = new Complex(Math.random()*12, Math.random()*50);    
+        }
+        
+        Timer timer = new Timer("FFT");
+        //DFT1D dft = new RecursiveFFT1D();
+        DFT1D dft = new IterativeFFT1D();
+        timer.start();
+        dft.transform(data);
+        timer.stop();
+        timer.print();
+            
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

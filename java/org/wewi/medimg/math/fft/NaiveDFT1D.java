@@ -26,7 +26,34 @@ public final class NaiveDFT1D extends DFT implements DFT1D {
         super(alpha, beta);    
     }
     
-    private void trans(Complex[] data, double dir) {
+    /**
+     * Fouriertransformation.
+     * 
+     * <code>
+     *     F(n) = Sum[f(k)*exp[-2*PI*n*k/N], {k, 0, N-1}]
+     * </code>
+     * 
+     * @see org.wewi.medimg.math.fft.DFT1D#dft(Complex[])
+     */
+    public void transform(Complex[] data) {
+        transform(data, +1);
+    }
+
+    /**
+     * Inverse Fouriertransformation
+     * 
+     * <code>
+     *     f(n) = (1/N)*Sum[F(k)*exp[2*PI*n*k/N], {k, 0, N-1}]
+     * </code>
+     * 
+     * @see org.wewi.medimg.math.fft.DFT1D#transformBackward(Complex[])
+     */
+    public void transformInverse(Complex[] data) {
+        transform(data, -1);
+    }    
+    
+    
+    private void transform(Complex[] data, double dir) {
         final int N = data.length;
         final double M = 1d/(Math.pow((double)N, (1d - (dir*alpha))/2d));
         final Complex Wn = MathUtil.exp(new Complex(0, dir*2*Math.PI*beta/(double)N));
@@ -43,32 +70,6 @@ public final class NaiveDFT1D extends DFT implements DFT1D {
         }
         
         System.arraycopy(result, 0, data, 0, N);        
-    }
-
-    /**
-     * Fouriertransformation.
-     * 
-     * <code>
-     *     F(n) = Sum[f(k)*exp[-2*PI*n*k/N], {k, 0, N-1}]
-     * </code>
-     * 
-     * @see org.wewi.medimg.math.fft.DFT1D#dft(Complex[])
-     */
-    public void transform(Complex[] data) {
-        trans(data, +1);
-    }
-
-    /**
-     * Inverse Fouriertransformation
-     * 
-     * <code>
-     *     f(n) = (1/N)*Sum[F(k)*exp[2*PI*n*k/N], {k, 0, N-1}]
-     * </code>
-     * 
-     * @see org.wewi.medimg.math.fft.DFT1D#transformBackward(Complex[])
-     */
-    public void transformInverse(Complex[] a) {
-        trans(a, -1);
     }
 
 }
