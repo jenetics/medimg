@@ -1,4 +1,4 @@
-/*
+/**
  * Test.java
  *
  * Created on 4. April 2002, 19:39
@@ -12,11 +12,9 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageData;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.VoxelIterator;
-//import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.ImageWriter;
 import org.wewi.medimg.image.io.JPEGWriter;
-import org.wewi.medimg.image.io.RawImageWriter;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
 

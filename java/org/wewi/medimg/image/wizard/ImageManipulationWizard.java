@@ -64,4 +64,5 @@ public class ImageManipulationWizard extends Wizard {
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
     
+
 }
