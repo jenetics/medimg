@@ -58,7 +58,7 @@ public final class UnMatrix {
 	 * Constructor for UnMatrix.
 	 */
 	public UnMatrix(Matrix4d matrix) {
-		unmatrix((Matrix4d)matrix.clone());
+		unmatrix(new Matrix4d(matrix));
 	}
     
     public UnMatrix(double[] matrix) {
@@ -75,7 +75,7 @@ public final class UnMatrix {
         //pmat wird zum Lösen des perspektivischen Anteils verwendet.
         //Es wird hier automatisch die ober 3x3 Komponente
         //auf Singularität getestet.
-        Matrix4d pmat = (Matrix4d)matrix.clone();        
+        Matrix4d pmat = new Matrix4d(matrix);        
         pmat.setRow(3, 0, 0, 0, 1);  
         if (pmat.determinant() == 0.0) {
             System.err.println("Singulär B");
@@ -91,7 +91,7 @@ public final class UnMatrix {
 
             //Lösen der Gleichung durch Invertieren von pmat 
             //und multiplizieren mit prsh
-            Matrix4d invpmat = (Matrix4d)pmat.clone();
+            Matrix4d invpmat = new Matrix4d(pmat);
             invpmat.invert();
             invpmat.transpose();
             Vector4d psol = (Vector4d)prsh.clone();
