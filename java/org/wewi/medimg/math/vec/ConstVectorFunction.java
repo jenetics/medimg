@@ -4,8 +4,7 @@
  */
 package org.wewi.medimg.math.vec;
 
-import org.wewi.medimg.math.vec.ops.*;
-import org.wewi.medimg.math.vec.ops.*;
+import org.wewi.medimg.math.vec.ops.VectorFunction;
 
 /**
  * @author Franz Wilhelmstötter
