@@ -2,17 +2,16 @@
  * Created on 15.11.2002 20:15:08
  *
  */
-package org.wewi.medimg.image.geom;
+package org.wewi.medimg.math;
 
-import org.wewi.medimg.math.VectorField;
-import org.wewi.medimg.math.VectorIterator;
+import org.wewi.medimg.image.geom.Point3D;
 
 
 /**
  * @author Franz Wilhelmstötter
  * @version 0.1
  */
-public class RegularVectorField implements VectorField {
+public abstract class AbstractGridVectorField implements GridVectorField {
 
 	/**
 	 * @author Franz Wilhelmstötter
@@ -69,23 +68,25 @@ public class RegularVectorField implements VectorField {
     private int[] grid;
     private int[] stride;
     
-    private double[][][][] data;
+    private RealDataArray data;
     private final int SIZE;
 
 
 	/**
-	 * Constructor for RegularVectorField.
+	 * Constructor for AbstractGridVectorField.
 	 */
-	public RegularVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
+	public AbstractGridVectorField(Point3D origin, int[] gridsXYZ, int[] strideXYZ) {
         this.origin = origin;
         grid = new int[3];
         stride = new int[3];
         System.arraycopy(gridsXYZ, 0, grid, 0, 3);
         System.arraycopy(strideXYZ, 0, stride, 0, 3);
         
-        data = new double[grid[0]][grid[1]][grid[2]][3];
+        data = createRealDataArray(grid[0], grid[1], grid[2]);
         SIZE = grid[0]*grid[1]*grid[2];
 	}
+    
+    protected abstract RealDataArray createRealDataArray(int sizeX, int sizeY, int sizeZ);
     
     public Point3D getOrigin() {
         return origin;    
@@ -110,15 +111,11 @@ public class RegularVectorField implements VectorField {
     }   
     
     public void getGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
-        endPoint[0] = data[gridX][gridY][gridZ][0];
-        endPoint[1] = data[gridX][gridY][gridZ][1];
-        endPoint[2] = data[gridX][gridY][gridZ][2];
+        data.get(gridX, gridY, gridZ, endPoint);
     }   
     
     public void setGridEndPoint(int gridX, int gridY, int gridZ, double[] endPoint) {
-        data[gridX][gridY][gridZ][0] = endPoint[0]; 
-        data[gridX][gridY][gridZ][1] = endPoint[1];
-        data[gridX][gridY][gridZ][2] = endPoint[2];   
+        data.set(gridX, gridY, gridZ, endPoint);   
     }
     
     public void getVector(int gridX, int gridY, int gridZ, double[] vector) { 
@@ -129,10 +126,12 @@ public class RegularVectorField implements VectorField {
         vector[2] -= (origin.getX() + grid[2]*stride[2]);    
     }
     
+    private double[] temp = new double[3];
     public void setVector(int gridX, int gridY, int gridZ, double[] vector) {
-        data[gridX][gridY][gridZ][0] = vector[0] + origin.getX() + grid[0]*stride[0];
-        data[gridX][gridY][gridZ][1] = vector[1] + origin.getX() + grid[1]*stride[1];
-        data[gridX][gridY][gridZ][2] = vector[2] + origin.getX() + grid[2]*stride[2];
+        temp[0] = vector[0] + origin.getX() + grid[0]*stride[0];
+        temp[1] = vector[1] + origin.getX() + grid[1]*stride[1];
+        temp[2] = vector[2] + origin.getX() + grid[2]*stride[2];
+        data.set(gridX, gridY, gridZ, temp);
     }
 
 	/**
@@ -141,6 +140,8 @@ public class RegularVectorField implements VectorField {
 	public VectorIterator getVectorIterator() {
 		return new RegularVectorIterator();
 	}
+    
+    public abstract Object clone();
 
 }
 
