@@ -40,11 +40,8 @@ public class MutualInformationOperator implements BinaryOperator {
     
     
     public double getMutialInformation() {
-        
-        
-        
-        
-        return 0;    
+        MutualInformation mi = new MutualInformation(accu);
+        return mi.getMutualInformation();   
     }
 
 }
