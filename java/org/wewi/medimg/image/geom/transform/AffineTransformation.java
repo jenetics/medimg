@@ -9,8 +9,6 @@ package org.wewi.medimg.image.geom.transform;
 import java.util.Arrays;
 
 import javax.vecmath.Matrix4d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Point3f;
 
 import org.wewi.medimg.util.Immutable;
 
@@ -29,6 +27,9 @@ public class AffineTransformation extends ImageTransformation
     protected Matrix4d inverseMatrix;
     
     protected UnMatrix unmatrix;
+    
+    protected AffineTransformation() {
+    }
     
     private AffineTransformation(Matrix4d matrix, Matrix4d inverseMatrix) {
         this.matrix = (Matrix4d)matrix.clone();
@@ -271,30 +272,8 @@ public class AffineTransformation extends ImageTransformation
         m[6] = shear[2];
         
         return new AffineTransformation(m);    
-    }
+    }    
     
-    
-    private Point3d sourced = new Point3d();
-    private Point3d targetd = new Point3d();    
-    public void transform(double[] source, double[] target) {
-        sourced.set(source);
-        matrix.transform(sourced, targetd);
-        targetd.get(target);
-    }
-
-    private Point3f sourcef = new Point3f();
-    private Point3f targetf = new Point3f();
-    public void transform(float[] source, float[] target) {
-        sourcef.set(source);
-        matrix.transform(sourcef, targetf);
-        targetf.get(target);
-    }
-
-
-    public void transform(int[] source, int[] target) {
-    }
-    
-
     public InterpolateableTransformation interpolate(InterpolateableTransformation trans2, double w) throws IllegalArgumentException {
         if (!(trans2 instanceof AffineTransformation)) {
             throw new IllegalArgumentException("trans2 is not an AffineTransformation: " + 
@@ -312,22 +291,115 @@ public class AffineTransformation extends ImageTransformation
         return (AffineTransformation)Ap.concatenate(At.concatenate(Ar.concatenate(Ash.concatenate(As))));
     } 
     
+    /**
+     * Performes a linear interpolation of the scale matrix, by interpolating
+     * the scale parameter sx, sy, sz, with the given weight w.
+     * The returned transformation is weighted as follows:
+     * <pre>
+     *     this*(1-w) + transform*w
+     * </pre>
+     * 
+     * @param transform second transformation for the interpolation.
+     * @param w interpolation weight for the transformation (the weight of 
+     *            <code>this</code> transformation is (1-w), so the weight range
+     *            must be: 0 <= w <= 1.
+     * @return AffineTransformation interpolated transformation.
+     */
     protected AffineTransformation interpolateScale(AffineTransformation transform, double w) {
-        return null; 
+        double[] p1 = unmatrix.getScaleParameter();
+        double[] p2 = transform.unmatrix.getScaleParameter();
+        double[] p3 = new double[3];
+        p3[0] = (1.0-w)*p1[0] + w*p2[0];
+        p3[1] = (1.0-w)*p1[1] + w*p2[1];
+        p3[2] = (1.0-w)*p1[2] + w*p2[2];
+        
+        return new AffineTransformation(UnMatrix.createScaleMatrix(p3[0], p3[1], p3[2])); 
     }
     
+    /**
+     * Performes a linear interpolation of the shear matrix, by interpolating
+     * the shear parameter shxy, shxz, shyz, with the given weight w.
+     * The returned transformation is weighted as follows:
+     * <pre>
+     *     this*(1-w) + transform*w
+     * </pre>
+     * 
+     * @param transform second transformation for the interpolation.
+     * @param w interpolation weight for the transformation (the weight of 
+     *            <code>this</code> transformation is (1-w), so the weight range
+     *            must be: 0 <= w <= 1.
+     * @return AffineTransformation interpolated transformation.
+     */    
     protected AffineTransformation interpolateShear(AffineTransformation transform, double w) {
-        return null;
+        double[] p1 = unmatrix.getShearParameter();
+        double[] p2 = transform.unmatrix.getShearParameter();
+        double[] p3 = new double[3];
+        p3[0] = (1.0-w)*p1[0] + w*p2[0];
+        p3[1] = (1.0-w)*p1[1] + w*p2[1];
+        p3[2] = (1.0-w)*p1[2] + w*p2[2];
+        
+        return new AffineTransformation(UnMatrix.createShearMatrix(p3[0], p3[1], p3[2]));
     }
     
+    /**
+     * Performes a linear interpolation of the rotation matrix, by interpolating
+     * the rotation parameter rx, ry, rz, with the given weight w.
+     * The returned transformation is weighted as follows:
+     * <pre>
+     *     this*(1-w) + transform*w
+     * </pre>
+     * 
+     * @param transform second transformation for the interpolation.
+     * @param w interpolation weight for the transformation (the weight of 
+     *            <code>this</code> transformation is (1-w), so the weight range
+     *            must be: 0 <= w <= 1.
+     * @return AffineTransformation interpolated transformation.
+     */
     protected AffineTransformation interpolateRotate(AffineTransformation transform, double w) {
-        return null;
+        double[] p1 = unmatrix.getRotationParameter();
+        double[] p2 = transform.unmatrix.getRotationParameter();
+        double[] p3 = new double[3];
+        p3[0] = (1.0-w)*p1[0] + w*p2[0];
+        p3[1] = (1.0-w)*p1[1] + w*p2[1];
+        p3[2] = (1.0-w)*p1[2] + w*p2[2];
+        
+        return new AffineTransformation(UnMatrix.createRotationMatrix(p3[0], p3[1], p3[2]));
     }
     
+    /**
+     * Performes a linear interpolation of the transformation matrix, by interpolating
+     * the transformation parameter dx, dy, dz, with the given weight w.
+     * The returned transformation is weighted as follows:
+     * <pre>
+     *     this*(1-w) + transform*w
+     * </pre>
+     * 
+     * @param transform second transformation for the interpolation.
+     * @param w interpolation weight for the transformation (the weight of 
+     *            <code>this</code> transformation is (1-w), so the weight range
+     *            must be: 0 <= w <= 1.
+     * @return AffineTransformation interpolated transformation.
+     */
     protected AffineTransformation interpolateTranslate(AffineTransformation transform, double w) {
-        return null;
+        double[] p1 = unmatrix.getTranlationParameter();
+        double[] p2 = transform.unmatrix.getTranlationParameter();
+        double[] p3 = new double[3];
+        p3[0] = (1.0-w)*p1[0] + w*p2[0];
+        p3[1] = (1.0-w)*p1[1] + w*p2[1];
+        p3[2] = (1.0-w)*p1[2] + w*p2[2];
+        
+        return new AffineTransformation(UnMatrix.createTranslationMatrix(p3[0], p3[1], p3[2]));
     }
     
+    /**
+     * The interpolation of the perspective transformation makes no sens
+     * in an affine transformation, so the returned transformation
+     * is the identity
+     * 
+     * @param transform
+     * @param w
+     * @return AffineTransformation identity transformation.
+     */
     protected AffineTransformation interpolatePerspective(AffineTransformation transform, double w) {
         Matrix4d m = new Matrix4d();
         m.setElement(0, 0, 1.0);
@@ -336,20 +408,82 @@ public class AffineTransformation extends ImageTransformation
         m.setElement(3, 3, 1.0);
         return new AffineTransformation(m);
     }
+    
+    
+   
+    public void transform(double[] source, double[] target) {
+        target[0] = matrix.m00*source[0] + 
+                    matrix.m01*source[1] + 
+                    matrix.m02*source[2] + matrix.m03;
+        target[1] = matrix.m10*source[0] + 
+                    matrix.m11*source[1] + 
+                    matrix.m12*source[2] + matrix.m13;
+        target[2] = matrix.m20*source[0] + 
+                    matrix.m21*source[1] + 
+                    matrix.m22*source[2] + matrix.m23;
+    }
 
+
+    public void transform(float[] source, float[] target) {
+        target[0] = (float)matrix.m00*source[0] + 
+                    (float)matrix.m01*source[1] + 
+                    (float)matrix.m02*source[2] + (float)matrix.m03;
+        target[1] = (float)matrix.m10*source[0] + 
+                    (float)matrix.m11*source[1] + 
+                    (float)matrix.m12*source[2] + (float)matrix.m13;
+        target[2] = (float)matrix.m20*source[0] + 
+                    (float)matrix.m21*source[1] + 
+                    (float)matrix.m22*source[2] + (float)matrix.m23;
+    }
+
+
+    public void transform(int[] source, int[] target) {
+        target[0] = Math.round((float)matrix.m00*source[0] + 
+                               (float)matrix.m01*source[1] + 
+                               (float)matrix.m02*source[2] + (float)matrix.m03);
+        target[1] = Math.round((float)matrix.m10*source[0] + 
+                               (float)matrix.m11*source[1] + 
+                               (float)matrix.m12*source[2] + (float)matrix.m13);
+        target[2] = Math.round((float)matrix.m20*source[0] + 
+                               (float)matrix.m21*source[1] + 
+                               (float)matrix.m22*source[2] + (float)matrix.m23);
+    }
+    
     public void transformBackward(double[] source, double[] target) {
-
+        target[0] = inverseMatrix.m00*source[0] + 
+                    inverseMatrix.m01*source[1] + 
+                    inverseMatrix.m02*source[2] + inverseMatrix.m03;
+        target[1] = inverseMatrix.m10*source[0] + 
+                    inverseMatrix.m11*source[1] + 
+                    inverseMatrix.m12*source[2] + inverseMatrix.m13;
+        target[2] = inverseMatrix.m20*source[0] + 
+                    inverseMatrix.m21*source[1] + 
+                    inverseMatrix.m22*source[2] + inverseMatrix.m23;
     }
 
     public void transformBackward(float[] source, float[] target) {
-
+        target[0] = (float)inverseMatrix.m00*source[0] + 
+                    (float)inverseMatrix.m01*source[1] + 
+                    (float)inverseMatrix.m02*source[2] + (float)inverseMatrix.m03;
+        target[1] = (float)inverseMatrix.m10*source[0] + 
+                    (float)inverseMatrix.m11*source[1] + 
+                    (float)inverseMatrix.m12*source[2] + (float)inverseMatrix.m13;
+        target[2] = (float)inverseMatrix.m20*source[0] + 
+                    (float)inverseMatrix.m21*source[1] + 
+                    (float)inverseMatrix.m22*source[2] + (float)inverseMatrix.m23;
     }
 
     public void transformBackward(int[] source, int[] target) {
-
-    }
-
-
+            target[0] = Math.round((float)inverseMatrix.m00*source[0] + 
+                                   (float)inverseMatrix.m01*source[1] + 
+                                   (float)inverseMatrix.m02*source[2] + (float)inverseMatrix.m03);
+            target[1] = Math.round((float)inverseMatrix.m10*source[0] + 
+                                   (float)inverseMatrix.m11*source[1] + 
+                                   (float)inverseMatrix.m12*source[2] + (float)inverseMatrix.m13);
+            target[2] = Math.round((float)inverseMatrix.m20*source[0] + 
+                                   (float)inverseMatrix.m21*source[1] + 
+                                   (float)inverseMatrix.m22*source[2] + (float)inverseMatrix.m23);
+    }    
 
     public String toString() {
         return getClass().getName() + "\n" + matrix.toString();
