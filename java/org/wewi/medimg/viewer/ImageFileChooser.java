@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
 import org.wewi.medimg.image.io.BMPReaderFactory;
@@ -71,7 +72,9 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
         for (int i = 0; i < ImageFormatEnum.TYPES.length; i++) {
             addChoosableFileFilter(new ImageFileFilter(ImageFormatEnum.TYPES[i]));    
         }
+        
         setCurrentDirectory(new File(ViewerPreferences.getInstance().getMostRecentFile()));
+        setCurrentFileType(ViewerPreferences.getInstance().getMostRecentFileType());
         
         addActionListener(this);
         
@@ -80,6 +83,20 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
         
         setFileView(new ImageFileView(this));
         setDoubleBuffered(true);
+    }
+    
+    private void setCurrentFileType(String type) {
+        FileFilter[] filters = getChoosableFileFilters(); 
+        ImageFileFilter f = null;
+        for (int i = 0; i < filters.length; i++) {
+            if (filters[i] instanceof ImageFileFilter) {
+                f = (ImageFileFilter)filters[i];
+                if (f.getImageFormatType().toString().equals(type)) {
+                    setFileFilter(filters[i]);
+                    return;
+                }  
+            }  
+        }   
     }
     
     public Range getRange() {
@@ -100,6 +117,9 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
 
     
     public void actionPerformed(ActionEvent actionEvent) {       
+        if (!(getFileFilter() instanceof ImageFileFilter)) {
+            return;    
+        }
         
         ImageFormatEnum type = ((ImageFileFilter)getFileFilter()).getImageFormatType();
         if (getDialogType() == OPEN_DIALOG) {
@@ -129,6 +149,11 @@ public final class ImageFileChooser extends JFileChooser implements ActionListen
         //Speichern des Verzeichnisses in den ViewerPreferences
         String fileName = getCurrentDirectory().toString();
         ViewerPreferences.getInstance().setMostRecentFile(fileName);
+        if (getFileFilter() instanceof ImageFileFilter) {
+            String fileType = ((ImageFileFilter)getFileFilter()).getImageFormatType().toString();   
+            ViewerPreferences.getInstance().setMostRecentFileType(fileType);
+        }        
+        
     }
     
 }

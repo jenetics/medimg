@@ -30,6 +30,7 @@ import org.wewi.medimg.image.io.TIFFReader;
  */
 public class Batch { 
     private String batchFile;
+    private String protocolFile;
     private Document doc = null; 
     
     private String currentModelImageFileName = "";
@@ -59,6 +60,8 @@ public class Batch {
     
     public void batch(String[] args) {
         batchFile = args[0];
+        protocolFile = args[1];
+        
         
         
         SAXBuilder builder = new SAXBuilder();
@@ -102,13 +105,13 @@ public class Batch {
         
         //Auswerten der Parameter
         List parameter = task.getChildren("Parameter");
-        int k = 0;
+        double beta = 0;
         String sourceName = null, modelName = null;
         for (Iterator it = parameter.iterator(); it.hasNext();) {
             Element param = (Element)it.next();
             String name = param.getAttribute("name").getValue();
-            if ("k".equals(name)) {
-                k = Integer.parseInt(param.getText());   
+            if ("beta".equals(name)) {
+                beta = Double.parseDouble(param.getText());   
             } else if ("source_image".equals(name)) {
                 sourceName = param.getText();    
             } else if ("model_image".equals(name)) {
@@ -151,11 +154,12 @@ public class Batch {
             System.out.println("Task ID: " + id + " Iteration: " + i);            
                      
             //Auswerten des Segmentierten Bildes
-            MLValidator validator = new MLValidator();
-            validator.setProtocolFile("C:/Workspace/fwilhelm/Projekte/Diplom/validation/" +
-                                       "protocols/protocol." + System.currentTimeMillis() + "." +
+            MAPValidator validator = new MAPValidator();
+            validator.setProtocolFile(protocolFile +
+                                       "/protocol." + System.currentTimeMillis() + "." +
                                        id + "." + i  + ".xml");                                                            
-            validator.setK(k);
+            validator.setK(6);
+            validator.setBeta(beta);
             validator.setAnatomicalModel(currentModelImage);
             validator.setSourceImage(currentSourceImage);
             validator.validate(); 
