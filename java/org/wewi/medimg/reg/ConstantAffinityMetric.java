@@ -16,6 +16,7 @@ import org.wewi.medimg.image.geom.transform.Transformation;
  * @version 0.1
  */
 public final class ConstantAffinityMetric implements AffinityMetric {
+	
     public static final ConstantAffinityMetric INSTANCE = new ConstantAffinityMetric();
     
     public ConstantAffinityMetric() {

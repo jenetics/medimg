@@ -25,16 +25,23 @@ final class VoxelIteratorFactory {
         this.target = target;
 	}
     
-    public boolean haseJointVoxelIterator(int feature) {
+    public boolean hasJointVoxelIterator(int feature) {
+
+	    VoxelIterator sit = new FeatureIterator(source, feature);    
+	    VoxelIterator tit = new FeatureIterator(target, feature);    
+	    
+	    if (!(sit.hasNext()) || !(tit.hasNext())) {
+	    	return false;    
+	    }
         return true;    
     }
     
     public VoxelIterator getSourceVoxelIterator(int feature) {
-        return null;    
+        return new FeatureIterator(source, feature);    
     }
     
     public VoxelIterator getTargetVoxelIterator(int feature) {
-        return null;    
+        return new FeatureIterator(target, feature);    
     }
 
 }

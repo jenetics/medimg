@@ -111,7 +111,7 @@ public class PCARegistration extends MultipleFeatureRegistrator {
 
         //Die Gesamttransformation ergibt sich dann aus A2^-1*A1
         A2 = alg.mult(A2Inv, A1);
-        System.out.println("******************************");
+        System.out.println("******************************111");
         System.out.println(A2);
         return new AffineTransformation(A2.toArray());
 	}

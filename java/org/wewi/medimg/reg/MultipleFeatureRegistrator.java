@@ -46,16 +46,20 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
         List featureList = new Vector();
         List sitSizeList = new Vector();
         
+        double similarity = 1.0;
+        
         ColorRange scr = source.getColorRange();
         ColorRange tcr = target.getColorRange();
         int minFeature = Math.max(scr.getMinColor(), tcr.getMinColor());
+        //Ignorieren des Hintergrundes
+        /*if (minFeature < 1) {
+        	minFeature = 1;
+        }*/
         int maxFeature = Math.min(scr.getMaxColor(), tcr.getMaxColor());
-        
         VoxelIteratorFactory f = new VoxelIteratorFactory(source, target);
         for (int i = minFeature; i <= maxFeature; i++) {
             VoxelIterator sit = f.getSourceVoxelIterator(i);
             VoxelIterator tit = f.getTargetVoxelIterator(i);
-            
             int sitSize = sit.size();
             int titSize = tit.size();
             if (sitSize <= 0 || titSize <= 0) {
@@ -63,13 +67,25 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
             }
             
             //Berechnen der Transformation
-            Transformation trans = getTransformation((VoxelIterator)sit.clone(), 
-                                                     (VoxelIterator)tit.clone());
-            
+            Transformation trans = getTransformation((FeatureIterator)sit.clone(), 
+                                                     (FeatureIterator)tit.clone());
             //Bestimmen der Qualität der berechneten Transformation
-            double similarity = affinityMetric.similarity((VoxelIterator)sit.clone(),
-                                                           (VoxelIterator)tit.clone(), 
-                                                            trans);
+            similarity = 1.0;
+            double temp;
+            for (int j = minFeature; j <= maxFeature; j++) {
+            	if (f.hasJointVoxelIterator(j)) {
+		            VoxelIterator sittemp = f.getSourceVoxelIterator(j);
+		            VoxelIterator tittemp = f.getTargetVoxelIterator(j);
+			        temp = affinityMetric.similarity((FeatureIterator)sittemp.clone(),
+	                                                           (FeatureIterator)tittemp.clone(), 
+	                                                            trans); 
+	                if (temp < similarity) {
+	                	similarity = temp;
+	                }                                            
+            	}  
+	        } 
+        
+            
                                                             
             transformationList.add(trans);
             similarityList.add(new Double(similarity));
@@ -89,7 +105,12 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
         }
         
         double[] weights = transformationImportance.transformationWeights(features, similarities, featureNPoints);   
-       
+        for (int i = 0; i < weights.length; i++) {
+			System.out.println("Feature: " + features[i]);
+			System.out.println("similarities: " + similarities[i]);
+			System.out.println("featureNPoints: " + featureNPoints[i]);
+			System.out.println("weights: " + weights[i]);
+        }
         //Rückgabe der berechnenten Interpolation der Transformationen.
         InterpolateableTransformation[] trans = new InterpolateableTransformation[size];
         transformationList.toArray(trans);
@@ -104,6 +125,9 @@ public abstract class MultipleFeatureRegistrator implements Registrator {
             relationshipWeight = ((weight[i]) / (weight[i - 1] + weight[i]));
             trans = trans.interpolate(transformation[i], relationshipWeight);
         }
+        System.out.println("********************************");
+        System.out.println("Ergebnis : Transformationsmatrix: ");
+        System.out.println(trans);
         return trans;    
     }
     

@@ -9,13 +9,15 @@ package org.wewi.medimg.reg;
 import java.util.Iterator;
 
 import org.wewi.medimg.image.Image;
+import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.geom.Neighborhood3D18;
 import org.wewi.medimg.image.geom.Point3D;
-//import org.wewi.medimg.image.geom.transform.DisplacementField3D;
-import org.wewi.medimg.image.geom.transform.Transformation;
+//import org.wewi.medimg.image.geom.transform.DisplacementField;
+import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
+//import org.wewi.medimg.image.geom.transform.Transformation;
 //import org.wewi.medimg.math.geom.DoubleDataPoint;
-import org.wewi.medimg.reg.interpolation.InterpolStrategy;
-import org.wewi.medimg.reg.metric.AffinityMetric;
+//import org.wewi.medimg.reg.interpolation.InterpolStrategy;
+//import org.wewi.medimg.reg.metric.AffinityMetric;
 
 import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
@@ -24,9 +26,9 @@ import cern.jet.random.engine.RandomEngine;
  * @author  werner weiser
  * @version 
  */
-public class MCWarpingRegStrategy implements Registrator {
+public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
     
-    private InterpolStrategy weightStrategy;
+    //private InterpolStrategy weightStrategy;
     
     public int act = 0;
     public int act1 = 0;
@@ -36,7 +38,7 @@ public class MCWarpingRegStrategy implements Registrator {
     private ImageGrid sourceGrid;
     private ImageGrid targetGrid;    
     
-    private RegisterParameter param;
+    //private RegisterParameter param;
     
     private static final double epsilon = 0.05;
 
@@ -48,10 +50,9 @@ public class MCWarpingRegStrategy implements Registrator {
 
     }    
     
-    public Transformation calculate(RegisterParameter param) throws RegistrationException {
-       /*
+    protected InterpolateableTransformation getTransformation(VoxelIterator source, VoxelIterator target) {//throws RegistrationException {
         //DisplacementField3D erg = new 
-        double[] point1;
+        /*double[] point1;
         double[] point2;
         GridElement grid1;
         GridElement grid2;        
@@ -72,8 +73,8 @@ public class MCWarpingRegStrategy implements Registrator {
         targetGrid.init();
         sourceGrid.first();
         targetGrid.first();
-        //System.out.println(" ********** " + ((param.temp % 2) * 20));
-         while (sourceGrid.hasNext()) {
+        //System.out.println(" ********** " + ((param.temp % 2) * 20));*/
+        /* while (sourceGrid.hasNext()) {
             grid1 = sourceGrid.next();
             minimal = grid1.getLocation();
             System.out.println(" Test minimal " + minimal[0] + " , " + minimal[1] + " , " + minimal[2] );
@@ -81,7 +82,8 @@ public class MCWarpingRegStrategy implements Registrator {
             cou++;
          }
         System.out.println(" Test minimal cou " + cou );
-        sourceGrid.first();        
+        sourceGrid.first(); */ 
+        /*      
         randomWalk(sourceGrid, targetGrid, 500);
         DisplacementField3D retVal = new DisplacementField3D(param.getSourceImage());
         sourceGrid.first();
@@ -107,8 +109,8 @@ public class MCWarpingRegStrategy implements Registrator {
         }
         System.out.println("}");
         System.out.println("grids mit referenzpunkten: " + cou);
-        // funktioniert DiscplacemnetField3D ?
-        for( int i = 0; i < 500; i = i + 100) {
+        // funktioniert DiscplacemnetField3D ?*/
+        /*for( int i = 0; i < 500; i = i + 100) {
             for( int j = 0; j < 500; j = j + 100) {
                 point2 = new double[3];
                 point1 = new double[3];
@@ -120,11 +122,10 @@ public class MCWarpingRegStrategy implements Registrator {
                 point2[2] = 0;
                 retVal.addDisplacementVector(new DoublePoint3D(point1), new DoublePoint3D(point2));
             }
-        }
+        }*/
         System.out.println("ergebnis = " + act + " Vektoren");
         System.out.println("ergebnis = " + act1 + " Vektoren");        
-        return retVal;
-        */
+        //return retVal;
         return null;
     }
     
@@ -180,7 +181,7 @@ public class MCWarpingRegStrategy implements Registrator {
     }
     
     private boolean srcNeighbourhoodControl(int[] pos, GridElement grid) {
-        Image image = (Image)param.getSourceImage();
+        /*Image image = (Image)param.getSourceImage();
         int[] minimal = new int[3];
         minimal = grid.getLocation();
                    // System.out.println(" minimal " + minimal[0] + " , " + minimal[1] + " , " + minimal[2] );
@@ -198,12 +199,12 @@ public class MCWarpingRegStrategy implements Registrator {
             if (image.getColor(point3D.getX(), point3D.getY(), point3D.getZ()) != color) {
                 return true;
             }
-        }
+        }*/
         return false;    
     }
     
     private boolean trgNeighbourhoodControl(int[] pos, GridElement grid) {
-        Image image = (Image)param.getTargetImage();
+        /*Image image = (Image)param.getTargetImage();
         int[] minimal = new int[3];
         minimal = grid.getLocation();
         Point3D point3D = new Point3D(pos[0], pos[1], pos[2]);
@@ -217,7 +218,7 @@ public class MCWarpingRegStrategy implements Registrator {
             if (image.getColor(point3D.getX(), point3D.getY(), point3D.getZ()) != color) {
                 return true;
             }
-        }
+        }*/
         return false;    
     }
     
@@ -250,11 +251,4 @@ public class MCWarpingRegStrategy implements Registrator {
             }
         }        
     }
-	/**
-	 * @see org.wewi.medimg.reg.Registrator#registrate(Image, Image)
-	 */
-	public Transformation registrate(Image source, Image target) {
-		return null;
-	}
-
 }
