@@ -144,4 +144,11 @@ public class TransformableImage implements Image {
         return retVal;
     }
     
+    public void getCoordinates(int pos, int[] coordinates) {
+    }
+    
+    public VoxelIterator getVoxelIterator() {
+        return null;
+    }
+    
 }
