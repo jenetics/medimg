@@ -12,6 +12,7 @@ package org.wewi.medimg.visualisation.mc;
  * @version 0.1
  */
 public class Point {
+    static Point NULL_POINT = new Point(0, 0, 0);
     /**
      * Mit dieser Konstante wird die Genauigkeit auf
      * zwei Nachkommastellen beschränkt (RATIO = 100).
