@@ -50,7 +50,13 @@ public interface Image extends Nullable, Cloneable {
     
     public int getColor(int pos);
     
-    public int getColor(int x, int y, int z);    
+    public int getColor(int x, int y, int z);   
+    
+    public ColorRange getColorRange();
+    
+    public int getMinColor();
+    
+    public int getMaxColor();
     
     public int getMaxX();
     
@@ -71,6 +77,12 @@ public interface Image extends Nullable, Cloneable {
     public int[] getCoordinates(int pos);   
     
     public void getCoordinates(int pos, int[] coordinate);
+    
+    public void getNeighbor3D12Positions(int pos, int[] n12);
+    
+    public void getNeighbor3D6Positions(int pos, int[] n6);
+    
+    public void getNeighbor3D18Positions(int pos, int[] n18);
     
     public VoxelIterator getVoxelIterator();
     

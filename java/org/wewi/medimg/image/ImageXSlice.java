@@ -119,4 +119,25 @@ public class ImageXSlice implements Image {
         return null;
     }
     
+    public ColorRange getColorRange() {
+        return null;
+    }
+    
+    public int getMaxColor() {
+        return 0;
+    }
+    
+    public int getMinColor() {
+        return 0;
+    }
+    
+    public void getNeighbor3D12Positions(int pos, int[] n12) {
+    }
+    
+    public void getNeighbor3D18Positions(int pos, int[] n18) {
+    }
+    
+    public void getNeighbor3D6Positions(int pos, int[] n6) {
+    }
+    
 }

@@ -11,7 +11,7 @@ package org.wewi.medimg.image;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class MultiModalImageData implements MultiModalImage {
+public abstract class MultiModalImageData implements MultiModalImage {
     
 
     public MultiModalImageData() {

@@ -44,7 +44,7 @@ public final class IdentityTransform implements Transform {
     }
     
     public Image transform(Image source) {
-        return null;
+        return source;
     }    
     
     public Transform scale(double alpha) {
@@ -52,14 +52,18 @@ public final class IdentityTransform implements Transform {
     }       
     
     public Transform concatenate(Transform trans) {
-        return null;
+        return this;
     }
     
-    public Transform invert() {
-        return null;
+    public Transform createInverse() {
+        return new IdentityTransform();
     }
     
     public String toString() {
         return "Identity-Transformation";
     }
+    
+    public void transform(Image source, Image target) {
+    }
+    
 }

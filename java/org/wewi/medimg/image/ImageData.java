@@ -44,6 +44,9 @@ public final class ImageData implements Image {
     }
     
     
+    private int minColor = Integer.MAX_VALUE;
+    private int maxColor = Integer.MAX_VALUE;
+    private ColorRange colorRange = null;
     private int maxX, maxY, maxZ;
     private int minX, minY, minZ;
     private int sizeX, sizeY, sizeZ;
@@ -104,6 +107,36 @@ public final class ImageData implements Image {
 
     public void resetColor(int color) {
         Arrays.fill(data, (short)color);
+    }  
+    
+    private void findColorRange() {
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            if (min > data[i]) {
+                min = data[i];
+            } else if (max < data[i]) {
+                max = data[i];
+            }
+        }
+        minColor = min;
+        maxColor = max;
+        colorRange = new ColorRange(minColor, maxColor);
+    }
+    
+    public ColorRange getColorRange() {
+        if (colorRange == null) {
+            findColorRange();
+        }
+        return colorRange;
+    }
+    
+    public int getMaxColor() {
+        return maxColor;
+    }
+    
+    public int getMinColor() {
+        return minColor;
     }    
     
     public int getMaxX() {
@@ -143,7 +176,7 @@ public final class ImageData implements Image {
     }
     
     public int getPosition(int x, int y, int z) {
-        return (sizeXY*z + sizeX*y + x);
+        return (sizeXY*(z-minZ) + sizeX*(y-minY) + (x-minX));
     }
     
     public int[] getCoordinates(int pos) {
@@ -153,6 +186,11 @@ public final class ImageData implements Image {
         erg[1] = pos / (sizeX);
         pos = pos - (erg[1] * sizeX);
         erg[0] = pos;
+        
+        //Hinzuaddieren des Offsets
+        erg[0] += minX;
+        erg[1] += minY;
+        erg[2] += minZ;
         return erg;
     } 
     
@@ -162,8 +200,57 @@ public final class ImageData implements Image {
         pos = pos - (coordinate[2] * sizeXY);
         coordinate[1] = pos / (sizeX);
         pos = pos - (coordinate[1] * sizeX);
-        coordinate[0] = pos;        
-    }     
+        coordinate[0] = pos; 
+        
+        coordinate[0] += minX;
+        coordinate[1] += minY;
+        coordinate[2] += minZ;
+    } 
+    
+    public void getNeighbor3D12Positions(int pos, int[] n12) {
+        n12[0] = pos - 1 - sizeXY;
+        n12[1] = pos - 1 + sizeXY;
+        n12[2] = pos - 1 - sizeX;
+        n12[3] = pos - 1 + sizeX;
+        n12[4] = pos + 1 - sizeXY;
+        n12[5] = pos + 1 + sizeXY;
+        n12[6] = pos + 1 - sizeX;
+        n12[7] = pos + 1 + sizeX;
+        n12[8] = pos - sizeX - sizeXY;
+        n12[9] = pos - sizeX + sizeXY;
+        n12[10] = pos + sizeX - sizeXY;
+        n12[11] = pos + sizeX + sizeXY;         
+    }
+    
+    public void getNeighbor3D18Positions(int pos, int[] n18) {
+        n18[0] = pos - 1;
+        n18[1] = pos + 1;
+        n18[2] = pos - sizeX;
+        n18[3] = pos + sizeX;
+        n18[4] = pos - sizeXY;
+        n18[5] = pos + sizeXY;  
+        n18[6] = pos - 1 - sizeXY;
+        n18[7] = pos - 1 + sizeXY;
+        n18[8] = pos - 1 - sizeX;
+        n18[9] = pos - 1 + sizeX;
+        n18[10] = pos + 1 - sizeXY;
+        n18[11] = pos + 1 + sizeXY;
+        n18[12] = pos + 1 - sizeX;
+        n18[13] = pos + 1 + sizeX;
+        n18[14] = pos - sizeX - sizeXY;
+        n18[15] = pos - sizeX + sizeXY;
+        n18[16] = pos + sizeX - sizeXY;
+        n18[17] = pos + sizeX + sizeXY;         
+    }
+    
+    public void getNeighbor3D6Positions(int pos, int[] n6) {
+        n6[0] = pos - 1;
+        n6[1] = pos + 1;
+        n6[2] = pos - sizeX;
+        n6[3] = pos + sizeX;
+        n6[4] = pos - sizeXY;
+        n6[5] = pos + sizeXY;         
+    }    
     
     public String toString() {
         StringBuffer buffer = new StringBuffer();

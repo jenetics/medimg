@@ -112,4 +112,25 @@ public final class NullImage implements Image, Nullable {
         return new NullImageVoxelIterator();
     }
     
+    public ColorRange getColorRange() {
+        return new ColorRange(0, 0);
+    }
+    
+    public int getMaxColor() {
+        return 0;
+    }
+    
+    public int getMinColor() {
+        return 0;
+    }
+    
+    public void getNeighbor3D12Positions(int pos, int[] n12) {
+    }
+    
+    public void getNeighbor3D18Positions(int pos, int[] n18) {
+    }
+    
+    public void getNeighbor3D6Positions(int pos, int[] n6) {
+    }
+    
 }
