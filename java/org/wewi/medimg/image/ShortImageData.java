@@ -1,44 +1,41 @@
 /**
- * LightSegmentationImage.java
+ * Created on 18.09.2002
  *
- * Created on 10. Mai 2002, 15:59
  */
-
 package org.wewi.medimg.image;
-
 
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public final class ByteImageData extends ImageData {
-    private byte[] data;   
+public final class ShortImageData extends ImageData {
+    private short[] data;   
      
-    ByteImageData() {
+    ShortImageData() {
         super();
     }     
      
-    ByteImageData(ByteImageData id) {
+    ShortImageData(ShortImageData id) {
         super(id.maxX + 1, id.maxY + 1, id.maxZ + 1);
         System.arraycopy(id.data, 0, data, 0, size);
     }
     
-    public ByteImageData(int sizeX, int sizeY, int sizeZ) {
+    public ShortImageData(int sizeX, int sizeY, int sizeZ) {
         super(sizeX, sizeY, sizeZ);
     }
     
-    public ByteImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+    public ShortImageData(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         super(minX, minY, minZ, maxX, maxY, maxZ);
     }    
      
 
     protected void initData() {
-        data = new byte[size];    
+        data = new short[size];    
     }
     
     protected void setData(int pos, int color) {
-        data[pos] = (byte)color;    
+        data[pos] = (short)color;    
     }
     
     protected int getData(int pos) {

@@ -64,7 +64,7 @@ class ImageDataHeader implements ImageHeader {
         //Schreiben der Art der ColorConversion
         Element cc = new Element("ColorConversion");
         cc.setAttribute("class", image.getColorConversion().getClass().getName());
-        StringOutputStream sout = new StringOutputStream();
+        StringOutputStream sout = new StringOutputStream(10000);
         ObjectOutputStream oout = new ObjectOutputStream(sout);
         oout.writeObject(image.getColorConversion());
         oout.close();

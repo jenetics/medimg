@@ -24,6 +24,10 @@ public final class NullImage implements Image, Nullable {
             return 0;
         }
         
+        public int next(int[] p) {
+            return 0;    
+        }
+        
         public int size() {
             return 0;
         }
