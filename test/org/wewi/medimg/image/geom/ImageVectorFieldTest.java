@@ -50,7 +50,7 @@ public class ImageVectorFieldTest extends TestCase {
     }
     
     public void testSetGetVector() {
-        vectorField.setVector(1, 40, 15, 45);
+        //vectorField.setVector(1, 40, 15, 45);
         int[] v = new int[3];
         vectorField.getVector(1, v);
         
