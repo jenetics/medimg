@@ -70,34 +70,12 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
         setSlice(0);
     }
     
-    public TwinImageViewer(String frameName, Image image1, Image image2, ColorConversion cc1, ColorConversion cc2) {
-        super(frameName, true, true, true, true);
-        conversion1 = cc1;
-        conversion2 = cc2;
-        this.image1 = image1;
-        this.image2 = image2;
-        
-        init();
-        setSlice(0);
-    }
-    
     private void init() {
         rootPanel = new JPanel();
         getContentPane().setLayout(new GridLayout(1, 2));        
         
         imagePanel1 = new ImagePanel(image1);
         imagePanel2 = new ImagePanel(image2);
-        if (conversion1 != null) {
-            setColorConversion1(conversion1); 
-        } else {
-            conversion1 = imagePanel1.getColorConversion();
-        }
-            
-        if (conversion2 != null) {
-            setColorConversion2(conversion2); 
-        } else {
-            conversion2 = imagePanel1.getColorConversion();
-        }
         
 
         imagePanel2.addMouseListener(new MouseAdapter() {

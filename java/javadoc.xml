@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="java" default="javadoc">
+    <target name="javadoc">
+        <javadoc
+            destdir="C:\Workspace\fwilhelm\Projekte\Diplom\build\javadoc"
+            access="public" use="true" notree="false" nonavbar="false"
+            noindex="false" splitindex="true" author="true"
+            version="true" nodeprecatedlist="false" nodeprecated="false"
+            packagenames="org.wewi.medimg.seg.statistic,org.wewi.medimg.seg,org.wewi.medimg.image.geom.transform,org.wewi.medimg.seg.kmeans,org.wewi.medimg.visualisation.mc.wizard,org.wewi.medimg.viewer,org.wewi.medimg.reg,org.wewi.medimg.reg.metric,org.wewi.medimg.image.io,org.wewi.medimg.visualisation.mc,org.wewi.medimg.image.statistic,org.wewi.medimg.image,org.wewi.medimg.seg.wizard,org.wewi.medimg.util,org.wewi.medimg.seg.ac.snakes,jas.util.encoder,org.wewi.medimg.image.geom,org.wewi.medimg.seg.stat,org.wewi.medimg.math.geom,org.wewi.medimg.image.filter,org.wewi.medimg.reg.wizard,org.wewi.medimg.visualisation,org.wewi.medimg.seg.validation,org.wewi.medimg.viewer.wizard,org.wewi.medimg.seg.ac,org.wewi.medimg.math,org.wewi.medimg.reg.interpolation"
+            sourcepath="C:\Workspace\fwilhelm\Projekte\Diplom\source\java" classpath="C:\Workspace\fwilhelm\Projekte\Diplom\source\java;C:\java\jdk1.4.0\jre\lib\ext\vecmath.jar;C:\java\jdk1.4.0\jre\lib\ext\j3daudio.jar;C:\java\jdk1.4.0\jre\lib\ext\j3dcore.jar;C:\java\jdk1.4.0\jre\lib\ext\j3dutils.jar;C:\java\jdk1.4.0\jre\lib\ext\jai_codec.jar;C:\java\jdk1.4.0\jre\lib\ext\jai_core.jar;C:\java\jdk1.4.0\jre\lib\ext\mlibwrapper_jai.jar;C:\java\lib\xerces.jar;C:\java\lib\colt.jar;C:\java\lib\jdom.jar;C:\java\lib\log4j.jar;C:\java\lib\log4j-core.jar;C:\java\lib\xalan.jar;C:\java\lib\junit.jar"/>
+    </target>
+</project>
