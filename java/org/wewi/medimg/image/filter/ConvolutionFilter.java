@@ -33,7 +33,7 @@ public class ConvolutionFilter extends ImageFilter {
         this.kernel = kernel;
 	}
     
-    protected void imageFiltering() {
+    protected void componentFilter() {
         
         final int minX = image.getMinX();
         final int maxX = image.getMaxX();

@@ -42,7 +42,7 @@ public final class LinearNormalizeFilter extends ImageFilter {
 	/**
 	 * @see org.wewi.medimg.image.filter.ImageFilter#filter()
 	 */
-	protected void imageFiltering() {
+	protected void componentFilter() {
         
         //Feststellen der minimalen und maximalen Farbe
         MinMaxOperator op = new MinMaxOperator();

@@ -28,7 +28,7 @@ public class CannyFilter extends ImageFilter {
 		super(component);
 	}
     
-    protected void imageFiltering() {
+    protected void componentFilter() {
         
         Image cannyImage = (Image)image.clone();
         

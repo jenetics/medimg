@@ -29,7 +29,7 @@ public class ColorSwapFilter extends ImageFilter {
 		super(component);
 	}
     
-    protected void imageFiltering() {  
+    protected void componentFilter() {  
     }
 
 }

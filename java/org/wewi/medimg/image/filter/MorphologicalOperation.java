@@ -69,7 +69,7 @@ public abstract class MorphologicalOperation extends ImageFilter {
         return true;
     }
     
-    protected void imageFiltering() {
+    protected void componentFilter() {
         int margin = b.getDimension().getSizeX()/2;
         marginImage = new MarginImage(image, margin);
         int minZ = image.getMinZ();

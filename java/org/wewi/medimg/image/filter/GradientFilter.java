@@ -51,7 +51,7 @@ public class GradientFilter extends ImageFilter {
     }
     
 
-    protected void imageFiltering() {      
+    protected void componentFilter() {      
          
         //Erzeugen des Gradienten-Vektorfeldes.
         Dimension dim = image.getDimension();
