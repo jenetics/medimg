@@ -36,7 +36,7 @@ public final class BlurFilter extends ImageFilter {
                                             image.getMaxX(), image.getMaxY(), image.getMaxZ());        
     }
 
-    protected void imageFiltering() {
+    protected void componentFilter() {
         //Blur
         int maxX = image.getMaxX();
         int maxY = image.getMaxY();
