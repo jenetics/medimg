@@ -8,13 +8,13 @@ package org.wewi.medimg.reg;
 
 import java.io.File;
 
-import org.wewi.medimg.reg.pca.*;
+import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
-import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.io.TIFFReader;
 import org.wewi.medimg.image.io.TIFFWriter;
+import org.wewi.medimg.reg.pca.PCARegistration;
 import org.wewi.medimg.util.Timer;
 
 /**

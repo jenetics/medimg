@@ -7,9 +7,7 @@
 package org.wewi.medimg.reg;
 
 import org.wewi.medimg.image.VoxelIterator;
-
 import org.wewi.medimg.image.geom.transform.Transformation;
-import org.wewi.medimg.reg.AffinityMetric;
 
 /**
  *

@@ -16,10 +16,8 @@ import javax.media.jai.JAI;
 
 import org.wewi.medimg.image.ColorConversion;
 import org.wewi.medimg.image.Dimension;
-import org.wewi.medimg.image.FeatureColorConversion;
 import org.wewi.medimg.image.ImageFactory;
 import org.wewi.medimg.image.NullImage;
-//import org.wewi.medimg.image.RGBColorConversion;
 
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;

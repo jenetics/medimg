@@ -17,6 +17,8 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ImageDataFactory;
 import org.wewi.medimg.image.VoxelSelectorEvent;
 import org.wewi.medimg.image.VoxelSelectorListener;
+import org.wewi.medimg.image.geom.Point2D;
+import org.wewi.medimg.image.geom.Point3D;
 import org.wewi.medimg.image.io.ImageIOProgressEvent;
 import org.wewi.medimg.image.io.ImageIOProgressListener;
 import org.wewi.medimg.image.io.ImageReader;
@@ -32,10 +34,6 @@ import org.wewi.medimg.viewer.LogHandlerPanel;
 import org.wewi.medimg.viewer.ProgressFrame;
 import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
-
-import org.wewi.medimg.image.geom.Point2D;
-import org.wewi.medimg.image.geom.Point3D;
-import org.wewi.medimg.math.MathUtil;
 
 /**
  *
