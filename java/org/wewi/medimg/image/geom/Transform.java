@@ -29,6 +29,8 @@ public interface Transform {
     
     public Image transform(Image source); 
     
+    public void transform(Image source, Image target);
+    
     public Transform scale(double alpha);
     
     public Transform concatenate(Transform trans);
