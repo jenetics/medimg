@@ -43,134 +43,132 @@ import org.wewi.medimg.viewer.wizard.Wizard;
  * @version 0.1
  */
 public class RegistrationWizard extends Wizard implements Observer,
-                                                              ReaderThreadListener,
-                                                              WriterThreadListener,
-                                                              RegistratorListener {
+														      ReaderThreadListener,
+													    	  WriterThreadListener,
+															  RegistratorListener {
 
-    private static final String MENU_NAME = "Registration-Wizard";
-    private static RegistrationWizard singleton = null;
+	private static final String MENU_NAME = "Registration-Wizard";
+	private static RegistrationWizard singleton = null;
 
-    private ImageReader imageReader1;
-    private ImageReader imageReader2;
-    private RegistratorEnumeration registrationEnumeration = RegistratorEnumeration.PCA_METHOD_RIGID;
-    //private int nfeatures = 4;
-    private ImageTransformation transformation;
-    private Registrator registrator;
-    private ObservableRegistrator obReg = null;
-    private Image imageData1;
-    private Image imageData2;
-    private Image resultData;  
-    private Image featureData = null;
+	private ImageReader imageReader1;
+	private ImageReader imageReader2;
+	private RegistratorEnumeration registrationEnumeration = RegistratorEnumeration.PCA_METHOD_RIGID;
+	//private int nfeatures = 4;
+	private ImageTransformation transformation;
+	private Registrator registrator;
+	private ObservableRegistrator obReg = null;
+	private Image imageData1;
+	private Image imageData2;
+	private Image resultData;  
 
-    private RegistratorThread registratorThread;
-    private ImageReaderThread readerThread1;
-    private ImageReaderThread readerThread2;
+	private RegistratorThread registratorThread;
+	private ImageReaderThread readerThread1;
+	private ImageReaderThread readerThread2;
 
 
-    private ImageViewerSynchronizer imageSynchronizer;    
+    private ImageViewerSynchronizer imageSynchronizer;	
 
-    // Creates new form RegistrationWizard *
-    public RegistrationWizard() {
-        super(MENU_NAME, true, true, false, false);
-        initComponents();
-        init();
-    }
+	// Creates new form RegistrationWizard *
+	public RegistrationWizard() {
+		super(MENU_NAME, true, true, false, false);
+		initComponents();
+		init();
+	}
 
-    public String getMenuName() {
-        return MENU_NAME;
-    }
+	public String getMenuName() {
+		return MENU_NAME;
+	}
 
-    private void init() {
-    }
+	private void init() {
+	}
 
-    public void dispose() {
-        super.dispose();
-        //singleton = null;
-    }
+	public void dispose() {
+		super.dispose();
+		//singleton = null;
+	}
 
-    private void onClose() {
-        try {
-            //imageViewer.setClosed(true);
-            setClosed(true);
-            dispose();
-            Viewer.getInstance().removeWizard(this);
-        } catch (PropertyVetoException pve) {
-            //Zur Zeit nichts
-        }
-    }
+	private void onClose() {
+		try {
+			//imageViewer.setClosed(true);
+			setClosed(true);
+			dispose();
+			Viewer.getInstance().removeWizard(this);
+		} catch (PropertyVetoException pve) {
+			//Zur Zeit nichts
+		}
+	}
 
-    private void loadSourceImage() {
-        regStartButton.setText("Laden des Ausgangsbildes...");
-        FeatureColorConversion fcc = new FeatureColorConversion();
-        imageReader1.setColorConversion(fcc);        
-        readerThread1 = new ImageReaderThread(imageReader1);
-        readerThread1.addReaderThreadListener(this);
-        readerThread1.setPriority(Thread.MIN_PRIORITY);
-        readerThread1.start();
-    }
+	private void loadSourceImage() {
+		regStartButton.setText("Laden des Ausgangsbildes...");
+		FeatureColorConversion fcc = new FeatureColorConversion();
+		imageReader1.setColorConversion(fcc);		
+		readerThread1 = new ImageReaderThread(imageReader1);
+		readerThread1.addReaderThreadListener(this);
+		readerThread1.setPriority(Thread.MIN_PRIORITY);
+		readerThread1.start();
+	}
 
-    private void loadTargetImage() {
-        regStartButton.setText("Laden des Zielbildes...");
-        FeatureColorConversion fcc = new FeatureColorConversion();
-        imageReader2.setColorConversion(fcc);        
-        readerThread2 = new ImageReaderThread(imageReader2);
-        readerThread2.addReaderThreadListener(this);
-        readerThread2.setPriority(Thread.MIN_PRIORITY);
-        readerThread2.start();
-    }
+	private void loadTargetImage() {
+		regStartButton.setText("Laden des Zielbildes...");
+		FeatureColorConversion fcc = new FeatureColorConversion();
+		imageReader2.setColorConversion(fcc);		
+		readerThread2 = new ImageReaderThread(imageReader2);
+		readerThread2.addReaderThreadListener(this);
+		readerThread2.setPriority(Thread.MIN_PRIORITY);
+		readerThread2.start();
+	}
 
-    private boolean checkRegistrationStart() {
-        return true;
-    }
+	private boolean checkRegistrationStart() {
+		return true;
+	}
 
-    private void startRegistration() {
-        loadSourceImage();
-    }
+	private void startRegistration() {
+		loadSourceImage();
+	}
 
-    public void imageRead(ReaderThreadEvent event) {
-        if ((ImageReaderThread) event.getSource() == readerThread1) {
-            loadTargetImage();
-        } else if ((ImageReaderThread) event.getSource() == readerThread2) {
-            imageData1 = imageReader1.getImage();
-            imageData2 = imageReader2.getImage();
-            if (registrationEnumeration.equals(RegistratorEnumeration.PCA_METHOD_RIGID)) {
-                WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
-                //ImportanceStrategy myStrategy = new ImportanceStrategy();
-                //FittnessStrategy myStrategy = new FittnessStrategy();
-                BBAffinityMetric myMetric = new BBAffinityMetric();
-                //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
-                myImportance.setErrorLimit(0.2);
-                RigidPCARegistration myRegistration = new RigidPCARegistration();
-                myRegistration.setAffinityMetric(myMetric);
-                myRegistration.setTransformationImportance(myImportance);
-                obReg = myRegistration;
-            } else if (registrationEnumeration.equals(RegistratorEnumeration.PCA_METHOD_NONRIGID)) {
-                WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
-                //ImportanceStrategy myStrategy = new ImportanceStrategy();
-                //FittnessStrategy myStrategy = new FittnessStrategy();
-                BBAffinityMetric myMetric = new BBAffinityMetric();
-                //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
-                myImportance.setErrorLimit(0.2);
-                NonRigidPCARegistration myRegistration = new NonRigidPCARegistration();
-                myRegistration.setAffinityMetric(myMetric);
-                myRegistration.setTransformationImportance(myImportance);
-                obReg = myRegistration;
-            } else if (registrationEnumeration.equals(RegistratorEnumeration.MC_METHOD)) {
-                WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
-                //ImportanceStrategy myStrategy = new ImportanceStrategy();
-                //FittnessStrategy myStrategy = new FittnessStrategy();
-                BBAffinityMetric myMetric = new BBAffinityMetric();
-                //ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
-                myImportance.setErrorLimit(0.2);
-                RigidPCARegistration myRegistration = new RigidPCARegistration();
-                myRegistration.setAffinityMetric(myMetric);
-                myRegistration.setTransformationImportance(myImportance);
-                obReg = myRegistration;
-            }
-            //obReg.addRegistratorListener(this);
-            registratorThread = new RegistratorThread(obReg);            
-            registratorThread.addRegistratorListener(this);
-                    
+	public void imageRead(ReaderThreadEvent event) {
+		if ((ImageReaderThread) event.getSource() == readerThread1) {
+			loadTargetImage();
+		} else if ((ImageReaderThread) event.getSource() == readerThread2) {
+			imageData1 = imageReader1.getImage();
+			imageData2 = imageReader2.getImage();
+			if (registrationEnumeration.equals(RegistratorEnumeration.PCA_METHOD_RIGID)) {
+				WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+				//ImportanceStrategy myStrategy = new ImportanceStrategy();
+				//FittnessStrategy myStrategy = new FittnessStrategy();
+				BBAffinityMetric myMetric = new BBAffinityMetric();
+				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
+				myImportance.setErrorLimit(0.2);
+				RigidPCARegistration myRegistration = new RigidPCARegistration();
+		        myRegistration.setAffinityMetric(myMetric);
+		        myRegistration.setTransformationImportance(myImportance);
+		        obReg = myRegistration;
+			} else if (registrationEnumeration.equals(RegistratorEnumeration.PCA_METHOD_NONRIGID)) {
+				WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+				//ImportanceStrategy myStrategy = new ImportanceStrategy();
+				//FittnessStrategy myStrategy = new FittnessStrategy();
+				BBAffinityMetric myMetric = new BBAffinityMetric();
+				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
+				myImportance.setErrorLimit(0.2);
+				NonRigidPCARegistration myRegistration = new NonRigidPCARegistration();
+		        myRegistration.setAffinityMetric(myMetric);
+		        myRegistration.setTransformationImportance(myImportance);
+		        obReg = myRegistration;
+			} else if (registrationEnumeration.equals(RegistratorEnumeration.MC_METHOD)) {
+				WeightPointTransformationImportance myImportance = new WeightPointTransformationImportance();
+				//ImportanceStrategy myStrategy = new ImportanceStrategy();
+				//FittnessStrategy myStrategy = new FittnessStrategy();
+				BBAffinityMetric myMetric = new BBAffinityMetric();
+				//ConstantAffinityMetric myMetric = new ConstantAffinityMetric();
+				myImportance.setErrorLimit(0.2);
+				RigidPCARegistration myRegistration = new RigidPCARegistration();
+		        myRegistration.setAffinityMetric(myMetric);
+		        myRegistration.setTransformationImportance(myImportance);
+		        obReg = myRegistration;
+			}
+			//obReg.addRegistratorListener(this);
+			registratorThread = new RegistratorThread(obReg);			
+			registratorThread.addRegistratorListener(this);
             registratorThread.setPriority(Thread.MIN_PRIORITY);
             registratorThread.setImage(imageData1, imageData2);
             registratorThread.start();

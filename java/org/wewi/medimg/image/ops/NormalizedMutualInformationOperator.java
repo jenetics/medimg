@@ -1,30 +1,29 @@
 /**
- * MutualInformationOperator.java
+ * NormalizedMutualInformationOperator.java
  * 
  * Created on 23.12.2002, 14:56:12
  *
- */
+ */ 
 package org.wewi.medimg.image.ops;
 
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.util.AccumulatorArray;
 
-
 /**
- * @author Franz Wilhelmstötter
- * @version 0.1
+ * @author werner weiser
+ *
  */
-public class MutualInformationOperator implements BinaryOperator {
+public class NormalizedMutualInformationOperator implements BinaryOperator {
+
     private ColorRange cr1;
     private ColorRange cr2;
     
     private AccumulatorArray accu;
-    
 
     /**
-     * Constructor for MutualInformationOperator.
+     * Constructor for NormalizedMutualInformationOperator.
      */
-    public MutualInformationOperator(ColorRange cr1, ColorRange cr2) {
+    public NormalizedMutualInformationOperator(ColorRange cr1, ColorRange cr2) {
         this.cr1 = cr1;
         this.cr2 = cr2;
         
@@ -40,21 +39,8 @@ public class MutualInformationOperator implements BinaryOperator {
     
     
     public double getMutualInformation() {
-        MutualInformation mi = new MutualInformation(accu);
-        return mi.getMutualInformation();   
+        NormalizedMutualInformation nmi = new NormalizedMutualInformation(accu);
+        return nmi.getNormalizedMutualInformation();   
     }  
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

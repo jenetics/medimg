@@ -85,25 +85,11 @@ public abstract class MultipleFeatureRegistrator extends ObservableRegistrator {
             Transformation trans = getTransformation((FeatureIterator)sit.clone(), 
                                                      (FeatureIterator)tit.clone());
                                        
-            //System.out.println("MultipleF...: " + ((AffineTransformation)trans).getRotationTransformation());                                         
             //Bestimmen der Qualität der berechneten Transformation
-            similarity = 1.0;
-            double temp;
-            for (int j = minFeature; j <= maxFeature; j++) {
-                if (f.hasJointVoxelIterator(j)) {
-                    VoxelIterator sittemp = f.getSourceVoxelIterator(j);
-                    VoxelIterator tittemp = f.getTargetVoxelIterator(j);
-                    temp = affinityMetric.similarity((FeatureIterator)sittemp.clone(),
-                                                               (FeatureIterator)tittemp.clone(), 
-                                                                trans); 
-                    if (temp < similarity) {
-                        similarity = temp;
-                    }                                            
-                }  
-            } 
-        
-            
-                                                            
+
+            similarity = affinityMetric.similarity(source, target, trans); 
+            System.out.println("**ergebnis fuer feature ** " + i + " = " + similarity);         
+
             transformationList.add(trans);
             similarityList.add(new Double(similarity));
             featureList.add(new Integer(i));

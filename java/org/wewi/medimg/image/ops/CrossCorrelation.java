@@ -1,27 +1,29 @@
 /**
- * MutualInformation.java
+ * CrossCorrelation.java
  * 
  * Created on 30.12.2002, 14:26:20
  *
  */
 package org.wewi.medimg.image.ops;
 
-import org.wewi.medimg.math.MathUtil;
+
 import org.wewi.medimg.util.AccumulatorArray;
 
+
 /**
- * @author Franz Wilhelmstötter
- * @version 0.1
+ * @author werner weiser
  */
-public class MutualInformation {
-    
+public class CrossCorrelation {
+
+
+
     public AccumulatorArray accu;
     private final double N;
 
     /**
      * Constructor for MutualInformation.
      */
-    public MutualInformation(AccumulatorArray accu) {
+    public CrossCorrelation(AccumulatorArray accu) {
         if (accu == null) {
             throw new IllegalArgumentException("AccumulatorArray must not be null!");    
         }
@@ -31,14 +33,23 @@ public class MutualInformation {
     }
     
     /**
-     *               --       --
-     *               \        \                      p(x and y)
-     *  MI(X, Y) =   /        /     p(x and y) * ld ------------
-     *               --       --                     p(x) * p(y)
-     *             x in X   y in Y
+     * 
+     *               --            
+     *               \                                   
+     *               /   (x - myX) *  (y - myY)
+     *               --                            
+     *             x in X          
+
+     * CC(X, Y) = ---------------------------------------------  
+     *            /   --                 --              \  1/2
+     *            |   \                  \                |      
+     *            |   /   (x - myX)^2 *  /  (y - myY)^2   | 
+     *            |   --                 --               | 
+     *            |  x in X               y in Y          |
+     *             \                                     /
      * 
      */
-    public double getMutualInformation() {
+    public double getCrossCorrelation() {
         if (accu == null) {
             return 0;    
         }
@@ -50,19 +61,29 @@ public class MutualInformation {
         double[] px = new double[accu.getCols()];
         double[] py = new double[accu.getRows()];
         calculateProbabilities(px, py);
+        double myX = 0;
+        double myY = 0;
+        for (int i = 0, n = accu.getCols(); i < n; i++) {
+            myX += px[i] * i;
+        }
+        for (int i = 0, n = accu.getRows(); i < n; i++) {
+            myY += py[i] * i;
+        }
         
-        double mi = 0, aij = 0;
+        double cc = 0, aij = 0, cc1 = 0, cc2 = 0;
         for (int i = 0, n = accu.getCols(); i < n; i++) {
             for (int j = 0, m = accu.getRows(); j < m; j++) {
                 aij = accu.getValue(j, i);   
                 if (aij == 0) {
                     continue;    
                 } 
-                mi += (aij) * MathUtil.log2((aij/N)/(px[i]*py[j]));    
+                cc += aij * (i - myX) * (j - myY); 
+                cc1 += aij * Math.pow((i - myX), 2);
+                cc2 += aij * Math.pow((j - myY), 2);    
             }    
         }
-        //damit aij/N nicht in jedem Durchlauf berechnet werden muß
-        return mi/N;        
+        cc1 = Math.sqrt(cc1 * cc2);
+        return cc/cc1;        
     }
     
     public void calculateProbabilities(double[] x, double[] y) {
@@ -84,9 +105,11 @@ public class MutualInformation {
             y[j] = (double)pysum / N;
         }
     }
+}
+
+
     
 
-}
 
 
 

@@ -6,7 +6,7 @@
 
 package org.wewi.medimg.reg;
 
-import org.wewi.medimg.image.VoxelIterator;
+import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.geom.transform.Transformation;
 
 
@@ -23,12 +23,12 @@ public final class ConstantAffinityMetric implements AffinityMetric {
     }
 
     
-    /**
-     * @see org.wewi.medimg.reg.AffinityMetric#similarity(VoxelIterator, VoxelIterator, Transformation)
-     */
-    public double similarity(VoxelIterator source, VoxelIterator target, Transformation trans) {
-        return 1;
-    }
+	/**
+	 * @see org.wewi.medimg.reg.AffinityMetric#similarity(VoxelIterator, VoxelIterator, Transformation)
+	 */
+	public double similarity(Image source, Image target, Transformation trans) {
+		return 1;
+	}
     
     public boolean equals(Object o) {
         if (this == o) {

@@ -69,20 +69,20 @@ public final class UnMatrix {
     }
     
     private void unmatrix(Matrix4d matrix) {           
-        //Normalizing the matrix
+        //System.out.println("drin" + matrix);
+        if (matrix.determinant() == 0.0) {
+            System.err.println("Singulär B");
+            return; //Singuläre Matrix kann nicht behandelt werden.            
+        }
+		//Normalizing the matrix
         matrix.mul(1.0/matrix.getElement(3, 3));
         
         //pmat wird zum Lösen des perspektivischen Anteils verwendet.
         //Es wird hier automatisch die ober 3x3 Komponente
         //auf Singularität getestet.
         Matrix4d pmat = new Matrix4d(matrix);        
-        pmat.setRow(3, 0, 0, 0, 1);  
-        if (pmat.determinant() == 0.0) {
-            System.err.println("Singulär B");
-            return; //Singuläre Matrix kann nicht behandelt werden.            
-        }
-          
-                  
+
+        
         //First, isolate perspective.  This is the messiest.
         Vector4d prsh = new Vector4d();
         if (matrix.getElement(3, 0) != 0 || matrix.getElement(3, 1) != 0 || matrix.getElement(3, 2) != 0) {
@@ -429,7 +429,7 @@ public final class UnMatrix {
      * @return double[] the three translation parameter {dx, dy, dz}.
      */
     public double[] getTranlationParameter() {
-        return new double[]{tran[U_SCALEX], tran[U_SCALEY], tran[U_SCALEZ]};
+        return new double[]{tran[U_TRANSX], tran[U_TRANSY], tran[U_TRANSZ]};
     }
     
     public static double[] createTranslationMatrix(double dx, double dy, double dz) {

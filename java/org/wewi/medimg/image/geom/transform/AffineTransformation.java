@@ -32,15 +32,15 @@ public class AffineTransformation extends ImageTransformation
     }
     
     private AffineTransformation(Matrix4d matrix, Matrix4d inverseMatrix) {
-        this.matrix = (Matrix4d)matrix.clone();
-        this.inverseMatrix = (Matrix4d)matrix.clone();
+        this.matrix = new Matrix4d(matrix);
+        this.inverseMatrix = new Matrix4d(matrix);
         
         unmatrix = new UnMatrix(matrix);
     }
     
     private AffineTransformation(Matrix4d matrix) {
-        this.matrix = (Matrix4d)matrix.clone();
-        inverseMatrix = (Matrix4d)matrix.clone();
+        this.matrix = new Matrix4d(matrix);
+        inverseMatrix = new Matrix4d(matrix);
         inverseMatrix.invert();
         
         unmatrix = new UnMatrix(matrix);
@@ -153,7 +153,7 @@ public class AffineTransformation extends ImageTransformation
         
         AffineTransformation t = (AffineTransformation)transform;
         
-        Matrix4d m = (Matrix4d)matrix.clone();
+        Matrix4d m = new Matrix4d(matrix);
         m.mul(t.matrix);
 
         return new AffineTransformation(m);        
@@ -409,7 +409,7 @@ public class AffineTransformation extends ImageTransformation
         return new AffineTransformation(m);
     }
     
-    
+       
    
     public void transform(double[] source, double[] target) {
         target[0] = matrix.m00*source[0] + 

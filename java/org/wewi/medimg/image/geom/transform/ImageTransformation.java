@@ -138,7 +138,9 @@ public abstract class ImageTransformation implements Transformation {
      * @return Image transformed image.
      */
     public Image transform(Image source, ImageFactory factory) {
+        //System.out.println("dim" + source.getDimension());
         Dimension dim = transform(source.getDimension());
+        //System.out.println("dim" + dim);
         Image target = null;
         try {
             target = factory.createImage(dim);
@@ -153,6 +155,9 @@ public abstract class ImageTransformation implements Transformation {
     }
     
     public void transform(Image source, Image target) {
+        target.resetColor(0);
+        target.setColorConversion(source.getColorConversion());
+        //System.out.println("B" + target.getColorConversion());
         interpolator.setSourceImage(source);
         
         ImageLoop loop = new ImageLoop(target, new ImageLoop.Task() {
@@ -174,7 +179,7 @@ public abstract class ImageTransformation implements Transformation {
         int[] p7 = {dim.getMaxX(), dim.getMaxY(), dim.getMaxZ()};
         int[] p8 = {dim.getMinX(), dim.getMaxY(), dim.getMaxZ()};
         
-        //Die transformierten Eckpunkte der Bounting-Box
+        //Die transformierten Eckpunkte der Bounding-Box
         int[] tp1 = new int[3];
         int[] tp2 = new int[3];
         int[] tp3 = new int[3];
@@ -192,7 +197,8 @@ public abstract class ImageTransformation implements Transformation {
         transform(p6, tp6);
         transform(p7, tp7);
         transform(p8, tp8);
-        
+        //System.out.println("DDDDDDDDDDD" + p8[0] + ", " + p8[1] + " , " + p8[2]);
+        //System.out.println("DDDDDDDDDDD" + tp8[0] + ", " + tp8[1] + " , " + tp8[2]);
         //Die neuen Eckpunkte der Bounding-Box
         int minX = MathUtil.min(new int[]{tp1[0], tp2[0], tp3[0], tp4[0], tp5[0], tp6[0], tp7[0],tp8[0]});
         int minY = MathUtil.min(new int[]{tp1[1], tp2[1], tp3[1], tp4[1], tp5[1], tp6[1], tp7[1],tp8[1]});

@@ -6,8 +6,11 @@
 
 package org.wewi.medimg.reg;
 
+import org.wewi.medimg.image.Dimension;
+import org.wewi.medimg.image.ROI;
 import org.wewi.medimg.image.VoxelIterator;
 import org.wewi.medimg.image.geom.transform.InterpolateableTransformation;
+import org.wewi.medimg.image.geom.transform.RegularDisplacementField;
 
 import cern.jet.random.engine.MersenneTwister64;
 import cern.jet.random.engine.RandomEngine;
@@ -41,7 +44,24 @@ public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
     }    
     
     protected InterpolateableTransformation getTransformation(VoxelIterator source, VoxelIterator target) {//throws RegistrationException {
-        //DisplacementField3D erg = new 
+        Dimension dim1 = ((FeatureIterator)source).getDimension();
+        Dimension dim2 = ((FeatureIterator)target).getDimension();
+        ROI roi = ROI.create(dim1).intersect(ROI.create(dim2));
+        
+        RegularDisplacementField field = new RegularDisplacementField(roi, 25, 25, 8);
+        RegularDisplacementField sourceField = new RegularDisplacementField(dim1, 25, 25, 8);
+        RegularDisplacementField targetField = new RegularDisplacementField(dim2, 25, 25, 8);
+        
+        randomWalk(sourceField, targetField, 500);
+        
+        for (int i = 0; i < sourceField.getGridsX(); i++) {
+        	for (int j = 0; j < sourceField.getGridsX(); j++) {
+	        	for (int k = 0; k < sourceField.getGridsX(); k++) {
+	        	double test = 0;
+	        	}
+        	}
+        }
+
         /*double[] point1;
         double[] point2;
         GridElement grid1;
@@ -119,55 +139,60 @@ public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
         return null;
     }
     
-    private void randomWalk(ImageGrid sG, ImageGrid tG, int duration) {
-        GridElement grid;
+    private void randomWalk(RegularDisplacementField sF, RegularDisplacementField tF, int duration) {
+        GridElement grid = null;
         double[] trip = new double[3];
         int[] tripI = new int[3];
-        int[] minimal = new int[3];
-        sG.first();
+        int[] strideXYZ = new int[3];
+        int[] pos = new int[3];
+        double[] start = new double[3];
+        //sG.first();
         int cou = 0;
         // default seed
         RandomEngine twister = new MersenneTwister64();
-        while (sG.hasNext()) {
-            grid = sG.next();
-            //grid = sG.getElement(1023);
-            minimal = grid.getLocation();
-            for (int j = 0; j < duration; j++) {            
-                for (int i = 0; i < trip.length; i++) {
-                    trip[i] = twister.raw();
-                    //System.out.println(" trip[i] 1 " + trip[i] );                    
-                    // Lage im GridElement
-                    trip[i] = trip[i] * (grid.getSize(i) - 1);
-                    //System.out.println(" minimal " + minimal[0] + " , " + minimal[1] + " , " + minimal[2] );                    
-                    //System.out.println(" grid.getSize(i) - 1 " + (grid.getSize(i) - 1) + " act " + sG.act );                      
-                    //Lage im GesamtGrid
-                    trip[i] = minimal[i] + trip[i];
-                    //System.out.println(" trip[i] 3 " + trip[i] );                      
-                    // kann nur Voxel vergleichen
-                     
-                    trip[i] = Math.floor(trip[i]);
-                    //System.out.println(" trip[i] 4 " + trip[i] ); 
-                    tripI[i] = (int)trip[i];
-                    //System.out.println(" tripI[i] 5 " + tripI[i] );                     
-                }
-                if (srcNeighbourhoodControl(tripI, grid)) {
-                    grid.addReferencePoint(tripI);
-                    //System.out.println(" point with neghbor " + tripI[0] + " , " + tripI[1] + " , " + tripI[2] ); 
-                    //System.out.println(" minimal " + minimal[0] + " , " + minimal[1] + " , " + minimal[2] ); 
-                    act1++;
-                }
-            }
-            cou++;
-            //double[] p;
-            if (grid.referencePointExists()) {
-                //p = grid.getReferencePoint();
-                //tG.addGridElement(p, sG.getPosition());
-                randomMeeting(tG, sG.getPosition(), duration);                
-            }
+        strideXYZ = sF.getStrideXYZ();
+        for (int i = 0; i < sF.getGridsX(); i++) {
+        	for (int j = 0; j < sF.getGridsX(); j++) {
+	        	for (int k = 0; k < sF.getGridsX(); k++) {
+		        	sF.getGridStartPoint(i, j, k, start);
+		        	for (int l = 0; l < duration; l++) {            
+		                for (int m = 0; m < trip.length; m++) {
+		                    trip[m] = twister.raw();
+		                    //System.out.println(" trip[i] 1 " + trip[i] );                    
+		                    // Lage im GridElement
+		                    trip[m] = trip[m] * (strideXYZ[m] - 1);
+		                    //System.out.println(" minimal " + minimal[0] + " , " + minimal[1] + " , " + minimal[2] );                    
+		                    //System.out.println(" grid.getSize(i) - 1 " + (grid.getSize(i) - 1) + " act " + sG.act );                      
+		                    //Lage im GesamtGrid
+		                    trip[m] = start[m] + trip[m];
+		                    //System.out.println(" trip[i] 3 " + trip[i] );                      
+		                    // kann nur Voxel vergleichen
+		                     
+		                    trip[m] = Math.floor(trip[m]);
+		                    //System.out.println(" trip[i] 4 " + trip[i] ); 
+		                    tripI[m] = (int)trip[m];
+		                    //System.out.println(" tripI[i] 5 " + tripI[i] );                     
+		                }
+		                if (srcNeighbourhoodControl(tripI, grid)) {
+		                    grid.addReferencePoint(tripI);
+		                    //System.out.println(" point with neghbor " + tripI[0] + " , " + tripI[1] + " , " + tripI[2] ); 
+		                    //System.out.println(" minimal " + minimal[0] + " , " + minimal[1] + " , " + minimal[2] ); 
+		                    act1++;
+		                }
+		            }
+		            cou++;
+		            //double[] p;
+		            if (grid.referencePointExists()) {
+		            	pos[0] = i;
+		            	pos[1] = j;
+		            	pos[2] = k;
+		                //p = grid.getReferencePoint();
+		                //tG.addGridElement(p, sG.getPosition());
+		                randomMeeting(tF, pos, duration);                
+		            }
+	        	}
+        	}
         }
-        System.out.println(" Grid durchlaufen " + cou );   
-        //sG.first();
-        //tG.first();
     }
     
     private boolean srcNeighbourhoodControl(int[] pos, GridElement grid) {
@@ -212,15 +237,15 @@ public class MCWarpingRegStrategy extends MultipleFeatureRegistrator {
         return false;    
     }
     
-    private void randomMeeting(ImageGrid tG, int position, int duration) {
-        GridElement grid;
+    private void randomMeeting(RegularDisplacementField tG, int[] position, int duration) {
+        GridElement grid = null;
         double[] trip = new double[3];
         int[] tripI = new int[3];
         int[] minimal = new int[3];
       
         // default seed
-        RandomEngine twister = new MersenneTwister64();            
-        grid = tG.getElement(position);
+        RandomEngine twister = new MersenneTwister64();
+        //grid = tG.getElement(position);
         minimal = grid.getLocation();
         for (int j = 0; j < duration; j++) {            
             for (int i = 0; i < trip.length; i++) {
