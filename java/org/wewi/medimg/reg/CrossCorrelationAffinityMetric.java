@@ -3,7 +3,7 @@ package org.wewi.medimg.reg;
 
 import org.wewi.medimg.image.ColorRange;
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.ImageDataFactory;
+import org.wewi.medimg.image.IntImageFactory;
 import org.wewi.medimg.image.geom.transform.AffineTransformation;
 import org.wewi.medimg.image.geom.transform.Transformation;
 import org.wewi.medimg.image.ops.AnalyzerUtils;
@@ -34,7 +34,7 @@ public class CrossCorrelationAffinityMetric implements AffinityMetric {
 	public double similarity(Image source, Image target, Transformation trans) {
 		Image compare = null;
 		if (trans != null) {
-			ImageDataFactory fac = ImageDataFactory.getInstance();
+			IntImageFactory fac = IntImageFactory.getInstance();
 	        compare = ((AffineTransformation)trans).transform(source, fac);
 		} else {
 			compare = source;
