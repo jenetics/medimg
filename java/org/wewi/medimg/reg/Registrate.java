@@ -14,7 +14,6 @@ import org.wewi.medimg.reg.RegStrategy;
 
 
 import org.wewi.medimg.image.Image;
-import org.wewi.medimg.image.FeatureImage;
 import org.wewi.medimg.reg.wizard.RegistrationListener;
 import org.wewi.medimg.reg.wizard.RegistrationEvent;
 

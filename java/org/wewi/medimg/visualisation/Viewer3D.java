@@ -7,6 +7,7 @@
 package org.wewi.medimg.visualisation;
 
 
+
 import javax.media.j3d.Canvas3D;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.event.ComponentEvent;
@@ -63,12 +64,6 @@ import javax.swing.JPanel;
 import org.wewi.medimg.viewer.ViewerDesktopFrame;
 
 import javax.media.j3d.Canvas3D;
-
-/**
- *
- * @author  Werner Weiser
- * @version 0.1
- */
 
 public class Viewer3D extends ViewerDesktopFrame {
 

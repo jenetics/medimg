@@ -11,7 +11,7 @@ package org.wewi.medimg.math;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public class GaussianDistribution {
+public class GaussianDistribution implements DistributionFunction {
     private final double meanValue;
     private final double variance;
     private final double sqrVariance;
@@ -23,9 +23,15 @@ public class GaussianDistribution {
         sqrVariance = variance*variance;
     }
     
+    public double[] eval(double[] arg) {
+        double[] r = new double[1];
+        r[0] = eval(arg[0]);
+        return r;
+    }
+    
     public double eval(double x) {
-        return (1/(Math.sqrt(2*Math.PI*sqrVariance))*
-                Math.exp(-Math.pow(x-meanValue,2)/(2*sqrVariance)));
+        return (1.0d/(Math.sqrt(2d*Math.PI*sqrVariance))*
+                Math.exp(-Math.pow(x-meanValue,2)/(2d*sqrVariance)));
     }
     
     public double getMeanValue() {

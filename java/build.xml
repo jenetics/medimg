@@ -61,7 +61,7 @@
    <!-- Generieren der Dokumentation-->
     <target depends="init" description="Javadoc" name="javadoc">
         <mkdir dir="${dir.javadoc}"/>
-        <javadoc destdir="${dir.javadoc}" packagenames="org.*">
+        <javadoc author="true" destdir="${dir.javadoc}" packagenames="org.*" version="true">
             <sourcepath>
                 <pathelement location="."/>
             </sourcepath>

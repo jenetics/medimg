@@ -8,7 +8,8 @@ package org.wewi.medimg;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author Franz Wilhelmstötter
+ * @version 0.1
  */
 public interface QualityMeasure {
     public double quality(); 

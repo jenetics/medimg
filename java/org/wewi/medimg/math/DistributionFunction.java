@@ -11,6 +11,6 @@ package org.wewi.medimg.math;
  * @author  Franz Wilhelmstötter
  * @version 0.1
  */
-public interface DistributionFunction {
-    
+public interface DistributionFunction extends RealFunction {
+    //public double eval(double x);
 }
