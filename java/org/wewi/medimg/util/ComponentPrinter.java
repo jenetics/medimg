@@ -1,4 +1,4 @@
-/*
+/**
  * ComponentPrinter.java
  *
  * Created on 02. Februar 2002, 13:41

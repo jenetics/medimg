@@ -21,7 +21,7 @@ public final class ImageFormatTypes extends Enumeration {
     public static final ImageFormatTypes[] TYPES = {TIFF_IMAGES, BMP_IMAGES,
                                                       RAW_IMAGE};
     
-    public final String name;
+    private final String name;
     
     private static int refCount = 0;  
     private ImageFormatTypes(String name) { 

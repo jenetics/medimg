@@ -1,4 +1,4 @@
-/*
+/**
  * SegmenterObservable.java
  *
  * Created on 24. Juli 2002, 20:22
@@ -17,6 +17,7 @@ import org.wewi.medimg.alg.ObservableAlgorithm;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public abstract class ObservableSegmenter extends ObservableAlgorithm 
                                             implements Segmenter { 

@@ -14,6 +14,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import org.wewi.medimg.math.geom.DataPoint;
+import org.wewi.medimg.util.MathematicaStringable;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
@@ -23,8 +24,9 @@ import cern.colt.matrix.DoubleMatrix2D;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
-public class DataPointViewer extends JPanel {
+public class DataPointViewer extends JPanel implements MathematicaStringable {
     
     private class PairVector {
         private Vector data = new Vector();
@@ -219,6 +221,10 @@ public class DataPointViewer extends JPanel {
         buffer.append("}];\n");
         
         return buffer.toString();
+    }
+    
+    public String toMathematicaString() {
+        return toMathematicaString("");    
     }
     
  /*   

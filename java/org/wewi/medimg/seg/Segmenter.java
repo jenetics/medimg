@@ -1,4 +1,4 @@
-/*
+/**
  * Segmenter.java
  *
  * Created on 24. Juli 2002, 19:46
@@ -11,6 +11,7 @@ import org.wewi.medimg.image.Image;
 /**
  *
  * @author  Franz Wilhelmstötter
+ * @version 0.1
  */
 public interface Segmenter {
     public void segment(Image mrt, Image segimg);

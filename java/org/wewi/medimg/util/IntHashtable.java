@@ -4,7 +4,68 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
+/**
+ * Großteils von java.util.Hashtable
+ */
+
 public class IntHashtable extends Dictionary implements Cloneable {
+    
+    private class IntHashtableEntry {
+        int hash;
+        int key;
+        Object value;
+        IntHashtableEntry next;
+    
+        protected Object clone() {
+            IntHashtableEntry entry = new IntHashtableEntry();
+            entry.hash = hash;
+            entry.key = key;
+            entry.value = value;
+            entry.next = (next != null) ? (IntHashtableEntry) next.clone() : null;
+            return entry;
+        }
+    }
+    
+    private class IntHashtableEnumerator implements Enumeration {
+        boolean keys;
+        int index;
+        IntHashtableEntry table[];
+        IntHashtableEntry entry;
+        
+        IntHashtableEnumerator(IntHashtableEntry table[], boolean keys) {
+            this.table = table;
+            this.keys = keys;
+            this.index = table.length;
+        }
+    
+        public boolean hasMoreElements() {
+            if (entry != null) {
+                return true;
+            }
+    
+            while (index-- > 0) {
+                if ((entry = table[index]) != null) {
+                    return true;
+                }
+            }
+    
+            return false;
+        }
+    
+        public Object nextElement() {
+            if (entry == null) {
+                while ((index-- > 0) && ((entry = table[index]) == null));
+            }
+    
+            if (entry != null) {
+                IntHashtableEntry e = entry;
+                entry = e.next;
+                return keys ? new Integer(e.key) : e.value;
+            }
+            throw new NoSuchElementException("IntHashtableEnumerator");
+        }
+    
+    }    
 
 	private IntHashtableEntry table[];
 	private int count;
@@ -242,59 +303,4 @@ public class IntHashtable extends Dictionary implements Cloneable {
 	}
 }
 
-class IntHashtableEntry {
-	int hash;
-	int key;
-	Object value;
-	IntHashtableEntry next;
 
-	protected Object clone() {
-		IntHashtableEntry entry = new IntHashtableEntry();
-		entry.hash = hash;
-		entry.key = key;
-		entry.value = value;
-		entry.next = (next != null) ? (IntHashtableEntry) next.clone() : null;
-		return entry;
-	}
-}
-
-class IntHashtableEnumerator implements Enumeration {
-	boolean keys;
-	int index;
-	IntHashtableEntry table[];
-	IntHashtableEntry entry;
-    
-	IntHashtableEnumerator(IntHashtableEntry table[], boolean keys) {
-		this.table = table;
-		this.keys = keys;
-		this.index = table.length;
-	}
-
-	public boolean hasMoreElements() {
-		if (entry != null) {
-			return true;
-        }
-
-		while (index-- > 0) {
-			if ((entry = table[index]) != null) {
-				return true;
-            }
-        }
-
-		return false;
-	}
-
-	public Object nextElement() {
-		if (entry == null) {
-			while ((index-- > 0) && ((entry = table[index]) == null));
-        }
-
-		if (entry != null) {
-			IntHashtableEntry e = entry;
-			entry = e.next;
-			return keys ? new Integer(e.key) : e.value;
-		}
-		throw new NoSuchElementException("IntHashtableEnumerator");
-	}
-
-}
