@@ -4,8 +4,6 @@
  */
 package org.wewi.medimg.math.vec;
 
-import org.wewi.medimg.math.vec.*;
-import org.wewi.medimg.math.vec.*;
 
 
 /**
