@@ -38,14 +38,14 @@ import org.wewi.medimg.viewer.Viewer;
 import org.wewi.medimg.viewer.image.ImageViewer;
 import org.wewi.medimg.viewer.wizard.Wizard;
 
-  
+
 /**
  *
  * @author  Franz Wilhelmstötter
  * @version 0.2
  */
 public class SegmentationWizard extends Wizard {
-    
+
     /**
      * Hilfsklasse, die für das Einlesen des Bildes über
      * einen ImageReaderThread zuständig ist. Arbeitet sehr eng
@@ -55,16 +55,16 @@ public class SegmentationWizard extends Wizard {
         private SegmentationWizard wizard;
         private ImageReader imageReader;
         private boolean imageRead = false;
-        
+
         public ImageReaderWorker(SegmentationWizard wizard, ImageReader imageReader) {
-            this.wizard = wizard; 
-            this.imageReader = imageReader;   
-        }  
-        
+            this.wizard = wizard;
+            this.imageReader = imageReader;
+        }
+
         public void start() {
             if (imageRead) {
                 wizard.startSegmentation();
-                return;    
+                return;
             }
 
             /**************************************************************/
@@ -74,55 +74,55 @@ public class SegmentationWizard extends Wizard {
             ImageReaderThread readerThread = new ImageReaderThread(imageReader);
             readerThread.addReaderThreadListener(this);
             readerThread.setPriority(Thread.MIN_PRIORITY);
-            readerThread.start();            
-        } 
-        
+            readerThread.start();
+        }
+
         /**
          * @see org.wewi.medimg.image.io.ReaderThreadListener#imageRead(ReaderThreadEvent)
          */
         public void imageRead(ReaderThreadEvent event) {
             imageRead = true;
-            
+
             ImageReaderThread thread = (ImageReaderThread)event.getSource();
             ImageReader reader = thread.getImageReader();
             wizard.mrtImage = reader.getImage();
-            
+
             wizard.startSegmentation();
-        }         
+        }
     }
-    
+
     /**
      * Hilfsklasse, die für den Segmentiervorgang über
-     * den SegmenterThread zuständig ist. Auch diese Klasse 
+     * den SegmenterThread zuständig ist. Auch diese Klasse
      * arbeitet eng mit dem SegmentationWizard zusammen.
      */
     private class SegmenterWorker implements SegmenterListener,
                                                 AlgorithmIterationListener {
         private SegmentationWizard wizard;
         private ObservableSegmenter segmenter;
-        
+
         private ImageViewerSynchronizer imageSynchronizer;
-        
+
         public SegmenterWorker(SegmentationWizard wizard,
                                 SegmenterArgumentPanel segmenterArgumentPanel) {
             this.wizard = wizard;
             segmenter = segmenterArgumentPanel.getSegmenter();
             segmenter.addLoggerHandler(wizard.logHandlerPanel.getHandler());
-            
+
             segmenter.addIterationListener(this);
         }
-        
+
         public void start() {
             SegmenterThread thread = new SegmenterThread(segmenter);
             thread.addSegmenterListener(this);
             thread.setPriority(Thread.MIN_PRIORITY);
             thread.setImage(wizard.mrtImage);
             thread.start();
-            
-            
+
+
             wizard.segImage = thread.getSegmentedImage();
             wizard.segImage.setColorConversion(new FeatureColorConversion());
-            
+
             ImageViewer mrtViewer = new ImageViewer(segmenter.toString(), mrtImage);
             ImageViewer segViewer = new ImageViewer(segmenter.toString(), segImage);
             mrtViewer.pack();
@@ -132,93 +132,93 @@ public class SegmentationWizard extends Wizard {
             imageSynchronizer.addImageViewer(segViewer, new Point(300, 0), new Dimension(300, 300));
             Viewer.getInstance().addImageViewerSynchronizer(imageSynchronizer);
 
-            
-            
+
+
             /*
-            twinImageViewer = new TwinImageViewer(segmenter.toString(), 
+            twinImageViewer = new TwinImageViewer(segmenter.toString(),
                                                        mrtImage, segImage);
             twinImageViewer.pack();
             Viewer.getInstance().addViewerDesktopFrame(twinImageViewer);
             */
         }
-        
+
         public void interruptSegmenter() {
             InterruptableAlgorithm algorithm;
             if (!(segmenter instanceof InterruptableAlgorithm)) {
                 return;
             }
-            
+
             algorithm = (InterruptableAlgorithm)segmenter;
             try {
                 algorithm.interruptAlgorithm();
             } catch (UnsupportedOperationException e) {
                 getLogger().warning("interruptAlgorithm not implemented");
-            }  
+            }
         }
-        
+
         public void resumeSegmenter() {
             InterruptableAlgorithm algorithm;
             if (!(segmenter instanceof InterruptableAlgorithm)) {
                 return;
             }
-            
+
             algorithm = (InterruptableAlgorithm)segmenter;
             try {
-                algorithm.resumeAlgorithm();               
+                algorithm.resumeAlgorithm();
             } catch (UnsupportedOperationException e) {
                 getLogger().warning("resumeAlgorithm not implemented");
-            }    
+            }
         }
-        
+
         public void cancelSegmenter() {
             InterruptableAlgorithm algorithm;
             if (!(segmenter instanceof InterruptableAlgorithm)) {
                 return;
             }
-            
+
             algorithm = (InterruptableAlgorithm)segmenter;
             try {
-                algorithm.cancelAlgorithm();  
-                wizard.cancelButton.setEnabled(false); 
+                algorithm.cancelAlgorithm();
+                wizard.cancelButton.setEnabled(false);
                 wizard.startButton.setEnabled(true);
             } catch (UnsupportedOperationException e) {
                 getLogger().warning("cancleAlgorithm not implemented");
-            }    
+            }
         }
-        
+
         public void iterationStarted(AlgorithmIterationEvent event) {
-            wizard.cancelButton.setEnabled(true);          
+            wizard.cancelButton.setEnabled(true);
         }
-        
+
         public void iterationFinished(AlgorithmIterationEvent event) {
             if (imageSynchronizer != null) {
-                imageSynchronizer.repaintImages();    
+                imageSynchronizer.repaintImages();
             }
-        } 
-               
-        
+        }
+
+
         /**
          * @see org.wewi.medimg.seg.SegmenterObserver#segmenterFinished(SegmenterEvent)
          */
         public void segmenterFinished(SegmenterEvent event) {
             SegmenterThread segmenterThread = (SegmenterThread)event.getSource();
             wizard.segImage = segmenterThread.getSegmentedImage();
-            
+
             wizard.setClosable(true);
             wizard.closeButton.setEnabled(true);
-            wizard.startButton.setEnabled(true); 
+            wizard.startButton.setEnabled(true);
             wizard.cancelButton.setEnabled(false);
             wizard.cancelButton.setEnabled(false);
-            
+
             /**************************************************************/
             wizardLogger.info("Segmentiervorgang beendet");
-            /**************************************************************/ 
-            
+            /**************************************************************/
+
             if (imageSynchronizer != null) {
-                imageSynchronizer.repaintImages();    
-            }                      
+                imageSynchronizer.repaintImages();
+            }
         }
-        
+
         /**
          * @see org.wewi.medimg.seg.SegmenterObserver#segmenterStarted(SegmenterEvent)
          */
@@ -227,25 +227,25 @@ public class SegmentationWizard extends Wizard {
             wizardLogger.info("Segmentiervorgang gestartet");
             /**************************************************************/
         }
-        
+
     }
-    
+
     /*
      * Beginn des eigentlichen SegmentationWizards.
      */
     private static final String MENU_NAME = "Segmentierung";
-    
+
     private SegmenterArgumentPanel segmenterArgumentPanel;
     private LogHandlerPanel logHandlerPanel;
     private SegmenterWorker segmenterWorker;
     private ImageReaderWorker imageReaderWorker;
     private Image mrtImage = new NullImage();
     private Image segImage = new NullImage();
-    
+
     private SegmentationWizardPreferences swPrefs;
-    
+
     private Logger wizardLogger;
-    
+
     /**
      * Erzeugen eines neuen SegmentationWizards.
      */
@@ -254,7 +254,7 @@ public class SegmentationWizard extends Wizard {
         initComponents();
         init();
     }
-    
+
     /**
      * Zusätzliche Initialisierungsmethode, die
      * nach der Komponentenintialisierung aufgerufen
@@ -263,41 +263,41 @@ public class SegmentationWizard extends Wizard {
     private void init() {
         swPrefs = SegmentationWizardPreferences.getInstance();
         wizardLogger = Logger.getLogger(SegmentationWizard.class.getName());
-        
+
         setSize(swPrefs.getWizardDimension());
-        setLocation(swPrefs.getWizardLocation()); 
-        
+        setLocation(swPrefs.getWizardLocation());
+
         logHandlerPanel = new LogHandlerPanel();
         ws3CenterPanel.add(logHandlerPanel);
-        
+
         for (int i = 0; i < SegmenterEnum.ENUMERATION.length; i++) {
             segEnumComboBox.addItem(SegmenterEnum.ENUMERATION[i]);
         }
-        
-        SegmenterEnum enum = (SegmenterEnum)segEnumComboBox.getSelectedItem();
+
+        SegmenterEnum segmenterEnum = (SegmenterEnum)segEnumComboBox.getSelectedItem();
         SegmenterArgumentPanel panel = null;
-        if (enum.equals(SegmenterEnum.ML_CLUSTERER)) {
+        if (segmenterEnum.equals(SegmenterEnum.ML_CLUSTERER)) {
             panel = new MLKMeansClustererArgumentPanel();
-        } else if (enum.equals(SegmenterEnum.MAP_CLUSTERER)) {
+        } else if (segmenterEnum.equals(SegmenterEnum.MAP_CLUSTERER)) {
             panel = new MAPKMeansClustererArgumentPanel();
         }
         setSegmenterArgumentPanel(panel);
-        
+
         wizardLogger.addHandler(logHandlerPanel.getHandler());
-        
+
         cancelButton.setEnabled(true);
-    } 
-     
-    
+    }
+
+
     /**
      * Liefert den Namen des Wizards.
-     * 
+     *
      * @see org.wewi.medimg.viewer.wizard.Wizard#getMenuName()
      */
     public String getMenuName() {
         return MENU_NAME;
     }
-    
+
     /**
      * Alle Parameter einer Segmentiermethode werden über
      * das SegmenterArgumentPanel gesammelt. Dieses Panel liefert
@@ -310,33 +310,33 @@ public class SegmentationWizard extends Wizard {
         segmenterArgumentPanel = panel;
         segmenterPanel.removeAll();
         segmenterPanel.add(panel);
-        
+
         segmenterPanel.updateUI();
     }
-    
+
     public void dispose() {
         super.dispose();
     }
-    
+
     /**
-     * Diese Methode sollte beim Beenden des Wizards 
+     * Diese Methode sollte beim Beenden des Wizards
      * aufgerufen werden.
      */
     private void onClose() {
         swPrefs.setWizardDimension(getSize());
         swPrefs.setWizardLocation(getLocation());
-        
+
         try {
             setClosed(true);
             dispose();
             Viewer.getInstance().removeWizard(this);
         } catch (PropertyVetoException pve) {
             /**************************************************************/
-            logger.throwing(this.getClass().getName(), "onClose()", pve); 
+            logger.throwing(this.getClass().getName(), "onClose()", pve);
             /**************************************************************/
         }
     }
-    
+
     /**
      * Überprüft, ob die Minimalbedingung für den Start
      * der Segmentierung erfüllt sind.
@@ -344,14 +344,14 @@ public class SegmentationWizard extends Wizard {
     private boolean checkSegmentationStart() {
         return imageReaderWorker != null;
     }
-    
+
     /**
      * Anstoßen des Bildladevorganges.
      */
     private void loadImage(){
         imageReaderWorker.start();
     }
-    
+
     /**
      * Anstoßen des Segmentiervorganges.
      */
@@ -359,8 +359,8 @@ public class SegmentationWizard extends Wizard {
         segmenterWorker = new SegmenterWorker(this, segmenterArgumentPanel);
         segmenterWorker.start();
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -533,34 +533,34 @@ public class SegmentationWizard extends Wizard {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         if (segmenterWorker == null) {
-            return;    
+            return;
         }
-        segmenterWorker.cancelSegmenter();       
+        segmenterWorker.cancelSegmenter();
     }//GEN-LAST:event_cancelButtonActionPerformed
-    
+
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         if (!checkSegmentationStart()) {
             return;
         }
-        
+
         setClosable(false);
         closeButton.setEnabled(false);
         startButton.setEnabled(false);
-        
+
         loadImage();
     }//GEN-LAST:event_startButtonActionPerformed
-    
+
     private void segEnumComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_segEnumComboBoxItemStateChanged
-        SegmenterEnum enum = (SegmenterEnum)segEnumComboBox.getSelectedItem();
-        if (enum.equals(SegmenterEnum.ML_CLUSTERER)) {
+        SegmenterEnum segmenterEnum = (SegmenterEnum)segEnumComboBox.getSelectedItem();
+        if (segmenterEnum.equals(SegmenterEnum.ML_CLUSTERER)) {
             setSegmenterArgumentPanel(new MLKMeansClustererArgumentPanel());
-        } else if (enum.equals(SegmenterEnum.MAP_CLUSTERER)) {
+        } else if (segmenterEnum.equals(SegmenterEnum.MAP_CLUSTERER)) {
             setSegmenterArgumentPanel(new MAPKMeansClustererArgumentPanel());
         }
-        
+
     }//GEN-LAST:event_segEnumComboBoxItemStateChanged
-    
-    
+
+
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
         try {
             setClosed(true);
@@ -569,21 +569,21 @@ public class SegmentationWizard extends Wizard {
             logger.throwing(getClass().getName(), "frameInternalFrameClosed()", pve);
         }
     }//GEN-LAST:event_formInternalFrameClosed
-    
+
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         onClose();
     }//GEN-LAST:event_closeButtonActionPerformed
-                        
+
     private void imageDataSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageDataSearchButtonActionPerformed
         ImageFileChooser chooser = new ImageFileChooser();
         chooser.setDialogTitle("Datensatz auswählen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        
+
         int returnVal = chooser.showOpenDialog(this);
         if(returnVal != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        
+
         ImageReaderFactory readerFactory = chooser.getImageReaderFactory();
         String fileName = chooser.getSelectedFile().getAbsolutePath();
         ImageReader imageReader = readerFactory.createImageReader(IntImageFactory.getInstance(),
@@ -592,7 +592,7 @@ public class SegmentationWizard extends Wizard {
 
         imageDataSourceTextField.setText(fileName);
     }//GEN-LAST:event_imageDataSearchButtonActionPerformed
-        
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JPanel centerPanel;
@@ -616,5 +616,5 @@ public class SegmentationWizard extends Wizard {
     private javax.swing.JPanel ws3NorthPanel;
     private javax.swing.JPanel ws3SouthPanel;
     // End of variables declaration//GEN-END:variables
-        
+
 }
