@@ -27,7 +27,7 @@ import java.awt.Graphics;
 /**
  * This interface defines the canvas you can put on the displayed image.
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ImageCanvas {

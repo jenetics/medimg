@@ -42,7 +42,7 @@ import org.wewi.medimg.util.StringOutputStream;
 
 
 /**
- * @author  Franz Wilhelmsötter
+ * @author  Franz WilhelmsÃ¶tter
  * @version 0.1
  */
 class AbstractImageHeader implements ImageHeader {

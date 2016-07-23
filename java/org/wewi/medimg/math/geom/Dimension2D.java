@@ -25,7 +25,7 @@ package org.wewi.medimg.math.geom;
 import org.wewi.medimg.util.Immutable;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class Dimension2D implements Cloneable, Immutable {

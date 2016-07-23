@@ -21,7 +21,7 @@ package org.wewi.medimg.image.filter;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class GaussianKernel extends Kernel {

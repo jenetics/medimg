@@ -39,7 +39,7 @@ package org.wewi.medimg.alg;
  * 
  * @see org.wewi.medimg.alg.IterateableAlgorithm
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  *
  */

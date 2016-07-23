@@ -25,7 +25,7 @@ import org.wewi.medimg.image.IntImage;
 import org.wewi.medimg.math.vec.GridVectorField;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class GVFIntegral {

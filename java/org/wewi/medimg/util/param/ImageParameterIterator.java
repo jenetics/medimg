@@ -24,7 +24,7 @@ package org.wewi.medimg.util.param;
 import org.wewi.medimg.image.ImageFactory;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ImageParameterIterator implements ParameterIterator {

@@ -17,14 +17,14 @@
 /**
  * UnaryOperatorTaskAdapter.java
  *
- * Created on 23. Jänner 2003, 20:11
+ * Created on 23. JÃ¤nner 2003, 20:11
  */
 
 package org.wewi.medimg.image.ops;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class UnaryOperatorTaskAdapter extends ImageLoop.Task {

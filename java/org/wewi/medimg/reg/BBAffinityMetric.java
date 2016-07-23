@@ -1,7 +1,7 @@
 /*
  * BBAffinityMetric.java
  *
- * Created on 26. März 2002, 15:14
+ * Created on 26. MÃ¤rz 2002, 15:14
  */
 
 package org.wewi.medimg.reg;
@@ -92,7 +92,7 @@ public class BBAffinityMetric implements AffinityMetric {
             System.out.println("***Volume***" + volume); 
             System.out.println("***ergebnis***" + Math.abs(volume/refVolume)); 
 
-            // für Einzelabbildungen
+            // fÃ¼r Einzelabbildungen
             //return 1.0;
             return Math.abs(volume/refVolume);
     }
@@ -121,7 +121,7 @@ public class BBAffinityMetric implements AffinityMetric {
             }             
         }
         it.goToFirst();
-        // für einzelne Slices
+        // fÃ¼r einzelne Slices
         for (i = 0; i < 3; i++) {
                 if (Math.abs(min[i] - max[i]) < 0.001) {
                         max[i] = min[i] + 1;

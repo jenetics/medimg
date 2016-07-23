@@ -21,7 +21,7 @@ package org.wewi.medimg.image;
 import java.util.Arrays;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class FloatData implements ImageData {

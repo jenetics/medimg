@@ -20,7 +20,7 @@ package org.wewi.medimg.image;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class MarginImage extends AbstractImage {
@@ -53,7 +53,7 @@ public class MarginImage extends AbstractImage {
     }
     
     protected void initMargin(Image image, int margin) {
-        //"Einfärben" des oberen Randes durch Spiegeln an der Kante
+        //"EinfÃ¤rben" des oberen Randes durch Spiegeln an der Kante
         int maxY = image.getMaxY();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) { 
@@ -61,7 +61,7 @@ public class MarginImage extends AbstractImage {
             }
         }
         
-        //"Einfärben" des unteren Randes durch Spiegeln an der Kante
+        //"EinfÃ¤rben" des unteren Randes durch Spiegeln an der Kante
         int minY = image.getMinY();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinX(), n = image.getMaxX(); i <= n; i++) { 
@@ -69,7 +69,7 @@ public class MarginImage extends AbstractImage {
             }
         }
         
-        //"Einfärben" des linken Randes durch Spiegeln an der Kante
+        //"EinfÃ¤rben" des linken Randes durch Spiegeln an der Kante
         int minX = image.getMinX();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinY(), n = image.getMaxY(); i <= n; i++) {
@@ -77,7 +77,7 @@ public class MarginImage extends AbstractImage {
             }   
         }
         
-        //"Einfärben" des rechten Randes durch Spiegeln an der Kante
+        //"EinfÃ¤rben" des rechten Randes durch Spiegeln an der Kante
         int maxX = image.getMaxX();
         for (int j = 0; j < margin; j++) {
             for (int i = image.getMinY(), n = image.getMaxY(); i <= n; i++) {
@@ -85,7 +85,7 @@ public class MarginImage extends AbstractImage {
             }   
         } 
         
-        //Einfärben der Ecken
+        //EinfÃ¤rben der Ecken
         for (int i = 0; i < margin; i++) {
             for (int j = 0; j < margin; j++) {
                 setColor(minX-1-i, minY-1-j, slice, image.getColor(minX+i, minY+j, slice));

@@ -11,7 +11,7 @@ import org.wewi.medimg.image.Image;
 /**
  * This interface defines the minimal segmenter methods.
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface Segmenter {

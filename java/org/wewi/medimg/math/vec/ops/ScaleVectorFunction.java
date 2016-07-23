@@ -21,7 +21,7 @@
 package org.wewi.medimg.math.vec.ops;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ScaleVectorFunction implements VectorFunction, GridVectorFunction {

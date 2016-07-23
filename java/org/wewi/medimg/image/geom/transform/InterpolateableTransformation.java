@@ -5,7 +5,7 @@
 package org.wewi.medimg.image.geom.transform;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @author Werner Weiser
  * 
  * @version 0.1

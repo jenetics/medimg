@@ -37,7 +37,7 @@ import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
 import org.wewi.medimg.math.vec.ops.VectorFieldAnalyzer;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class GradientVectorFlow extends ObservableAlgorithm 

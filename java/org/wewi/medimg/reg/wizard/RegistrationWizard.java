@@ -349,7 +349,7 @@ public class RegistrationWizard extends Wizard implements Observer,
     private void initComponents() {//GEN-BEGIN:initComponents
         northPanel = new javax.swing.JPanel();
         centerPanel = new javax.swing.JPanel();
-        Datens‰tze = new javax.swing.JTabbedPane();
+        Datens√§tze = new javax.swing.JTabbedPane();
         wizardStep1 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         imageDataSourceTextField = new javax.swing.JTextField();
@@ -403,9 +403,9 @@ public class RegistrationWizard extends Wizard implements Observer,
 
         centerPanel.setLayout(new java.awt.BorderLayout());
 
-        Datens‰tze.setFont(new java.awt.Font("Dialog", 0, 12));
-        Datens‰tze.setName("Segmentation Wizard");
-        Datens‰tze.setPreferredSize(new java.awt.Dimension(450, 150));
+        Datens√§tze.setFont(new java.awt.Font("Dialog", 0, 12));
+        Datens√§tze.setName("Segmentation Wizard");
+        Datens√§tze.setPreferredSize(new java.awt.Dimension(450, 150));
         wizardStep1.setLayout(new java.awt.GridLayout(2, 1));
 
         imageDataSourceTextField.setEditable(false);
@@ -444,7 +444,7 @@ public class RegistrationWizard extends Wizard implements Observer,
 
         wizardStep1.add(jPanel2);
 
-        Datens‰tze.addTab("Datensatz", null, wizardStep1, "");
+        Datens√§tze.addTab("Datensatz", null, wizardStep1, "");
 
         wizardStep2.setLayout(new java.awt.BorderLayout());
 
@@ -515,7 +515,7 @@ public class RegistrationWizard extends Wizard implements Observer,
 
         wizardStep2.add(jPanel33, java.awt.BorderLayout.SOUTH);
 
-        Datens‰tze.addTab("Verfahren", null, wizardStep2, "");
+        Datens√§tze.addTab("Verfahren", null, wizardStep2, "");
 
         wizardStep3.setLayout(new java.awt.BorderLayout());
 
@@ -543,9 +543,9 @@ public class RegistrationWizard extends Wizard implements Observer,
 
         wizardStep3.add(jPanel1, java.awt.BorderLayout.EAST);
 
-        Datens‰tze.addTab("Starten", null, wizardStep3, "");
+        Datens√§tze.addTab("Starten", null, wizardStep3, "");
 
-        centerPanel.add(Datens‰tze, java.awt.BorderLayout.CENTER);
+        centerPanel.add(Datens√§tze, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
 
@@ -614,7 +614,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         //GEN-FIRST:event_targetImageDataSearchButtonActionPerformed
         // Add your handling code here:
         ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datens‰tze ausw‰hlen");
+        chooser.setDialogTitle("Datens√§tze ausw√§hlen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //chooser.setCurrentDirectory(new File("E:/Daten/Diplom/data/reg.test.img/"));
 
@@ -681,7 +681,7 @@ public class RegistrationWizard extends Wizard implements Observer,
         //GEN-FIRST:event_sourceImageDataSearchButtonActionPerformed
         // Add your handling code here:
         ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datensatz ausw‰hlen");
+        chooser.setDialogTitle("Datensatz ausw√§hlen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //chooser.setCurrentDirectory(new File("E:/Daten/Diplom/data/reg.test.img/"));        
         int returnVal = chooser.showOpenDialog(this);
@@ -705,7 +705,7 @@ public class RegistrationWizard extends Wizard implements Observer,
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane Datens‰tze;
+    private javax.swing.JTabbedPane Datens√§tze;
     private javax.swing.JButton cancelButton;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JButton closeButton;

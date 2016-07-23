@@ -20,7 +20,7 @@
 package org.wewi.medimg.image;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ImageView extends RowMajorImageGeometry implements Image {

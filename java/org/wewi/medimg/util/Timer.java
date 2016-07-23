@@ -17,7 +17,7 @@
 /**
  * Timer.java
  *
- * Created on 17. Jänner 2002, 19:42
+ * Created on 17. JÃ¤nner 2002, 19:42
  */
 
 package org.wewi.medimg.util;
@@ -26,7 +26,7 @@ import java.io.PrintStream;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class Timer {

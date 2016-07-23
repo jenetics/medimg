@@ -24,7 +24,7 @@ package org.wewi.medimg.seg.ac;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ContourMinimizer {

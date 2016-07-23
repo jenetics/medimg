@@ -10,7 +10,7 @@ package org.wewi.medimg.seg;
  * Markerinterface for dividing the segmenter into
  * Classifiers and Clusterers.
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface Clusterer extends Segmenter {

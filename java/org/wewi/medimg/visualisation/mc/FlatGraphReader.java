@@ -27,7 +27,7 @@ import java.io.IOException;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @author  Werner Weiser
  * @version 0.1
  */

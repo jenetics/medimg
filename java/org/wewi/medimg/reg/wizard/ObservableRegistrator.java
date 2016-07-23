@@ -31,7 +31,7 @@ public abstract class ObservableRegistrator extends ObservableAlgorithm
     }
     
     public synchronized void addLoggerHandler(Handler handler) {
-        //Es soll kein Handler doppelt eingefügt werden.
+        //Es soll kein Handler doppelt eingefÃ¼gt werden.
         Handler[] handlers = logger.getHandlers();
         for (int i = 0; i < handlers.length; i++) {
             if (handlers[i] == handler) {

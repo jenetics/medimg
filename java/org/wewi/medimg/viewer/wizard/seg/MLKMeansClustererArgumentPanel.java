@@ -11,7 +11,7 @@ import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
 /**
  *
- * @author  Franz Wilhelmstötter 
+ * @author  Franz WilhelmstÃ¶tter 
  * @version 0.1
  */
 public class MLKMeansClustererArgumentPanel extends SegmenterArgumentPanel { 

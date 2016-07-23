@@ -26,7 +26,7 @@ import java.io.OutputStream;
 import org.wewi.medimg.util.Nullable;
 
 /**
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ImageHeader extends Nullable {

@@ -25,7 +25,7 @@ package org.wewi.medimg.math.vec.ops;
  * This <code>VectorFunction</code> sets all vectors of a vector field
  * to a constant value <code>constVector</code>.
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ConstVectorFunction implements VectorFunction, GridVectorFunction {

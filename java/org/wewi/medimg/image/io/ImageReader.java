@@ -33,7 +33,7 @@ import org.wewi.medimg.image.ImageFactory;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  *
  */
@@ -116,9 +116,9 @@ public abstract class ImageReader {
     }   
     
     /**
-     * Hinzufügen eines ProgressListners. Diese Methode ist synchronisiert.
+     * HinzufÃ¼gen eines ProgressListners. Diese Methode ist synchronisiert.
      * 
-     * @param l ImageIOProgressListener, der hinzugefügt werden soll
+     * @param l ImageIOProgressListener, der hinzugefÃ¼gt werden soll
      */
     public synchronized void addProgressListener(ImageIOProgressListener l) {
         listeners.add(l);
@@ -133,7 +133,7 @@ public abstract class ImageReader {
     }
     
     /**
-     * Informieren der ProgressListener über einen Lesefortschritt
+     * Informieren der ProgressListener Ã¼ber einen Lesefortschritt
      */
     protected void notifyProgressListener(ImageIOProgressEvent event) {
         Vector list;

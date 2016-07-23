@@ -28,7 +28,7 @@ import org.wewi.medimg.viewer.image.VoxelSelectorListener;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class CCChooserPanel extends javax.swing.JPanel implements VoxelSelectorListener {

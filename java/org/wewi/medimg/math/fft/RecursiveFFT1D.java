@@ -26,7 +26,7 @@ import org.wewi.medimg.math.Complex;
 import org.wewi.medimg.math.MathUtil;
 
 /**
- * @author Franz Wilhelmstˆtter
+ * @author Franz Wilhelmst√∂tter
  * @version 0.1
  */
 public final class RecursiveFFT1D extends DFT implements DFT1D {
@@ -45,7 +45,7 @@ public final class RecursiveFFT1D extends DFT implements DFT1D {
     /**
      * Aus <em>Introduction to Algorithms; second edition; Seite 835.</em>
      * 
-     * L‰nge <code>data.length</code> muﬂ eine Potenz von 2 sein!
+     * L√§nge <code>data.length</code> mu√ü eine Potenz von 2 sein!
      * 
      * @see org.wewi.medimg.math.fft.DFT1D#transform(Complex[])
      */

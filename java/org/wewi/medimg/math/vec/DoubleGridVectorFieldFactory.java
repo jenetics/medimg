@@ -7,7 +7,7 @@ package org.wewi.medimg.math.vec;
 import org.wewi.medimg.image.geom.Point3D;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class DoubleGridVectorFieldFactory implements GridVectorFieldFactory {

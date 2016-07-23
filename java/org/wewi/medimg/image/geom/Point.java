@@ -25,7 +25,7 @@ package org.wewi.medimg.image.geom;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface Point extends Cloneable {

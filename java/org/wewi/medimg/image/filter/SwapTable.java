@@ -23,7 +23,7 @@ package org.wewi.medimg.image.filter;
 import java.util.Hashtable;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class SwapTable {

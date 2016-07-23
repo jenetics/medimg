@@ -26,7 +26,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class GridLineIterator implements LineIterator {

@@ -24,7 +24,7 @@ import org.wewi.medimg.math.MutableNumber;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class NumberImage extends RowMajorImageGeometry {

@@ -35,7 +35,7 @@ import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class Histogram {
@@ -170,7 +170,7 @@ public class Histogram {
             hist.generate();
             hist.setHistTitel("Grauwerthistogramm");
             hist.setAxesLabelX("Grauwerte");
-            hist.setAxesLabelY("Häufigkeit");
+            hist.setAxesLabelY("HÃ¤ufigkeit");
             
             System.out.println(hist.toMathematicaString());
         } catch (Exception e) {

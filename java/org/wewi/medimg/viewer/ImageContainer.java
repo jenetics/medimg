@@ -26,7 +26,7 @@ import org.wewi.medimg.image.Image;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  */
 public interface ImageContainer {
     public Image getImage();

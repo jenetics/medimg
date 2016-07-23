@@ -27,7 +27,7 @@ import org.wewi.medimg.math.MathUtil;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class IterativeFFT1DTest extends NaiveDFT1DTest {

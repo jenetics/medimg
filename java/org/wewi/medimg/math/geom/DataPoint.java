@@ -28,7 +28,7 @@ import org.wewi.medimg.util.MathematicaStringable;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface DataPoint extends Cloneable, MathematicaStringable {

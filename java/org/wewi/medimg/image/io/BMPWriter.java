@@ -33,7 +33,7 @@ import com.sun.media.jai.codec.ImageCodec;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public final class BMPWriter extends JAIImageWriter {

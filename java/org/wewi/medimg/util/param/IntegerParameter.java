@@ -23,7 +23,7 @@ package org.wewi.medimg.util.param;
 import org.jdom.Element;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class IntegerParameter extends Parameter {

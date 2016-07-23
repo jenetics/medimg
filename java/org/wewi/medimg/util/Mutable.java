@@ -21,9 +21,9 @@
 package org.wewi.medimg.util;
 
 /**
- * Tagginginterface zur Kennzeichnung von veränderbaren Klassen.
+ * Tagginginterface zur Kennzeichnung von verÃ¤nderbaren Klassen.
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface Mutable {

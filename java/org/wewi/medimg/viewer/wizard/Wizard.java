@@ -34,7 +34,7 @@ import org.wewi.medimg.viewer.Viewer;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class Wizard extends JInternalFrame {

@@ -26,7 +26,7 @@ import java.nio.channels.Pipe;
 import java.util.LinkedList;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class NumberRange {

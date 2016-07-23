@@ -28,7 +28,7 @@ import org.wewi.medimg.image.ImageFactory;
 
 /**
  *
- * @author  Franz Wilehlmstötter
+ * @author  Franz WilehlmstÃ¶tter
  * @version 0.1
  */
 public final class TIFFReader extends JAIImageReader {

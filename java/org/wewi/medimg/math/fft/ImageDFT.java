@@ -29,7 +29,7 @@ import org.wewi.medimg.math.Complex;
 import org.wewi.medimg.math.MathUtil;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ImageDFT {
@@ -71,7 +71,7 @@ public class ImageDFT {
             }
         }
         
-        //Füllen des Arrays
+        //FÃ¼llen des Arrays
         for (int i = 0; i < dim.getSizeX(); i++) {
             for (int j = 0; j < dim.getSizeY(); j++) {
                 for (int k = 0; k < dim.getSizeZ(); k++) {

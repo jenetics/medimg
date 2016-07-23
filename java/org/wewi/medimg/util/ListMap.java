@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ListMap implements Map {

@@ -17,7 +17,7 @@
 /**
  * RawImageDataWriter.java
  *
- * Created on 18. Jänner 2002, 13:55
+ * Created on 18. JÃ¤nner 2002, 13:55
  */
 
 package org.wewi.medimg.image.io;
@@ -34,7 +34,7 @@ import org.wewi.medimg.image.Image;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public class RawImageWriter extends ImageWriter {

@@ -92,7 +92,7 @@ public abstract class GlobalRegistrator extends ObservableRegistrator {
 			  Transformation trans = getTransformation((GlobalFeatureIterator)smfi.clone(), 
 													   (GlobalFeatureIterator)tmfi.clone());
 		                                       
-			  //Bestimmen der Qualität der berechneten Transformation
+			  //Bestimmen der QualitÃ¤t der berechneten Transformation
 		
 			  similarity = affinityMetric.similarity(source, target, trans); 
 			  transformationList.add(trans);
@@ -117,7 +117,7 @@ public abstract class GlobalRegistrator extends ObservableRegistrator {
 			System.out.println("featureNPoints: " + featureNPoints[i]);
 			System.out.println("weights: " + weights[i]);
 		}
-		//Rückgabe der berechnenten Interpolation der Transformationen.
+		//RÃ¼ckgabe der berechnenten Interpolation der Transformationen.
 		InterpolateableTransformation[] itrans = new InterpolateableTransformation[size];
 		transformationList.toArray(itrans);
 		transformation = interpolate(itrans, weights);
@@ -153,8 +153,8 @@ public abstract class GlobalRegistrator extends ObservableRegistrator {
     
 	/**
 	 * Wenn keine Transformation gefunden werden kann, weil z.B. einer
-	 * der Iteratoren keine Punkte enthält, soll von der Implementierung
-	 * die identische Transformation zurückgegeben werden.
+	 * der Iteratoren keine Punkte enthÃ¤lt, soll von der Implementierung
+	 * die identische Transformation zurÃ¼ckgegeben werden.
 	 * 
 	 * @param source VoxelIterator der Punkte die transformiert werden sollen
 	 * @param target VoxelIterator der Punkte, auf die abgebildet wird

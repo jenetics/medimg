@@ -34,7 +34,7 @@ import org.wewi.medimg.viewer.wizard.WizardListener;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class TwinImageViewer extends ViewerDesktopFrame implements WizardListener,
@@ -59,7 +59,7 @@ public final class TwinImageViewer extends ViewerDesktopFrame implements WizardL
     private Command nextNextCommand;
     private Command prevPrevCommand;
     
-    //Menü-Kommandos
+    //MenÃ¼-Kommandos
     private Command saveCommand;
     
     

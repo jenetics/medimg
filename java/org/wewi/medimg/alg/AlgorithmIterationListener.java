@@ -25,7 +25,7 @@ import java.util.EventListener;
 /**
  * Interface for an AlgorithmIterationListener.
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface AlgorithmIterationListener extends EventListener {

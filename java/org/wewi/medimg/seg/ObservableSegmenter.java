@@ -16,7 +16,7 @@ import org.wewi.medimg.alg.ObservableAlgorithm;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class ObservableSegmenter extends ObservableAlgorithm 

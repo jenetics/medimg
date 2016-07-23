@@ -22,7 +22,7 @@ package org.wewi.medimg.util.param;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class IntegerParameterIterator implements ParameterIterator {

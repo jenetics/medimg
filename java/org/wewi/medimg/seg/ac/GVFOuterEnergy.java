@@ -27,7 +27,7 @@ import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.math.vec.GridVectorField;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class GVFOuterEnergy extends OuterEnergyFunction {

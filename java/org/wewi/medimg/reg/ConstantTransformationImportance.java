@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @author Werner Weiser
  * 
  * @version 0.1  

@@ -27,7 +27,7 @@ import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.util.Timer;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class IterativeFFT1D extends DFT implements DFT1D {
@@ -125,7 +125,7 @@ public final class IterativeFFT1D extends DFT implements DFT1D {
     
     
     /**
-     * Für die Performancemessung
+     * FÃ¼r die Performancemessung
      */
     public static void main(String[] args) {
         final int MAX = 18;

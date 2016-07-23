@@ -23,7 +23,7 @@ import java.util.RandomAccess;
 /**
  * Abstract implementation of the <code>Image</code>-interface.
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class AbstractImage extends RowMajorImageGeometry

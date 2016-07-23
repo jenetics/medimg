@@ -31,7 +31,7 @@ import javax.vecmath.Vector3d;
 import javax.vecmath.Vector4d;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class UnMatrix {
@@ -71,15 +71,15 @@ public final class UnMatrix {
     private void unmatrix(Matrix4d matrix) {           
         //System.out.println("drin" + matrix);
         if (matrix.determinant() == 0.0) {
-            System.err.println("Singulär B");
-            return; //Singuläre Matrix kann nicht behandelt werden.            
+            System.err.println("SingulÃ¤r B");
+            return; //SingulÃ¤re Matrix kann nicht behandelt werden.            
         }
 		//Normalizing the matrix
         matrix.mul(1.0/matrix.getElement(3, 3));
         
-        //pmat wird zum Lösen des perspektivischen Anteils verwendet.
+        //pmat wird zum LÃ¶sen des perspektivischen Anteils verwendet.
         //Es wird hier automatisch die ober 3x3 Komponente
-        //auf Singularität getestet.
+        //auf SingularitÃ¤t getestet.
         Matrix4d pmat = new Matrix4d(matrix);        
 
         
@@ -89,7 +89,7 @@ public final class UnMatrix {
             //prhs ist die rechte Seite der Gleichung
             matrix.getRow(3, prsh);
 
-            //Lösen der Gleichung durch Invertieren von pmat 
+            //LÃ¶sen der Gleichung durch Invertieren von pmat 
             //und multiplizieren mit prsh
             Matrix4d invpmat = new Matrix4d(pmat);
             invpmat.invert();
@@ -98,7 +98,7 @@ public final class UnMatrix {
             invpmat.transform(psol);
             
      
-            //Speichern der Lösung
+            //Speichern der LÃ¶sung
             double[] temp = new double[4];
             psol.get(temp);
             tran[U_PERSPX] = temp[0];

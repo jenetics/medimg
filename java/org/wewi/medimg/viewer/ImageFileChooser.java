@@ -47,7 +47,7 @@ import org.wewi.medimg.image.io.TIFFWriterFactory;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class ImageFileChooser extends JFileChooser implements ActionListener {

@@ -30,7 +30,7 @@ import org.wewi.medimg.image.ImageProperties;
 import org.wewi.medimg.util.AccumulatorArray;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class XMLUtil {

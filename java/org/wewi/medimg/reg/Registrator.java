@@ -1,7 +1,7 @@
 /*
  * RegStrategy.java
  *
- * Created on 21. März 2002, 11:19
+ * Created on 21. MÃ¤rz 2002, 11:19
  */
 
 package org.wewi.medimg.reg;

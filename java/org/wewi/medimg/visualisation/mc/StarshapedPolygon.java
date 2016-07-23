@@ -39,7 +39,7 @@ import cern.colt.matrix.linalg.EigenvalueDecomposition;
 
 /**
  *
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @author Werner Weiser
  * @version 0.1
  */
@@ -125,7 +125,7 @@ class StarshapedPolygon {
         float qy = p.y + l * n.y;
         float qz = p.z + l * n.z;
         //System.out.println(" q " + q);
-        // reduzieren die Koordinate, bei der der Normalvektor die größte Abmessung hat
+        // reduzieren die Koordinate, bei der der Normalvektor die grÃ¶ÃŸte Abmessung hat
         float p1x, p1y;
         float p2x, p2y;
         float p3x, p3y;
@@ -287,7 +287,7 @@ class StarshapedPolygon {
             }            
             if (verticesUsed.contains(value)) {
                 //Wenn die Anzahl der Kanten mit der Anzahl
-                //der Knoten übereinstimmt sind wir fertig.
+                //der Knoten Ã¼bereinstimmt sind wir fertig.
                 //Im adneren Fall ist das Polygon nicht geschlossen.
                 if (verticesUsed.size() == edges.length) {
                     vertices = new Vertex[polygonVertices.size()];

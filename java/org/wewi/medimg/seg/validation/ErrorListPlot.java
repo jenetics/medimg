@@ -39,7 +39,7 @@ import com.jrefinery.data.IntervalCategoryDataset;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ErrorListPlot extends javax.swing.JFrame {
@@ -77,7 +77,7 @@ public class ErrorListPlot extends javax.swing.JFrame {
     }
     */
     public void init() { 
-        //Erzeugen der Datensätze
+        //Erzeugen der DatensÃ¤tze
         String[] categories = new String[mean.length];
         double[][] starts = new double[1][mean.length];
         double[][] ends = new double[1][mean.length];

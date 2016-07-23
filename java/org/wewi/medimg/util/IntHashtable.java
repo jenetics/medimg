@@ -21,7 +21,7 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 /**
- * Groﬂteils von java.util.Hashtable
+ * Gro√üteils von java.util.Hashtable
  */
 
 public class IntHashtable extends Dictionary implements Cloneable {

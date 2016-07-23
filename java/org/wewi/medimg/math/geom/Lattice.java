@@ -23,7 +23,7 @@
 package org.wewi.medimg.math.geom;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class Lattice {

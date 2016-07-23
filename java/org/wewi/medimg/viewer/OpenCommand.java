@@ -40,7 +40,7 @@ import org.wewi.medimg.viewer.image.ImageViewer;
 
 /**
  *
- * @author  Franz Wilhelmstˆtter
+ * @author  Franz Wilhelmst√∂tter
  * @version 0.1
  */
 public final class OpenCommand implements Command, ImageIOProgressListener {
@@ -62,7 +62,7 @@ public final class OpenCommand implements Command, ImageIOProgressListener {
     
     public void execute() {
         ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datensatz ausw‰hlen");
+        chooser.setDialogTitle("Datensatz ausw√§hlen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         chooser.setFont(new Font("Dialog", Font.PLAIN, 12));
         
@@ -93,7 +93,7 @@ public final class OpenCommand implements Command, ImageIOProgressListener {
     /**
      * Das Laden des Bilder erfolgt asynchron. Diese
      * Methode wird aufgerufen, wenn sich der Lesefortschritt
-     * des Bildes ge‰ndert hat. Im Besonderen wird das Ende
+     * des Bildes ge√§ndert hat. Im Besonderen wird das Ende
      * des Einlesen des Bildes angezeigt.
      * 
      * @see org.wewi.medimg.image.io.ImageIOProgressListener#progressChanged(ProgressEvent)

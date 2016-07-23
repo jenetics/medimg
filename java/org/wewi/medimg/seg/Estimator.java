@@ -9,7 +9,7 @@ package org.wewi.medimg.seg;
 /**
  * An Estimator
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface Estimator {

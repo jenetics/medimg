@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class Neighborhood3D6 implements Neighborhood {

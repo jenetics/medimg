@@ -23,7 +23,7 @@ package org.wewi.medimg.image.geom.transform;
 import junit.framework.TestCase;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class AffineTransformationTest extends TestCase {

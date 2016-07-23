@@ -1,7 +1,7 @@
 /**
  * Test.java
  *
- * Created on 28. März 2002, 16:06
+ * Created on 28. MÃ¤rz 2002, 16:06
  */
 
 package org.wewi.medimg.reg;

@@ -36,7 +36,7 @@ import org.wewi.medimg.viewer.wizard.Wizard;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class MarchingCubeWizard extends Wizard {             
@@ -286,7 +286,7 @@ public class MarchingCubeWizard extends Wizard {
     private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseButtonActionPerformed
         // Add your handling code here:
         ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datensatz auswählen");
+        chooser.setDialogTitle("Datensatz auswÃ¤hlen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         chooser.setCurrentDirectory(new File("C:/Workspace/fwilhelm/Projekte/Diplom/data"));
         

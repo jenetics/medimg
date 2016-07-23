@@ -28,7 +28,7 @@ import org.wewi.medimg.alg.AlgorithmIterator;
 import org.wewi.medimg.alg.IterateableAlgorithm;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class KMeansClusterer implements IterateableAlgorithm {

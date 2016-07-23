@@ -1,5 +1,5 @@
 /* 
- * Image.java, Created on 18. Jänner 2002, 17:20
+ * Image.java, Created on 18. JÃ¤nner 2002, 17:20
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ import org.wewi.medimg.util.Nullable;
  * ColorConversion is used.
  *
  *
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  * 
  * @see org.wewi.medimg.image.ColorConversion

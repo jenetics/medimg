@@ -26,7 +26,7 @@ import java.io.IOException;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface GraphWriter {

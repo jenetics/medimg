@@ -34,7 +34,7 @@ import javax.swing.JScrollBar;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class LogHandlerPanel extends javax.swing.JPanel {

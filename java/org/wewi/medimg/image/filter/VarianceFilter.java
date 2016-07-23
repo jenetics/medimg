@@ -17,7 +17,7 @@
 /**
  * VarianceFilter.java
  *
- * Created on 24. Jänner 2003, 14:32
+ * Created on 24. JÃ¤nner 2003, 14:32
  */
 
 package org.wewi.medimg.image.filter;
@@ -30,7 +30,7 @@ import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class VarianceFilter extends ImageFilter {

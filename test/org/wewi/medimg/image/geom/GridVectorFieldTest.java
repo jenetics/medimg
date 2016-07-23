@@ -25,7 +25,7 @@ import org.wewi.medimg.math.vec.DoubleGridVectorField;
 import junit.framework.TestCase;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class GridVectorFieldTest extends TestCase {

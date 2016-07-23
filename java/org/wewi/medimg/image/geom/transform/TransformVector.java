@@ -1,7 +1,7 @@
 /**
  * TransformVector.java
  *
- * Created on 23. März 2002, 12:45
+ * Created on 23. MÃ¤rz 2002, 12:45
  */
 
 package org.wewi.medimg.image.geom.transform;

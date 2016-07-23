@@ -25,7 +25,7 @@ package org.wewi.medimg.viewer.image;
 import java.awt.Graphics;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class ImageCanvasDecorator implements ImageCanvas {

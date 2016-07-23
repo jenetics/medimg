@@ -26,7 +26,7 @@ import java.util.Comparator;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class Arrays {

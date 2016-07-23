@@ -29,7 +29,7 @@ import org.wewi.medimg.math.MutableInteger;
 import org.wewi.medimg.util.IntHashtable;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class EntropyOperator implements UnaryOperator {
@@ -60,7 +60,7 @@ public class EntropyOperator implements UnaryOperator {
      * Berechnet die Entropie eines Bildes. (Einheit Bit pro Pixel).
      * <pre>
      *     E = - Sum[p(c)*Log[p(c), 2], {c, minColor, maxColor}], 
-     *         wobei p(c) die relative Häufigkeit der Farbe c ist.
+     *         wobei p(c) die relative HÃ¤ufigkeit der Farbe c ist.
      * </pre>
      * 
      * @return E 
@@ -74,7 +74,7 @@ public class EntropyOperator implements UnaryOperator {
         while (keys.hasMoreElements()) {
             key = keys.nextElement();
             
-            //Berechnen der relativen Häufigkeit aus dem Histogram
+            //Berechnen der relativen HÃ¤ufigkeit aus dem Histogram
             p = (double)((MutableInteger)hist.get(key)).intValue() / (double)size; 
             
             entropy += p*MathUtil.log2(p);           

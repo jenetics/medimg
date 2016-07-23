@@ -17,7 +17,7 @@
 /**
  * SecondOrder.java
  *
- * Created on 24. Jänner 2003, 09:01
+ * Created on 24. JÃ¤nner 2003, 09:01
  */
 
 package org.wewi.medimg.image.statistic;
@@ -34,7 +34,7 @@ import org.wewi.medimg.image.ops.ImageLoop;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class SecondOrder {

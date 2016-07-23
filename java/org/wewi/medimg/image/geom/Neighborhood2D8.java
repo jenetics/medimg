@@ -28,7 +28,7 @@ import org.wewi.medimg.image.Dimension;
 
 /**
  *
- * @author  Franz Wilhelmsötter
+ * @author  Franz WilhelmsÃ¶tter
  * @version 0.1
  */
 public final class Neighborhood2D8 implements Neighborhood {

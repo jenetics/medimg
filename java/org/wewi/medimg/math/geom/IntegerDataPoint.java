@@ -33,9 +33,9 @@ import org.wewi.medimg.util.Immutable;
  * Konstruktor beim Erzeugen mitgegeben wird, wird in den internen
  * Integervektor KOPIERT. Desgleichen wird beim Aufruf der 
  * <pre> getIntegerPoint() </pre> Methode eine Kopie des Integervektors
- * erzeugt und nach Auﬂen gegeben.
+ * erzeugt und nach Au√üen gegeben.
  *
- * @author  Franz Wilhelmstˆtter
+ * @author  Franz Wilhelmst√∂tter
  * @version 0.1
  */
 public final class IntegerDataPoint implements DataPoint, Immutable {

@@ -59,7 +59,7 @@ public class CoplanarTriangleDecimator extends TriangleDecimator {
         
         for (int i = 0; i < vertices.length; i++) {
             v = vertices[i];
-            // Ein Punkt mit 2 Dreiecksnachbarn ist jedenfalls ein Punkt der Außenkontur
+            // Ein Punkt mit 2 Dreiecksnachbarn ist jedenfalls ein Punkt der AuÃŸenkontur
             // und darf daher nicht entfernt werden
             if (graph.getNoOfIncidentTriangles(v) <= 2) {
                 one++;
@@ -73,7 +73,7 @@ public class CoplanarTriangleDecimator extends TriangleDecimator {
                 two++;
                 continue;
             }
-            // Eigenwerte nach Größe geordnet
+            // Eigenwerte nach GrÃ¶ÃŸe geordnet
             p.getEigenValues(eigenValues);
             similarity = ((eigenValues[0] * eigenValues[0]) /
                           (eigenValues[2] * eigenValues[2] + eigenValues[1] * eigenValues[1]));

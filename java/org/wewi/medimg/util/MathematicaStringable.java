@@ -23,13 +23,13 @@ package org.wewi.medimg.util;
 /**
  * 
  * Wird dieses Interface implementiert, so bedeutet dies,
- * daß der gelieferte String eine Darstellung
- * des Objektes in Mathematica ermöglicht. Dies
+ * daÃŸ der gelieferte String eine Darstellung
+ * des Objektes in Mathematica ermÃ¶glicht. Dies
  * kann ein Diagramm sein, eine Graphik oder
  * auch nur die Darstellung der Datenstruktur
  * in der Syntax von Mathematica.
  *  
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  *
  */

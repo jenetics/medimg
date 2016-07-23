@@ -25,7 +25,7 @@ import org.wewi.medimg.image.ops.UnaryPointTransformer;
 import org.wewi.medimg.image.ops.UnaryPointTransformerFactory;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class UnaryPointTransformerFilter extends ImageFilter {

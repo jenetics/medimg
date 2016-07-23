@@ -33,7 +33,7 @@ import org.jdom.input.SAXBuilder;
 import org.wewi.medimg.util.AccumulatorArray;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class Protocol {
@@ -75,11 +75,11 @@ public class Protocol {
         
         Element root = doc.getRootElement();
         
-        //Füllen des Algorithmennamens
+        //FÃ¼llen des Algorithmennamens
         Element alg = root.getChild("Algorithm");
         algorithmName = alg.getAttribute("class").getValue();
         
-        //Füllen der Algorithmusparameter
+        //FÃ¼llen der Algorithmusparameter
         List parameterList = alg.getChildren("Parameter");
         for (Iterator it = parameterList.iterator(); it.hasNext();) {
             Element param = (Element)it.next();
@@ -99,7 +99,7 @@ public class Protocol {
             }  
         } 
         
-        //Füllen der Algorithmusergebnisse
+        //FÃ¼llen der Algorithmusergebnisse
         Element algResult = alg.getChild("Result");
         Element executionTime = algResult.getChild("ExecutionTime");
         try {
@@ -119,7 +119,7 @@ public class Protocol {
             meanValues[pos++] = Double.parseDouble(value.getText());  
         }
         
-        //Füllen des AccumulatorArrays
+        //FÃ¼llen des AccumulatorArrays
         Element result = root.getChild("Result");
         Element fm = result.getChild("FrequencyMatrix");
         int rows, cols;
@@ -146,7 +146,7 @@ public class Protocol {
         }
 
         
-        //Füllen der Fehler
+        //FÃ¼llen der Fehler
         try {
             Element error = result.getChild("Error");
             overallError = Double.parseDouble(error.getChild("OverallError").getText());

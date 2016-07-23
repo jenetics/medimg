@@ -1,7 +1,7 @@
 /*
  * RegistrationException.java
  *
- * Created on 27. März 2002, 14:47
+ * Created on 27. MÃ¤rz 2002, 14:47
  */
 
 package org.wewi.medimg.reg;

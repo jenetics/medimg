@@ -17,7 +17,7 @@
 /**
  * Enumeration.java
  *
- * Created on 11. Jänner 2002, 19:38
+ * Created on 11. JÃ¤nner 2002, 19:38
  */
 
 package org.wewi.medimg.util;
@@ -25,7 +25,7 @@ package org.wewi.medimg.util;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class Enumeration {

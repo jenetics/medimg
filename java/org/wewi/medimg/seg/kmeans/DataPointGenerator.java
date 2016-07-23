@@ -32,7 +32,7 @@ import org.wewi.medimg.math.geom.IntegerDataPoint;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  */
 public class DataPointGenerator {
     private double[] mean;

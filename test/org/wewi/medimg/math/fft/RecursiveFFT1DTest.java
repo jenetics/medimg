@@ -25,7 +25,7 @@ package org.wewi.medimg.math.fft;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class RecursiveFFT1DTest extends IterativeFFT1DTest {

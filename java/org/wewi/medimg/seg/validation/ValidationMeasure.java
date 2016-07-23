@@ -25,7 +25,7 @@ package org.wewi.medimg.seg.validation;
 import org.wewi.medimg.image.Image;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ValidationMeasure {

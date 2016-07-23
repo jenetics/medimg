@@ -1,7 +1,7 @@
 package org.wewi.medimg.reg;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @author Werner Weiser
  * 
  * @version 0.1

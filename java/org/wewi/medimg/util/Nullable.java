@@ -17,14 +17,14 @@
 /**
  * Nullable.java
  *
- * Created on 26. Jänner 2002, 21:07
+ * Created on 26. JÃ¤nner 2002, 21:07
  */
 
 package org.wewi.medimg.util;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface Nullable {

@@ -17,7 +17,7 @@
 /**
  * VarianceImageMeasure.java
  *
- * Created on 27. Jänner 2003, 09:25
+ * Created on 27. JÃ¤nner 2003, 09:25
  */
 
 package org.wewi.medimg.seg.validation;

@@ -36,7 +36,7 @@ import org.wewi.medimg.image.io.ImageWriterThread;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class SaveCommand implements Command, ImageIOProgressListener {

@@ -30,7 +30,7 @@ import org.wewi.medimg.viewer.image.ImageCanvas;
 import org.wewi.medimg.viewer.image.ImagePanel;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class VectorFieldImageCanvasAdapter implements ImageCanvas {

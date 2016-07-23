@@ -28,7 +28,7 @@ import org.wewi.medimg.math.vec.GridVectorField;
 import org.wewi.medimg.math.vec.GridVectorFieldFactory;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class GradientFilter extends ImageFilter {

@@ -26,7 +26,7 @@ import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.util.AccumulatorArray;
 
 /**
- * @author Franz Wilhelmstˆtter
+ * @author Franz Wilhelmst√∂tter
  * @version 0.1
  */
 public class MutualInformation {
@@ -77,7 +77,7 @@ public class MutualInformation {
                 mi += (aij) * MathUtil.log2((aij/N)/(px[i]*py[j]));    
             }    
         }
-        //damit aij/N nicht in jedem Durchlauf berechnet werden muﬂ
+        //damit aij/N nicht in jedem Durchlauf berechnet werden mu√ü
         return mi/N;        
     }
     

@@ -21,9 +21,9 @@
 package org.wewi.medimg.util;
 
 /**
- * Markerinterface zur Kennzeichnung von NICHT veränderbaren Klassen.
+ * Markerinterface zur Kennzeichnung von NICHT verÃ¤nderbaren Klassen.
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface Immutable {

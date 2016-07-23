@@ -20,7 +20,7 @@ package org.wewi.medimg.image;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class IntImage extends AbstractImage {

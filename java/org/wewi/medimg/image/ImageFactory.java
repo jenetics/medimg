@@ -1,5 +1,5 @@
 /* 
- * ImageFactory.java, created on 18. Jänner 2002, 19:50
+ * ImageFactory.java, created on 18. JÃ¤nner 2002, 19:50
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 package org.wewi.medimg.image;
 
 /**
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ImageFactory {

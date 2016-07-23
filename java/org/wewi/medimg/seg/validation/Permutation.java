@@ -23,7 +23,7 @@ package org.wewi.medimg.seg.validation;
 import java.util.Arrays;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class Permutation {

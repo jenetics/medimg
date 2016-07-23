@@ -2,7 +2,7 @@ package org.wewi.medimg.math.vec;
 
 /**
  * @author Werner Weiser
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  *
  */
 public interface ArbitraryVectorField extends VectorField {

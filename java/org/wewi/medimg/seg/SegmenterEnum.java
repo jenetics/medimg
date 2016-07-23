@@ -7,7 +7,7 @@ package org.wewi.medimg.seg;
 import org.wewi.medimg.util.Enumeration;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class SegmenterEnum extends Enumeration {

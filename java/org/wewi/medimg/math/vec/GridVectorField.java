@@ -7,7 +7,7 @@ package org.wewi.medimg.math.vec;
 import org.wewi.medimg.util.Mutable;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface GridVectorField extends VectorField, Cloneable, Mutable {

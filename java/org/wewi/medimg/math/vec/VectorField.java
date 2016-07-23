@@ -6,7 +6,7 @@ package org.wewi.medimg.math.vec;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface VectorField {

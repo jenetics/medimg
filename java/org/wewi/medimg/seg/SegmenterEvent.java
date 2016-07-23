@@ -10,7 +10,7 @@ import java.util.EventObject;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class SegmenterEvent extends EventObject {

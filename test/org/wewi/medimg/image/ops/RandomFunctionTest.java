@@ -29,7 +29,7 @@ import org.wewi.medimg.image.IntImage;
 import junit.framework.TestCase;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class RandomFunctionTest extends TestCase {
@@ -56,7 +56,7 @@ public class RandomFunctionTest extends TestCase {
         analyzer.analyze();
         
         assertTrue("Minimum ist kleiner als erwartet: " + op.getMinimum(), op.getMinimum() >= 32);
-        assertTrue("Maximum ist größer als erwartet: " + op.getMaximum(), op.getMaximum() <= 456);
+        assertTrue("Maximum ist grÃ¶ÃŸer als erwartet: " + op.getMaximum(), op.getMaximum() <= 456);
     }
     
     

@@ -1,7 +1,7 @@
 /*
  * WeightPointStrategy.java
  *
- * Created on 26. März 2002, 09:20
+ * Created on 26. MÃ¤rz 2002, 09:20
  */
 
 package org.wewi.medimg.reg;

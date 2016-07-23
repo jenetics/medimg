@@ -43,7 +43,7 @@ import com.sun.media.jai.codec.SeekableStream;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 abstract class JAIImageReader extends ImageReader {
@@ -119,7 +119,7 @@ abstract class JAIImageReader extends ImageReader {
         }
     
         //Lesen des ersten Bildes ist beendet und
-        //die ProgressListener werden übber den
+        //die ProgressListener werden Ã¼bber den
         //Fortschritt informiert.
         notifyProgressListener(new ImageIOProgressEvent(this, (1.0/(double)maxSlice), false));
         
@@ -156,7 +156,7 @@ abstract class JAIImageReader extends ImageReader {
                     image.setColor(i, j, k-minSlice, colorConversion.convert(pixel));
                 }
             }  
-            //Informieren der Listener über den Fortschritt
+            //Informieren der Listener Ã¼ber den Fortschritt
             count++;
             notifyProgressListener(new ImageIOProgressEvent(this, ((double)count/(double)maxSlice), false));          
         }        
@@ -178,7 +178,7 @@ abstract class JAIImageReader extends ImageReader {
             } catch (Exception e) {
                 image = new NullImage();
                 //Das Einlesen ist hier abgeschlossen -> Listener
-                //müssen informiert werden.
+                //mÃ¼ssen informiert werden.
                 notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
                 throw new ImageIOException("Can't read JAI Image; Slice " + k, e);
             }
@@ -189,7 +189,7 @@ abstract class JAIImageReader extends ImageReader {
                 }
             } 
              
-            //Informieren der Listener über den Fortschritt
+            //Informieren der Listener Ã¼ber den Fortschritt
             count++;
             notifyProgressListener(new ImageIOProgressEvent(this, 
                                         ((double)count/(double)dim.getSizeZ()), false));          
@@ -207,7 +207,7 @@ abstract class JAIImageReader extends ImageReader {
         } catch (IOException e) {
             image = new NullImage();
             //Das Einlesen ist hier abgeschlossen -> Listener
-            //müssen informiert werden.
+            //mÃ¼ssen informiert werden.
             notifyProgressListener(new ImageIOProgressEvent(this, 1, true));
             throw new ImageIOException("Can't read JAI Image: ", e);        
         }

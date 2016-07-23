@@ -23,7 +23,7 @@ package org.wewi.medimg.seg.kmeans;
 import java.util.Collection;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  *
  */

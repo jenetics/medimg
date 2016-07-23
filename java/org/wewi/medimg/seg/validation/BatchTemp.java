@@ -21,7 +21,7 @@
 package org.wewi.medimg.seg.validation;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  *
  */
 public class BatchTemp {

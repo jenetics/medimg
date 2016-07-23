@@ -17,7 +17,7 @@
 /**
  * ImageFilter.java
  *
- * Created on 25. Jänner 2002, 17:32
+ * Created on 25. JÃ¤nner 2002, 17:32
  */
 
 package org.wewi.medimg.image.filter;
@@ -27,7 +27,7 @@ import org.wewi.medimg.image.Image;
 /**
  * Baseclass for the image filtering tasks.
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class ImageFilter {

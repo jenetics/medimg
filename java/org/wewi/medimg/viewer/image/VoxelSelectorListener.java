@@ -23,7 +23,7 @@ package org.wewi.medimg.viewer.image;
 import java.util.EventListener;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface VoxelSelectorListener extends EventListener {

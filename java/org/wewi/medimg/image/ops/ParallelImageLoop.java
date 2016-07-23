@@ -26,7 +26,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.ROI;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  * 
  */
@@ -35,7 +35,7 @@ public class ParallelImageLoop extends ImageLoop {
     /**
      * Factory for the <code>ImageLoop.Task</code> class.
      * 
-     * @author Franz Wilhelmstötter
+     * @author Franz WilhelmstÃ¶tter
      * @version 0.1
      */
     public static interface TaskFactory {

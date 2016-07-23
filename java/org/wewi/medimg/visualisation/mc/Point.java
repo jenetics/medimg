@@ -24,14 +24,14 @@ package org.wewi.medimg.visualisation.mc;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class Point {
     static final Point NULL_POINT = new Point(0, 0, 0);
     /**
      * Mit dieser Konstante wird die Genauigkeit auf
-     * zwei Nachkommastellen beschränkt (RATIO = 100).
+     * zwei Nachkommastellen beschrÃ¤nkt (RATIO = 100).
      */
     static final int RATIO = 100;
     float x = 0, y = 0, z = 0;
@@ -41,9 +41,9 @@ public class Point {
     
     public Point(float xcoord, float ycoord, float zcoord) {
         //Die Genauigkeit der Koordinaten wird so auf eine gewisse
-        //Anzahl von Nachkommastellen beschränkt. Dies ist notwendig,
+        //Anzahl von Nachkommastellen beschrÃ¤nkt. Dies ist notwendig,
         //wenn nahe beieinander liegende Punkte, mit equals, auf
-        //Gleichheit geprüft werden.
+        //Gleichheit geprÃ¼ft werden.
         x = (float)((int)(xcoord*RATIO))/(float)RATIO;
         y = (float)((int)(ycoord*RATIO))/(float)RATIO;
         z = (float)((int)(zcoord*RATIO))/(float)RATIO;

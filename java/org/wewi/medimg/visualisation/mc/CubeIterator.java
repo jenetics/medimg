@@ -17,7 +17,7 @@
 /**
  * CubeIterator.java
  *
- * Created on 20. März 2002, 19:20
+ * Created on 20. MÃ¤rz 2002, 19:20
  */
 
 package org.wewi.medimg.visualisation.mc;
@@ -28,7 +28,7 @@ import org.wewi.medimg.image.Image;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class CubeIterator implements Iterator {

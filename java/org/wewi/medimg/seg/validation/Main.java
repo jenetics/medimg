@@ -37,7 +37,7 @@ import org.wewi.medimg.seg.ObservableSegmenter;
 import org.wewi.medimg.seg.stat.MLKMeansClusterer;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  *
  */
 public final class Main {

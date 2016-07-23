@@ -11,7 +11,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.NullImage;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  *
  */

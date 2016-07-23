@@ -30,7 +30,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @author  Werner Weiser
  * @version 0.1
  */

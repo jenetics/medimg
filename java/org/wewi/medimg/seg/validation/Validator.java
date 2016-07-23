@@ -25,7 +25,7 @@ import java.util.List;
 import org.jdom.Element;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class Validator {

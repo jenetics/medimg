@@ -35,7 +35,7 @@ import org.wewi.medimg.seg.SegmenterEvent;
 
 
 /**
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class MLKMeansClusterer extends ObservableSegmenter 
@@ -122,8 +122,8 @@ public class MLKMeansClusterer extends ObservableSegmenter
     /**
      * Method createSegimgOld.
      * Diese Methode wird von der Klasse
-     * MAPKMeansClusterer überschrieben. Dies 
-     * ermöglicht der Klasse, vor Begin des 
+     * MAPKMeansClusterer Ã¼berschrieben. Dies 
+     * ermÃ¶glicht der Klasse, vor Begin des 
      * Segmentiervorgangs eine Kopie des segmentierten
      * Bildes zu erzeugen.
      * 
@@ -293,7 +293,7 @@ public class MLKMeansClusterer extends ObservableSegmenter
     /**
      * Method saveOldFeatureColor.
      * Diese Methode wird von der Klasse MAPKMeansClusterer
-     * überschrieben, da bei diesem Algorithmus notwendig ist,
+     * Ã¼berschrieben, da bei diesem Algorithmus notwendig ist,
      * sich das Merkmalsbild der vorigen Iteration zu merken.
      * 
      * @param position
@@ -304,8 +304,8 @@ public class MLKMeansClusterer extends ObservableSegmenter
     
     /**
      * Method getCliquesPotential.
-     * Diese Methode liefert in dieser Klasse null zurück.
-     * Wird von der Klasse MAPKMeansClusterer überschrieben.
+     * Diese Methode liefert in dieser Klasse null zurÃ¼ck.
+     * Wird von der Klasse MAPKMeansClusterer Ã¼berschrieben.
      * 
      * @param position Position des Bildpunktes
      * @param f Numer des Merkmals

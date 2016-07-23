@@ -25,7 +25,7 @@ import org.jdom.output.XMLOutputter;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class DoubleParameter extends Parameter {

@@ -85,7 +85,7 @@ public class MonteCarloWarping extends LocalRegistrator {
         //int strideZ = 1;
 
         ROI roi = ROI.create(dim1).intersect(ROI.create(dim2));
-        // Durch Ver‰ndern von ROI kann der Offset erzielt werden
+        // Durch Ver√§ndern von ROI kann der Offset erzielt werden
         
         Dimension shrinked;
         ROI offsetted;

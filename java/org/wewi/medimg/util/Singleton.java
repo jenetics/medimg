@@ -17,7 +17,7 @@
 /**
  * Singleton.java
  *
- * Created on 15. Jänner 2002, 18:33
+ * Created on 15. JÃ¤nner 2002, 18:33
  */
 
 package org.wewi.medimg.util;
@@ -25,7 +25,7 @@ package org.wewi.medimg.util;
 /**
  * Tagginginterface zur Kennzeichnung von Singleton Klassen
  * 
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  *
  */

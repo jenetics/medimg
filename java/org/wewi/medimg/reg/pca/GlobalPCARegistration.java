@@ -18,7 +18,7 @@ import cern.colt.matrix.linalg.EigenvalueDecomposition;
 import cern.colt.matrix.linalg.LUDecomposition;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @author Werner Weiser
  * 
  * @version 0.1
@@ -66,11 +66,11 @@ public abstract class GlobalPCARegistration extends GlobalRegistrator {
 		} 
 		As.setQuick(3, 3, 1.0);
         
-		//Die neue Transformationsmatrix A2 ergibt sich folgendermaßen:
+		//Die neue Transformationsmatrix A2 ergibt sich folgendermaÃŸen:
 		//    A2 = As*A2
 		A2 = As.zMult(A2, null);  
            
-		//Von A2 wird für die Gesamttransformation die Inverse benötigt
+		//Von A2 wird fÃ¼r die Gesamttransformation die Inverse benÃ¶tigt
 		//A2 orginal wird vernichtet
 		LUDecomposition lu = new LUDecomposition(A2);
 		DoubleMatrix2D identity = DoubleFactory2D.dense.make(4, 4);
@@ -94,15 +94,15 @@ public abstract class GlobalPCARegistration extends GlobalRegistrator {
 	/**
 	 * Berechnet die sogenannte Hotelling Transformation. Diese Transformation
 	 * dreht die Hauptachsen des Bildes so, dass sie achsenparallel zum Weltkoordinatensystem
-	 * stehen und verschiebt den Schwerpunkt in Ursprung. Es wird eine 4x4 Matrix zurückgegeben, die Rotation und
-	 * Translation ausführt.
-	 * @param data Datenpunkte, zu denen die Hotelling Transformation durchgeführt wird. data ist eine n * 3 Matrix. n
+	 * stehen und verschiebt den Schwerpunkt in Ursprung. Es wird eine 4x4 Matrix zurÃ¼ckgegeben, die Rotation und
+	 * Translation ausfÃ¼hrt.
+	 * @param data Datenpunkte, zu denen die Hotelling Transformation durchgefÃ¼hrt wird. data ist eine n * 3 Matrix. n
 	 * ist die Anzahl der Punkte.
 	 * @param cog Schwerpunkt der Punktmenge. Wird der Methode mitgegeben,
 	 * um eine zweite Berechnung des Schwerpunktes zu verhindern.
-	 * @param eigenValues Die von der Methode berechneten Eigenwerte werden gefüllt
-	 * @return Die Hotelling Transformation y = A(x - mx); der Term A(x - mx) wird in eine 4*4 Matrix zusammengefaßt
-	 * und zurückgegeben.
+	 * @param eigenValues Die von der Methode berechneten Eigenwerte werden gefÃ¼llt
+	 * @return Die Hotelling Transformation y = A(x - mx); der Term A(x - mx) wird in eine 4*4 Matrix zusammengefaÃŸt
+	 * und zurÃ¼ckgegeben.
 	 */
 	private double[][] getHotellingTransform(VoxelIterator data, double[] cog, double[] eigenValues) {
 
@@ -208,11 +208,11 @@ public abstract class GlobalPCARegistration extends GlobalRegistrator {
 	/**
 	 * Berechnung des Medians der Punkte in der Matrix data, nach
 	 * der Transformation durch die Matrix transform. Die Transformation
-	 * ist eine 4*4 Matrix. Die Datenpunkte in data sind Zeilenweise angeordnet, mit 3 Spalten für die 3 Dimensionen
+	 * ist eine 4*4 Matrix. Die Datenpunkte in data sind Zeilenweise angeordnet, mit 3 Spalten fÃ¼r die 3 Dimensionen
 	 * @param data Datenmatrix, aus dem der Median berechnet werden soll (n * 3)
 	 * @param transform Mit dieser Transformation werden die Datenpunkte vor
 	 * der Berechnung des Medians transformiert. transform ist eine 4*4 Matrix. Bei transform == 0 wird keine
-	 * Transformation durchgeführt.
+	 * Transformation durchgefÃ¼hrt.
 	 * @return der Median der Transformierten Datenmatrix.
 	 */
 	private void getMedian(VoxelIterator data, DoubleMatrix2D transform, double[] median) {

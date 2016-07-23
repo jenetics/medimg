@@ -28,7 +28,7 @@ import org.wewi.medimg.image.ImageFactory;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class BMPReader extends JAIImageReader {

@@ -32,7 +32,7 @@ import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.JPEGEncodeParam;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class JPEGWriter extends JAIImageWriter {

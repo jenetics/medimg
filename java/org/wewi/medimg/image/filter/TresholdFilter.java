@@ -25,7 +25,7 @@ import org.wewi.medimg.image.ops.TresholdFunction;
 import org.wewi.medimg.image.ops.UnaryPointTransformer;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class TresholdFilter extends ImageFilter {

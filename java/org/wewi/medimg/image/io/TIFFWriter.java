@@ -32,7 +32,7 @@ import com.sun.media.jai.codec.TIFFEncodeParam;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public final class TIFFWriter extends JAIImageWriter {

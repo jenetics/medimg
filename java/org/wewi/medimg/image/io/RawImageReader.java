@@ -34,7 +34,7 @@ import org.wewi.medimg.image.NullImage;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public class RawImageReader extends ImageReader {
@@ -69,8 +69,8 @@ public class RawImageReader extends ImageReader {
             image.getHeader().read(din);
             din.close();
             
-            //Der JDOM SAXInputter schließt leider den Stream nach dem Einleisen.
-            //Ein weiteres öffnen ist daher notwendig.
+            //Der JDOM SAXInputter schlieÃŸt leider den Stream nach dem Einleisen.
+            //Ein weiteres Ã¶ffnen ist daher notwendig.
             fin = new FileInputStream(source);
             zin = new ZipInputStream(fin); 
             din = new DataInputStream(zin);            

@@ -1,5 +1,5 @@
 /* 
- * Tissue.java, created on 26. März 2002, 16:42
+ * Tissue.java, created on 26. MÃ¤rz 2002, 16:42
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 /**
  * Tissue.java
  *
- * Created on 26. März 2002, 16:42
+ * Created on 26. MÃ¤rz 2002, 16:42
  */
 
 package org.wewi.medimg.image;

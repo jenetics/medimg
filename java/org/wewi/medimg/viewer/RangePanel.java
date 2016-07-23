@@ -31,7 +31,7 @@ import org.wewi.medimg.image.io.Range;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 class RangePanel extends javax.swing.JPanel {

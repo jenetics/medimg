@@ -10,7 +10,7 @@ import org.wewi.medimg.seg.ObservableSegmenter;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  */
 public abstract class SegmenterArgumentPanel extends javax.swing.JPanel {
     

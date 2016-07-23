@@ -24,7 +24,7 @@ import java.util.EventListener;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ImageIOProgressListener extends EventListener {

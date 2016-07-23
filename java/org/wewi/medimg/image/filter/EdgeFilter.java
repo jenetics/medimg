@@ -24,7 +24,7 @@ import org.wewi.medimg.image.Image;
 import org.wewi.medimg.image.MarginImage;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  * 
  * @todo Codedoubeling with ConvolutionFilter!

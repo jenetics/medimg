@@ -57,7 +57,7 @@ import org.wewi.medimg.viewer.tools.ImagePropertiesDialog;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
@@ -80,7 +80,7 @@ public class ImageViewer extends ViewerDesktopFrame implements ImageContainer,
     private Command prevPrevCommand;
     private Command nextNextCommand;
     
-    //Menü-Kommandos
+    //MenÃ¼-Kommandos
     private Command saveCommand;
     private Command printCommand;
     

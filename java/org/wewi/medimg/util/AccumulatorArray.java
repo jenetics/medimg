@@ -21,7 +21,7 @@
 package org.wewi.medimg.util;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class AccumulatorArray {

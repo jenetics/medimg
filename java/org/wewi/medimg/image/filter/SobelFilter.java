@@ -28,7 +28,7 @@ import org.wewi.medimg.image.io.TIFFWriter;
 
 
 /**
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class SobelFilter extends ImageFilter {

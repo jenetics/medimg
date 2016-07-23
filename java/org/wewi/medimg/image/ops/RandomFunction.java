@@ -27,7 +27,7 @@ import java.util.Random;
 import org.wewi.medimg.image.ColorRange;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class RandomFunction implements UnaryFunction {

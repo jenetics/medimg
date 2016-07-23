@@ -17,14 +17,14 @@
 /**
  * StatePanelEntry.java
  *
- * Created on 28. März 2002, 20:17
+ * Created on 28. MÃ¤rz 2002, 20:17
  */
 
 package org.wewi.medimg.viewer;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class StatePanelEntry extends javax.swing.JPanel {

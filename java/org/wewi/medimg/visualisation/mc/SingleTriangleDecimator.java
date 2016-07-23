@@ -27,7 +27,7 @@ import java.util.Vector;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @author  Werner Weiser
  * @version 0.1
  */
@@ -54,8 +54,8 @@ public class SingleTriangleDecimator extends TriangleDecimator {
             if (ntri >= MIN_INCIDENT_TRIANGLES) {
                 continue;
             }  
-            //Die Knoten können nicht gleich entfernt werden,
-            //da sonst der Iterator ungültig wird
+            //Die Knoten kÃ¶nnen nicht gleich entfernt werden,
+            //da sonst der Iterator ungÃ¼ltig wird
             verticesToRemove.add(v);
         }
         

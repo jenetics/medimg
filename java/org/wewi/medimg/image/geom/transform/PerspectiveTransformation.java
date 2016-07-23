@@ -10,7 +10,7 @@ package org.wewi.medimg.image.geom.transform;
 import javax.vecmath.Matrix4d;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class PerspectiveTransformation extends AffineTransformation {

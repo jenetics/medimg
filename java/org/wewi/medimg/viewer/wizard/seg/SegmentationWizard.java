@@ -41,14 +41,14 @@ import org.wewi.medimg.viewer.wizard.Wizard;
   
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public class SegmentationWizard extends Wizard {
     
     /**
-     * Hilfsklasse, die für das Einlesen des Bildes über
-     * einen ImageReaderThread zuständig ist. Arbeitet sehr eng
+     * Hilfsklasse, die fÃ¼r das Einlesen des Bildes Ã¼ber
+     * einen ImageReaderThread zustÃ¤ndig ist. Arbeitet sehr eng
      * mit den Methoden des SegmentationWizards zusammen.
      */
     private class ImageReaderWorker implements ReaderThreadListener {
@@ -92,8 +92,8 @@ public class SegmentationWizard extends Wizard {
     }
     
     /**
-     * Hilfsklasse, die für den Segmentiervorgang über
-     * den SegmenterThread zuständig ist. Auch diese Klasse 
+     * Hilfsklasse, die fÃ¼r den Segmentiervorgang Ã¼ber
+     * den SegmenterThread zustÃ¤ndig ist. Auch diese Klasse 
      * arbeitet eng mit dem SegmentationWizard zusammen.
      */
     private class SegmenterWorker implements SegmenterListener,
@@ -256,7 +256,7 @@ public class SegmentationWizard extends Wizard {
     }
     
     /**
-     * Zusätzliche Initialisierungsmethode, die
+     * ZusÃ¤tzliche Initialisierungsmethode, die
      * nach der Komponentenintialisierung aufgerufen
      * wird.
      */
@@ -299,11 +299,11 @@ public class SegmentationWizard extends Wizard {
     }
     
     /**
-     * Alle Parameter einer Segmentiermethode werden über
+     * Alle Parameter einer Segmentiermethode werden Ã¼ber
      * das SegmenterArgumentPanel gesammelt. Dieses Panel liefert
      * auch den entsprechen fertig parametrisierten Segmentieralgorithmus.
-     * Wird ein anderer Algorithmus in der CompuBox ausgewählt,
-     * so wird das neue Panel zum Wizard hinzugefügt, und das
+     * Wird ein anderer Algorithmus in der CompuBox ausgewÃ¤hlt,
+     * so wird das neue Panel zum Wizard hinzugefÃ¼gt, und das
      * Alte entfernt.
      */
     private void setSegmenterArgumentPanel(SegmenterArgumentPanel panel) {
@@ -338,22 +338,22 @@ public class SegmentationWizard extends Wizard {
     }
     
     /**
-     * Überprüft, ob die Minimalbedingung für den Start
-     * der Segmentierung erfüllt sind.
+     * ÃœberprÃ¼ft, ob die Minimalbedingung fÃ¼r den Start
+     * der Segmentierung erfÃ¼llt sind.
      */
     private boolean checkSegmentationStart() {
         return imageReaderWorker != null;
     }
     
     /**
-     * Anstoßen des Bildladevorganges.
+     * AnstoÃŸen des Bildladevorganges.
      */
     private void loadImage(){
         imageReaderWorker.start();
     }
     
     /**
-     * Anstoßen des Segmentiervorganges.
+     * AnstoÃŸen des Segmentiervorganges.
      */
     private void startSegmentation() {
         segmenterWorker = new SegmenterWorker(this, segmenterArgumentPanel);
@@ -576,7 +576,7 @@ public class SegmentationWizard extends Wizard {
                         
     private void imageDataSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageDataSearchButtonActionPerformed
         ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datensatz auswählen");
+        chooser.setDialogTitle("Datensatz auswÃ¤hlen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         
         int returnVal = chooser.showOpenDialog(this);

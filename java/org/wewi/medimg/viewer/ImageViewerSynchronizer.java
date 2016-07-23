@@ -30,7 +30,7 @@ import org.wewi.medimg.viewer.image.ImageViewer;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ImageViewerSynchronizer implements ImageViewerListener {

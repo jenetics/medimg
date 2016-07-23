@@ -23,7 +23,7 @@ import org.wewi.medimg.math.MathUtil;
 import org.wewi.medimg.math.vec.VectorIterator;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class GlobalInterpolator extends DisplacementField.Interpolator {

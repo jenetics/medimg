@@ -17,7 +17,7 @@
 /**
  * Viewer3D.java
  *
- * Created on 25. März 2002, 16:34
+ * Created on 25. MÃ¤rz 2002, 16:34
  */
 
 package org.wewi.medimg.visualisation.mc;
@@ -57,7 +57,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class TestViewer extends Applet {

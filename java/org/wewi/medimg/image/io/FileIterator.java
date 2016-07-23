@@ -17,7 +17,7 @@
 /**
  * FileIterator.java
  *
- * Created on 17. Jänner 2002, 22:41
+ * Created on 17. JÃ¤nner 2002, 22:41
  */
 
 package org.wewi.medimg.image.io;
@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class FileIterator implements Iterator {

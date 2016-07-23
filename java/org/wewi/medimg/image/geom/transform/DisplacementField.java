@@ -10,7 +10,7 @@ import org.wewi.medimg.math.vec.VectorField;
 
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class DisplacementField extends ImageTransformation implements VectorField {

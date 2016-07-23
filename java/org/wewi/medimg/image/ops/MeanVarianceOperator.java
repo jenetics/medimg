@@ -17,7 +17,7 @@
 /**
  * MeanVarianceOperator.java
  *
- * Created on 24. Jänner 2003, 09:11
+ * Created on 24. JÃ¤nner 2003, 09:11
  */
 
 package org.wewi.medimg.image.ops;
@@ -26,7 +26,7 @@ import org.wewi.medimg.math.MathUtil;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class MeanVarianceOperator implements UnaryOperator {

@@ -1,5 +1,5 @@
 /* 
- * AffineTransform.java, created on 21. M‰rz 2002, 13:50
+ * AffineTransform.java, created on 21. M√§rz 2002, 13:50
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import org.wewi.medimg.util.Immutable;
 
 /**
  * @author Werner Weiser
- * @author Franz Wilhelmstˆtter
+ * @author Franz Wilhelmst√∂tter
  *
  * @version 0.1
  */
@@ -215,8 +215,8 @@ public class AffineTransformation extends ImageTransformation
      * @param rotXYZ die Winkel um die Rotiert werden soll. <code>rx</code>
      *                Rotation um die x-Achse, <code>ry</code> Rotation um die
      *                y-Achse und <code>rz</code> Rotation um die z-Achse.
-     *                Dabei wird die Rotation um die z-Achse zuerst ausgef¸hrt. Die
-     *                Rotation um die x-Achse kommt zum Schluﬂ. (Kardanwinkel.)
+     *                Dabei wird die Rotation um die z-Achse zuerst ausgef√ºhrt. Die
+     *                Rotation um die x-Achse kommt zum Schlu√ü. (Kardanwinkel.)
      * 
      */
     public static AffineTransformation getRotateInstance(double rx, double ry, double rz) {
@@ -252,7 +252,7 @@ public class AffineTransformation extends ImageTransformation
     
    
     /**
-     * Die Scherungsmatrix <code>S</code> sieht folgendermaﬂen aus.
+     * Die Scherungsmatrix <code>S</code> sieht folgenderma√üen aus.
      * 
      * <pre>
      *         / 1   shear[0]   shear[1]  \

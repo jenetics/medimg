@@ -29,7 +29,7 @@ package org.wewi.medimg.math.fft;
  * wird die allgemeine Form der Fouriertransformation
  * 
  * <pre>
- * Vorwärtstransformation:
+ * VorwÃ¤rtstransformation:
  * 
  *                           N-1
  *                  1        ---
@@ -39,7 +39,7 @@ package org.wewi.medimg.math.fft;
  *                           r=0
  * 
  * 
- * Rückwärtstransformation:
+ * RÃ¼ckwÃ¤rtstransformation:
  * 
  *                           N-1
  *                  1        ---
@@ -49,11 +49,11 @@ package org.wewi.medimg.math.fft;
  *                           s=0
  * </pre>
  * 
- * Für die Datenanalyse werden für {a, b} = {-1, 1} und für
+ * FÃ¼r die Datenanalyse werden fÃ¼r {a, b} = {-1, 1} und fÃ¼r
  * die Signalverarbeitung {1, -1} verwendet.  
  * 
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class DFT {

@@ -18,7 +18,7 @@ public class RigidPCARegistration extends LocalPCARegistration{
     
     protected void calculateScaling(double[] scalingFactors, double[] eigenValues1, double[] eigenValues2) {
         //Bei der Transformation A2 wird die Skalierung in
-        //Richtung der Hauptachsen berechnet und in die Transformation eingefügt.
+        //Richtung der Hauptachsen berechnet und in die Transformation eingefÃ¼gt.
         //   As = |sx  0  0 |
         //        |0   sy 0 |
         //        |0   0  sz|
@@ -27,7 +27,7 @@ public class RigidPCARegistration extends LocalPCARegistration{
         //   sy = sqrt(eigen1Y / eigen2Y)
         //   sz = sqrt(eigen1Z / eigen2Z)
 
-        //Prüfen auf unzulässige Eigenwerte
+        //PrÃ¼fen auf unzulÃ¤ssige Eigenwerte
         Arrays.fill(scalingFactors, 1);
     }
     

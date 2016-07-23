@@ -1,7 +1,7 @@
 /**
  * Transform.java
  *
- * Created on 21. März 2002, 13:27
+ * Created on 21. MÃ¤rz 2002, 13:27
  */
 package org.wewi.medimg.image.geom.transform;
 
@@ -10,7 +10,7 @@ package org.wewi.medimg.image.geom.transform;
 /**
  *
  * @author  Werner Weiser
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  *
  * @version 0.1
  */

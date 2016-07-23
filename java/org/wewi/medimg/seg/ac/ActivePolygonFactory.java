@@ -23,7 +23,7 @@ package org.wewi.medimg.seg.ac;
 import org.wewi.medimg.image.geom.Point2D;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class ActivePolygonFactory {

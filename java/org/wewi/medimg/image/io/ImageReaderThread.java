@@ -30,7 +30,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public final class ImageReaderThread extends Thread {
@@ -83,7 +83,7 @@ public final class ImageReaderThread extends Thread {
             if (component != null) {
                 JOptionPane.showMessageDialog(component, "Kann Datei: \"" + 
                                            imageReader.getSource().toString() + 
-                                                         "\" nicht öffnen\n" +
+                                                         "\" nicht Ã¶ffnen\n" +
                                                          ioe.toString(), 
                                                  "Fehler", JOptionPane.ERROR_MESSAGE);                
             }

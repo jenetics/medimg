@@ -1,7 +1,7 @@
 /*
  * Importance.java
  *
- * Created on 26. März 2002, 09:33
+ * Created on 26. MÃ¤rz 2002, 09:33
  */
 
 package org.wewi.medimg.reg.interpolation;

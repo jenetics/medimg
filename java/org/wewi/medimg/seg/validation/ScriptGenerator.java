@@ -35,7 +35,7 @@ import org.wewi.medimg.util.param.Parameter;
 import org.wewi.medimg.util.param.ParameterIterator;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ScriptGenerator {

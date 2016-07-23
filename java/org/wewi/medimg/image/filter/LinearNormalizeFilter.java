@@ -27,7 +27,7 @@ import org.wewi.medimg.image.ops.UnaryPointAnalyzer;
 import org.wewi.medimg.image.ops.UnaryPointTransformer;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class LinearNormalizeFilter extends ImageFilter {

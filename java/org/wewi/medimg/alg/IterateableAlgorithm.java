@@ -24,7 +24,7 @@ package org.wewi.medimg.alg;
  * 
  * @see org.wewi.medimg.alg.AlgorithmIterator
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  * @since 0.1
  */

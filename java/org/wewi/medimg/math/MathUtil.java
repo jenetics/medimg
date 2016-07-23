@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  *
- * @author  Franz Wilhelmst�tter
+ * @author  Franz Wilhelmstötter
  * @version 0.1
  */
 public final class MathUtil {
@@ -375,7 +375,7 @@ public final class MathUtil {
     }
 
     /*
-     * Statische Methoden f�r den Umgang mit Komplexen-Zahlen.
+     * Statische Methoden fï¿œr den Umgang mit Komplexen-Zahlen.
      * Originalcode siehe nachstehenden Kommentar.
      */
 

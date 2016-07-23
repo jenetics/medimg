@@ -15,7 +15,7 @@ import org.wewi.medimg.image.ops.ImageLoop;
 import org.wewi.medimg.math.MathUtil;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class ImageTransformation implements Transformation {

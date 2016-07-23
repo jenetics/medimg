@@ -27,7 +27,7 @@ import java.util.Random;
 import junit.framework.TestCase;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ArraysTest extends TestCase {

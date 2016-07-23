@@ -23,7 +23,7 @@ package org.wewi.medimg.math.vec.ops;
 import org.wewi.medimg.math.MathUtil;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class MaxVectorLengthOperator implements VectorOperator {

@@ -17,7 +17,7 @@
 /**
  * FirstCommand.java
  *
- * Created on 28. März 2002, 21:14
+ * Created on 28. MÃ¤rz 2002, 21:14
  */
 
 package org.wewi.medimg.viewer.image;
@@ -26,7 +26,7 @@ import org.wewi.medimg.viewer.Command;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class FirstCommand implements Command {

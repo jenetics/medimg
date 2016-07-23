@@ -27,7 +27,7 @@ import java.awt.Point;
 
 /**
  *
-* @author  Franz Wilhelmstötter
+* @author  Franz WilhelmstÃ¶tter
  */
 public class ProgressFrame extends ViewerDesktopFrame {
     

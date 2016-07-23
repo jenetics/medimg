@@ -28,30 +28,30 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /** 
- * Diese Klasse enthält die, beim Marchin Cube
+ * Diese Klasse enthÃ¤lt die, beim Marchin Cube
  * Algorithmus erzeugten, Dreiecke ({@link Triangle }) und
  * Knoten ({@link Vertex }). </p>
- * Dabei können entweder Knoten oder Dreiecke ---
+ * Dabei kÃ¶nnen entweder Knoten oder Dreiecke ---
  * ein Dreieck wird durch seine drei Eckpunkte
- * definiert --- in den Graph eingefügt werden.
- * Ein Knoten wird nur dann eingefügt, wenn er
+ * definiert --- in den Graph eingefÃ¼gt werden.
+ * Ein Knoten wird nur dann eingefÃ¼gt, wenn er
  * noch nicht enthalten ist. Das gleiche gilt beim
- * Einfügen eines Dreiecks. Wird ein Dreieck engefügt,
+ * EinfÃ¼gen eines Dreiecks. Wird ein Dreieck engefÃ¼gt,
  * werden zuerst die drei Knoten, aus denen das Dreieck
- * besteht, eingefügt. </p>
+ * besteht, eingefÃ¼gt. </p>
  * Wird ein Dreieck aus dem Graph entfernt, so werden auch
- * gleichzeitig die dazugehörigen Knoten entfernt. Ebenso wird
+ * gleichzeitig die dazugehÃ¶rigen Knoten entfernt. Ebenso wird
  * beim Entfernen eines Punktes alle jene Dreiecke entfernt,
  * zu denene der Knoten insident ist.
  *
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class Graph {
     /**
      * Hilfsdatenstruktur, die zu einem Knoten
      * die Dreiecke speichert, zu denen der 
-     * Knoten gehört.
+     * Knoten gehÃ¶rt.
      */
     private class VertexTriangles {
         private HashSet triangles = new HashSet();
@@ -101,9 +101,9 @@ public class Graph {
     
     /**
      * Erzeugen eines neuen Graphen.
-     * @param vsize die initiale Größe des Containers, der die
+     * @param vsize die initiale GrÃ¶ÃŸe des Containers, der die
      *              Knoten aufnimmt.
-     * @param tsize die initiale Größe des Containders, der die
+     * @param tsize die initiale GrÃ¶ÃŸe des Containders, der die
      *              Dreiecke aufnimmt.
      */
     public Graph(int vsize, int tsize) {
@@ -112,18 +112,18 @@ public class Graph {
     }
     
     /**
-     * Einfügen eines Knotens in den Graphen. Es werden
-     * nur Knoten eingefügt, die noch nicht im Graphen
+     * EinfÃ¼gen eines Knotens in den Graphen. Es werden
+     * nur Knoten eingefÃ¼gt, die noch nicht im Graphen
      * enthalten sind, d.h. bereits enthaltene Knoten werden
-     * nicht übberschrieben.
+     * nicht Ã¼bberschrieben.
      *
-     * @param v Knoten der Eingefügt wird
-     * @return true, wenn der Knoten eingefügt wurde,
+     * @param v Knoten der EingefÃ¼gt wird
+     * @return true, wenn der Knoten eingefÃ¼gt wurde,
      *               d.h. wenn der Knoten noch nicht im
      *               Graph enthalten war.
      */
     public boolean addVertex(Vertex v) {
-        //Ein Knoten wird nur dann eingefügt, wenn er noch nicht 
+        //Ein Knoten wird nur dann eingefÃ¼gt, wenn er noch nicht 
         //im Hashtable vorhanden ist.
         if (vertices.containsKey(v)) {
             return false;
@@ -140,16 +140,16 @@ public class Graph {
         }
 
         Triangle t;
-        //Wird ein Knoten entfernt, so müssen auch alle Dreiecke
-        //entfernt werden, zu denen dieser Knoten gehört.        
+        //Wird ein Knoten entfernt, so mÃ¼ssen auch alle Dreiecke
+        //entfernt werden, zu denen dieser Knoten gehÃ¶rt.        
         for (Iterator it = ((VertexTriangles)vertices.get(v)).getTriangles(); it.hasNext();) {
             t = (Triangle)it.next();
-            //Zuerst aus dem Iterator entfernen, sonst wird er Ungültig.
+            //Zuerst aus dem Iterator entfernen, sonst wird er UngÃ¼ltig.
             it.remove();
             removeTriangle(t);
         }
 
-        //Ganz am Schluß kann der Knoten entfernt werden.
+        //Ganz am SchluÃŸ kann der Knoten entfernt werden.
         return (vertices.remove(v) != null);
     }
     
@@ -162,7 +162,7 @@ public class Graph {
     }
     
     public boolean addTriangle(Triangle t) {
-        //Ein Dreieck wird nur eingefügt, wenn es noch nicht 
+        //Ein Dreieck wird nur eingefÃ¼gt, wenn es noch nicht 
         //vorhanden ist.
         if (triangles.contains(t)) {
             return false;
@@ -199,7 +199,7 @@ public class Graph {
     }
 
     /**
-     * Liefert die Anzahl der Dreiecke, zu denen dieser Punkt (v) gehört.
+     * Liefert die Anzahl der Dreiecke, zu denen dieser Punkt (v) gehÃ¶rt.
      */
     public int getNoOfIncidentTriangles(Vertex v) {
         if (!vertices.containsKey(v)) {
@@ -209,7 +209,7 @@ public class Graph {
     }
         
     /**
-     * Liefert jene Dreiecke, zu denen dieser Punkt (v) gehört.
+     * Liefert jene Dreiecke, zu denen dieser Punkt (v) gehÃ¶rt.
      */
     public Iterator getIncidentTriangles(Vertex v) {
         return ((VertexTriangles)vertices.get(v)).getTriangles();
@@ -221,7 +221,7 @@ public class Graph {
     
     /**
      * Liefert jenes Polygon, das bei einem Entfernen
-     * des Knoten v entstehen würde.
+     * des Knoten v entstehen wÃ¼rde.
      */
     StarshapedPolygon getPolygon(Vertex v) {
         if (!vertices.containsKey(v)) {

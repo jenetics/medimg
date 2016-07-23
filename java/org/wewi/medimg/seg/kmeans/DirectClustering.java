@@ -34,7 +34,7 @@ import org.wewi.medimg.math.geom.DataPoint;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public final class DirectClustering extends ObservableAlgorithm 
@@ -67,8 +67,8 @@ public final class DirectClustering extends ObservableAlgorithm
     }
     
     /**
-     * Diese Klasse ist für die wirkliche Aufteilung
-     * der Datenmenge zuständig.
+     * Diese Klasse ist fÃ¼r die wirkliche Aufteilung
+     * der Datenmenge zustÃ¤ndig.
      */
     private final class Clusterer {
         private DataPoint[] center;

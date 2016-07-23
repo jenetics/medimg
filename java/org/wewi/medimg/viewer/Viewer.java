@@ -17,7 +17,7 @@
 /**
  * Viewer.java
  *
- * Created on 28. März 2002, 16:55
+ * Created on 28. MÃ¤rz 2002, 16:55
  */
 
 package org.wewi.medimg.viewer;
@@ -64,16 +64,16 @@ import org.wewi.medimg.visualisation.mc.wizard.MarchingCubeWizard;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  * 
- * Die Viewer-Klasse ist die gemeinsame Oberfläche
+ * Die Viewer-Klasse ist die gemeinsame OberflÃ¤che
  * der Segmentierungs- und Registrierungsalgorithmen.
  * Der Viewer ist <code>Singleton</code>, und kann von
- * den Segmentierungs- und Registrierungsklassen über
+ * den Segmentierungs- und Registrierungsklassen Ã¼ber
  * die <code>getInstance()</code>-Methode jeder Zeit
  * angesprochen werden, um z.B. die <code>Command</code>-
- * Objekte der Menüzeile auszutauschen. 
+ * Objekte der MenÃ¼zeile auszutauschen. 
  */
 public class Viewer extends JFrame implements Singleton,
                                               ImageViewerListener,
@@ -144,7 +144,7 @@ public class Viewer extends JFrame implements Singleton,
     private ProgressFrame progressFrame;
     private Logger logger;
     
-    //Command Objekte für Menübar
+    //Command Objekte fÃ¼r MenÃ¼bar
     private Command openCommand = new NullCommand();
     private Command saveCommand = new NullCommand();
     private Command saveAsCommand = new NullCommand();
@@ -152,7 +152,7 @@ public class Viewer extends JFrame implements Singleton,
     private JMenuItem[] lnfMenuItems;
     
     /** 
-     * Privater Konstruktor für Singleton-Pattern
+     * Privater Konstruktor fÃ¼r Singleton-Pattern
      */
     private Viewer() {
         super();
@@ -166,7 +166,7 @@ public class Viewer extends JFrame implements Singleton,
     }
     
     /**
-     * Über diese Methode kann die einzig existierende
+     * Ãœber diese Methode kann die einzig existierende
      * Instanz des <code>Viewer</code> geholt werden.
      * 
      * @return einzige Viewer-Instanz
@@ -290,7 +290,7 @@ public class Viewer extends JFrame implements Singleton,
      * Viewers aufgerufen werden.
      */
     private void onExit() {
-        //Sichern der aktuellen Viewerposition und Größe.
+        //Sichern der aktuellen Viewerposition und GrÃ¶ÃŸe.
         viewerPrefs.setViewerDimension(this.getSize());
         viewerPrefs.setViewerLocation(this.getLocation());
     }
@@ -309,20 +309,20 @@ public class Viewer extends JFrame implements Singleton,
         
     
     /**
-     * Diese Methde erlaubt es das Öffnen-Kommando
-     * in der Menüzeile zu änndern.
+     * Diese Methde erlaubt es das Ã–ffnen-Kommando
+     * in der MenÃ¼zeile zu Ã¤nndern.
      * 
-     * @param command Das Öffnen-Kommando
+     * @param command Das Ã–ffnen-Kommando
      */
     public synchronized void setOpenCommand(Command command) {
         openCommand = command;
     }
     
     /**
-     * Diese Methode liefert das aktuelle Öffnen-Kommando
-     * der Menüzeile wieder.
+     * Diese Methode liefert das aktuelle Ã–ffnen-Kommando
+     * der MenÃ¼zeile wieder.
      * 
-     * @return Öffnene-Kommando
+     * @return Ã–ffnene-Kommando
      */
     public Command getOpenCommand() {
         synchronized (openCommand) {
@@ -332,7 +332,7 @@ public class Viewer extends JFrame implements Singleton,
     
     /**
      * Diese Methde erlaubt es das Speichern-Kommando
-     * in der Menüzeile zu änndern.
+     * in der MenÃ¼zeile zu Ã¤nndern.
      * 
      * @param command Das Speichern-Kommando
      */
@@ -342,7 +342,7 @@ public class Viewer extends JFrame implements Singleton,
     
     /**
      * Diese Methode liefert das aktuelle Speichern-Kommando
-     * der Menüzeile wieder.
+     * der MenÃ¼zeile wieder.
      * 
      * @return Speichern-Kommando
      */    
@@ -354,7 +354,7 @@ public class Viewer extends JFrame implements Singleton,
     
     /**
      * Diese Methde erlaubt es das Speichern als-Kommando
-     * in der Menüzeile zu änndern.
+     * in der MenÃ¼zeile zu Ã¤nndern.
      * 
      * @param command Das Speichern als-Kommando
      */    
@@ -364,7 +364,7 @@ public class Viewer extends JFrame implements Singleton,
     
     /**
      * Diese Methode liefert das aktuelle Speichern als-Kommando
-     * der Menüzeile wieder.
+     * der MenÃ¼zeile wieder.
      * 
      * @return Speichern als-Kommando
      */    
@@ -383,11 +383,11 @@ public class Viewer extends JFrame implements Singleton,
     }
     
     /**
-     * Hinzufügen eines zusätzlichen DesktopFrame. Der
+     * HinzufÃ¼gen eines zusÃ¤tzlichen DesktopFrame. Der
      * Frame wird gleichzeitig zu den FrameListenern 
-     * hinzugefügt.
+     * hinzugefÃ¼gt.
      * 
-     * @param frame ViewerDesktopFrame der hinzugefügt wird.
+     * @param frame ViewerDesktopFrame der hinzugefÃ¼gt wird.
      */
     public synchronized void addViewerDesktopFrame(ViewerDesktopFrame frame) {
         desktopPane.add(frame);
@@ -436,7 +436,7 @@ public class Viewer extends JFrame implements Singleton,
     
     /**
      * Entfernen eines ViewerDesktopFrame. Wird auch gleichzeitig
-     * von den Listenern ausgehängt.
+     * von den Listenern ausgehÃ¤ngt.
      * 
      * @param frame ViewerDesktopFrame der entfernt wreden soll.
      */
@@ -447,13 +447,13 @@ public class Viewer extends JFrame implements Singleton,
     }
     
     /**
-     * Hinzufügen eines Wizards. Der Wizard-Menüpunkt 
+     * HinzufÃ¼gen eines Wizards. Der Wizard-MenÃ¼punkt 
      * wird auf <code>enabled = false</code> geschaltet.
-     * Dadurch soll verhindert werden, daß zwei 
+     * Dadurch soll verhindert werden, daÃŸ zwei 
      * Wizards gleichzeitig aktiv sind und sich
      * in die Quere kommen.
      * 
-     * @param wizard der Hinzugefügt wird.
+     * @param wizard der HinzugefÃ¼gt wird.
      */
     public void addWizard(Wizard wizard) {
         desktopPane.add(wizard);
@@ -466,7 +466,7 @@ public class Viewer extends JFrame implements Singleton,
     }
     
     /**
-     * Entfernen eines Wizards. Der Wizard-Menüpunkt wird
+     * Entfernen eines Wizards. Der Wizard-MenÃ¼punkt wird
      * wieder benutzbar.
      * 
      * @param wizard der Entfent werden soll
@@ -482,7 +482,7 @@ public class Viewer extends JFrame implements Singleton,
     
     /**
      * Liefert die einzig existierende Instance des NavigationPanel
-     * wieder. Dort können dann die entsprechenden Command-Objekte
+     * wieder. Dort kÃ¶nnen dann die entsprechenden Command-Objekte
      * ausgetauscht werden.
      * 
      * @return NavigationPanel
@@ -492,7 +492,7 @@ public class Viewer extends JFrame implements Singleton,
     }
     
     /**
-     * Liefert den aktuell gewählten Frame
+     * Liefert den aktuell gewÃ¤hlten Frame
      */
     public JInternalFrame getSelectedFrame() {
         return desktopPane.getSelectedFrame();    
@@ -779,7 +779,7 @@ public class Viewer extends JFrame implements Singleton,
                                                                         new File(name));
                                                                         
         progressFrame = new ProgressFrame();                                                                
-        progressFrame.setTitle("Öffnen");
+        progressFrame.setTitle("Ã–ffnen");
         progressFrame.setSubTitle("Beim Laden von: " + name);                    
         this.addViewerDesktopFrame(progressFrame);                                        
         imageReader.addProgressListener(this);

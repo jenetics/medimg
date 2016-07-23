@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class PointIterator implements Iterator {
@@ -41,7 +41,7 @@ public final class PointIterator implements Iterator {
     }
     
     public void addPoint(Point p) {
-        //Null Werte werden nicht eingefügt!!!
+        //Null Werte werden nicht eingefÃ¼gt!!!
         if (p == null) {
             return;
         }

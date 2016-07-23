@@ -25,7 +25,7 @@ package org.wewi.medimg.image.io;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class Util {

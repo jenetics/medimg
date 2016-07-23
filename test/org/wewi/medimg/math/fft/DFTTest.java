@@ -27,7 +27,7 @@ import org.wewi.medimg.math.Complex;
 import junit.framework.TestCase;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class DFTTest extends TestCase {

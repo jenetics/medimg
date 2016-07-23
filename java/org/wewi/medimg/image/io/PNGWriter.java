@@ -25,7 +25,7 @@ import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.PNGEncodeParam;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class PNGWriter extends JAIImageWriter {

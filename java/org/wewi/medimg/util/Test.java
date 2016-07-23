@@ -98,7 +98,7 @@ import org.wewi.medimg.viewer.image.ImagePanel;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  */
 public class Test {
     

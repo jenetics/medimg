@@ -23,7 +23,7 @@ import org.wewi.medimg.util.Arrays;
 /**
  * This class represents the region of interest of an image.
  * 
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class ROI extends Dimension {

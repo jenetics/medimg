@@ -1,7 +1,7 @@
 /*
  * BoundingBox.java
  *
- * Created on 26. März 2002, 10:16
+ * Created on 26. MÃ¤rz 2002, 10:16
  */
 
 package org.wewi.medimg.reg;

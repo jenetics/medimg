@@ -27,7 +27,7 @@ import java.io.FileFilter;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class FileExtentionFilter implements FileFilter {

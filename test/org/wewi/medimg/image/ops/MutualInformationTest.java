@@ -27,7 +27,7 @@ import org.wewi.medimg.util.AccumulatorArray;
 import junit.framework.TestCase;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class MutualInformationTest extends TestCase {

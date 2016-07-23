@@ -17,14 +17,14 @@
 /**
  * Cube.java
  *
- * Created on 20. März 2002, 19:19
+ * Created on 20. MÃ¤rz 2002, 19:19
  */
 
 package org.wewi.medimg.visualisation.mc;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class Cube {

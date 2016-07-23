@@ -41,7 +41,7 @@ import org.wewi.medimg.image.io.ImageReader;
 import org.wewi.medimg.image.io.TIFFReader;
 
 /**
- * @author Franz Wilhelmstˆtter
+ * @author Franz Wilhelmst√∂tter
  * @version 0.1
  */
 public class Batch { 
@@ -145,7 +145,7 @@ public class Batch {
                 reader.read();
             } catch (ImageIOException e) {
                 System.err.println("Kann Bild \"" + currentSourceImage + "\" nicht laden.\n" + e);
-                System.err.println("Fahre mit dem n‰chsten Task fort.");
+                System.err.println("Fahre mit dem n√§chsten Task fort.");
                 return;
             }
             currentSourceImage = reader.getImage();  
@@ -158,7 +158,7 @@ public class Batch {
                 reader.read();
             } catch (ImageIOException e) {
                 System.err.println("Kann Bild \"" + currentSourceImage + "\" nicht laden.\n" + e);
-                System.err.println("Fahre mit dem n‰chsten Task fort.");
+                System.err.println("Fahre mit dem n√§chsten Task fort.");
                 return;
             }
             currentModelImage = reader.getImage();  

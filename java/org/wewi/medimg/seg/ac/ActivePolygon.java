@@ -29,7 +29,7 @@ import org.wewi.medimg.image.geom.Point;
 import org.wewi.medimg.image.geom.Point2D;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  *
  */

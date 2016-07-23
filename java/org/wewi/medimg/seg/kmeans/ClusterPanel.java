@@ -38,7 +38,7 @@ import org.wewi.medimg.math.geom.IntegerDataPoint;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ClusterPanel extends JPanel {

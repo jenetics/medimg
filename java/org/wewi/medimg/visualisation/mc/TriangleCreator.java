@@ -17,7 +17,7 @@
 /**
  * TriangleFactory.java
  *
- * Created on 20. März 2002, 21:01
+ * Created on 20. MÃ¤rz 2002, 21:01
  */
 
 package org.wewi.medimg.visualisation.mc;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class TriangleCreator {

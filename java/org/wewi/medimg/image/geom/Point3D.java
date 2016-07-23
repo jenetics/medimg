@@ -26,7 +26,7 @@ import org.wewi.medimg.util.Immutable;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class Point3D implements Point, Immutable {

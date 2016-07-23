@@ -24,7 +24,7 @@ import org.wewi.medimg.math.geom.Dimension2D;
 import org.wewi.medimg.math.geom.Lattice;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ComplexIndexImage extends ImageAdapter {

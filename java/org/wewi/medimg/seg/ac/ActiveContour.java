@@ -30,7 +30,7 @@ import org.wewi.medimg.util.Mutable;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ActiveContour extends Cloneable, Mutable {

@@ -28,7 +28,7 @@ import org.wewi.medimg.image.ImageProperties;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class MAPKMeansClusterer extends MLKMeansClusterer {

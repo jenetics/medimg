@@ -38,7 +38,7 @@ import cern.colt.matrix.linalg.EigenvalueDecomposition;
 import cern.colt.matrix.linalg.LUDecomposition;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class PCA {
@@ -78,11 +78,11 @@ public class PCA {
 System.out.println("Scalierungsmatrix:");
 System.out.println(As);		
         
-		//Die neue Transformationsmatrix A2 ergibt sich folgendermaßen:
+		//Die neue Transformationsmatrix A2 ergibt sich folgendermaÃŸen:
 		//    A2 = As*A2
 		A2 = As.zMult(A2, null);  
            
-		//Von A2 wird für die Gesamttransformation die Inverse benötigt
+		//Von A2 wird fÃ¼r die Gesamttransformation die Inverse benÃ¶tigt
 		//A2 orginal wird vernichtet
 		LUDecomposition lu = new LUDecomposition(A2);
 		DoubleMatrix2D identity = DoubleFactory2D.dense.make(4, 4);
@@ -188,7 +188,7 @@ System.out.println(As);
 	
 	private void calculateScaling(double[] scalingFactors, double[] eigenValues1, double[] eigenValues2) {
 		//Bei der Transformation A2 wird die Skalierung in
-		//Richtung der Hauptachsen berechnet und in die Transformation eingefügt.
+		//Richtung der Hauptachsen berechnet und in die Transformation eingefÃ¼gt.
 		//   As = |sx  0  0 |
 		//        |0   sy 0 |
 		//        |0   0  sz|
@@ -197,7 +197,7 @@ System.out.println(As);
 		//   sy = sqrt(eigen1Y / eigen2Y)
 		//   sz = sqrt(eigen1Z / eigen2Z)
 
-		//Prüfen auf unzulässige Eigenwerte
+		//PrÃ¼fen auf unzulÃ¤ssige Eigenwerte
 		Arrays.fill(scalingFactors, 1);
 		if (eigenValues1[0] == 0 && eigenValues2[0] == 0) {
 			scalingFactors[0] = 1;

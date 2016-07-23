@@ -39,7 +39,7 @@ public class About extends JDialog {
     private String product = "Segmentation and Registration Tool";
     private String version = "1.0";
     private String copyright = "Copyright (c) 2002/2003";
-    private String comments = " Authors: \n    -Werner Weiser\n    -Franz Wilhelmstötter";
+    private String comments = " Authors: \n    -Werner Weiser\n    -Franz WilhelmstÃ¶tter";
     private JPanel contentPane = new JPanel();
     private JLabel prodLabel = new JLabel();
     private JLabel verLabel = new JLabel();

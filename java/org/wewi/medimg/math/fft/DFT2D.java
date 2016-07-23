@@ -25,7 +25,7 @@ package org.wewi.medimg.math.fft;
 import org.wewi.medimg.math.Complex;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class DFT2D extends DFT {

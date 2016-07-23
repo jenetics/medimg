@@ -23,7 +23,7 @@ package org.wewi.medimg.image.ops;
 import org.wewi.medimg.image.Image;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class BinaryPointTransformer {

@@ -25,7 +25,7 @@ package org.wewi.medimg.visualisation.mc;
 /**
  *
  * @author  Werner Weiser
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class TriangleDecimator {

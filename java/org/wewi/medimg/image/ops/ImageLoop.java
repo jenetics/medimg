@@ -17,7 +17,7 @@
 /**
  * ImageLoop.java
  *
- * Created on 23. Jänner 2003, 18:20
+ * Created on 23. JÃ¤nner 2003, 18:20
  */
 
 package org.wewi.medimg.image.ops;
@@ -27,7 +27,7 @@ import org.wewi.medimg.image.ROI;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ImageLoop {

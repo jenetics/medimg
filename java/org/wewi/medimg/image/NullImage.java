@@ -1,5 +1,5 @@
 /* 
- * NullImage.java, created on 26. Jänner 2002, 21:08
+ * NullImage.java, created on 26. JÃ¤nner 2002, 21:08
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ package org.wewi.medimg.image;
 import org.wewi.medimg.util.Nullable;
 
 /**
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public final class NullImage implements Image, Nullable {

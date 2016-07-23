@@ -10,7 +10,7 @@ import org.wewi.medimg.viewer.Command;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class PrevPrevCommand implements Command {

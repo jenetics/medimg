@@ -1,5 +1,5 @@
 /* 
- * ColorConversion.java, created on 17. Jänner 2002, 19:24
+ * ColorConversion.java, created on 17. JÃ¤nner 2002, 19:24
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public interface ColorConversion extends Cloneable, Serializable {

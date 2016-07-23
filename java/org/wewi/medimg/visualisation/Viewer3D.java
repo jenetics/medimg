@@ -17,7 +17,7 @@
 /**
  * Viewer3D.java
  *
- * Created on 25. März 2002, 16:34
+ * Created on 25. MÃ¤rz 2002, 16:34
  */
 
 package org.wewi.medimg.visualisation;

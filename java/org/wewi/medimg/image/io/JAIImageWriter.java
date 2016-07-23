@@ -40,7 +40,7 @@ import com.sun.media.jai.codec.ImageEncoder;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 abstract class JAIImageWriter extends ImageWriter {
@@ -128,14 +128,14 @@ abstract class JAIImageWriter extends ImageWriter {
         
     
     /**
-     * Die initialisierung der JAI-Parameter muß von
-     * den abgeleiteten Klassen durchgeführt werden.
+     * Die initialisierung der JAI-Parameter muÃŸ von
+     * den abgeleiteten Klassen durchgefÃ¼hrt werden.
      */
     protected abstract void initEncoder(OutputStream out);     
     
     /**
-     * Wenn beim Schreiben etwas schief geht, müssen
-     * die bereits geschriebenen Datein gelöscht werden.
+     * Wenn beim Schreiben etwas schief geht, mÃ¼ssen
+     * die bereits geschriebenen Datein gelÃ¶scht werden.
      */
     private void dispose() {
         File[] files = target.listFiles();

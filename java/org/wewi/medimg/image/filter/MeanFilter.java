@@ -17,7 +17,7 @@
 /*
  * MeanFilter.java
  *
- * Created on 26. Jänner 2002, 01:04
+ * Created on 26. JÃ¤nner 2002, 01:04
  */
 
 package org.wewi.medimg.image.filter;
@@ -31,7 +31,7 @@ import org.wewi.medimg.image.geom.Point3D;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class MeanFilter extends ImageFilter {

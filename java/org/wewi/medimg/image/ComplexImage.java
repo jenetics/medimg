@@ -22,7 +22,7 @@ package org.wewi.medimg.image;
 import org.wewi.medimg.math.Complex;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ComplexImage extends RowMajorImageGeometry implements Cloneable {

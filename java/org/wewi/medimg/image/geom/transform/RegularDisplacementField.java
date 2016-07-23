@@ -16,7 +16,7 @@ import org.wewi.medimg.math.vec.ops.GridVectorFieldTransformer;
 import org.wewi.medimg.math.vec.ops.ScaleVectorFunction;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class RegularDisplacementField extends DisplacementField 

@@ -33,7 +33,7 @@ import org.wewi.medimg.math.fft.ImageDFT;
 import org.wewi.medimg.math.geom.Dimension2D;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class MIMeasure implements ValidationMeasure {

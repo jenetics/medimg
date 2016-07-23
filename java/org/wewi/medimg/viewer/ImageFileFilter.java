@@ -30,7 +30,7 @@ import org.wewi.medimg.image.io.ImageFormatEnum;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ImageFileFilter extends FileFilter {

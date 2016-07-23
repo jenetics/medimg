@@ -38,7 +38,7 @@ import javax.swing.event.InternalFrameListener;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class ViewerDesktopFrame extends JInternalFrame

@@ -25,7 +25,7 @@ import java.util.EventObject;
  * This Object represents an iteration event. This event is sent, when the
  * algorithm starts a new iteration.
  *
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class AlgorithmIterationEvent extends EventObject {

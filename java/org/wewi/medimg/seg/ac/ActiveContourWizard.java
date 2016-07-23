@@ -51,7 +51,7 @@ import org.wewi.medimg.viewer.wizard.Wizard;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class ActiveContourWizard extends Wizard implements ImageViewerListener,
@@ -375,7 +375,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
 
     private void fileLoadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileLoadButtonActionPerformed
         ImageFileChooser chooser = new ImageFileChooser();
-        chooser.setDialogTitle("Datensatz auswählen");
+        chooser.setDialogTitle("Datensatz auswÃ¤hlen");
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         
         int returnVal = chooser.showOpenDialog(this);
@@ -390,7 +390,7 @@ public class ActiveContourWizard extends Wizard implements ImageViewerListener,
         
         imageReader.addProgressListener(this);
         progressFrame = new ProgressFrame(); 
-        progressFrame.setTitle("Öffnen");
+        progressFrame.setTitle("Ã–ffnen");
         progressFrame.setSubTitle("Beim Laden von: " + fileName);
         Viewer.getInstance().addViewerDesktopFrame(progressFrame);        
         

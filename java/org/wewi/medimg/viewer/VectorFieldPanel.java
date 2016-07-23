@@ -33,7 +33,7 @@ import org.wewi.medimg.math.vec.VectorField;
 import org.wewi.medimg.math.vec.VectorIterator;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class VectorFieldPanel extends JPanel {

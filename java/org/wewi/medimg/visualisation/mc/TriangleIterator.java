@@ -17,7 +17,7 @@
 /**
  * TriangleIterator.java
  *
- * Created on 20. März 2002, 21:08
+ * Created on 20. MÃ¤rz 2002, 21:08
  */
 
 package org.wewi.medimg.visualisation.mc;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 final class TriangleIterator implements Iterator {
@@ -41,7 +41,7 @@ final class TriangleIterator implements Iterator {
     }
     
     public void addTriangle(Triangle t) {
-        //Null Werte werden nicht eingefügt!!!
+        //Null Werte werden nicht eingefÃ¼gt!!!
         if (t == null) {
             return;
         }

@@ -26,7 +26,7 @@ import org.wewi.medimg.util.Singleton;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class NavigationPanel extends javax.swing.JPanel implements Singleton {

@@ -39,7 +39,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public class DataPointViewer extends JPanel implements MathematicaStringable {

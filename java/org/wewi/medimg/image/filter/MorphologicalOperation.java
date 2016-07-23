@@ -26,7 +26,7 @@ import org.wewi.medimg.image.IntImage;
 import org.wewi.medimg.image.MarginImage;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public abstract class MorphologicalOperation extends ImageFilter {

@@ -1,7 +1,7 @@
 /**
  * AffinityMetric.java
  *
- * Created on 26. März 2002, 10:04
+ * Created on 26. MÃ¤rz 2002, 10:04
  */
 
 package org.wewi.medimg.reg;

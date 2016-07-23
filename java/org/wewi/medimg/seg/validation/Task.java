@@ -29,7 +29,7 @@ import org.jdom.Element;
 import org.wewi.medimg.util.param.Parameter;
 
 /**
- * @author Franz Wilhelmstötter
+ * @author Franz WilhelmstÃ¶tter
  * @version 0.1
  */
 public final class Task {   

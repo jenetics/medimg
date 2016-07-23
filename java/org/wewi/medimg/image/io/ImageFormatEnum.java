@@ -26,7 +26,7 @@ import org.wewi.medimg.util.Enumeration;
 
 /**
  *
- * @author  Franz Wilhelmstötter
+ * @author  Franz WilhelmstÃ¶tter
  * @version 0.2
  */
 public final class ImageFormatEnum extends Enumeration {
